@@ -1,0 +1,210 @@
+from rest_framework import serializers
+from .models import Campaign, Category, File
+from organizations.serializers import OrganizationProfileSerializer
+
+import logging
+
+# Set up a logger
+logger = logging.getLogger(__name__)
+
+class CategorySerializer(serializers.ModelSerializer):
+    campaign_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = Category
+        fields = ['id', 'name', 'description', 'campaign_count']
+        read_only_fields = ['id', 'campaign_count']
+
+class FileSerializer(serializers.ModelSerializer):
+    file = serializers.FileField(write_only=True, required=False)
+    campaign = serializers.PrimaryKeyRelatedField(
+        queryset=Campaign.objects.all(),
+        required=False
+    )
+    
+    class Meta:
+        model = File
+        fields = ['id', 'name', 'url', 'path', 'campaign', 'file']
+        read_only_fields = ['url', 'name', 'path']
+
+class CampaignSerializer(serializers.ModelSerializer):
+    files = FileSerializer(many=True, read_only=True)
+    organization = OrganizationProfileSerializer(source='owner.organization_profile', read_only=True)
+
+    class Meta:
+        model = Campaign
+        fields = [
+            'id',
+            'name',
+            'description',
+            'category',
+            'owner',
+            'target',
+            'current_amount',
+            'number_of_donors',
+            'featured',
+            'files',
+            'created_at',
+            'updated_at',
+            'organization'
+        ]
+        read_only_fields = ['owner', 'current_amount', 'number_of_donors', 'created_at', 'updated_at']
+    
+    def update(self, instance, validated_data):
+        request = self.context.get('request')
+        
+        logger.info("=== CAMPAIGN UPDATE STARTED ===")
+        logger.info(f"Request DATA: {request.data}")
+        logger.info(f"Request FILES: {request.FILES}")
+        logger.info(f"Request FILES keys: {list(request.FILES.keys())}")
+        
+        # Handle file deletions first
+        files_to_delete = request.data.getlist('files_to_delete', [])
+        logger.info(f"Files to delete: {files_to_delete}")
+        
+        if files_to_delete:
+            from .utils.supabase_storage import delete_file
+            # Delete files from database and storage
+            for file_url in files_to_delete:
+                try:
+                    logger.info(f"Attempting to delete file with URL: {file_url}")
+                    # Find the file in database by URL
+                    file_instance = instance.files.filter(url=file_url).first()
+                    if file_instance:
+                        logger.info(f"Found file to delete: {file_instance.name}")
+                        # Delete from storage using path if available, otherwise URL
+                        delete_path = file_instance.path if hasattr(file_instance, 'path') and file_instance.path else file_instance.url
+                        delete_file(delete_path)
+                        # Delete from database
+                        file_instance.delete()
+                        logger.info(f"Successfully deleted file: {file_instance.name}")
+                    else:
+                        logger.warning(f"File with URL {file_url} not found in database")
+                except Exception as e:
+                    logger.error(f"Error deleting file {file_url}: {str(e)}")
+        
+        # Handle new file uploads using file_* pattern (same as create method)
+        file_keys = [key for key in request.FILES.keys() if key.startswith('file_')]
+        logger.info(f"Found {len(file_keys)} new files to process: {file_keys}")
+        
+        if file_keys:
+            from .utils.supabase_storage import upload_file
+            
+            successful_uploads = 0
+            failed_uploads = 0
+            
+            for key in file_keys:
+                file_obj = request.FILES[key]
+                logger.info(f"Processing file {key}: {file_obj.name}, size={file_obj.size}, content_type={file_obj.content_type}")
+                
+                try:
+                    # Upload to Supabase
+                    logger.info(f"Uploading file {file_obj.name} to Supabase...")
+                    url, path = upload_file(file_obj, instance.id)
+                    
+                    if url and path:
+                        logger.info(f"SUCCESS: Uploaded {file_obj.name} to {url}")
+                        logger.info(f"File path: {path}")
+                        
+                        try:
+                            file_record = File.objects.create(
+                                name=file_obj.name,
+                                url=url,
+                                path=path,  # Store the path for future deletion
+                                campaign=instance
+                            )
+                            logger.info(f"File record created with ID: {file_record.id}")
+                            successful_uploads += 1
+                        except Exception as file_db_error:
+                            logger.error(f"Failed to create File DB record: {str(file_db_error)}")
+                            failed_uploads += 1
+                    else:
+                        logger.error(f"Failed to upload file to Supabase: No URL or path returned")
+                        failed_uploads += 1
+                
+                except Exception as upload_error:
+                    logger.error(f"Error during file upload: {str(upload_error)}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+                    failed_uploads += 1
+            
+            logger.info(f"Upload summary: {successful_uploads} successful, {failed_uploads} failed")
+        
+        # Update regular fields
+        instance.name = validated_data.get('name', instance.name)
+        instance.description = validated_data.get('description', instance.description)
+        instance.category = validated_data.get('category', instance.category)
+        instance.target = validated_data.get('target', instance.target)
+        instance.featured = validated_data.get('featured', instance.featured)
+        instance.save()
+        
+        logger.info("=== CAMPAIGN UPDATE COMPLETED ===")
+        return instance
+    
+    def create(self, validated_data):
+        request = self.context.get('request')
+        
+        # EXTENSIVE DEBUG LOGGING
+        logger.info("=== CAMPAIGN CREATION STARTED ===")
+        logger.info(f"Request DATA: {request.data}")
+        logger.info(f"Request FILES: {request.FILES}")
+        logger.info(f"Validated data: {validated_data}")
+        
+        # Make sure 'owner' is not in validated_data to avoid conflicts
+        if 'owner' in validated_data:
+            validated_data.pop('owner')
+        
+        try:
+            # Create the campaign
+            logger.info("Creating campaign...")
+            campaign = Campaign.objects.create(
+                owner=request.user,
+                **validated_data
+            )
+            logger.info(f"Campaign created: ID={campaign.id}, Name={campaign.name}")
+            
+            # Look for file patterns
+            file_keys = [key for key in request.FILES.keys() if key.startswith('file_')]
+            logger.info(f"Found {len(file_keys)} files to process: {file_keys}")
+            
+            from .utils.supabase_storage import upload_file
+            
+            for key in file_keys:
+                file_obj = request.FILES[key]
+                logger.info(f"Processing file {key}: {file_obj.name}, size={file_obj.size}, content_type={file_obj.content_type}")
+                
+                try:
+                    # Upload to Supabase
+                    logger.info(f"Uploading file {file_obj.name} to Supabase...")
+                    url, path = upload_file(file_obj, campaign.id)
+                    
+                    if url:
+                        logger.info(f"SUCCESS: Uploaded {file_obj.name} to {url}")
+                        logger.info(f"Creating File DB record...")
+                        
+                        try:
+                            file_record = File.objects.create(
+                                name=file_obj.name,
+                                url=url,
+                                path=path,  # Store the path for future deletion
+                                campaign=campaign
+                            )
+                            logger.info(f"File record created with ID: {file_record.id}")
+                        except Exception as file_db_error:
+                            logger.error(f"Failed to create File DB record: {str(file_db_error)}")
+                    else:
+                        logger.error(f"Failed to upload file to Supabase: No URL returned")
+                
+                except Exception as upload_error:
+                    logger.error(f"Error during file upload: {str(upload_error)}")
+                    import traceback
+                    logger.error(traceback.format_exc())
+            
+            logger.info("=== CAMPAIGN CREATION COMPLETED ===")
+            return campaign
+        
+        except Exception as campaign_error:
+            logger.error(f"Error during campaign creation: {str(campaign_error)}")
+            import traceback
+            logger.error(traceback.format_exc())
+            raise
