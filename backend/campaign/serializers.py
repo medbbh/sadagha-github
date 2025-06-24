@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Campaign, Category, File
+from .models import Campaign, Category, File, Donation
 from organizations.serializers import OrganizationProfileSerializer
 
 import logging
@@ -208,3 +208,49 @@ class CampaignSerializer(serializers.ModelSerializer):
             import traceback
             logger.error(traceback.format_exc())
             raise
+
+# campaign/serializers.py - Add this to your existing serializers.py
+
+
+
+# Your existing serializers remain the same...
+
+class DonationSerializer(serializers.ModelSerializer):
+    donor_display_name = serializers.ReadOnlyField()
+    campaign_name = serializers.CharField(source='campaign.name', read_only=True)
+    
+    class Meta:
+        model = Donation
+        fields = [
+            'id',
+            'campaign',
+            'campaign_name',
+            'donor',
+            'donor_display_name',
+            'donor_email',
+            'donor_name',
+            'amount',
+            'currency',
+            'status',
+            'payment_method',
+            'message',
+            'is_anonymous',
+            'created_at',
+            'completed_at'
+        ]
+        read_only_fields = [
+            'id',
+            'donor',
+            'status',
+            'payment_method',
+            'created_at',
+            'completed_at'
+        ]
+
+class DonationCreateSerializer(serializers.Serializer):
+    """Serializer for creating donation payment sessions"""
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=1)
+    donor_email = serializers.EmailField(required=False, allow_blank=True)
+    donor_name = serializers.CharField(max_length=255, required=False, allow_blank=True)
+    message = serializers.CharField(required=False, allow_blank=True)
+    is_anonymous = serializers.BooleanField(default=False)

@@ -1,12 +1,21 @@
-from rest_framework import viewsets, permissions, parsers, status
+from rest_framework import viewsets, permissions, parsers, status, filters
 from .models import Campaign, Category, File
 from .serializers import CampaignSerializer, CategorySerializer, FileSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Count, Case, When
+from django.db.models import Count, Case, When, Q
 from rest_framework import filters
-from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
+from django.http import JsonResponse, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
+import requests
+import json
+from django.conf import settings
+import logging
+from rest_framework import parsers
+
+logger = logging.getLogger(__name__)
 
 class CampaignViewSet(viewsets.ModelViewSet):
     # Add prefetch_related to avoid N+1 queries
@@ -109,7 +118,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(featured_campaigns, many=True)
         return Response(serializer.data)
     
-    @action(detail=False, methods=['post'], url_path='batch', permission_classes=[permissions.AllowAny],parser_classes=[parsers.JSONParser])
+    @action(detail=False, methods=['post'], url_path='batch', permission_classes=[permissions.AllowAny], parser_classes=[parsers.JSONParser])
     def get_multiple(self, request):
         """
         Get multiple campaigns by IDs
@@ -173,6 +182,141 @@ class CampaignViewSet(viewsets.ModelViewSet):
             
         return Response(response_data, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny], parser_classes=[parsers.JSONParser])
+    def create_donation(self, request, pk=None):
+        """
+        Create a donation payment session for a campaign
+        POST /api/campaigns/{id}/create_donation/
+        """
+        print(f"=== CREATE DONATION DEBUG ===")
+        print(f"Campaign ID: {pk}")
+        print(f"Request data: {request.data}")
+        print(f"Content type: {request.content_type}")
+        
+        try:
+            campaign = self.get_object()
+            print(f"Campaign found: {campaign.name}")
+            
+            # Get donation data
+            amount = request.data.get('amount')
+            donor_email = request.data.get('donor_email', 'anonymous@sada9a.com')
+            
+            print(f"Amount: {amount}, Email: {donor_email}")
+            
+            # Validate amount
+            if not amount:
+                print("ERROR: No amount provided")
+                return Response(
+                    {'error': 'Donation amount is required'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            try:
+                amount = float(amount)
+                if amount <= 0:
+                    print("ERROR: Invalid amount")
+                    return Response(
+                        {'error': 'Donation amount must be greater than 0'}, 
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+            except (ValueError, TypeError):
+                print("ERROR: Amount conversion failed")
+                return Response(
+                    {'error': 'Invalid donation amount'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            print(f"Amount validated: {amount}")
+            
+            # Check if NEXTREMITLY_API_KEY exists
+            api_key = getattr(settings, 'NEXTREMITLY_API_KEY', None)
+            print(f"API Key exists: {bool(api_key)}")
+            print(f"API Key preview: {api_key[:20] if api_key else 'None'}...")
+            
+            if not api_key:
+                print("ERROR: NEXTREMITLY_API_KEY not configured")
+                return Response(
+                    {'error': 'Payment service not configured'}, 
+                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
+            
+            # Create payment session with Nextremitly
+            payment_data = {
+                'amount': amount,
+                'currency': 'MRU',
+                'description': f'Donation to {campaign.name}',
+                'customer_email': donor_email,
+                'success_url': f"http://localhost:5174/campaign/{campaign.id}/donation/success",
+                'cancel_url': f"http://localhost:5174/campaign/{campaign.id}/donation/cancel",
+                'webhook_url': f"http://localhost:8001/api/campaigns/donation-webhook/",
+                'metadata': {
+                    'campaign_id': campaign.id,
+                    'campaign_name': campaign.name,
+                    'donation_amount': str(amount),
+                    'platform': 'sada9a'
+                }
+            }
+            
+            print(f"Payment data prepared: {payment_data}")
+            
+            # Test if Nextremitly is reachable
+            try:
+                print("Testing connection to Nextremitly...")
+                test_response = requests.get('http://localhost:8000/api/merchants/wallets/providers/', timeout=5)
+                print(f"Nextremitly connection test: {test_response.status_code}")
+            except Exception as e:
+                print(f"ERROR: Cannot connect to Nextremitly: {str(e)}")
+                return Response(
+                    {'error': 'Payment service unavailable. Please make sure Nextremitly is running on port 8000.'}, 
+                    status=status.HTTP_503_SERVICE_UNAVAILABLE
+                )
+            
+            # Call Nextremitly API
+            print("Making request to Nextremitly payment sessions endpoint...")
+            response = requests.post(
+                'http://localhost:8000/api/payment/sessions/',
+                json=payment_data,
+                headers={
+                    'Authorization': f'Bearer {api_key}',
+                    'Content-Type': 'application/json'
+                },
+                timeout=30
+            )
+            
+            print(f"Nextremitly response status: {response.status_code}")
+            print(f"Nextremitly response body: {response.text}")
+            
+            if response.status_code == 201:
+                session_data = response.json()
+                print(f"Payment session created successfully: {session_data}")
+                return Response({
+                    'success': True,
+                    'session_id': session_data['session_id'],
+                    'payment_url': session_data['payment_url'],
+                    'widget_url': f"http://localhost:5173/payment/{session_data['session_id']}",
+                    'expires_at': session_data['expires_at']
+                }, status=status.HTTP_201_CREATED)
+            else:
+                print(f"ERROR: Nextremitly returned {response.status_code}")
+                return Response(
+                    {'error': f'Payment service error: {response.status_code} - {response.text}'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+                
+        except requests.exceptions.RequestException as e:
+            print(f"ERROR: Request exception: {str(e)}")
+            return Response(
+                {'error': 'Payment service temporarily unavailable'}, 
+                status=status.HTTP_503_SERVICE_UNAVAILABLE
+            )
+        except Exception as e:
+            print(f"ERROR: Unexpected exception: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response(
+                {'error': f'An unexpected error occurred: {str(e)}'}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 class FileViewSet(viewsets.ModelViewSet):
     queryset = File.objects.all()
@@ -187,17 +331,53 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-import requests
-from django.http import JsonResponse, HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-import json
+# Simple payment webhook handler
+@csrf_exempt
+@require_http_methods(["POST"])
+def donation_webhook(request):
+    """
+    Webhook endpoint to receive payment status updates from Nextremitly
+    POST /api/campaigns/donation-webhook/
+    """
+    try:
+        payload = json.loads(request.body)
+        session_id = payload.get('session_id')
+        payment_status = payload.get('status')
+        metadata = payload.get('metadata', {})
+        
+        logger.info(f"Received webhook for session {session_id}: {payment_status}")
+        
+        if payment_status == 'completed':
+            # Payment successful - update campaign
+            campaign_id = metadata.get('campaign_id')
+            amount = float(metadata.get('donation_amount', 0))
+            
+            if campaign_id and amount > 0:
+                try:
+                    campaign = Campaign.objects.get(id=campaign_id)
+                    campaign.current_amount += amount
+                    campaign.number_of_donors += 1
+                    campaign.save()
+                    logger.info(f"Updated campaign {campaign_id} with donation of {amount} MRU")
+                except Campaign.DoesNotExist:
+                    logger.error(f"Campaign {campaign_id} not found")
+        
+        return HttpResponse('OK', status=200)
+        
+    except json.JSONDecodeError:
+        logger.error("Invalid JSON in webhook payload")
+        return HttpResponse('Invalid JSON', status=400)
+    except Exception as e:
+        logger.error(f"Error processing webhook: {str(e)}")
+        return HttpResponse('Internal Server Error', status=500)
 
+
+# Legacy payment creation function (keeping your original)
 def create_payment(request):
     data = json.loads(request.body)
     
     response = requests.post(
-        'https://localhost:8000/api/payment/sessions/',
+        'http://localhost:8000/api/payment/sessions/',
         headers={
             'Authorization': f'Bearer {settings.NEXTREMITLY_API_KEY}',
             'Content-Type': 'application/json'
@@ -205,11 +385,11 @@ def create_payment(request):
         json={
             'amount': data['amount'],
             'currency': 'MRU',
-            'description': data['description'],
-            'customer_email': data['email'],
-            'success_url': 'https://yoursite.com/success',
-            'cancel_url': 'https://yoursite.com/cancel',
-            'webhook_url': 'https://yoursite.com/webhook'
+            'description': data.get('description', 'Payment'),
+            'customer_email': data.get('email', 'customer@example.com'),
+            'success_url': 'http://localhost:5174/success',
+            'cancel_url': 'http://localhost:5174/cancel',
+            'webhook_url': 'http://localhost:8001/api/campaigns/donation-webhook/'
         }
     )
     
@@ -223,6 +403,6 @@ def webhook_handler(request):
     
     if status == 'completed':
         # Handle successful payment
-        fulfill_order(session_id)
+        pass
     
     return HttpResponse('OK')

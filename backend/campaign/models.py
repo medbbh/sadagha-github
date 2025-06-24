@@ -37,3 +37,76 @@ class File(models.Model):
             delete_file(self.path)
         super().delete(*args, **kwargs)
 
+
+
+class Donation(models.Model):
+    """Model to track donations to campaigns"""
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='donations')
+    donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='donations')
+    donor_email = models.EmailField(blank=True, null=True)
+    donor_name = models.CharField(max_length=255, blank=True, null=True)
+    
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    currency = models.CharField(max_length=3, default='MRU')
+    
+    # Payment session tracking
+    payment_session_id = models.UUIDField(null=True, blank=True)
+    payment_transaction_id = models.UUIDField(null=True, blank=True)
+    external_transaction_id = models.CharField(max_length=255, blank=True, null=True)
+    
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    payment_method = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Timestamps
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    
+    # Additional info
+    message = models.TextField(blank=True, null=True, help_text="Optional message from donor")
+    is_anonymous = models.BooleanField(default=False)
+    
+    # Metadata from payment gateway
+    payment_metadata = models.JSONField(default=dict, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['campaign', 'status']),
+            models.Index(fields=['payment_session_id']),
+            models.Index(fields=['created_at']),
+        ]
+    
+    def __str__(self):
+        return f"Donation of {self.amount} {self.currency} to {self.campaign.name}"
+    
+    @property
+    def donor_display_name(self):
+        """Get the display name for the donor"""
+        if self.is_anonymous:
+            return "Anonymous"
+        if self.donor:
+            return self.donor.first_name if hasattr(self.donor, 'first_name') else str(self.donor)
+        return self.donor_name or "Anonymous"
+
+
+class DonationWebhookLog(models.Model):
+    """Log webhook calls from payment gateway"""
+    donation = models.ForeignKey(Donation, on_delete=models.CASCADE, null=True, blank=True)
+    session_id = models.UUIDField()
+    payload = models.JSONField()
+    status_code = models.IntegerField(null=True)
+    processed = models.BooleanField(default=False)
+    error_message = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']

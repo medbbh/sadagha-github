@@ -65,10 +65,58 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+
+NEXTREMITLY_API_KEY = 'nxt_test_uu3xeeki7LKH10ErHGseBrIDJbaM9dFH'
+NEXTREMITLY_BASE_URL = 'http://localhost:8000'  # Nextremitly backend URL
+NEXTREMITLY_FRONTEND_URL = 'http://localhost:5173'  # Nextremitly frontend URL
+
+# Your frontend URLs
+FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
+BACKEND_URL = 'http://localhost:8001'   # Sada9a backend URL
+
+# Add to CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", 
-    "http://localhost:5174", 
+    "http://localhost:5173",  # Nextremitly frontend
+    "http://localhost:5174",  # Sada9a frontend
+    "http://localhost:8000",  # Nextremitly backend
 ]
+
+# Logging configuration for debugging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'sada9a.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'campaign': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 CORS_ALLOW_HEADERS = [
     'accept',
@@ -162,5 +210,3 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
-
-NEXTREMITLY_API_KEY = 'nxt_test_d4tAzMixh0whRoDvbNSWejih7KBhpb7b'

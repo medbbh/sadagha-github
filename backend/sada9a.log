@@ -1,0 +1,3 @@
+ERROR 2025-06-24 12:41:46,665 views 20336 20968 Error creating donation: Unsupported media type "application/json" in request.
+ERROR 2025-06-24 12:43:05,653 views 20336 17028 Error creating donation: Unsupported media type "application/json" in request.
+ERROR 2025-06-24 12:43:54,743 views 20336 3676 Error creating donation: Unsupported media type "application/json" in request.
