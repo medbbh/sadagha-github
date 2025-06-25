@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import { DollarSign, CreditCard, User, Mail, MessageSquare, CheckCircle, AlertCircle, Heart, ExternalLink } from 'lucide-react';
+import api from '../../api/axiosConfig';
+import DonationService from '../../api/endpoints/donationAPI';
+import { useNavigate } from 'react-router-dom';
 
 export default function DonationForm({ 
   campaignId: propCampaignId, 
@@ -12,7 +15,7 @@ export default function DonationForm({
   // Try to get campaign ID from URL if not provided as prop
   const urlCampaignId = window.location.pathname.split('/')[2];
   const campaignId = propCampaignId || urlCampaignId;
-  
+  const navigate = useNavigate();
   const [donationAmount, setDonationAmount] = useState(25);
   const [donorEmail, setDonorEmail] = useState('');
   const [donorName, setDonorName] = useState('');
@@ -38,59 +41,101 @@ export default function DonationForm({
     return null;
   };
 
-  const handleDonate = async () => {
-    const validationError = validateForm();
-    if (validationError) {
-      setError(validationError);
-      return;
-    }
 
-    setIsLoading(true);
-    setError(null);
-    setShowPaymentOptions(false);
+const handleDonate = async () => {
+  const validationError = validateForm();
+  if (validationError) {
+    setError(validationError);
+    return;
+  }
 
-    const donationData = {
-      amount: donationAmount,
-      donor_email: donorEmail || 'anonymous@sada9a.com',
-      donor_name: donorName || '',
-      message: message || '',
-      is_anonymous: isAnonymous
-    };
+  setIsLoading(true);
+  setError(null);
+  setShowPaymentOptions(false);
 
-    console.log('Creating donation for campaign:', campaignId, 'with data:', donationData);
-
-    try {
-      // Create donation session
-      const response = await fetch(`http://127.0.0.1:8001/api/campaigns/${campaignId}/create_donation/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(donationData)
-      });
-
-      const data = await response.json();
-      console.log('Donation response:', data);
-
-      if (data.success) {
-        setPaymentUrl(data.widget_url);
-        // Try popup first, fallback to options if blocked
-        const popupWorked = tryOpenPopup(data.widget_url, data.session_id);
-        if (!popupWorked) {
-          setShowPaymentOptions(true);
-        }
-      } else {
-        setError(data.error || 'Failed to create donation session');
-      }
-    } catch (err) {
-      console.error('Donation error:', err);
-      setError('Network error. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+  const donationData = {
+    amount: parseFloat(donationAmount),
+    donor_email: donorEmail || 'anonymous@sada9a.com',
+    donor_name: donorName || '',
+    message: message || '',
+    is_anonymous: isAnonymous
   };
 
-  const tryOpenPopup = (paymentUrl, sessionId) => {
+  console.log('Creating donation for campaign:', campaignId, 'with data:', donationData);
+
+  try {
+    // Your axios returns data directly, not response.data
+    const response = await DonationService.createDonation(campaignId, donationData);
+    
+    console.log('Full response object:', response);
+    
+    // Since your axios interceptor returns response.data directly,
+    // the actual data is in response.data (which we wrapped in the service)
+    const data = response.data;
+    console.log('Donation response data:', data);
+
+    if (data && data.success) {
+      console.log('Donation session created successfully');
+      
+      // Validate required fields
+      if (!data.widget_url || !data.session_id) {
+        throw new Error('Invalid payment session data received');
+      }
+      
+      setPaymentUrl(data.widget_url);
+      
+      const donationInfo = {
+        donation_id: data.donation_id,
+        session_id: data.session_id,
+        amount: donationAmount
+      };
+      
+      // Try popup first, fallback to options if blocked
+      const popupWorked = tryOpenPopup(data.widget_url, data.session_id, donationInfo);
+      if (!popupWorked) {
+        setShowPaymentOptions(true);
+      }
+    } else {
+      // Handle unsuccessful response
+      const errorMessage = data?.error || 'Failed to create donation session';
+      console.error('Donation creation failed:', errorMessage);
+      setError(errorMessage);
+    }
+    
+  } catch (err) {
+    console.error('Donation error:', err);
+    
+    // Your axios error interceptor provides structured errors
+    let errorMessage = 'An unexpected error occurred';
+    
+    if (err.message) {
+      errorMessage = err.message;
+    } else if (err.status) {
+      switch (err.status) {
+        case 400:
+          errorMessage = 'Invalid request. Please check your input.';
+          break;
+        case 404:
+          errorMessage = 'Campaign not found.';
+          break;
+        case 503:
+          errorMessage = 'Payment service is temporarily unavailable. Please try again later.';
+          break;
+        case 500:
+          errorMessage = 'Server error. Please try again later.';
+          break;
+        default:
+          errorMessage = `Server error (${err.status}). Please try again.`;
+      }
+    }
+    
+    setError(errorMessage);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+  const tryOpenPopup = (paymentUrl, sessionId, donationInfo) => {
     try {
       console.log('Attempting to open payment popup:', paymentUrl);
       
@@ -107,7 +152,7 @@ export default function DonationForm({
       }
 
       // Popup opened successfully
-      setupPopupHandlers(popup, sessionId);
+      setupPopupHandlers(popup, sessionId, donationInfo);
       return true;
       
     } catch (error) {
@@ -116,44 +161,66 @@ export default function DonationForm({
     }
   };
 
-  const setupPopupHandlers = (popup, sessionId) => {
+  // Updated setupPopupHandlers function
+  const setupPopupHandlers = (popup, sessionId, donationInfo) => {
+    let isPaymentCompleted = false;
+
     // Monitor popup for completion
     const checkClosed = setInterval(() => {
       if (popup.closed) {
         clearInterval(checkClosed);
         console.log('Payment popup closed');
-        // Refresh the page to show updated donation info
-        setTimeout(() => window.location.reload(), 1000);
+        
+        // If payment wasn't explicitly completed, check status
+        if (!isPaymentCompleted) {
+          setTimeout(() => {
+            checkPaymentStatusAndRedirect(sessionId, donationInfo);
+          }, 1000);
+        }
       }
     }, 1000);
 
-    // Listen for payment completion messages
+    // Listen for payment completion messages from NextRemitly
     const messageHandler = (event) => {
       console.log('Received message from popup:', event.data);
       
-      if (event.data.type === 'payment-completed') {
+      // Verify origin for security
+      const allowedOrigins = [
+        'http://localhost:5173', 
+        'https://nextremitly.com',
+        window.location.origin
+      ];
+      
+      if (!allowedOrigins.includes(event.origin)) {
+        console.warn('Unauthorized message origin:', event.origin);
+        return;
+      }
+      
+      if (event.data.type === 'payment-completed' || event.data.type === 'payment-success') {
+        isPaymentCompleted = true;
+        
+        // CLOSE THE POPUP FIRST
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
         
-        setShowSuccessMessage(true);
-        setShowPaymentOptions(false);
-        setTimeout(() => setShowSuccessMessage(false), 5000);
+        console.log('Payment completed via message - popup closed, redirecting main tab');
         
-        onDonationSuccess?.({
-          amount: donationAmount,
-          donor_name: isAnonymous ? 'Anonymous' : donorName,
-          message: isAnonymous ? null : message
-        });
-        
-        // Reset form
-        resetForm();
+        // Handle success in the MAIN TAB (this component's window)
+        handlePaymentSuccess(donationInfo);
         
       } else if (event.data.type === 'payment-failed') {
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
         setError('Payment failed. Please try again.');
+        setShowPaymentOptions(false);
+        
+      } else if (event.data.type === 'payment-cancelled') {
+        popup.close();
+        clearInterval(checkClosed);
+        window.removeEventListener('message', messageHandler);
+        setError('Payment was cancelled.');
         setShowPaymentOptions(false);
       }
     };
@@ -166,9 +233,113 @@ export default function DonationForm({
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
+        setError('Payment session expired. Please try again.');
       }
     }, 900000);
   };
+
+  // New function to check payment status and redirect
+  const checkPaymentStatusAndRedirect = async (sessionId, donationInfo) => {
+    try {
+      console.log('Checking payment status for session:', sessionId);
+      
+      const response = await fetch(`/api/campaigns/payment_status/?session_id=${sessionId}`);
+      if (response.ok) {
+        const statusData = await response.json();
+        console.log('Payment status:', statusData);
+        
+        if (statusData.status === 'completed' || statusData.status === 'success') {
+          handlePaymentSuccess(donationInfo);
+        } else if (statusData.status === 'failed') {
+          setError('Payment failed. Please try again.');
+        } else if (statusData.status === 'cancelled') {
+          setError('Payment was cancelled.');
+        } else {
+          // Payment might still be processing, show a message
+          console.log('Payment status unclear, assuming success and redirecting');
+          handlePaymentSuccess(donationInfo);
+        }
+      } else {
+        console.log('Could not verify payment status, assuming success');
+        handlePaymentSuccess(donationInfo);
+      }
+    } catch (err) {
+      console.log('Error checking payment status:', err);
+      // Assume success if we can't verify
+      handlePaymentSuccess(donationInfo);
+    }
+  };
+
+  // Updated handlePaymentSuccess function with redirect in main tab
+  const handlePaymentSuccess = (donationInfo) => {
+    console.log('Payment successful, redirecting in main tab...');
+    
+    // Clear any errors and loading states
+    setError(null);
+    setIsLoading(false);
+    setShowPaymentOptions(false);
+    
+    // Call the success callback if provided
+    onDonationSuccess?.({
+      donation_id: donationInfo.donation_id,
+      amount: donationAmount,
+      donor_name: isAnonymous ? 'Anonymous' : donorName,
+      message: isAnonymous ? null : message
+    });
+    
+    // Reset form
+    resetForm();
+    
+    // Redirect to success page in the MAIN TAB (not popup)
+    redirectToSuccessPage(donationInfo);
+  };
+
+  // New function to handle success page redirect in main tab
+  const redirectToSuccessPage = (donationInfo) => {
+    // Option 1: Using React Router (if you're using it) - redirects in main tab
+    if (typeof navigate !== 'undefined') {
+      navigate(`/campaign/${campaignId}/donation/success`, {
+        state: {
+          donationId: donationInfo.donation_id,
+          amount: donationAmount,
+          campaignId: campaignId,
+          donorName: isAnonymous ? 'Anonymous' : donorName
+        }
+      });
+      return;
+    }
+    
+    // Option 2: Using window.location in main window (not popup)
+    const successUrl = `/campaign/${campaignId}/donation/success?` + 
+      `donation_id=${donationInfo.donation_id}&` +
+      `amount=${donationAmount}&` +
+      `donor_name=${encodeURIComponent(isAnonymous ? 'Anonymous' : donorName || 'Anonymous')}`;
+    
+    // This redirects the main tab/window, not the popup
+    window.location.href = successUrl;
+  };
+
+  // Updated openInNewTab function
+  const openInNewTab = () => {
+    if (paymentUrl) {
+      const newTab = window.open(paymentUrl, '_blank');
+      setShowPaymentOptions(false);
+      
+      // Since we can't track the new tab, show a message and redirect after delay in MAIN TAB
+      setShowSuccessMessage(true);
+      
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+        // Redirect to success page in MAIN TAB (not the new tab)
+        redirectToSuccessPage({
+          donation_id: 'unknown', // We don't know the donation ID in this case
+          session_id: 'unknown',
+          amount: donationAmount
+        });
+      }, 3000); // Give user time to see the success message
+    }
+  };
+
 
   const resetForm = () => {
     setDonationAmount(25);
@@ -180,17 +351,17 @@ export default function DonationForm({
     setShowPaymentOptions(false);
   };
 
-  const openInNewTab = () => {
-    if (paymentUrl) {
-      window.open(paymentUrl, '_blank');
-      setShowPaymentOptions(false);
-      // Show success message after a delay since we can't track the new tab
-      setTimeout(() => {
-        setShowSuccessMessage(true);
-        setTimeout(() => setShowSuccessMessage(false), 5000);
-      }, 2000);
-    }
-  };
+  // const openInNewTab = () => {
+  //   if (paymentUrl) {
+  //     window.open(paymentUrl, '_blank');
+  //     setShowPaymentOptions(false);
+  //     // Show success message after a delay since we can't track the new tab
+  //     setTimeout(() => {
+  //       setShowSuccessMessage(true);
+  //       setTimeout(() => setShowSuccessMessage(false), 5000);
+  //     }, 2000);
+  //   }
+  // };
 
   const retryPopup = () => {
     if (paymentUrl) {
@@ -234,7 +405,7 @@ export default function DonationForm({
           <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
           <div>
             <p className="text-green-800 font-medium">Thank you for your donation! 🎉</p>
-            <p className="text-green-700 text-sm">Your contribution makes a real difference.</p>
+            <p className="text-green-700 text-sm">Redirecting to success page...</p>
           </div>
         </div>
       )}
@@ -377,24 +548,7 @@ export default function DonationForm({
               </div>
             </div>
             
-            <div>
-              <label htmlFor="donorEmail" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                <input
-                  type="email"
-                  id="donorEmail"
-                  value={donorEmail}
-                  onChange={(e) => setDonorEmail(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="your@email.com"
-                />
-              </div>
-            </div>
           </div>
-          
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
               Message of Support

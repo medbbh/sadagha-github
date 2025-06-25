@@ -65,14 +65,12 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-
-NEXTREMITLY_API_KEY = 'nxt_test_uu3xeeki7LKH10ErHGseBrIDJbaM9dFH'
-NEXTREMITLY_BASE_URL = 'http://localhost:8000'  # Nextremitly backend URL
-NEXTREMITLY_FRONTEND_URL = 'http://localhost:5173'  # Nextremitly frontend URL
+PAYMENT_MICROSERVICE_URL = os.getenv('PAYMENT_MICROSERVICE_URL', 'http://localhost:8001')
+PAYMENT_MICROSERVICE_TIMEOUT = int(os.getenv('PAYMENT_MICROSERVICE_TIMEOUT', '30'))
 
 # Your frontend URLs
 FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
-BACKEND_URL = 'http://localhost:8001'   # Sada9a backend URL
+BACKEND_URL = 'http://localhost:8002'   # Sada9a backend URL
 
 # Add to CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [

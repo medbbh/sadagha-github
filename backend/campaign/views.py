@@ -1,6 +1,6 @@
 from rest_framework import viewsets, permissions, parsers, status, filters
-from .models import Campaign, Category, File
-from .serializers import CampaignSerializer, CategorySerializer, FileSerializer
+from .models import Campaign, Category, Donation, DonationWebhookLog, File
+from .serializers import CampaignSerializer, CategorySerializer, FileSerializer, DonationSerializer, DonationCreateSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db.models import Count, Case, When, Q
@@ -14,6 +14,9 @@ import json
 from django.conf import settings
 import logging
 from rest_framework import parsers
+from .services.payment_service import payment_client
+from django.utils import timezone
+
 
 logger = logging.getLogger(__name__)
 
@@ -188,135 +191,132 @@ class CampaignViewSet(viewsets.ModelViewSet):
         Create a donation payment session for a campaign
         POST /api/campaigns/{id}/create_donation/
         """
-        print(f"=== CREATE DONATION DEBUG ===")
-        print(f"Campaign ID: {pk}")
-        print(f"Request data: {request.data}")
-        print(f"Content type: {request.content_type}")
+        logger.info(f"=== CREATE DONATION REQUEST ===")
+        logger.info(f"Campaign ID: {pk}")
+        logger.info(f"Request data: {request.data}")
         
         try:
             campaign = self.get_object()
-            print(f"Campaign found: {campaign.name}")
+            logger.info(f"Campaign found: {campaign.name}")
             
-            # Get donation data
-            amount = request.data.get('amount')
-            donor_email = request.data.get('donor_email', 'anonymous@sada9a.com')
-            
-            print(f"Amount: {amount}, Email: {donor_email}")
-            
-            # Validate amount
-            if not amount:
-                print("ERROR: No amount provided")
+            # Validate request data using serializer
+            serializer = DonationCreateSerializer(data=request.data)
+            if not serializer.is_valid():
+                logger.error(f"Invalid request data: {serializer.errors}")
                 return Response(
-                    {'error': 'Donation amount is required'}, 
+                    {'error': 'Invalid request data', 'details': serializer.errors},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
-            try:
-                amount = float(amount)
-                if amount <= 0:
-                    print("ERROR: Invalid amount")
-                    return Response(
-                        {'error': 'Donation amount must be greater than 0'}, 
-                        status=status.HTTP_400_BAD_REQUEST
-                    )
-            except (ValueError, TypeError):
-                print("ERROR: Amount conversion failed")
+            validated_data = serializer.validated_data
+            logger.info(f"Validated data: {validated_data}")
+            
+            # Check microservice health
+            if not payment_client.health_check():
+                logger.error("Payment microservice is not healthy")
                 return Response(
-                    {'error': 'Invalid donation amount'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            
-            print(f"Amount validated: {amount}")
-            
-            # Check if NEXTREMITLY_API_KEY exists
-            api_key = getattr(settings, 'NEXTREMITLY_API_KEY', None)
-            print(f"API Key exists: {bool(api_key)}")
-            print(f"API Key preview: {api_key[:20] if api_key else 'None'}...")
-            
-            if not api_key:
-                print("ERROR: NEXTREMITLY_API_KEY not configured")
-                return Response(
-                    {'error': 'Payment service not configured'}, 
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR
-                )
-            
-            # Create payment session with Nextremitly
-            payment_data = {
-                'amount': amount,
-                'currency': 'MRU',
-                'description': f'Donation to {campaign.name}',
-                'customer_email': donor_email,
-                'success_url': f"http://localhost:5174/campaign/{campaign.id}/donation/success",
-                'cancel_url': f"http://localhost:5174/campaign/{campaign.id}/donation/cancel",
-                'webhook_url': f"http://localhost:8001/api/campaigns/donation-webhook/",
-                'metadata': {
-                    'campaign_id': campaign.id,
-                    'campaign_name': campaign.name,
-                    'donation_amount': str(amount),
-                    'platform': 'sada9a'
-                }
-            }
-            
-            print(f"Payment data prepared: {payment_data}")
-            
-            # Test if Nextremitly is reachable
-            try:
-                print("Testing connection to Nextremitly...")
-                test_response = requests.get('http://localhost:8000/api/merchants/wallets/providers/', timeout=5)
-                print(f"Nextremitly connection test: {test_response.status_code}")
-            except Exception as e:
-                print(f"ERROR: Cannot connect to Nextremitly: {str(e)}")
-                return Response(
-                    {'error': 'Payment service unavailable. Please make sure Nextremitly is running on port 8000.'}, 
+                    {'error': 'Payment service is currently unavailable'},
                     status=status.HTTP_503_SERVICE_UNAVAILABLE
                 )
             
-            # Call Nextremitly API
-            print("Making request to Nextremitly payment sessions endpoint...")
-            response = requests.post(
-                'http://localhost:8000/api/payment/sessions/',
-                json=payment_data,
-                headers={
-                    'Authorization': f'Bearer {api_key}',
-                    'Content-Type': 'application/json'
-                },
-                timeout=30
+            # Create donation record first (with pending status)
+            donation = Donation.objects.create(
+                campaign=campaign,
+                donor=request.user if request.user.is_authenticated else None,
+                donor_email=validated_data.get('donor_email'),
+                donor_name=validated_data.get('donor_name'),
+                amount=validated_data['amount'],
+                currency='MRU',
+                status='pending',
+                message=validated_data.get('message'),
+                is_anonymous=validated_data.get('is_anonymous', False)
             )
             
-            print(f"Nextremitly response status: {response.status_code}")
-            print(f"Nextremitly response body: {response.text}")
+            logger.info(f"Created donation record: {donation.id}")
             
-            if response.status_code == 201:
-                session_data = response.json()
-                print(f"Payment session created successfully: {session_data}")
+            # Call payment microservice
+            result = payment_client.create_donation_session(
+                campaign=campaign,
+                amount=float(validated_data['amount']),
+                donor_email=validated_data.get('donor_email'),
+                donor_name=validated_data.get('donor_name'),
+                message=validated_data.get('message'),
+                is_anonymous=validated_data.get('is_anonymous', False)
+            )
+            
+            if result['success']:
+                # Update donation with session info
+                donation.payment_session_id = result['session_id']
+                donation.status = 'processing'
+                donation.save()
+                
+                logger.info(f"Payment session created successfully: {result['session_id']}")
+                
+                # increase the campaign's number of donors and current amount
+                campaign.number_of_donors += 1
+                campaign.current_amount += donation.amount
+                campaign.save()
+                
                 return Response({
                     'success': True,
-                    'session_id': session_data['session_id'],
-                    'payment_url': session_data['payment_url'],
-                    'widget_url': f"http://localhost:5173/payment/{session_data['session_id']}",
-                    'expires_at': session_data['expires_at']
+                    'donation_id': donation.id,
+                    'session_id': result['session_id'],
+                    'payment_url': result['payment_url'],
+                    'widget_url': result['widget_url'],
+                    'expires_at': result.get('expires_at')
                 }, status=status.HTTP_201_CREATED)
             else:
-                print(f"ERROR: Nextremitly returned {response.status_code}")
+                # Update donation status to failed
+                donation.status = 'failed'
+                donation.save()
+                
+                logger.error(f"Payment session creation failed: {result['error']}")
                 return Response(
-                    {'error': f'Payment service error: {response.status_code} - {response.text}'}, 
+                    {'error': result['error']},
                     status=status.HTTP_400_BAD_REQUEST
                 )
                 
-        except requests.exceptions.RequestException as e:
-            print(f"ERROR: Request exception: {str(e)}")
-            return Response(
-                {'error': 'Payment service temporarily unavailable'}, 
-                status=status.HTTP_503_SERVICE_UNAVAILABLE
-            )
         except Exception as e:
-            print(f"ERROR: Unexpected exception: {str(e)}")
+            logger.error(f"Unexpected error in create_donation: {str(e)}")
             import traceback
             traceback.print_exc()
             return Response(
-                {'error': f'An unexpected error occurred: {str(e)}'}, 
+                {'error': 'An unexpected error occurred'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    def payment_status(self, request):
+        """
+        Check payment status
+        GET /api/campaigns/payment_status/?session_id=xxx
+        """
+        session_id = request.query_params.get('session_id')
+        if not session_id:
+            return Response(
+                {'error': 'session_id is required'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # Get status from microservice
+            result = payment_client.get_payment_status(session_id)
+            
+            if result['success']:
+                return Response(result['data'], status=status.HTTP_200_OK)
+            else:
+                return Response(
+                    {'error': result['error']},
+                    status=status.HTTP_404_NOT_FOUND if 'not found' in result['error'] else status.HTTP_400_BAD_REQUEST
+                )
+                
+        except Exception as e:
+            logger.error(f"Error checking payment status: {str(e)}")
+            return Response(
+                {'error': 'Error checking payment status'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
 
 
 class FileViewSet(viewsets.ModelViewSet):
@@ -332,36 +332,82 @@ class CategoryViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 
-# Simple payment webhook handler
 @csrf_exempt
 @require_http_methods(["POST"])
 def donation_webhook(request):
     """
-    Webhook endpoint to receive payment status updates from Nextremitly
+    Webhook endpoint to receive payment status updates
     POST /api/campaigns/donation-webhook/
     """
     try:
         payload = json.loads(request.body)
+        logger.info(f"Received webhook payload: {payload}")
+        
+        # Log the webhook call
+        webhook_log = DonationWebhookLog.objects.create(
+            session_id=payload.get('session_id'),
+            payload=payload,
+            processed=False
+        )
+        
+        # Verify webhook with microservice (optional)
+        verification_result = payment_client.verify_webhook(payload)
+        if not verification_result['success']:
+            logger.warning(f"Webhook verification failed: {verification_result['error']}")
+        
+        # Process the webhook
         session_id = payload.get('session_id')
         payment_status = payload.get('status')
         metadata = payload.get('metadata', {})
         
-        logger.info(f"Received webhook for session {session_id}: {payment_status}")
+        logger.info(f"Processing webhook - Session: {session_id}, Status: {payment_status}")
         
         if payment_status == 'completed':
-            # Payment successful - update campaign
-            campaign_id = metadata.get('campaign_id')
-            amount = float(metadata.get('donation_amount', 0))
-            
-            if campaign_id and amount > 0:
-                try:
-                    campaign = Campaign.objects.get(id=campaign_id)
-                    campaign.current_amount += amount
-                    campaign.number_of_donors += 1
-                    campaign.save()
-                    logger.info(f"Updated campaign {campaign_id} with donation of {amount} MRU")
-                except Campaign.DoesNotExist:
-                    logger.error(f"Campaign {campaign_id} not found")
+            # Find the donation by session_id
+            try:
+                donation = Donation.objects.get(payment_session_id=session_id)
+                
+                # Update donation status
+                donation.status = 'completed'
+                donation.completed_at = timezone.now()
+                donation.external_transaction_id = payload.get('transaction_id')
+                donation.payment_metadata = payload
+                donation.save()
+                
+                # Update campaign totals
+                campaign = donation.campaign
+                campaign.current_amount += donation.amount
+                campaign.number_of_donors += 1
+                campaign.save()
+                
+                logger.info(f"Updated donation {donation.id} and campaign {campaign.id}")
+                
+                # Mark webhook as processed
+                webhook_log.processed = True
+                webhook_log.save()
+                
+            except Donation.DoesNotExist:
+                logger.error(f"Donation with session_id {session_id} not found")
+                webhook_log.error_message = "Donation not found"
+                webhook_log.save()
+                
+        elif payment_status in ['failed', 'cancelled']:
+            # Update donation status
+            try:
+                donation = Donation.objects.get(payment_session_id=session_id)
+                donation.status = payment_status
+                donation.payment_metadata = payload
+                donation.save()
+                
+                webhook_log.processed = True
+                webhook_log.save()
+                
+                logger.info(f"Updated donation {donation.id} status to {payment_status}")
+                
+            except Donation.DoesNotExist:
+                logger.error(f"Donation with session_id {session_id} not found")
+                webhook_log.error_message = "Donation not found"
+                webhook_log.save()
         
         return HttpResponse('OK', status=200)
         
@@ -373,37 +419,36 @@ def donation_webhook(request):
         return HttpResponse('Internal Server Error', status=500)
 
 
-# Legacy payment creation function (keeping your original)
+# Keep your existing legacy functions if needed for backward compatibility
 def create_payment(request):
+    """Legacy payment creation - now uses microservice"""
     data = json.loads(request.body)
     
-    response = requests.post(
-        'http://localhost:8000/api/payment/sessions/',
-        headers={
-            'Authorization': f'Bearer {settings.NEXTREMITLY_API_KEY}',
-            'Content-Type': 'application/json'
-        },
-        json={
-            'amount': data['amount'],
-            'currency': 'MRU',
-            'description': data.get('description', 'Payment'),
-            'customer_email': data.get('email', 'customer@example.com'),
-            'success_url': 'http://localhost:5174/success',
-            'cancel_url': 'http://localhost:5174/cancel',
-            'webhook_url': 'http://localhost:8001/api/campaigns/donation-webhook/'
-        }
-    )
+    # This would need campaign context - consider deprecating this endpoint
+    logger.warning("Legacy create_payment endpoint called - consider using create_donation instead")
     
-    return JsonResponse(response.json())
+    return JsonResponse({'error': 'Use /api/campaigns/{id}/create_donation/ instead'}, status=400)
 
-@csrf_exempt
-def webhook_handler(request):
-    data = json.loads(request.body)
-    session_id = data['session_id']
-    status = data['status']
-    
-    if status == 'completed':
-        # Handle successful payment
-        pass
-    
-    return HttpResponse('OK')
+
+@require_http_methods(["GET"])
+def payment_health_check(request):
+    """
+    Standalone payment service health check
+    GET /api/payment/health/
+    """
+    try:
+        is_healthy = payment_client.health_check()
+        
+        return JsonResponse({
+            'healthy': is_healthy,
+            'service': 'payment-microservice',
+            'timestamp': timezone.now().isoformat()
+        }, status=200 if is_healthy else 503)
+        
+    except Exception as e:
+        logger.error(f"Error checking payment service health: {str(e)}")
+        return JsonResponse({
+            'healthy': False,
+            'error': 'Could not connect to payment service',
+            'timestamp': timezone.now().isoformat()
+        }, status=503)

@@ -1,35 +1,86 @@
-// hooks/usePayment.js
 import { useState, useCallback } from 'react';
-import { campaignService } from '../api/campaignService';
+import { DonationService } from '../api/endpoints/donationAPI';
 
 export const usePayment = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [paymentSession, setPaymentSession] = useState(null);
+  const [serviceHealthy, setServiceHealthy] = useState(true);
+
+  // Check if payment service is healthy
+  const checkServiceHealth = useCallback(async () => {
+    try {
+      const health = await DonationService.checkPaymentServiceHealth();
+      setServiceHealthy(health.healthy !== false);
+      return health.healthy !== false;
+    } catch {
+      setServiceHealthy(false);
+      return false;
+    }
+  }, []);
 
   const createDonation = useCallback(async (campaignId, donationData) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await campaignService.createDonation(campaignId, donationData);
+      // Check service health first
+      const isHealthy = await checkServiceHealth();
+      if (!isHealthy) {
+        throw new Error('Payment service is currently unavailable. Please try again later.');
+      }
+
+      const response = await DonationService.createDonation(campaignId, donationData);
       
+      // Updated to match new microservice response structure
       if (response.data.success) {
-        setPaymentSession(response.data);
-        return response.data;
+        const sessionData = {
+          success: response.data.success,
+          donation_id: response.data.donation_id,
+          session_id: response.data.session_id,
+          payment_url: response.data.payment_url,
+          widget_url: response.data.widget_url,
+          expires_at: response.data.expires_at
+        };
+        
+        setPaymentSession(sessionData);
+        return sessionData;
       } else {
-        throw new Error(response.data.error || 'Failed to create donation');
+        throw new Error(response.data.error || 'Failed to create donation session');
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.error || err.message || 'Network error';
+      let errorMessage = 'Network error. Please try again.';
+      
+      if (err.message) {
+        errorMessage = err.message;
+      } else if (err.response?.data?.error) {
+        errorMessage = err.response.data.error;
+      } else if (err.response?.status === 503) {
+        errorMessage = 'Payment service is temporarily unavailable. Please try again later.';
+      } else if (err.response?.status === 500) {
+        errorMessage = 'Server error. Please try again later.';
+      }
+      
       setError(errorMessage);
       throw new Error(errorMessage);
     } finally {
       setIsLoading(false);
     }
+  }, [checkServiceHealth]);
+
+  const getPaymentStatus = useCallback(async (sessionId) => {
+    try {
+      const response = await DonationService.getPaymentStatus(sessionId);
+      return response.data;
+    } catch (err) {
+      console.error('Error getting payment status:', err);
+      return null;
+    }
   }, []);
 
   const openPaymentPopup = useCallback((paymentUrl, sessionId, onSuccess, onError) => {
+    console.log('Opening payment popup:', paymentUrl);
+    
     const popup = window.open(
       paymentUrl,
       'nextremitly-payment',
@@ -40,25 +91,33 @@ export const usePayment = () => {
       const error = 'Popup blocked. Please allow popups and try again.';
       setError(error);
       onError?.(error);
-      return;
+      return null;
     }
 
     // Monitor popup for closure
     const checkClosed = setInterval(() => {
       if (popup.closed) {
         clearInterval(checkClosed);
-        // Popup closed without explicit success/failure
+        console.log('Payment popup closed');
         onSuccess?.('closed');
       }
     }, 1000);
 
     // Listen for payment completion messages
     const messageHandler = (event) => {
-      // Verify origin for security
-      const allowedOrigins = ['http://localhost:5173', 'https://nextremitly.com'];
+      // Enhanced security - verify origin
+      const allowedOrigins = [
+        'http://localhost:5173', 
+        'https://nextremitly.com',
+        window.location.origin // Allow same origin
+      ];
+      
       if (!allowedOrigins.includes(event.origin)) {
+        console.warn('Received message from unauthorized origin:', event.origin);
         return;
       }
+
+      console.log('Received payment message:', event.data);
 
       if (event.data.type === 'payment-completed') {
         popup.close();
@@ -86,7 +145,7 @@ export const usePayment = () => {
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
-        onError?.('Payment timeout');
+        onError?.('Payment timeout - session expired');
       }
     }, 900000); // 15 minutes
 
@@ -133,9 +192,12 @@ export const usePayment = () => {
     isLoading,
     error,
     paymentSession,
+    serviceHealthy,
     createDonation,
+    getPaymentStatus,
     openPaymentPopup,
     processPayment,
+    checkServiceHealth,
     clearError,
     clearSession,
   };

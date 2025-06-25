@@ -24,6 +24,7 @@ import CreateCampaignForm from './components/ui/CreateCampaignForm';
 import CampaignDetails from './pages/Orginazation/CampaignDetails';
 import OrganizationProfile from './pages/Orginazation/Profile/OrganizationProfile';
 import DonationPaymentPage from './pages/User/DonationPaymentPage';
+import DonationSuccessPage from './components/ui/DonationSuccessPage';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
@@ -96,6 +97,10 @@ function App() {
         <Route path="/campaign/:campaignId" element={<CampaignDetail />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/campaign/:campaignId/donate/:donationAmount" element={<DonationPaymentPage />} />
+        <Route 
+          path="/campaign/:campaignId/donation/success" 
+          element={<DonationSuccessPage />} 
+        />
      </Route>
 
       {/* ORGANIZATION routes */}
