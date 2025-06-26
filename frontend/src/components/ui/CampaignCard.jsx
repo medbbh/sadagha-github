@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Target, Heart, Share2 } from 'lucide-react';
 import { addToFavorites, getFavoriteCampaigns, isFavoriteCampaign, removeFromFavorites } from '../../api/endpoints/CampaignAPI';
+import LiveStatusIndicator from './LiveStatusIndicator';
 
 export default function CampaignCard({ data, viewMode = 'grid', className = '', showActions = true }) {
   const [favorites, setFavorites] = useState([]);
@@ -21,6 +22,17 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
       maximumFractionDigits: 0
     }).format(numValue) + ' MRU';
   };
+
+  const getFacebookLiveEmbedUrl = (facebookUrl) => {
+  if (!facebookUrl) return null;
+  
+  // Extract video ID and create embed URL
+  const videoIdMatch = facebookUrl.match(/\/videos\/(\d+)/);
+  if (videoIdMatch) {
+    return `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(facebookUrl)}&width=500&show_text=false&appId=YOUR_FACEBOOK_APP_ID`;
+  }
+  return null;
+};
 
   const calculateProgress = (current, target) => {
     const currentNum = parseFloat(current) || 0;
@@ -104,6 +116,14 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
                   Featured
                 </span>
               )}
+                <LiveStatusIndicator
+                    campaignId={campaign.id}
+                    initialStatus={campaign.live_status}
+                    initialViewerCount={campaign.live_viewer_count}
+                    size="small"
+                    showViewerCount={true}
+                    autoRefresh={true}
+                  />
               {showActions && (
                 <div className="absolute top-3 right-3 flex space-x-2">
                   <button 
@@ -179,6 +199,17 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
                     View Details
                   </Link>
                 </div>
+                {campaign.has_facebook_live && campaign.live_status === 'live' && (
+                    <a
+                      href={campaign.facebook_live_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-red-600 text-white px-3 py-1.5 rounded-lg hover:bg-red-700 transition-colors text-sm font-medium flex items-center"
+                    >
+                      <Video className="w-3 h-3 mr-1" />
+                      Watch Live
+                    </a>
+                  )}
               </div>
             </div>
           </div>
@@ -206,7 +237,16 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
               <span className="bg-blue-600 text-white px-2 py-1 rounded-full text-xs font-medium">
                 Featured
               </span>
+
             )}
+              <LiveStatusIndicator
+                campaignId={campaign.id}
+                initialStatus={campaign.live_status}
+                initialViewerCount={campaign.live_viewer_count}
+                size="small"
+                showViewerCount={true}
+                autoRefresh={true}
+              />
           </div>
           
           {showActions && (

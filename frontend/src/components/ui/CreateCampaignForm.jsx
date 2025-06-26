@@ -10,10 +10,13 @@ import {
   Target,
   AlertCircle,
   CheckCircle,
-  Tag
+  Tag,
+  Video
 } from 'lucide-react';
 import { createCampaign } from '../../api/endpoints/CampaignAPI';
 import { fetchCategories } from '../../api/endpoints/CategoryAPI';
+import FacebookLiveInput from './FacebookLiveInput';
+import FacebookOAuth from './FacebookOAuth';
 
 export default function CreateCampaignForm() {
   const navigate = useNavigate();
@@ -24,7 +27,12 @@ export default function CreateCampaignForm() {
     target: '',
     category: '',  // Add category field
     files: [],
+    facebook_live_url: '',
   });
+
+  // Add this state for Facebook integration
+  const [showFacebookOAuth, setShowFacebookOAuth] = useState(false);
+  const [facebookConnected, setFacebookConnected] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
@@ -44,6 +52,33 @@ export default function CreateCampaignForm() {
     
     loadCategories();
   }, []);
+
+
+  // Add this function after your existing handleChange function
+  const handleFacebookLiveUrlChange = (url) => {
+    setFormData((prev) => ({
+      ...prev,
+      facebook_live_url: url,
+    }));
+    
+    // Show OAuth if URL is provided but not connected
+    if (url && !facebookConnected) {
+      setShowFacebookOAuth(true);
+    }
+  };
+
+  // Add this function to handle Facebook OAuth success
+  const handleFacebookOAuthSuccess = (result) => {
+    setFacebookConnected(true);
+    setShowFacebookOAuth(false);
+    console.log('Facebook connected successfully:', result);
+  };
+
+  // Add this function to handle Facebook OAuth error
+  const handleFacebookOAuthError = (error) => {
+    console.error('Facebook OAuth error:', error);
+    setError('Failed to connect Facebook account. Please try again.');
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -373,6 +408,46 @@ export default function CreateCampaignForm() {
             )}
           </div>
         </div>
+
+        {/* Facebook Live Integration */}
+<div className="bg-white rounded-lg border border-gray-200 p-6">
+  <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+    <Video className="w-5 h-5 mr-2" />
+    Facebook Live Integration (Optional)
+  </h2>
+  
+  <div className="space-y-4">
+    <FacebookLiveInput
+      value={formData.facebook_live_url}
+      onChange={handleFacebookLiveUrlChange}
+      campaignId={null} // Will be set after campaign creation
+      required={false}
+    />
+    
+    {/* Show Facebook OAuth if needed */}
+    {showFacebookOAuth && formData.facebook_live_url && (
+      <div className="mt-4">
+        <FacebookOAuth
+          campaignId={null} // Will be handled after campaign creation
+          onSuccess={handleFacebookOAuthSuccess}
+          onError={handleFacebookOAuthError}
+        />
+      </div>
+    )}
+    
+    {/* Connected Status */}
+    {facebookConnected && (
+      <div className="p-3 bg-green-50 border border-green-200 rounded-lg">
+        <div className="flex items-center">
+          <CheckCircle className="w-4 h-4 text-green-600 mr-2" />
+          <span className="text-green-800 text-sm">
+            Facebook account connected. Your live stream will be integrated with this campaign.
+          </span>
+        </div>
+      </div>
+    )}
+  </div>
+</div>
 
         {/* Form Actions */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">

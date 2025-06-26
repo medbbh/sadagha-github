@@ -16,10 +16,174 @@ import logging
 from rest_framework import parsers
 from .services.payment_service import payment_client
 from django.utils import timezone
+from .utils.facebook_live import FacebookLiveAPI, update_campaign_live_status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 logger = logging.getLogger(__name__)
 
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def facebook_oauth_url(request):
+    """
+    Get Facebook OAuth URL for user authentication
+    """
+    oauth_url = FacebookLiveAPI.get_oauth_url()
+    return Response({
+        'oauth_url': oauth_url,
+        'message': 'Redirect user to this URL to authorize Facebook access'
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def facebook_oauth_callback(request):
+    """
+    Handle Facebook OAuth callback and exchange code for token
+    """
+    auth_code = request.data.get('code')
+    campaign_id = request.data.get('campaign_id')
+    
+    if not auth_code:
+        return Response(
+            {'error': 'Authorization code is required'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    if not campaign_id:
+        return Response(
+            {'error': 'Campaign ID is required'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    # Exchange code for access token
+    access_token = FacebookLiveAPI.exchange_code_for_token(auth_code)
+    
+    if not access_token:
+        return Response(
+            {'error': 'Failed to get access token from Facebook'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    try:
+        # Get the campaign and verify ownership
+        campaign = Campaign.objects.get(id=campaign_id, owner=request.user)
+        
+        # Store the access token
+        campaign.facebook_access_token = access_token
+        campaign.save(update_fields=['facebook_access_token'])
+        
+        # If campaign already has a Facebook Live URL, update its status
+        if campaign.facebook_video_id:
+            update_campaign_live_status(campaign)
+        
+        return Response({
+            'message': 'Facebook access granted successfully',
+            'campaign_id': campaign.id,
+            'has_access_token': True
+        })
+        
+    except Campaign.DoesNotExist:
+        return Response(
+            {'error': 'Campaign not found or you do not have permission to access it'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        logger.error(f"Error in Facebook OAuth callback: {str(e)}")
+        return Response(
+            {'error': 'Internal server error'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_facebook_live_videos(request):
+    """
+    Get user's Facebook Live videos
+    """
+    access_token = request.GET.get('access_token')
+    
+    if not access_token:
+        return Response(
+            {'error': 'Access token is required'}, 
+            status=status.HTTP_400_BAD_REQUEST
+        )
+    
+    live_videos = FacebookLiveAPI.get_user_live_videos(access_token)
+    
+    return Response({
+        'live_videos': live_videos,
+        'count': len(live_videos)
+    })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def update_live_status(request, campaign_id):
+    """
+    Manually update campaign's live status
+    """
+    try:
+        campaign = Campaign.objects.get(id=campaign_id, owner=request.user)
+        
+        if not campaign.facebook_video_id or not campaign.facebook_access_token:
+            return Response(
+                {'error': 'Campaign does not have Facebook Live configured'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        success = update_campaign_live_status(campaign)
+        
+        if success:
+            # Refresh from database to get updated values
+            campaign.refresh_from_db()
+            return Response({
+                'message': 'Live status updated successfully',
+                'live_status': campaign.live_status,
+                'live_viewer_count': campaign.live_viewer_count,
+                'is_live': campaign.is_live
+            })
+        else:
+            return Response(
+                {'error': 'Failed to update live status'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
+    except Campaign.DoesNotExist:
+        return Response(
+            {'error': 'Campaign not found or you do not have permission to access it'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        logger.error(f"Error updating live status: {str(e)}")
+        return Response(
+            {'error': 'Internal server error'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+@api_view(['GET'])
+def campaign_live_status(request, campaign_id):
+    """
+    Get campaign's current live status (public endpoint)
+    """
+    try:
+        campaign = Campaign.objects.get(id=campaign_id)
+        
+        return Response({
+            'campaign_id': campaign.id,
+            'live_status': campaign.live_status,
+            'live_viewer_count': campaign.live_viewer_count,
+            'is_live': campaign.is_live,
+            'has_facebook_live': campaign.has_facebook_live,
+            'facebook_live_url': campaign.facebook_live_url
+        })
+        
+    except Campaign.DoesNotExist:
+        return Response(
+            {'error': 'Campaign not found'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    
 class CampaignViewSet(viewsets.ModelViewSet):
     # Add prefetch_related to avoid N+1 queries
     queryset = Campaign.objects.select_related('category', 'owner').prefetch_related('files').all().order_by('-created_at')
@@ -185,6 +349,37 @@ class CampaignViewSet(viewsets.ModelViewSet):
             
         return Response(response_data, status=status.HTTP_200_OK)
 
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
+    def refresh_live_status(self, request, pk=None):
+        """
+        Refresh Facebook Live status for a specific campaign
+        """
+        campaign = self.get_object()
+        
+        if campaign.owner != request.user:
+            return Response(
+                {'detail': 'You do not have permission to update this campaign.'}, 
+                status=403
+            )
+        
+        if not campaign.facebook_video_id or not campaign.facebook_access_token:
+            return Response(
+                {'error': 'Campaign does not have Facebook Live configured'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        success = update_campaign_live_status(campaign)
+        
+        if success:
+            serializer = self.get_serializer(campaign)
+            return Response(serializer.data)
+        else:
+            return Response(
+                {'error': 'Failed to refresh live status'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        
     @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny], parser_classes=[parsers.JSONParser])
     def create_donation(self, request, pk=None):
         """

@@ -112,6 +112,9 @@ export const createCampaign = async (formData) => {
     payload.append('category', formData.category);
     payload.append('description', formData.description);
     payload.append('target', formData.target);
+    if (formData.facebook_live_url) {
+      payload.append('facebook_live_url', formData.facebook_live_url);
+    }
     
     // FIXED: Handle multiple files with file_* pattern that Django expects
     formData.files.forEach((file, index) => {
@@ -152,7 +155,10 @@ export const updateCampaign = async ({ id, data }) => {
       Object.keys(data).forEach(key => {
         if (key === 'files') {
           data.files.forEach(file => payload.append('files', file));
-        } else {
+        }else if (key === 'facebook_live_url' && data[key]) {
+          payload.append('facebook_live_url', data[key]);
+        }
+        else {
           payload.append(key, data[key]);
         }
       });

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Campaign, Category, File, Donation
 from organizations.serializers import OrganizationProfileSerializer
+from .utils.facebook_live import FacebookLiveAPI
 
 import logging
 
@@ -30,7 +31,10 @@ class FileSerializer(serializers.ModelSerializer):
 class CampaignSerializer(serializers.ModelSerializer):
     files = FileSerializer(many=True, read_only=True)
     organization = OrganizationProfileSerializer(source='owner.organization_profile', read_only=True)
-
+    # Facebook Live fields
+    facebook_live_url = serializers.URLField(required=False, allow_blank=True)
+    is_live = serializers.BooleanField(read_only=True)
+    has_facebook_live = serializers.BooleanField(read_only=True)
     class Meta:
         model = Campaign
         fields = [
@@ -46,9 +50,31 @@ class CampaignSerializer(serializers.ModelSerializer):
             'files',
             'created_at',
             'updated_at',
-            'organization'
+            'organization',
+            
+            # Facebook Live fields
+            'facebook_live_url',
+            'facebook_video_id',
+            'live_status',
+            'live_viewer_count',
+            'is_live',
+            'has_facebook_live'
         ]
-        read_only_fields = ['owner', 'current_amount', 'number_of_donors', 'created_at', 'updated_at']
+        read_only_fields = ['owner', 'current_amount', 'number_of_donors', 'created_at', 'updated_at','facebook_video_id', 'live_status', 'live_viewer_count',
+            'is_live', 'has_facebook_live']
+    
+    def validate_facebook_live_url(self, value):
+        """
+        Validate Facebook Live URL and extract video ID
+        """
+        if not value:
+            return value
+        
+        is_valid, result = FacebookLiveAPI.validate_facebook_live_url(value)
+        if not is_valid:
+            raise serializers.ValidationError(f"Invalid Facebook Live URL: {result}")
+        
+        return value
     
     def update(self, instance, validated_data):
         request = self.context.get('request')
@@ -58,6 +84,22 @@ class CampaignSerializer(serializers.ModelSerializer):
         logger.info(f"Request FILES: {request.FILES}")
         logger.info(f"Request FILES keys: {list(request.FILES.keys())}")
         
+        # Handle Facebook Live URL update
+        facebook_live_url = validated_data.get('facebook_live_url')
+        if facebook_live_url != instance.facebook_live_url:
+            if facebook_live_url:
+                # Extract video ID from new URL
+                video_id = FacebookLiveAPI.extract_video_id_from_url(facebook_live_url)
+                instance.facebook_video_id = video_id
+                instance.live_status = 'none'  # Reset status, will be updated by background task
+                logger.info(f"Updated Facebook Live URL and extracted video ID: {video_id}")
+            else:
+                # Clear Facebook Live data
+                instance.facebook_video_id = None
+                instance.live_status = 'none'
+                instance.live_viewer_count = 0
+                logger.info("Cleared Facebook Live data")
+       
         # Handle file deletions first
         files_to_delete = request.data.getlist('files_to_delete', [])
         logger.info(f"Files to delete: {files_to_delete}")
@@ -136,6 +178,8 @@ class CampaignSerializer(serializers.ModelSerializer):
         instance.category = validated_data.get('category', instance.category)
         instance.target = validated_data.get('target', instance.target)
         instance.featured = validated_data.get('featured', instance.featured)
+        instance.facebook_live_url = validated_data.get('facebook_live_url', instance.facebook_live_url)
+
         instance.save()
         
         logger.info("=== CAMPAIGN UPDATE COMPLETED ===")
@@ -149,6 +193,13 @@ class CampaignSerializer(serializers.ModelSerializer):
         logger.info(f"Request DATA: {request.data}")
         logger.info(f"Request FILES: {request.FILES}")
         logger.info(f"Validated data: {validated_data}")
+
+        # Handle Facebook Live URL
+        facebook_live_url = validated_data.get('facebook_live_url')
+        if facebook_live_url:
+            video_id = FacebookLiveAPI.extract_video_id_from_url(facebook_live_url)
+            validated_data['facebook_video_id'] = video_id
+            logger.info(f"Extracted Facebook video ID: {video_id}")
         
         # Make sure 'owner' is not in validated_data to avoid conflicts
         if 'owner' in validated_data:

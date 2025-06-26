@@ -3,6 +3,8 @@ import { useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Heart, Share2, Calendar, Users, Target, DollarSign, Clock, Phone, MapPin, Globe, Building, Copy, CheckCircle } from 'lucide-react';
 import { fetchCampaignById } from '../../api/endpoints/CampaignAPI';
 import DonationForm from './DonationForm';
+import FacebookLiveEmbed from './FacebookLiveEmbed';
+import FacebookLiveEmbedSimple from './FacebookLiveEmbedSimple';
 
 export default function CampaignDetail() {
   const { campaignId } = useParams();
@@ -167,6 +169,19 @@ export default function CampaignDetail() {
                 </div>
               </div>
             </div>
+            <FacebookLiveEmbed campaign={campaign} showDonationOverlay={true} />
+
+            {campaign.facebook_live_url && (
+              <div className="mb-6">
+                <FacebookLiveEmbedSimple 
+                  campaign={campaign} 
+                  showDonationOverlay={true}
+                  className="shadow-lg"
+                />
+              </div>
+            )}
+
+
           </div>
 
           {/* Organization Information Card */}

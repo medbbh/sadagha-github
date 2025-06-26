@@ -25,6 +25,7 @@ import CampaignDetails from './pages/Orginazation/CampaignDetails';
 import OrganizationProfile from './pages/Orginazation/Profile/OrganizationProfile';
 import DonationPaymentPage from './pages/User/DonationPaymentPage';
 import DonationSuccessPage from './components/ui/DonationSuccessPage';
+import FacebookOAuthCallback from './pages/FacebookOAuthCallback';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
@@ -97,10 +98,10 @@ function App() {
         <Route path="/campaign/:campaignId" element={<CampaignDetail />} />
         <Route path="/categories" element={<Categories />} />
         <Route path="/campaign/:campaignId/donate/:donationAmount" element={<DonationPaymentPage />} />
-        <Route 
-          path="/campaign/:campaignId/donation/success" 
-          element={<DonationSuccessPage />} 
-        />
+        <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
+        <Route path="/auth/facebook/callback" element={<FacebookOAuthCallback />} />
+
+
      </Route>
 
       {/* ORGANIZATION routes */}

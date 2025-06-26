@@ -11,6 +11,11 @@ class Category(models.Model):
 
 
 class Campaign(models.Model):
+    LIVE_STATUS_CHOICES = [
+        ('none', 'No Live Stream'),
+        ('live', 'Currently Live'),
+        ('ended', 'Stream Ended'),
+    ]
     name= models.CharField(max_length=255)
     description= models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -19,8 +24,24 @@ class Campaign(models.Model):
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     number_of_donors = models.IntegerField(default=0)
     featured = models.BooleanField(default=False)
+
+    # Facebook Live integration fields
+    facebook_live_url = models.URLField(blank=True, null=True, help_text="Facebook Live stream URL")
+    facebook_video_id = models.CharField(max_length=255, blank=True, null=True, help_text="Extracted Facebook video ID")
+    live_status = models.CharField(max_length=10, choices=LIVE_STATUS_CHOICES, default='none')
+    facebook_access_token = models.TextField(blank=True, null=True, help_text="Facebook access token for API calls")
+    live_viewer_count = models.IntegerField(default=0, help_text="Current live viewer count")
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def is_live(self):
+        return self.live_status == 'live'
+    
+    @property
+    def has_facebook_live(self):
+        return bool(self.facebook_live_url and self.facebook_video_id)
 
 class File(models.Model):
     name = models.CharField(max_length=255)

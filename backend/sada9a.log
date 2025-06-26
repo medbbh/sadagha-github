@@ -219,3 +219,39 @@ INFO 2025-06-25 12:56:46,277 views 5240 11600 Created donation record: 22
 INFO 2025-06-25 12:56:46,278 payment_service 5240 11600 Creating donation session for campaign 4, amount: 25000.0
 INFO 2025-06-25 12:56:56,493 payment_service 5240 11600 Donation session created successfully: 53056f6a-bfc1-4e66-92f1-eeb5c27588fc
 INFO 2025-06-25 12:56:56,617 views 5240 11600 Payment session created successfully: 53056f6a-bfc1-4e66-92f1-eeb5c27588fc
+INFO 2025-06-25 16:17:58,373 views 5240 12348 === CREATE DONATION REQUEST ===
+INFO 2025-06-25 16:17:58,375 views 5240 12348 Campaign ID: 4
+INFO 2025-06-25 16:17:58,377 views 5240 12348 Request data: {'amount': 500, 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:17:58,782 views 5240 12348 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-06-25 16:17:58,786 views 5240 12348 Validated data: {'amount': Decimal('500.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:18:01,036 views 5240 12348 Created donation record: 23
+INFO 2025-06-25 16:18:01,037 payment_service 5240 12348 Creating donation session for campaign 4, amount: 500.0
+ERROR 2025-06-25 16:18:10,339 payment_service 5240 12348 Microservice returned error: NextRemitly error: 401
+ERROR 2025-06-25 16:18:10,437 views 5240 12348 Payment session creation failed: NextRemitly error: 401
+INFO 2025-06-25 16:18:52,806 views 5240 24200 === CREATE DONATION REQUEST ===
+INFO 2025-06-25 16:18:52,808 views 5240 24200 Campaign ID: 4
+INFO 2025-06-25 16:18:52,809 views 5240 24200 Request data: {'amount': 500, 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:18:52,991 views 5240 24200 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-06-25 16:18:52,992 views 5240 24200 Validated data: {'amount': Decimal('500.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:18:55,153 views 5240 24200 Created donation record: 24
+INFO 2025-06-25 16:18:55,154 payment_service 5240 24200 Creating donation session for campaign 4, amount: 500.0
+INFO 2025-06-25 16:19:04,354 payment_service 5240 24200 Donation session created successfully: 11c7bf5e-208c-4c18-b5ce-a3deae34a731
+INFO 2025-06-25 16:19:04,443 views 5240 24200 Payment session created successfully: 11c7bf5e-208c-4c18-b5ce-a3deae34a731
+INFO 2025-06-25 16:19:22,183 views 5240 24200 === CREATE DONATION REQUEST ===
+INFO 2025-06-25 16:19:22,184 views 5240 24200 Campaign ID: 4
+INFO 2025-06-25 16:19:22,186 views 5240 24200 Request data: {'amount': 500, 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:19:22,380 views 5240 24200 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-06-25 16:19:22,382 views 5240 24200 Validated data: {'amount': Decimal('500.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': 'mdvbdsiuv', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:19:24,602 views 5240 24200 Created donation record: 25
+INFO 2025-06-25 16:19:24,604 payment_service 5240 24200 Creating donation session for campaign 4, amount: 500.0
+INFO 2025-06-25 16:19:33,075 views 5240 10172 === CREATE DONATION REQUEST ===
+INFO 2025-06-25 16:19:33,078 views 5240 10172 Campaign ID: 4
+INFO 2025-06-25 16:19:33,079 views 5240 10172 Request data: {'amount': 250, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:19:33,226 views 5240 10172 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-06-25 16:19:33,226 views 5240 10172 Validated data: {'amount': Decimal('250.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-06-25 16:19:33,986 payment_service 5240 24200 Donation session created successfully: 77f728ac-9e7b-48f3-9852-831471bb3bf2
+INFO 2025-06-25 16:19:34,078 views 5240 24200 Payment session created successfully: 77f728ac-9e7b-48f3-9852-831471bb3bf2
+INFO 2025-06-25 16:19:35,458 views 5240 10172 Created donation record: 26
+INFO 2025-06-25 16:19:35,459 payment_service 5240 10172 Creating donation session for campaign 4, amount: 250.0
+INFO 2025-06-25 16:19:45,193 payment_service 5240 10172 Donation session created successfully: 8d85711e-17a1-4ecc-9859-0eab8a415856
+INFO 2025-06-25 16:19:45,310 views 5240 10172 Payment session created successfully: 8d85711e-17a1-4ecc-9859-0eab8a415856
