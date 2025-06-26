@@ -210,3 +210,12 @@ INFO 2025-06-25 12:55:14,329 views 5240 5056 Created donation record: 21
 INFO 2025-06-25 12:55:14,329 payment_service 5240 5056 Creating donation session for campaign 4, amount: 25.0
 INFO 2025-06-25 12:55:24,513 payment_service 5240 5056 Donation session created successfully: 8226e98a-30e4-490d-945b-2eb906e651c9
 INFO 2025-06-25 12:55:24,659 views 5240 5056 Payment session created successfully: 8226e98a-30e4-490d-945b-2eb906e651c9
+INFO 2025-06-25 12:56:43,715 views 5240 11600 === CREATE DONATION REQUEST ===
+INFO 2025-06-25 12:56:43,716 views 5240 11600 Campaign ID: 4
+INFO 2025-06-25 12:56:43,718 views 5240 11600 Request data: {'amount': 25000, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-06-25 12:56:44,003 views 5240 11600 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-06-25 12:56:44,006 views 5240 11600 Validated data: {'amount': Decimal('25000.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-06-25 12:56:46,277 views 5240 11600 Created donation record: 22
+INFO 2025-06-25 12:56:46,278 payment_service 5240 11600 Creating donation session for campaign 4, amount: 25000.0
+INFO 2025-06-25 12:56:56,493 payment_service 5240 11600 Donation session created successfully: 53056f6a-bfc1-4e66-92f1-eeb5c27588fc
+INFO 2025-06-25 12:56:56,617 views 5240 11600 Payment session created successfully: 53056f6a-bfc1-4e66-92f1-eeb5c27588fc
