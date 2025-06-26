@@ -25,13 +25,13 @@ const Login = () => {
   };
 
   const handleGoogleLogin = async () => {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${window.location.origin}/confirm-role`  // This matters!
-        }
-      });
-      if (error) setError(error.message);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/`  // Changed: redirect to home, let RoleBasedRedirect handle the logic
+      }
+    });
+    if (error) setError(error.message);
   };
 
   return (
@@ -73,7 +73,10 @@ const Login = () => {
 
       <button
         onClick={() => navigate('/signup')}
-        className="bg-gray-500 text-white px-4 py-2 w-full" >Register</button>
+        className="bg-gray-500 text-white px-4 py-2 w-full"
+      >
+        Register
+      </button>
 
       <p className="text-sm mt-2">
         Forgot your password?{' '}
@@ -81,7 +84,6 @@ const Login = () => {
           Reset it here
         </a>
       </p>
-
 
       {error && <p className="text-red-600 mt-4">{error}</p>}
     </div>

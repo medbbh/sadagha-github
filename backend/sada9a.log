@@ -255,3 +255,28 @@ INFO 2025-06-25 16:19:35,458 views 5240 10172 Created donation record: 26
 INFO 2025-06-25 16:19:35,459 payment_service 5240 10172 Creating donation session for campaign 4, amount: 250.0
 INFO 2025-06-25 16:19:45,193 payment_service 5240 10172 Donation session created successfully: 8d85711e-17a1-4ecc-9859-0eab8a415856
 INFO 2025-06-25 16:19:45,310 views 5240 10172 Payment session created successfully: 8d85711e-17a1-4ecc-9859-0eab8a415856
+INFO 2025-06-26 09:53:10,575 serializers 25188 16160 === CAMPAIGN CREATION STARTED ===
+INFO 2025-06-26 09:53:10,576 serializers 25188 16160 Request DATA: <QueryDict: {'name': ['jbubui'], 'category': ['2'], 'description': ['k bui'], 'target': ['787.98'], 'facebook_live_url': ['https://www.facebook.com/med.bbh01/videos/1433794851092790/'], 'file_0': [<InMemoryUploadedFile: Screenshot 2025-06-26 095002.png (image/png)>]}>
+INFO 2025-06-26 09:53:10,578 serializers 25188 16160 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: Screenshot 2025-06-26 095002.png (image/png)>]}>
+INFO 2025-06-26 09:53:10,579 serializers 25188 16160 Validated data: {'name': 'jbubui', 'description': 'k bui', 'category': <Category: Category object (2)>, 'target': Decimal('787.98'), 'featured': False, 'facebook_live_url': 'https://www.facebook.com/med.bbh01/videos/1433794851092790/'}
+INFO 2025-06-26 09:53:10,579 serializers 25188 16160 Extracted Facebook video ID: 1433794851092790
+INFO 2025-06-26 09:53:10,580 serializers 25188 16160 Creating campaign...
+INFO 2025-06-26 09:53:10,665 serializers 25188 16160 Campaign created: ID=19, Name=jbubui
+INFO 2025-06-26 09:53:10,666 serializers 25188 16160 Found 1 files to process: ['file_0']
+INFO 2025-06-26 09:53:13,894 supabase_storage 25188 16160 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-06-26 09:53:13,895 serializers 25188 16160 Processing file file_0: Screenshot 2025-06-26 095002.png, size=301557, content_type=image/png
+INFO 2025-06-26 09:53:13,896 serializers 25188 16160 Uploading file Screenshot 2025-06-26 095002.png to Supabase...
+INFO 2025-06-26 09:53:15,396 supabase_storage 25188 16160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-06-26 09:53:15,397 supabase_storage 25188 16160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-06-26 09:53:15,398 supabase_storage 25188 16160 Starting upload for file: Screenshot 2025-06-26 095002.png to campaign_19
+INFO 2025-06-26 09:53:15,399 supabase_storage 25188 16160 Generated path: campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png
+INFO 2025-06-26 09:53:15,400 supabase_storage 25188 16160 Read file content, size: 301557 bytes
+INFO 2025-06-26 09:53:15,580 supabase_storage 25188 16160 Available buckets: []
+WARNING 2025-06-26 09:53:15,582 supabase_storage 25188 16160 Bucket 'campaign' not found in Supabase
+INFO 2025-06-26 09:53:15,583 supabase_storage 25188 16160 Uploading file to bucket: campaign, path: campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png
+INFO 2025-06-26 09:53:16,404 supabase_storage 25188 16160 Upload response: UploadResponse(path='campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png', full_path='campaign/campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png', fullPath='campaign/campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png')
+INFO 2025-06-26 09:53:16,405 supabase_storage 25188 16160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png?
+INFO 2025-06-26 09:53:16,405 serializers 25188 16160 SUCCESS: Uploaded Screenshot 2025-06-26 095002.png to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_19/c23f52d3-0125-4149-ae36-5656427fd82b.png?
+INFO 2025-06-26 09:53:16,406 serializers 25188 16160 Creating File DB record...
+INFO 2025-06-26 09:53:16,507 serializers 25188 16160 File record created with ID: 12
+INFO 2025-06-26 09:53:16,508 serializers 25188 16160 === CAMPAIGN CREATION COMPLETED ===

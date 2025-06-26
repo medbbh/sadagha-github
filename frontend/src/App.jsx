@@ -29,13 +29,15 @@ import FacebookOAuthCallback from './pages/FacebookOAuthCallback';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
-  const { user, loading, getUserRole } = useAuth();
+  const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
   
   console.log('RoleBasedRedirect state:', { 
     user: !!user, 
     loading,
     userEmail: user?.email,
-    role: getUserRole()
+    role: getUserRole(),
+    isFullyAuthenticated: isFullyAuthenticated(),
+    needsRegistration: needsRegistration()
   });
   
   if (loading) {
@@ -46,6 +48,16 @@ const RoleBasedRedirect = () => {
   if (!user) {
     console.log('No user, redirecting to login');
     return <Navigate to="/login" replace />;
+  }
+  
+  if (needsRegistration()) {
+    console.log('User needs to complete registration');
+    return <Navigate to="/confirm-role" replace />;
+  }
+  
+  if (!isFullyAuthenticated()) {
+    console.log('User not fully authenticated, showing loading');
+    return <Loading />;
   }
   
   const role = getUserRole();

@@ -1,6 +1,6 @@
 # backend
 backend/.env
-
+backend/sada9a.log
 
 # nextremitly payment service
 nextremitly_payment_service/.env
