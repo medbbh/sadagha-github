@@ -2,6 +2,7 @@
 import { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { supabase } from '../supabaseClient';
 import { injectAuth } from '../api/axiosConfig';
+import axios from 'axios';
 
 export const AuthContext = createContext();
 
@@ -166,14 +167,16 @@ export const AuthProvider = ({ children }) => {
       console.log('📡 Making register request to Django...');
       
       // First register in Django
-      const response = await fetch(`${import.meta.env.VITE_APP_API_BASE_URL}/auth/register/`, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ role }),
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/auth/register/`,
+        { role },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
