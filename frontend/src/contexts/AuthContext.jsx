@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }) => {
     let mounted = true;
 
     const checkSession = async () => {
-      console.log('🔍 Checking initial session...');
       try {
         const { data: { session }, error } = await supabase.auth.getSession();
         
@@ -66,11 +65,9 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (session?.user && mounted) {
-          console.log('✅ Supabase user session found:', session.user.email);
           console.log('📋 User metadata:', session.user.user_metadata);
           setUser(session.user);
         } else if (mounted) {
-          console.log('❌ No Supabase session');
           setUser(null);
         }
         
@@ -78,7 +75,6 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         }
       } catch (error) {
-        console.error('❌ Session check error:', error);
         if (mounted) {
           setUser(null);
           setLoading(false);
@@ -89,10 +85,8 @@ export const AuthProvider = ({ children }) => {
     checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      console.log('🔄 Auth state changed:', event, session?.user?.email);
       
       if (session?.user && mounted) {
-        console.log('📋 Setting user from auth change:', session.user.user_metadata);
         setUser(session.user);
       } else if (mounted) {
         setUser(null);
@@ -112,7 +106,6 @@ export const AuthProvider = ({ children }) => {
   // Helper function to get user role - simplified
   const getUserRole = () => {
     const role = user?.user_metadata?.role;
-    console.log('🎭 Getting user role:', role, 'from user:', user?.email);
     return role;
   };
 
@@ -130,13 +123,6 @@ export const AuthProvider = ({ children }) => {
     const hasRole = !!getUserRole();
     const result = hasUser && hasRole;
     
-    console.log('🔐 Is fully authenticated:', result, {
-      hasUser,
-      hasRole,
-      userEmail: user?.email,
-      role: getUserRole()
-    });
-    
     return result;
   };
 
@@ -146,25 +132,14 @@ export const AuthProvider = ({ children }) => {
     const hasRole = !!getUserRole();
     const result = hasUser && !hasRole;
     
-    console.log('📋 Needs registration:', result, {
-      hasUser,
-      hasRole,
-      userEmail: user?.email,
-      role: getUserRole()
-    });
-    
     return result;
   };
 
   // Register user in Django
-  const registerDjangoUser = async (role) => {
-    console.log('📝 Registering Django user with role:', role);
-    
+  const registerDjangoUser = async (role) => {    
     try {
       const token = await getToken();
       if (!token) throw new Error('No authentication token');
-
-      console.log('📡 Making register request to Django...');
       
       // First register in Django
       const response = await axios.post(
@@ -184,10 +159,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log('✅ Django registration response:', data);
-
       // Then update user metadata in Supabase
-      console.log('📡 Updating Supabase metadata...');
       const { error } = await supabase.auth.updateUser({
         data: { role: role }
       });
@@ -197,7 +169,6 @@ export const AuthProvider = ({ children }) => {
         // Don't throw here since Django registration succeeded
       }
       
-      console.log('✅ Registration completed successfully');
       return data;
     } catch (error) {
       console.error('❌ Registration error:', error);
@@ -225,15 +196,6 @@ export const AuthProvider = ({ children }) => {
     } : null,
     profileLoading: false,
   };
-
-  console.log('🎯 AuthContext state:', {
-    hasUser: !!user,
-    userEmail: user?.email,
-    role: getUserRole(),
-    loading,
-    isFullyAuthenticated: isFullyAuthenticated(),
-    needsRegistration: needsRegistration()
-  });
 
   return (
     <AuthContext.Provider value={value}>

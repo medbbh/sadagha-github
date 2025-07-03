@@ -143,6 +143,12 @@ export default function NavBar() {
                 Explore
               </a>
               <a 
+                href="/volunteer" 
+                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
+              >
+                Volunteer
+              </a>
+              <a 
                 href="/start-campaign" 
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
               >
