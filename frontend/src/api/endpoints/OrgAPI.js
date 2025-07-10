@@ -220,7 +220,7 @@ export const fetchWalletProviders = async () => {
   }
 };
 
-// Dashboard Statistics
+// UPDATED: Dashboard Statistics - Correct endpoint URL
 export const fetchOrgStatistics = async (period = '30d') => {
   try {
     const response = await api.get('/org/dashboard/statistics/', {
@@ -232,12 +232,13 @@ export const fetchOrgStatistics = async (period = '30d') => {
     throw {
       message: error.message || 'Failed to fetch organization statistics',
       details: error.details,
+      status: error.response?.status,
       ...error
     };
   }
 };
 
-// Dashboard Payment Summary
+// UPDATED: Dashboard Payment Summary - Correct endpoint URL
 export const fetchPaymentSummary = async () => {
   try {
     const response = await api.get('/org/dashboard/payment_summary/');
@@ -247,12 +248,13 @@ export const fetchPaymentSummary = async () => {
     throw {
       message: error.message || 'Failed to fetch payment summary',
       details: error.details,
+      status: error.response?.status,
       ...error
     };
   }
 };
 
-// Dashboard Overview Data
+// UPDATED: Dashboard Overview Data - Correct endpoint URL
 export const fetchDashboardOverview = async () => {
   try {
     const response = await api.get('/org/dashboard/overview/');
@@ -262,6 +264,7 @@ export const fetchDashboardOverview = async () => {
     throw {
       message: error.message || 'Failed to fetch dashboard overview',
       details: error.details,
+      status: error.response?.status,
       ...error
     };
   }
@@ -275,7 +278,7 @@ export const fetchOrgAnalytics = async (campaignId = null, startDate = null, end
     if (startDate) params.start_date = startDate;
     if (endDate) params.end_date = endDate;
 
-    const response = await api.get('/org/dashboard/analytics/', { params });
+    const response = await api.get('/org/analytics/', { params });
     return response;
   } catch (error) {
     console.error('Failed to fetch organization analytics:', error);
@@ -387,7 +390,7 @@ export const formatPhoneNumber = (phoneNumber) => {
   return phoneNumber;
 };
 
-// Combined Dashboard Data Fetch (for efficiency)
+// UPDATED: Combined Dashboard Data Fetch - Using correct endpoints
 export const fetchFullDashboardData = async (period = '30d') => {
   try {
     const [
@@ -398,7 +401,7 @@ export const fetchFullDashboardData = async (period = '30d') => {
       manualPayments,
       nextpayPayments,
       walletProviders
-    ] = await Promise.all([
+    ] = await Promise.allSettled([
       fetchOrgProfile(),
       fetchOrgStatistics(period),
       fetchDashboardOverview(),
@@ -408,15 +411,32 @@ export const fetchFullDashboardData = async (period = '30d') => {
       fetchWalletProviders()
     ]);
 
-    return {
-      profile: profileData,
-      statistics: statisticsData,
-      overview: overviewData,
-      paymentSummary: paymentSummary,
-      manualPayments: manualPayments,
-      nextpayPayments: nextpayPayments,
-      walletProviders: walletProviders
+    // Process results, handling any failures gracefully
+    const result = {
+      profile: profileData.status === 'fulfilled' ? profileData.value : null,
+      statistics: statisticsData.status === 'fulfilled' ? statisticsData.value : null,
+      overview: overviewData.status === 'fulfilled' ? overviewData.value : null,
+      paymentSummary: paymentSummary.status === 'fulfilled' ? paymentSummary.value : null,
+      manualPayments: manualPayments.status === 'fulfilled' ? manualPayments.value : null,
+      nextpayPayments: nextpayPayments.status === 'fulfilled' ? nextpayPayments.value : null,
+      walletProviders: walletProviders.status === 'fulfilled' ? walletProviders.value : null,
+      errors: []
     };
+
+    // Collect any errors
+    const promises = [profileData, statisticsData, overviewData, paymentSummary, manualPayments, nextpayPayments, walletProviders];
+    const names = ['profile', 'statistics', 'overview', 'paymentSummary', 'manualPayments', 'nextpayPayments', 'walletProviders'];
+    
+    promises.forEach((promise, index) => {
+      if (promise.status === 'rejected') {
+        result.errors.push({
+          endpoint: names[index],
+          error: promise.reason
+        });
+      }
+    });
+
+    return result;
   } catch (error) {
     console.error('Failed to fetch full dashboard data:', error);
     throw {
@@ -508,7 +528,7 @@ export const withErrorHandling = (apiCall) => {
       // Re-throw with consistent error format
       throw {
         message: error.message || 'An unexpected error occurred',
-        status: error.status || 500,
+        status: error.status || error.response?.status || 500,
         details: error.details || null,
         timestamp: new Date().toISOString()
       };
@@ -541,7 +561,7 @@ export default {
   // Wallet Providers
   fetchWalletProviders: withErrorHandling(fetchWalletProviders),
   
-  // Dashboard Data
+  // Dashboard Data - UPDATED ENDPOINTS
   fetchOrgStatistics: withErrorHandling(fetchOrgStatistics),
   fetchPaymentSummary: withErrorHandling(fetchPaymentSummary),
   fetchDashboardOverview: withErrorHandling(fetchDashboardOverview),

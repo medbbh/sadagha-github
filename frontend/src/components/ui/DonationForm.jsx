@@ -3,6 +3,7 @@ import { DollarSign, CreditCard, User, Mail, MessageSquare, CheckCircle, AlertCi
 import api from '../../api/axiosConfig';
 import DonationService from '../../api/endpoints/donationAPI';
 import { useNavigate } from 'react-router-dom';
+import CelebrationAnimation from './CelebrationOverlay';
 
 export default function DonationForm({ 
   campaignId: propCampaignId, 
@@ -12,6 +13,7 @@ export default function DonationForm({
   progress,
   onDonationSuccess 
 }) {
+
   // Try to get campaign ID from URL if not provided as prop
   const urlCampaignId = window.location.pathname.split('/')[2];
   const campaignId = propCampaignId || urlCampaignId;
@@ -24,6 +26,7 @@ export default function DonationForm({
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showCelebration, setShowCelebration] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
 
@@ -41,99 +44,101 @@ export default function DonationForm({
     return null;
   };
 
+  const handleDonate = async () => {
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
 
-const handleDonate = async () => {
-  const validationError = validateForm();
-  if (validationError) {
-    setError(validationError);
-    return;
-  }
+    setIsLoading(true);
+    setError(null);
+    setShowPaymentOptions(false);
 
-  setIsLoading(true);
-  setError(null);
-  setShowPaymentOptions(false);
+    // For testing purposes, show celebration immediately
+    // Remove this setTimeout and uncomment the actual payment logic when ready
+    setTimeout(() => {
+      setIsLoading(false);
+      setShowCelebration(true);
+    }, 1000);
 
-  const donationData = {
-    amount: parseFloat(donationAmount),
-    donor_email: donorEmail || 'anonymous@sada9a.com',
-    donor_name: donorName || '',
-    message: message || '',
-    is_anonymous: isAnonymous
-  };
+    /* 
+    // UNCOMMENT THIS WHEN PAYMENT IS READY
+    const donationData = {
+      amount: parseFloat(donationAmount),
+      donor_email: donorEmail || 'anonymous@sada9a.com',
+      donor_name: donorName || '',
+      message: message || '',
+      is_anonymous: isAnonymous
+    };
 
-  console.log('Creating donation for campaign:', campaignId, 'with data:', donationData);
+    console.log('Creating donation for campaign:', campaignId, 'with data:', donationData);
 
-  try {
-    // Your axios returns data directly, not response.data
-    const response = await DonationService.createDonation(campaignId, donationData);
-    
-    console.log('Full response object:', response);
-    
-    // Since your axios interceptor returns response.data directly,
-    // the actual data is in response.data (which we wrapped in the service)
-    const data = response.data;
-    console.log('Donation response data:', data);
-
-    if (data && data.success) {
-      console.log('Donation session created successfully');
+    try {
+      const response = await DonationService.createDonation(campaignId, donationData);
       
-      // Validate required fields
-      if (!data.widget_url || !data.session_id) {
-        throw new Error('Invalid payment session data received');
+      console.log('Full response object:', response);
+      
+      const data = response.data;
+      console.log('Donation response data:', data);
+
+      if (data && data.success) {
+        console.log('Donation session created successfully');
+        
+        if (!data.widget_url || !data.session_id) {
+          throw new Error('Invalid payment session data received');
+        }
+        
+        setPaymentUrl(data.widget_url);
+        
+        const donationInfo = {
+          donation_id: data.donation_id,
+          session_id: data.session_id,
+          amount: donationAmount
+        };
+        
+        const popupWorked = tryOpenPopup(data.widget_url, data.session_id, donationInfo);
+        if (!popupWorked) {
+          setShowPaymentOptions(true);
+        }
+      } else {
+        const errorMessage = data?.error || 'Failed to create donation session';
+        console.error('Donation creation failed:', errorMessage);
+        setError(errorMessage);
       }
       
-      setPaymentUrl(data.widget_url);
+    } catch (err) {
+      console.error('Donation error:', err);
       
-      const donationInfo = {
-        donation_id: data.donation_id,
-        session_id: data.session_id,
-        amount: donationAmount
-      };
+      let errorMessage = 'An unexpected error occurred';
       
-      // Try popup first, fallback to options if blocked
-      const popupWorked = tryOpenPopup(data.widget_url, data.session_id, donationInfo);
-      if (!popupWorked) {
-        setShowPaymentOptions(true);
+      if (err.message) {
+        errorMessage = err.message;
+      } else if (err.status) {
+        switch (err.status) {
+          case 400:
+            errorMessage = 'Invalid request. Please check your input.';
+            break;
+          case 404:
+            errorMessage = 'Campaign not found.';
+            break;
+          case 503:
+            errorMessage = 'Payment service is temporarily unavailable. Please try again later.';
+            break;
+          case 500:
+            errorMessage = 'Server error. Please try again later.';
+            break;
+          default:
+            errorMessage = `Server error (${err.status}). Please try again.`;
+        }
       }
-    } else {
-      // Handle unsuccessful response
-      const errorMessage = data?.error || 'Failed to create donation session';
-      console.error('Donation creation failed:', errorMessage);
+      
       setError(errorMessage);
+    } finally {
+      setIsLoading(false);
     }
-    
-  } catch (err) {
-    console.error('Donation error:', err);
-    
-    // Your axios error interceptor provides structured errors
-    let errorMessage = 'An unexpected error occurred';
-    
-    if (err.message) {
-      errorMessage = err.message;
-    } else if (err.status) {
-      switch (err.status) {
-        case 400:
-          errorMessage = 'Invalid request. Please check your input.';
-          break;
-        case 404:
-          errorMessage = 'Campaign not found.';
-          break;
-        case 503:
-          errorMessage = 'Payment service is temporarily unavailable. Please try again later.';
-          break;
-        case 500:
-          errorMessage = 'Server error. Please try again later.';
-          break;
-        default:
-          errorMessage = `Server error (${err.status}). Please try again.`;
-      }
-    }
-    
-    setError(errorMessage);
-  } finally {
-    setIsLoading(false);
-  }
-};
+    */
+  };
 
   const tryOpenPopup = (paymentUrl, sessionId, donationInfo) => {
     try {
@@ -145,13 +150,11 @@ const handleDonate = async () => {
         'width=600,height=800,scrollbars=yes,resizable=yes,centerscreen=yes'
       );
 
-      // Check if popup was blocked
       if (!popup || popup.closed || typeof popup.closed === 'undefined') {
         console.log('Popup was blocked');
         return false;
       }
 
-      // Popup opened successfully
       setupPopupHandlers(popup, sessionId, donationInfo);
       return true;
       
@@ -161,17 +164,14 @@ const handleDonate = async () => {
     }
   };
 
-  // Updated setupPopupHandlers function
   const setupPopupHandlers = (popup, sessionId, donationInfo) => {
     let isPaymentCompleted = false;
 
-    // Monitor popup for completion
     const checkClosed = setInterval(() => {
       if (popup.closed) {
         clearInterval(checkClosed);
         console.log('Payment popup closed');
         
-        // If payment wasn't explicitly completed, check status
         if (!isPaymentCompleted) {
           setTimeout(() => {
             checkPaymentStatusAndRedirect(sessionId, donationInfo);
@@ -180,11 +180,9 @@ const handleDonate = async () => {
       }
     }, 1000);
 
-    // Listen for payment completion messages from NextRemitly
     const messageHandler = (event) => {
       console.log('Received message from popup:', event.data);
       
-      // Verify origin for security
       const allowedOrigins = [
         'http://localhost:5173', 
         'https://nextremitly.com',
@@ -199,14 +197,12 @@ const handleDonate = async () => {
       if (event.data.type === 'payment-completed' || event.data.type === 'payment-success') {
         isPaymentCompleted = true;
         
-        // CLOSE THE POPUP FIRST
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
         
         console.log('Payment completed via message - popup closed, redirecting main tab');
         
-        // Handle success in the MAIN TAB (this component's window)
         handlePaymentSuccess(donationInfo);
         
       } else if (event.data.type === 'payment-failed') {
@@ -227,7 +223,6 @@ const handleDonate = async () => {
 
     window.addEventListener('message', messageHandler);
 
-    // Clean up after 15 minutes
     setTimeout(() => {
       if (!popup.closed) {
         popup.close();
@@ -238,7 +233,6 @@ const handleDonate = async () => {
     }, 900000);
   };
 
-  // New function to check payment status and redirect
   const checkPaymentStatusAndRedirect = async (sessionId, donationInfo) => {
     try {
       console.log('Checking payment status for session:', sessionId);
@@ -255,7 +249,6 @@ const handleDonate = async () => {
         } else if (statusData.status === 'cancelled') {
           setError('Payment was cancelled.');
         } else {
-          // Payment might still be processing, show a message
           console.log('Payment status unclear, assuming success and redirecting');
           handlePaymentSuccess(donationInfo);
         }
@@ -265,21 +258,20 @@ const handleDonate = async () => {
       }
     } catch (err) {
       console.log('Error checking payment status:', err);
-      // Assume success if we can't verify
       handlePaymentSuccess(donationInfo);
     }
   };
 
-  // Updated handlePaymentSuccess function with redirect in main tab
   const handlePaymentSuccess = (donationInfo) => {
-    console.log('Payment successful, redirecting in main tab...');
+    console.log('Payment successful, showing celebration...');
     
-    // Clear any errors and loading states
     setError(null);
     setIsLoading(false);
     setShowPaymentOptions(false);
     
-    // Call the success callback if provided
+    // Show celebration
+    setShowCelebration(true);
+    
     onDonationSuccess?.({
       donation_id: donationInfo.donation_id,
       amount: donationAmount,
@@ -287,16 +279,23 @@ const handleDonate = async () => {
       message: isAnonymous ? null : message
     });
     
-    // Reset form
     resetForm();
-    
-    // Redirect to success page in the MAIN TAB (not popup)
-    redirectToSuccessPage(donationInfo);
   };
 
-  // New function to handle success page redirect in main tab
+  const handleCelebrationClose = () => {
+    setShowCelebration(false);
+    
+    // Redirect after celebration closes
+    // setTimeout(() => {
+    //   redirectToSuccessPage({
+    //     donation_id: 'test-donation-id',
+    //     session_id: 'test-session-id',
+    //     amount: donationAmount
+    //   });
+    // }, 500);
+  };
+
   const redirectToSuccessPage = (donationInfo) => {
-    // Option 1: Using React Router (if you're using it) - redirects in main tab
     if (typeof navigate !== 'undefined') {
       navigate(`/campaign/${campaignId}/donation/success`, {
         state: {
@@ -309,37 +308,31 @@ const handleDonate = async () => {
       return;
     }
     
-    // Option 2: Using window.location in main window (not popup)
     const successUrl = `/campaign/${campaignId}/donation/success?` + 
       `donation_id=${donationInfo.donation_id}&` +
       `amount=${donationAmount}&` +
       `donor_name=${encodeURIComponent(isAnonymous ? 'Anonymous' : donorName || 'Anonymous')}`;
     
-    // This redirects the main tab/window, not the popup
     window.location.href = successUrl;
   };
 
-  // Updated openInNewTab function
   const openInNewTab = () => {
     if (paymentUrl) {
       const newTab = window.open(paymentUrl, '_blank');
       setShowPaymentOptions(false);
       
-      // Since we can't track the new tab, show a message and redirect after delay in MAIN TAB
       setShowSuccessMessage(true);
       
       setTimeout(() => {
         setShowSuccessMessage(false);
-        // Redirect to success page in MAIN TAB (not the new tab)
         redirectToSuccessPage({
-          donation_id: 'unknown', // We don't know the donation ID in this case
+          donation_id: 'unknown',
           session_id: 'unknown',
           amount: donationAmount
         });
-      }, 3000); // Give user time to see the success message
+      }, 3000);
     }
   };
-
 
   const resetForm = () => {
     setDonationAmount(25);
@@ -350,18 +343,6 @@ const handleDonate = async () => {
     setPaymentUrl(null);
     setShowPaymentOptions(false);
   };
-
-  // const openInNewTab = () => {
-  //   if (paymentUrl) {
-  //     window.open(paymentUrl, '_blank');
-  //     setShowPaymentOptions(false);
-  //     // Show success message after a delay since we can't track the new tab
-  //     setTimeout(() => {
-  //       setShowSuccessMessage(true);
-  //       setTimeout(() => setShowSuccessMessage(false), 5000);
-  //     }, 2000);
-  //   }
-  // };
 
   const retryPopup = () => {
     if (paymentUrl) {
@@ -389,14 +370,22 @@ const handleDonate = async () => {
   const quickAmounts = [10, 25, 50, 100, 250, 500];
 
   return (
-    <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+    <div className="p-6 bg-white rounded-xl shadow-lg border border-gray-100 relative">
+      {/* Celebration Animation */}
+      <CelebrationAnimation
+        isVisible={showCelebration}
+        onComplete={handleCelebrationClose}
+        duration={4000}
+        type="confetti"
+        intensity="medium"
+      />
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
           <Heart className="w-6 h-6 mr-2 text-red-500" />
           Support This Campaign
         </h2>
         <p className="text-gray-600">Make a difference with your contribution</p>
-        <p className="text-xs text-gray-400 mt-1">Campaign ID: {campaignId}</p>
       </div>
       
       {/* Success Message */}
@@ -410,7 +399,7 @@ const handleDonate = async () => {
         </div>
       )}
 
-      {/* Payment Options (when popup is blocked) */}
+      {/* Payment Options */}
       {showPaymentOptions && (
         <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
           <div className="flex items-center mb-3">
@@ -443,7 +432,7 @@ const handleDonate = async () => {
       )}
 
       {/* Progress Summary */}
-      <div className="mb-6 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 p-5 rounded-xl border">
+      <div className="mb-6 bg-gray-50 border border-gray-200 p-5 rounded-xl">
         <div className="flex justify-between items-center mb-3">
           <div>
             <p className="text-lg font-bold text-gray-900">{currentAmount || 0} MRU</p>
@@ -455,9 +444,9 @@ const handleDonate = async () => {
           </div>
         </div>
         
-        <div className="w-full bg-white bg-opacity-50 rounded-full h-4 mb-3 overflow-hidden">
+        <div className="w-full bg-gray-200 rounded-full h-4 mb-3 overflow-hidden">
           <div 
-            className="bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm" 
+            className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm" 
             style={{ width: `${Math.min(progress || 0, 100)}%` }}
           />
         </div>
@@ -547,8 +536,8 @@ const handleDonate = async () => {
                 />
               </div>
             </div>
-            
           </div>
+          
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
               Message of Support
@@ -586,7 +575,7 @@ const handleDonate = async () => {
       <button 
         onClick={handleDonate}
         disabled={isLoading || donationAmount < 1 || !campaignId}
-        className="w-full bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center text-lg"
+        className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center text-lg"
       >
         {isLoading ? (
           <>
@@ -602,7 +591,7 @@ const handleDonate = async () => {
       </button>
 
       {/* Payment Info */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border">
+      <div className="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
         <h4 className="text-sm font-semibold text-gray-800 mb-3 flex items-center">
           <CheckCircle className="w-4 h-4 text-green-500 mr-2" />
           Secure Payment Information

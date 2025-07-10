@@ -8,6 +8,8 @@ import os
 from datetime import datetime
 import json
 from dotenv import load_dotenv
+import httpx 
+
 load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -18,6 +20,7 @@ app = FastAPI(
     description="Microservice for handling NextRemitly payments",
     version="1.0.0"
 )
+DJANGO_WEBHOOK_URL = os.getenv("DJANGO_WEBHOOK_URL", "http://localhost:8000/api/campaigns/donation-webhook/")
 
 # cors headers
 @app.middleware("http")
@@ -194,9 +197,18 @@ async def create_payment_session(request: PaymentSessionRequest):
             error="An unexpected error occurred"
         )
 
+# Add configuration for FastAPI webhook URL
+FASTAPI_WEBHOOK_URL = os.getenv("FASTAPI_WEBHOOK_URL", "http://localhost:8001/webhook/nextremitly")
+
+# MODIFY your create_donation_session to use FastAPI webhook URL instead of Django
 @app.post("/donation/create", response_model=PaymentSessionResponse)
 async def create_donation_session(request: DonationRequest):
     """Create a donation payment session - simplified wrapper"""
+    
+    # CHANGE: Use FastAPI webhook URL instead of Django webhook URL
+    fastapi_webhook_url = FASTAPI_WEBHOOK_URL
+    
+    logger.info(f"Using webhook URL: {fastapi_webhook_url}")
     
     payment_request = PaymentSessionRequest(
         amount=request.amount,
@@ -205,7 +217,7 @@ async def create_donation_session(request: DonationRequest):
         customer_email=request.donor_email,
         success_url=request.success_url,
         cancel_url=request.cancel_url,
-        webhook_url=request.webhook_url,
+        webhook_url=fastapi_webhook_url,  # Point to FastAPI, not Django
         metadata={
             "campaign_id": request.campaign_id,
             "campaign_name": request.campaign_name,
@@ -220,6 +232,58 @@ async def create_donation_session(request: DonationRequest):
     )
     
     return await create_payment_session(payment_request)
+
+
+# Add this NEW webhook endpoint that NextRemitly will call
+@app.post("/webhook/nextremitly")
+async def nextremitly_webhook(request: dict):
+    """
+    Receive webhooks from NextRemitly and forward to Django
+    This is the endpoint NextRemitly should send webhooks to
+    """
+    logger.info(f"=== NEXTREMITLY WEBHOOK RECEIVED ===")
+    logger.info(f"Webhook payload: {request}")
+    
+    try:
+        # Extract important data
+        session_id = request.get('session_id')
+        status = request.get('status')
+        
+        if not session_id:
+            logger.error("No session_id in webhook payload")
+            return {"error": "Missing session_id"}
+        
+        logger.info(f"Processing webhook - Session: {session_id}, Status: {status}")
+        
+        # Forward webhook to Django
+        async with httpx.AsyncClient() as client:
+            try:
+                logger.info(f"Forwarding webhook to Django: {DJANGO_WEBHOOK_URL}")
+                
+                django_response = await client.post(
+                    DJANGO_WEBHOOK_URL,
+                    json=request,
+                    headers={'Content-Type': 'application/json'},
+                    timeout=30
+                )
+                
+                logger.info(f"Django response: {django_response.status_code}")
+                
+                if django_response.status_code == 200:
+                    logger.info("Successfully forwarded webhook to Django")
+                    return {"status": "ok", "forwarded": True}
+                else:
+                    logger.error(f"Django returned error: {django_response.status_code} - {django_response.text}")
+                    return {"status": "error", "forwarded": False}
+                    
+            except httpx.RequestError as e:
+                logger.error(f"Failed to forward webhook to Django: {str(e)}")
+                return {"status": "error", "error": "Failed to forward to Django"}
+        
+    except Exception as e:
+        logger.error(f"Error processing webhook: {str(e)}")
+        return {"status": "error", "error": str(e)}
+
 
 @app.get("/payment/status/{session_id}")
 async def get_payment_status(session_id: str):
@@ -254,6 +318,7 @@ async def get_payment_status(session_id: str):
             status_code=503,
             detail="Payment service temporarily unavailable"
         )
+
 
 @app.post("/webhook/verify")
 async def verify_webhook(payload: WebhookPayload, background_tasks: BackgroundTasks):

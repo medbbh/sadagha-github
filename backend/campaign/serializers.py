@@ -106,20 +106,35 @@ class CampaignSerializer(serializers.ModelSerializer):
         
         if files_to_delete:
             from .utils.supabase_storage import delete_file
-            # Delete files from database and storage
+            
             for file_url in files_to_delete:
                 try:
                     logger.info(f"Attempting to delete file with URL: {file_url}")
+                    
                     # Find the file in database by URL
                     file_instance = instance.files.filter(url=file_url).first()
                     if file_instance:
                         logger.info(f"Found file to delete: {file_instance.name}")
-                        # Delete from storage using path if available, otherwise URL
-                        delete_path = file_instance.path if hasattr(file_instance, 'path') and file_instance.path else file_instance.url
-                        delete_file(delete_path)
-                        # Delete from database
-                        file_instance.delete()
-                        logger.info(f"Successfully deleted file: {file_instance.name}")
+                        logger.info(f"File path: {file_instance.path}")
+                        logger.info(f"File URL: {file_instance.url}")
+                        
+                        # Try deleting with path first, fallback to URL
+                        deletion_success = False
+                        if hasattr(file_instance, 'path') and file_instance.path:
+                            logger.info(f"Attempting deletion with path: {file_instance.path}")
+                            deletion_success = delete_file(file_instance.path)
+                        
+                        if not deletion_success:
+                            logger.info(f"Path deletion failed, trying with URL: {file_instance.url}")
+                            deletion_success = delete_file(file_instance.url)
+                        
+                        if deletion_success:
+                            logger.info("Storage deletion successful, removing from database")
+                            file_instance.delete()
+                        else:
+                            logger.error("Storage deletion failed, but removing from database anyway")
+                            file_instance.delete()  # Remove from DB even if storage deletion fails
+                            
                     else:
                         logger.warning(f"File with URL {file_url} not found in database")
                 except Exception as e:
@@ -260,11 +275,6 @@ class CampaignSerializer(serializers.ModelSerializer):
             logger.error(traceback.format_exc())
             raise
 
-# campaign/serializers.py - Add this to your existing serializers.py
-
-
-
-# Your existing serializers remain the same...
 
 class DonationSerializer(serializers.ModelSerializer):
     donor_display_name = serializers.ReadOnlyField()

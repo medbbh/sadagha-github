@@ -10,6 +10,7 @@ python-multipart = "==0.0.6"
 uvicorn = {extras = ["standard"], version = "==0.24.0"}
 pydantic = {extras = ["email"], version = "==2.5.0"}
 python-dotenv = "*"
+httpx = "*"
 
 [dev-packages]
 

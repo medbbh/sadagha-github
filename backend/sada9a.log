@@ -307,3 +307,186 @@ INFO 2025-06-30 15:28:28,610 views 20724 8068 Created donation record: 29
 INFO 2025-06-30 15:28:28,611 payment_service 20724 8068 Creating donation session for campaign 4, amount: 25.0
 INFO 2025-06-30 15:28:38,859 payment_service 20724 8068 Donation session created successfully: 5f718f76-c321-46d9-a757-63fc06410b1e
 INFO 2025-06-30 15:28:39,053 views 20724 8068 Payment session created successfully: 5f718f76-c321-46d9-a757-63fc06410b1e
+INFO 2025-07-04 13:10:30,002 views 19768 11568 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 13:10:30,004 views 19768 11568 Campaign ID: 19
+INFO 2025-07-04 13:10:30,005 views 19768 11568 Request data: {'amount': 250, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:10:30,309 views 19768 11568 Campaign found: jbubui
+INFO 2025-07-04 13:10:30,315 views 19768 11568 Validated data: {'amount': Decimal('250.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:10:32,564 views 19768 11568 Created donation record: 30
+INFO 2025-07-04 13:10:32,564 payment_service 19768 11568 Creating donation session for campaign 19, amount: 250.0
+ERROR 2025-07-04 13:10:41,767 payment_service 19768 11568 Microservice returned error: NextRemitly error: 400
+ERROR 2025-07-04 13:10:41,879 views 19768 11568 Payment session creation failed: NextRemitly error: 400
+INFO 2025-07-04 13:17:16,948 views 19768 17056 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 13:17:16,949 views 19768 17056 Campaign ID: 19
+INFO 2025-07-04 13:17:16,950 views 19768 17056 Request data: {'amount': 250, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:17:17,145 views 19768 17056 Campaign found: jbubui
+INFO 2025-07-04 13:17:17,147 views 19768 17056 Validated data: {'amount': Decimal('250.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:17:19,308 views 19768 17056 Created donation record: 31
+INFO 2025-07-04 13:17:19,310 payment_service 19768 17056 Creating donation session for campaign 19, amount: 250.0
+INFO 2025-07-04 13:17:32,495 payment_service 19768 17056 Donation session created successfully: 8470b145-e5db-4361-9189-9ebe1e24bc06
+INFO 2025-07-04 13:17:32,606 views 19768 17056 Payment session created successfully: 8470b145-e5db-4361-9189-9ebe1e24bc06
+INFO 2025-07-04 13:26:42,178 views 412 9032 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 13:26:42,179 views 412 9032 Campaign ID: 19
+INFO 2025-07-04 13:26:42,180 views 412 9032 Request data: {'amount': 25, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:26:42,488 views 412 9032 Campaign found: jbubui
+INFO 2025-07-04 13:26:42,494 views 412 9032 Validated data: {'amount': Decimal('25.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:26:44,750 views 412 9032 Created donation record: 32
+INFO 2025-07-04 13:26:44,750 payment_service 412 9032 Creating donation session for campaign 19, amount: 25.0
+INFO 2025-07-04 13:26:57,324 payment_service 412 9032 Donation session created successfully: bab36fbf-04e2-4bf6-bc22-170561b3ee23
+INFO 2025-07-04 13:26:57,486 views 412 9032 Payment session created successfully: bab36fbf-04e2-4bf6-bc22-170561b3ee23
+INFO 2025-07-04 13:29:49,054 views 25288 10524 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 13:29:49,054 views 25288 10524 Campaign ID: 19
+INFO 2025-07-04 13:29:49,055 views 25288 10524 Request data: {'amount': 2400, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:29:49,227 views 25288 10524 Campaign found: jbubui
+INFO 2025-07-04 13:29:49,232 views 25288 10524 Validated data: {'amount': Decimal('2400.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 13:29:51,518 views 25288 10524 Created donation record: 33
+INFO 2025-07-04 13:29:51,519 payment_service 25288 10524 Creating donation session for campaign 19, amount: 2400.0
+INFO 2025-07-04 13:30:04,222 payment_service 25288 10524 Donation session created successfully: e8291ba4-d37b-43eb-ac2f-cabf1c2ce001
+INFO 2025-07-04 13:30:04,419 views 25288 10524 Payment session created successfully: e8291ba4-d37b-43eb-ac2f-cabf1c2ce001
+INFO 2025-07-04 14:34:20,649 views 9628 2912 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 14:34:20,650 views 9628 2912 Campaign ID: 3
+INFO 2025-07-04 14:34:20,650 views 9628 2912 Request data: {'amount': 25000, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-07-04 14:34:20,839 views 9628 2912 Campaign found: test 1
+INFO 2025-07-04 14:34:20,845 views 9628 2912 Validated data: {'amount': Decimal('25000.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-07-04 14:34:23,026 views 9628 2912 Created donation record: 34
+INFO 2025-07-04 14:34:23,027 payment_service 9628 2912 Creating donation session for campaign 3, amount: 25000.0
+INFO 2025-07-04 14:34:35,932 payment_service 9628 2912 Donation session created successfully: f519d06a-8c52-470c-81af-10bdca9344ae
+INFO 2025-07-04 14:34:36,023 views 9628 2912 Payment session created successfully: f519d06a-8c52-470c-81af-10bdca9344ae
+INFO 2025-07-04 15:01:41,283 views 23020 3460 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 15:01:41,284 views 23020 3460 Campaign ID: 3
+INFO 2025-07-04 15:01:41,286 views 23020 3460 Request data: {'amount': 100, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 15:01:41,468 views 23020 3460 Campaign found: test 1
+INFO 2025-07-04 15:01:41,474 views 23020 3460 Validated data: {'amount': Decimal('100.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 15:01:43,638 views 23020 3460 Created donation record: 35
+INFO 2025-07-04 15:01:43,639 payment_service 23020 3460 Creating donation session for campaign 3, amount: 100.0
+INFO 2025-07-04 15:01:55,858 payment_service 23020 3460 Donation session created successfully: 78db2e43-595d-4b28-bcba-696b93e9836a
+INFO 2025-07-04 15:01:56,063 views 23020 3460 Payment session created successfully: 78db2e43-595d-4b28-bcba-696b93e9836a
+INFO 2025-07-04 15:18:13,195 views 13452 22868 === CREATE DONATION REQUEST ===
+INFO 2025-07-04 15:18:13,196 views 13452 22868 Campaign ID: 3
+INFO 2025-07-04 15:18:13,197 views 13452 22868 Request data: {'amount': 25, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 15:18:13,402 views 13452 22868 Campaign found: test 1
+INFO 2025-07-04 15:18:13,408 views 13452 22868 Validated data: {'amount': Decimal('25.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-04 15:18:15,582 views 13452 22868 Created donation record: 36
+INFO 2025-07-04 15:18:15,582 payment_service 13452 22868 Creating donation session for campaign 3, amount: 25.0
+INFO 2025-07-04 15:18:27,538 payment_service 13452 22868 Donation session created successfully: 0f868fcc-7c1d-458a-b9f0-234ab910db53
+INFO 2025-07-04 15:18:27,647 views 13452 22868 Payment session created successfully: 0f868fcc-7c1d-458a-b9f0-234ab910db53
+INFO 2025-07-09 11:04:10,365 views 2980 14444 === CREATE DONATION REQUEST ===
+INFO 2025-07-09 11:04:10,366 views 2980 14444 Campaign ID: 4
+INFO 2025-07-09 11:04:10,368 views 2980 14444 Request data: {'amount': 25, 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-07-09 11:04:10,673 views 2980 14444 Campaign found: I am growing an agriculture bussiness updated second time
+INFO 2025-07-09 11:04:10,682 views 2980 14444 Validated data: {'amount': Decimal('25.00'), 'donor_email': 'anonymous@sada9a.com', 'donor_name': '', 'message': '', 'is_anonymous': False}
+ERROR 2025-07-09 11:04:14,797 views 2980 14444 Payment microservice is not healthy
+INFO 2025-07-09 12:14:46,205 serializers 2980 18688 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-09 12:14:46,207 serializers 2980 18688 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'file_0': [<InMemoryUploadedFile: rim.png (image/png)>]}>
+INFO 2025-07-09 12:14:46,207 serializers 2980 18688 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: rim.png (image/png)>]}>
+INFO 2025-07-09 12:14:46,207 serializers 2980 18688 Request FILES keys: ['file_0']
+INFO 2025-07-09 12:14:46,207 serializers 2980 18688 Files to delete: []
+INFO 2025-07-09 12:14:46,207 serializers 2980 18688 Found 1 new files to process: ['file_0']
+INFO 2025-07-09 12:14:47,413 supabase_storage 2980 18688 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-07-09 12:14:47,413 serializers 2980 18688 Processing file file_0: rim.png, size=373981, content_type=image/png
+INFO 2025-07-09 12:14:47,413 serializers 2980 18688 Uploading file rim.png to Supabase...
+INFO 2025-07-09 12:14:48,466 supabase_storage 2980 18688 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-07-09 12:14:48,467 supabase_storage 2980 18688 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-07-09 12:14:48,467 supabase_storage 2980 18688 Starting upload for file: rim.png to campaign_4
+INFO 2025-07-09 12:14:48,468 supabase_storage 2980 18688 Generated path: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-09 12:14:48,469 supabase_storage 2980 18688 Read file content, size: 373981 bytes
+INFO 2025-07-09 12:14:48,668 supabase_storage 2980 18688 Available buckets: []
+WARNING 2025-07-09 12:14:48,669 supabase_storage 2980 18688 Bucket 'campaign' not found in Supabase
+INFO 2025-07-09 12:14:48,669 supabase_storage 2980 18688 Uploading file to bucket: campaign, path: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-09 12:14:50,063 supabase_storage 2980 18688 Upload response: UploadResponse(path='campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png', full_path='campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png', fullPath='campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png')
+INFO 2025-07-09 12:14:50,064 supabase_storage 2980 18688 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png?
+INFO 2025-07-09 12:14:50,064 serializers 2980 18688 SUCCESS: Uploaded rim.png to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png?
+INFO 2025-07-09 12:14:50,065 serializers 2980 18688 File path: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-09 12:14:50,165 serializers 2980 18688 File record created with ID: 13
+INFO 2025-07-09 12:14:50,165 serializers 2980 18688 Upload summary: 1 successful, 0 failed
+INFO 2025-07-09 12:14:50,255 serializers 2980 18688 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-09 14:35:44,282 serializers 2980 4624 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-09 14:35:44,284 serializers 2980 4624 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'file_0': [<InMemoryUploadedFile: agriculture.jpg (image/jpeg)>]}>
+INFO 2025-07-09 14:35:44,285 serializers 2980 4624 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: agriculture.jpg (image/jpeg)>]}>
+INFO 2025-07-09 14:35:44,285 serializers 2980 4624 Request FILES keys: ['file_0']
+INFO 2025-07-09 14:35:44,286 serializers 2980 4624 Files to delete: []
+INFO 2025-07-09 14:35:44,286 serializers 2980 4624 Found 1 new files to process: ['file_0']
+INFO 2025-07-09 14:35:44,287 serializers 2980 4624 Processing file file_0: agriculture.jpg, size=61017, content_type=image/jpeg
+INFO 2025-07-09 14:35:44,287 serializers 2980 4624 Uploading file agriculture.jpg to Supabase...
+INFO 2025-07-09 14:35:44,859 supabase_storage 2980 4624 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-07-09 14:35:44,860 supabase_storage 2980 4624 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-07-09 14:35:44,860 supabase_storage 2980 4624 Starting upload for file: agriculture.jpg to campaign_4
+INFO 2025-07-09 14:35:44,861 supabase_storage 2980 4624 Generated path: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-09 14:35:44,861 supabase_storage 2980 4624 Read file content, size: 61017 bytes
+INFO 2025-07-09 14:35:44,998 supabase_storage 2980 4624 Available buckets: []
+WARNING 2025-07-09 14:35:44,999 supabase_storage 2980 4624 Bucket 'campaign' not found in Supabase
+INFO 2025-07-09 14:35:45,000 supabase_storage 2980 4624 Uploading file to bucket: campaign, path: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-09 14:35:45,433 supabase_storage 2980 4624 Upload response: UploadResponse(path='campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg', full_path='campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg', fullPath='campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg')
+INFO 2025-07-09 14:35:45,433 supabase_storage 2980 4624 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?
+INFO 2025-07-09 14:35:45,435 serializers 2980 4624 SUCCESS: Uploaded agriculture.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?
+INFO 2025-07-09 14:35:45,435 serializers 2980 4624 File path: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-09 14:35:45,522 serializers 2980 4624 File record created with ID: 14
+INFO 2025-07-09 14:35:45,523 serializers 2980 4624 Upload summary: 1 successful, 0 failed
+INFO 2025-07-09 14:35:45,619 serializers 2980 4624 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-09 15:17:00,295 serializers 2980 7648 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-09 15:17:00,296 serializers 2980 7648 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'files_to_delete': ['[9,11]']}>
+INFO 2025-07-09 15:17:00,297 serializers 2980 7648 Request FILES: <MultiValueDict: {}>
+INFO 2025-07-09 15:17:00,298 serializers 2980 7648 Request FILES keys: []
+INFO 2025-07-09 15:17:00,298 serializers 2980 7648 Files to delete: ['[9,11]']
+INFO 2025-07-09 15:17:00,299 serializers 2980 7648 Attempting to delete file with URL: [9,11]
+WARNING 2025-07-09 15:17:00,500 serializers 2980 7648 File with URL [9,11] not found in database
+INFO 2025-07-09 15:17:00,501 serializers 2980 7648 Found 0 new files to process: []
+INFO 2025-07-09 15:17:00,708 serializers 2980 7648 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-09 15:18:10,284 serializers 2980 19204 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-09 15:18:10,285 serializers 2980 19204 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'files_to_delete': ['[11]']}>
+INFO 2025-07-09 15:18:10,285 serializers 2980 19204 Request FILES: <MultiValueDict: {}>
+INFO 2025-07-09 15:18:10,286 serializers 2980 19204 Request FILES keys: []
+INFO 2025-07-09 15:18:10,286 serializers 2980 19204 Files to delete: ['[11]']
+INFO 2025-07-09 15:18:10,286 serializers 2980 19204 Attempting to delete file with URL: [11]
+WARNING 2025-07-09 15:18:10,439 serializers 2980 19204 File with URL [11] not found in database
+INFO 2025-07-09 15:18:10,440 serializers 2980 19204 Found 0 new files to process: []
+INFO 2025-07-09 15:18:10,646 serializers 2980 19204 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-09 15:23:48,666 serializers 2980 6672 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-09 15:23:48,667 serializers 2980 6672 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'files_to_delete': ['[11]']}>
+INFO 2025-07-09 15:23:48,668 serializers 2980 6672 Request FILES: <MultiValueDict: {}>
+INFO 2025-07-09 15:23:48,668 serializers 2980 6672 Request FILES keys: []
+INFO 2025-07-09 15:23:48,669 serializers 2980 6672 Files to delete: ['[11]']
+INFO 2025-07-09 15:23:48,669 serializers 2980 6672 Attempting to delete file with URL: [11]
+WARNING 2025-07-09 15:23:48,868 serializers 2980 6672 File with URL [11] not found in database
+INFO 2025-07-09 15:23:48,869 serializers 2980 6672 Found 0 new files to process: []
+INFO 2025-07-09 15:23:49,073 serializers 2980 6672 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-10 10:11:50,983 serializers 11412 20232 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-10 10:11:50,986 serializers 11412 20232 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'files_to_delete': ['https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png?', 'https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png?']}>
+INFO 2025-07-10 10:11:50,987 serializers 11412 20232 Request FILES: <MultiValueDict: {}>
+INFO 2025-07-10 10:11:50,987 serializers 11412 20232 Request FILES keys: []
+INFO 2025-07-10 10:11:50,995 serializers 11412 20232 Files to delete: ['https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png?', 'https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png?']
+INFO 2025-07-10 10:11:53,658 supabase_storage 11412 20232 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-07-10 10:11:53,658 serializers 11412 20232 Attempting to delete file with URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png?
+INFO 2025-07-10 10:11:53,848 serializers 11412 20232 Found file to delete: Screenshot 2025-05-29 161945.png
+INFO 2025-07-10 10:11:53,850 supabase_storage 11412 20232 Deleting file: campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png
+INFO 2025-07-10 10:11:55,496 supabase_storage 11412 20232 Successfully deleted file: campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png
+INFO 2025-07-10 10:11:55,498 supabase_storage 11412 20232 Deleting file: campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png
+INFO 2025-07-10 10:11:55,797 supabase_storage 11412 20232 Successfully deleted file: campaign_4/6ed3555d-e0fc-470b-93b2-ddc5623da237.png
+INFO 2025-07-10 10:11:56,001 serializers 11412 20232 Successfully deleted file: Screenshot 2025-05-29 161945.png
+INFO 2025-07-10 10:11:56,002 serializers 11412 20232 Attempting to delete file with URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png?
+INFO 2025-07-10 10:11:56,205 serializers 11412 20232 Found file to delete: rim.png
+INFO 2025-07-10 10:11:56,207 supabase_storage 11412 20232 Deleting file: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-10 10:11:56,513 supabase_storage 11412 20232 Successfully deleted file: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-10 10:11:56,514 supabase_storage 11412 20232 Deleting file: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-10 10:11:56,717 supabase_storage 11412 20232 Successfully deleted file: campaign_4/56641d0c-5a9d-4b43-9642-56d19152dae4.png
+INFO 2025-07-10 10:11:56,920 serializers 11412 20232 Successfully deleted file: rim.png
+INFO 2025-07-10 10:11:56,921 serializers 11412 20232 Found 0 new files to process: []
+INFO 2025-07-10 10:11:57,008 serializers 11412 20232 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-07-10 10:54:39,976 serializers 21232 6684 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-07-10 10:54:39,978 serializers 21232 6684 Request DATA: <QueryDict: {'name': ['I am growing an agriculture bussiness'], 'description': ['Help us start an agriculture bussiness for poor people in the rosso'], 'target': ['300000.00'], 'category': ['2'], 'files_to_delete': ['https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?']}>
+INFO 2025-07-10 10:54:39,978 serializers 21232 6684 Request FILES: <MultiValueDict: {}>
+INFO 2025-07-10 10:54:39,979 serializers 21232 6684 Request FILES keys: []
+INFO 2025-07-10 10:54:39,980 serializers 21232 6684 Files to delete: ['https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?']
+INFO 2025-07-10 10:54:42,658 supabase_storage 21232 6684 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-07-10 10:54:42,659 serializers 21232 6684 Attempting to delete file with URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?
+INFO 2025-07-10 10:54:42,748 serializers 21232 6684 Found file to delete: agriculture.jpg
+INFO 2025-07-10 10:54:42,749 serializers 21232 6684 File path: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:42,749 serializers 21232 6684 File URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg?
+INFO 2025-07-10 10:54:42,751 serializers 21232 6684 Attempting deletion with path: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:42,751 supabase_storage 21232 6684 Deleting file: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:44,071 supabase_storage 21232 6684 Successfully deleted file: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:44,072 serializers 21232 6684 Storage deletion successful, removing from database
+INFO 2025-07-10 10:54:44,073 supabase_storage 21232 6684 Deleting file: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:44,238 supabase_storage 21232 6684 Successfully deleted file: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
+INFO 2025-07-10 10:54:44,380 serializers 21232 6684 Found 0 new files to process: []
+INFO 2025-07-10 10:54:44,586 serializers 21232 6684 === CAMPAIGN UPDATE COMPLETED ===

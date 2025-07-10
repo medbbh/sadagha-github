@@ -11,11 +11,9 @@ import ConfirmRole from './components/ui/ConfirmRole';
 import Unauthorized from './pages/Errors/Unauthorized';
 import NotFound from './pages/Errors/NotFound';
 import OrganizationLayout from './pages/Orginazation/OrganizationLayout';
-import OrganizationHome from './pages/Orginazation/Home/Home';
 import Loading from './components/common/Loading';
 // import Campaigns from './pages/Orginazation/Campaigns/Campaigns';
 import CampaignDetail from './components/ui/CampaignDetail';
-import UpdateCampaignForm from './components/ui/UpdateCampaignForm';
 import { useAuth } from './contexts/AuthContext';
 import ExploreCampaigns from './pages/User/ExploreCampaigns';
 import Categories from './pages/User/Categories';
@@ -28,6 +26,9 @@ import DonationSuccessPage from './components/ui/DonationSuccessPage';
 import FacebookOAuthCallback from './pages/FacebookOAuthCallback';
 import VolunteerPage from './pages/User/VolunteerPage';
 import UserProfilePage from './pages/User/UserProfilePage';
+import OrganizationDashboard from './pages/Orginazation/Home/OrganizationDashboard';
+import CampaignEdit from './pages/Orginazation/CampaignEdit';
+import Analytics from './pages/Orginazation/Analytics';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
@@ -127,12 +128,14 @@ function App() {
           <OrganizationLayout />
         </ProtectedRoute>
       }>
-        <Route path="/organization" element={<OrganizationHome />} />
+        <Route path="/organization" element={<OrganizationDashboard />} />
         <Route path="/organization/campaigns" element={<CampaignsList />} />
         <Route path="/organization/campaigns/create" element={<CreateCampaignForm />} />
         <Route path="/organization/campaigns/:campaignId" element={<CampaignDetails />} />
-        <Route path="/update-campaign/:campaignId" element={<UpdateCampaignForm />} />
+        <Route path="/organization/campaigns/:campaignId/edit" element={<CampaignEdit />} />
         <Route path="/organization/profile" element={<OrganizationProfile />} />
+        <Route path="/organization/analytics" element={<Analytics />} />
+        R
       </Route>
 
       <Route path="*" element={<NotFound />} />

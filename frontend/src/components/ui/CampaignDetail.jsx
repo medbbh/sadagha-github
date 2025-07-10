@@ -5,6 +5,7 @@ import { fetchCampaignById } from '../../api/endpoints/CampaignAPI';
 import DonationForm from './DonationForm';
 import FacebookLiveEmbed from './FacebookLiveEmbed';
 import FacebookLiveEmbedSimple from './FacebookLiveEmbedSimple';
+import ShareButton from './ShareButton'; // Import the ShareButton component
 
 export default function CampaignDetail() {
   const { campaignId } = useParams();
@@ -169,6 +170,8 @@ export default function CampaignDetail() {
                 </div>
               </div>
             </div>
+            
+            {/* Facebook Live Embeds */}
             <FacebookLiveEmbed campaign={campaign} showDonationOverlay={true} />
 
             {campaign.facebook_live_url && (
@@ -180,9 +183,17 @@ export default function CampaignDetail() {
                 />
               </div>
             )}
-
-
           </div>
+
+          {/* Social Share Button - Add this new section */}
+          <ShareButton 
+            campaign={campaign}
+            variant="full"
+            showPreview={true}
+            showMetaTags={true}
+            className="shadow-sm"
+            platforms={['facebook', 'twitter', 'whatsapp']}
+          />
 
           {/* Organization Information Card */}
           {campaign.organization && (
@@ -207,6 +218,18 @@ export default function CampaignDetail() {
               progress={progress}
               paymentNumbers={campaign.organization?.payment_numbers}
               formatPaymentNumber={formatPaymentNumber}
+            />
+          </div>
+          
+          {/* Compact Share Button in Sidebar - Alternative placement */}
+          <div className="mt-6">
+            <ShareButton 
+              campaign={campaign}
+              variant="compact"
+              showPreview={false}
+              showMetaTags={false}
+              className="shadow-sm"
+              platforms={['facebook', 'twitter', 'whatsapp']}
             />
           </div>
         </div>
@@ -289,7 +312,6 @@ function OrganizationInfoCard({ organization, paymentNumbers, onCopyPaymentNumbe
             </div>
           </div>
         </div>
-
 
         {/* Verification Badge */}
         {organization.is_verified && (

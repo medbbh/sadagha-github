@@ -60,11 +60,12 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+
 
 PAYMENT_MICROSERVICE_URL = os.getenv('PAYMENT_MICROSERVICE_URL', 'http://localhost:8001')
 PAYMENT_MICROSERVICE_TIMEOUT = int(os.getenv('PAYMENT_MICROSERVICE_TIMEOUT', '30'))
@@ -78,6 +79,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Nextremitly frontend
     "http://localhost:5174",  # Sada9a frontend
     "http://localhost:8000",  # Nextremitly backend
+    "http://localhost:8001",  # Nextremitly microservice
 ]
 
 # Logging configuration for debugging

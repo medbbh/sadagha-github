@@ -6,6 +6,10 @@ from .authentication import SupabaseAuthentication, SupabaseRegistrationAuthenti
 import jwt
 from django.conf import settings
 from accounts.models import User
+from rest_framework.decorators import action
+from .serializers import UserProfileSerializer  # Add this import
+from django.db.models import Prefetch
+from campaign.models import Donation
 
 @api_view(["GET"])
 @authentication_classes([SupabaseAuthentication])
@@ -167,3 +171,46 @@ def check_user_exists(request):
         "email": email,
         "user": user_data
     })
+
+
+# Add this action method to your existing views.py (wherever you have your user-related views)
+@api_view(['GET'])
+@authentication_classes([SupabaseAuthentication])
+@permission_classes([IsAuthenticated])
+def user_profile(request):
+    """
+    Get comprehensive user profile including donations, volunteer info, and statistics
+    GET /api/auth/profile/
+    """
+    user = request.user
+    
+    # Exclude organizations
+    if user.role == 'organization':
+        return Response(
+            {'error': 'Organizations cannot access user profiles'}, 
+            status=status.HTTP_403_FORBIDDEN
+        )
+    
+    try:
+        # Optimize queries with select_related and prefetch_related
+        user_with_data = User.objects.select_related('volunteer_profile').prefetch_related(
+            Prefetch(
+                'donations',
+                queryset=Donation.objects.select_related('campaign').order_by('-created_at')
+            )
+        ).get(id=user.id)
+        
+        serializer = UserProfileSerializer(user_with_data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+        
+    except User.DoesNotExist:
+        return Response(
+            {'error': 'User not found'}, 
+            status=status.HTTP_404_NOT_FOUND
+        )
+    except Exception as e:
+        print(f"Error in user_profile: {str(e)}")
+        return Response(
+            {'error': 'An error occurred while fetching profile'}, 
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )

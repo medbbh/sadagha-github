@@ -19,6 +19,7 @@ from django.utils import timezone
 from .utils.facebook_live import FacebookLiveAPI, update_campaign_live_status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from django.utils.decorators import method_decorator
 
 
 logger = logging.getLogger(__name__)
@@ -447,10 +448,10 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 
                 logger.info(f"Payment session created successfully: {result['session_id']}")
                 
-                # increase the campaign's number of donors and current amount
-                campaign.number_of_donors += 1
-                campaign.current_amount += donation.amount
-                campaign.save()
+                # REMOVE THESE LINES - Don't update campaign totals here!
+                # campaign.number_of_donors += 1
+                # campaign.current_amount += donation.amount
+                # campaign.save()
                 
                 return Response({
                     'success': True,
@@ -479,6 +480,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 {'error': 'An unexpected error occurred'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
     
     @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
     def payment_status(self, request):
@@ -526,17 +528,23 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-
-@csrf_exempt
 @require_http_methods(["POST"])
 def donation_webhook(request):
     """
-    Webhook endpoint to receive payment status updates
+    Enhanced webhook endpoint with better logging and CSRF handling
     POST /api/campaigns/donation-webhook/
     """
+    # Log the raw request for debugging
+    logger.info(f"=== WEBHOOK RECEIVED ===")
+    logger.info(f"Method: {request.method}")
+    logger.info(f"Headers: {dict(request.headers)}")
+    logger.info(f"Body: {request.body.decode('utf-8')}")
+    logger.info(f"Content-Type: {request.content_type}")
+    logger.info(f"User: {request.user}")
+    
     try:
         payload = json.loads(request.body)
-        logger.info(f"Received webhook payload: {payload}")
+        logger.info(f"Parsed payload: {payload}")
         
         # Log the webhook call
         webhook_log = DonationWebhookLog.objects.create(
@@ -544,11 +552,15 @@ def donation_webhook(request):
             payload=payload,
             processed=False
         )
+        logger.info(f"Created webhook log: {webhook_log.id}")
         
         # Verify webhook with microservice (optional)
-        verification_result = payment_client.verify_webhook(payload)
-        if not verification_result['success']:
-            logger.warning(f"Webhook verification failed: {verification_result['error']}")
+        try:
+            verification_result = payment_client.verify_webhook(payload)
+            if not verification_result['success']:
+                logger.warning(f"Webhook verification failed: {verification_result['error']}")
+        except Exception as verify_error:
+            logger.error(f"Webhook verification error: {verify_error}")
         
         # Process the webhook
         session_id = payload.get('session_id')
@@ -561,6 +573,7 @@ def donation_webhook(request):
             # Find the donation by session_id
             try:
                 donation = Donation.objects.get(payment_session_id=session_id)
+                logger.info(f"Found donation: {donation.id}")
                 
                 # Update donation status
                 donation.status = 'completed'
@@ -568,22 +581,27 @@ def donation_webhook(request):
                 donation.external_transaction_id = payload.get('transaction_id')
                 donation.payment_metadata = payload
                 donation.save()
+                logger.info(f"Updated donation {donation.id} to completed")
                 
                 # Update campaign totals
                 campaign = donation.campaign
+                old_amount = campaign.current_amount
+                old_donors = campaign.number_of_donors
+                
                 campaign.current_amount += donation.amount
                 campaign.number_of_donors += 1
                 campaign.save()
                 
-                logger.info(f"Updated donation {donation.id} and campaign {campaign.id}")
+                logger.info(f"Updated campaign {campaign.id}: amount {old_amount} -> {campaign.current_amount}, donors {old_donors} -> {campaign.number_of_donors}")
                 
                 # Mark webhook as processed
                 webhook_log.processed = True
                 webhook_log.save()
                 
             except Donation.DoesNotExist:
-                logger.error(f"Donation with session_id {session_id} not found")
-                webhook_log.error_message = "Donation not found"
+                error_msg = f"Donation with session_id {session_id} not found"
+                logger.error(error_msg)
+                webhook_log.error_message = error_msg
                 webhook_log.save()
                 
         elif payment_status in ['failed', 'cancelled']:
@@ -600,19 +618,24 @@ def donation_webhook(request):
                 logger.info(f"Updated donation {donation.id} status to {payment_status}")
                 
             except Donation.DoesNotExist:
-                logger.error(f"Donation with session_id {session_id} not found")
-                webhook_log.error_message = "Donation not found"
+                error_msg = f"Donation with session_id {session_id} not found"
+                logger.error(error_msg)
+                webhook_log.error_message = error_msg
                 webhook_log.save()
         
+        logger.info("=== WEBHOOK PROCESSED SUCCESSFULLY ===")
         return HttpResponse('OK', status=200)
         
-    except json.JSONDecodeError:
-        logger.error("Invalid JSON in webhook payload")
+    except json.JSONDecodeError as e:
+        error_msg = f"Invalid JSON in webhook payload: {str(e)}"
+        logger.error(error_msg)
         return HttpResponse('Invalid JSON', status=400)
     except Exception as e:
-        logger.error(f"Error processing webhook: {str(e)}")
+        error_msg = f"Error processing webhook: {str(e)}"
+        logger.error(error_msg)
+        import traceback
+        logger.error(traceback.format_exc())
         return HttpResponse('Internal Server Error', status=500)
-
 
 # Keep your existing legacy functions if needed for backward compatibility
 def create_payment(request):
