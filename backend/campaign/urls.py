@@ -2,7 +2,8 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import CampaignViewSet, FileViewSet, CategoryViewSet, donation_webhook, payment_health_check, \
-    facebook_oauth_url, facebook_oauth_callback, user_facebook_live_videos, campaign_live_status, update_live_status
+    facebook_oauth_url, facebook_oauth_callback, user_facebook_live_videos, campaign_live_status, update_live_status    
+
 from django.views.decorators.csrf import csrf_exempt
 
 router = DefaultRouter()

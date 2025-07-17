@@ -279,7 +279,7 @@ class CampaignSerializer(serializers.ModelSerializer):
 class DonationSerializer(serializers.ModelSerializer):
     donor_display_name = serializers.ReadOnlyField()
     campaign_name = serializers.CharField(source='campaign.name', read_only=True)
-    
+
     class Meta:
         model = Donation
         fields = [
@@ -307,6 +307,7 @@ class DonationSerializer(serializers.ModelSerializer):
             'created_at',
             'completed_at'
         ]
+
 
 class DonationCreateSerializer(serializers.Serializer):
     """Serializer for creating donation payment sessions"""

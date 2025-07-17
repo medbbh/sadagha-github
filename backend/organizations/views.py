@@ -465,7 +465,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 } for d in top_donors
             ],
             'campaign_status': [
-                {'name': 'Active', 'value': campaign_status['active'], 'color': '#3B82F6'},
+                {'name': 'Active', 'value': campaign_status['active'], 'color': '#4F46E5'},
                 {'name': 'Completed', 'value': campaign_status['completed'], 'color': '#10B981'},
                 {'name': 'New This Period', 'value': campaign_status['new'], 'color': '#F59E0B'}
             ],
@@ -530,115 +530,92 @@ class AnalyticsViewSet(viewsets.ViewSet):
         
         return filled_data
 
+    def _calculate_campaign_health(self, campaigns, all_donations, start_date, end_date):
+        """Calculate health metrics for each campaign"""
+        from datetime import datetime, timedelta
+        from django.utils import timezone
+        
+        campaign_health = []
+        now = timezone.now()
+        
+        for campaign in campaigns:
+            # Get donations for this campaign
+            campaign_donations = all_donations.filter(campaign=campaign)
+            
+            # Days since last donation
+            last_donation = campaign_donations.order_by('-created_at').first()
+            if last_donation:
+                days_since_last = (now - last_donation.created_at).days
+            else:
+                days_since_last = (now - campaign.created_at).days
+            
+            # Weekly trend (this week vs last week)
+            week_start = now - timedelta(days=7)
+            this_week_donations = campaign_donations.filter(created_at__gte=week_start).count()
+            last_week_start = week_start - timedelta(days=7)
+            last_week_donations = campaign_donations.filter(
+                created_at__gte=last_week_start, 
+                created_at__lt=week_start
+            ).count()
+            
+            # Determine trend
+            if this_week_donations > last_week_donations:
+                weekly_trend = 'increasing'
+            elif this_week_donations < last_week_donations:
+                weekly_trend = 'decreasing'
+            else:
+                weekly_trend = 'stable'
+            
+            # Momentum based on recent activity
+            if days_since_last <= 3:
+                momentum = 'hot'
+            elif days_since_last <= 7:
+                momentum = 'warm'
+            else:
+                momentum = 'cold'
+            
+            # Completion rate
+            completion_rate = round((campaign.current_amount / campaign.target * 100), 1) if campaign.target > 0 else 0
+            
+            # Donor engagement (unique donors in last 30 days)
+            recent_donors = campaign_donations.filter(
+                created_at__gte=now - timedelta(days=30)
+            ).values('donor_email').distinct().count()
+            
+            if recent_donors >= 5:
+                donor_engagement = 'high'
+            elif recent_donors >= 2:
+                donor_engagement = 'medium'
+            else:
+                donor_engagement = 'low'
+            
+            campaign_health.append({
+                'campaign_id': campaign.id,
+                'name': campaign.name,
+                'days_since_last_donation': days_since_last,
+                'momentum': momentum,
+                'weekly_trend': weekly_trend,
+                'completion_rate': completion_rate,
+                'donor_engagement': donor_engagement,
+                'total_donors': campaign_donations.values('donor_email').distinct().count(),
+                'this_week_donations': this_week_donations,
+                'last_week_donations': last_week_donations
+            })
+        
+        # Sort by priority (cold campaigns with low completion first)
+        campaign_health.sort(key=lambda x: (
+            x['momentum'] == 'cold',  # Cold campaigns first
+            -x['completion_rate'],    # Lower completion rate first
+            x['days_since_last_donation']  # More days since last donation first
+        ), reverse=True)
+        
+        return campaign_health
+
     def _get_color_for_index(self, index):
         """Get color for chart elements"""
-        colors = ['#3B82F6', '#7C3AED', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#06B6D4']
+        colors = ['#4F46E5', '#7C3AED', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#06B6D4']
         return colors[index % len(colors)]
 
-    @action(detail=False, methods=['get'])
-    def export_excel(self, request):
-        """Export analytics to Excel"""
-        if request.user.role != 'organization':
-            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
-
-        try:
-            profile = self.get_organization_profile(request.user)
-            start_date, end_date, period = self.get_date_range(request)
-
-            # Create Excel file
-            output = BytesIO()
-            workbook = xlsxwriter.Workbook(output)
-            
-            # Add worksheets with data
-            self._create_excel_worksheets(workbook, profile, start_date, end_date)
-            
-            workbook.close()
-            output.seek(0)
-
-            # Return file response
-            response = HttpResponse(
-                output.read(),
-                content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            )
-            filename = f"analytics_{profile.org_name}_{period}_{start_date.strftime('%Y%m%d')}.xlsx"
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
-            
-            return response
-
-        except Exception as e:
-            return Response(
-                {'error': 'Failed to export Excel', 'details': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
-
-    def _create_excel_worksheets(self, workbook, profile, start_date, end_date):
-        """Create Excel worksheets with analytics data"""
-        # Formats
-        header_format = workbook.add_format({
-            'bold': True, 'bg_color': '#3B82F6', 'font_color': 'white', 'border': 1
-        })
-        money_format = workbook.add_format({'num_format': '#,##0.00'})
-        
-        # Overview sheet
-        overview_ws = workbook.add_worksheet('Overview')
-        donations = Donation.objects.filter(
-            campaign__owner=profile.owner,
-            status='completed',
-            created_at__range=[start_date, end_date]
-        )
-        
-        overview_data = [
-            ['Metric', 'Value'],
-            ['Organization', profile.org_name],
-            ['Period', f"{start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}"],
-            ['Total Donations', donations.count()],
-            ['Total Raised', float(donations.aggregate(total=Sum('amount'))['total'] or 0)],
-        ]
-
-        for row_num, row_data in enumerate(overview_data):
-            for col_num, cell_data in enumerate(row_data):
-                if row_num == 0:
-                    overview_ws.write(row_num, col_num, cell_data, header_format)
-                elif col_num == 1 and isinstance(cell_data, (int, float)) and row_num == 4:
-                    overview_ws.write(row_num, col_num, cell_data, money_format)
-                else:
-                    overview_ws.write(row_num, col_num, cell_data)
-
-    @action(detail=False, methods=['get'])
-    def export_pdf(self, request):
-        """Export analytics to PDF"""
-        if request.user.role != 'organization':
-            return Response({'error': 'Unauthorized'}, status=status.HTTP_403_FORBIDDEN)
-
-        try:
-            profile = self.get_organization_profile(request.user)
-            start_date, end_date, period = self.get_date_range(request)
-
-            # Create PDF
-            buffer = BytesIO()
-            doc = SimpleDocTemplate(buffer, pagesize=A4)
-            story = []
-            styles = getSampleStyleSheet()
-
-            # Title and content
-            story.append(Paragraph(f"Analytics Report - {profile.org_name}", styles['Title']))
-            story.append(Spacer(1, 12))
-            story.append(Paragraph(f"Period: {start_date.strftime('%Y-%m-%d')} to {end_date.strftime('%Y-%m-%d')}", styles['Normal']))
-
-            doc.build(story)
-            buffer.seek(0)
-
-            response = HttpResponse(buffer.read(), content_type='application/pdf')
-            filename = f"analytics_{profile.org_name}_{period}.pdf"
-            response['Content-Disposition'] = f'attachment; filename="{filename}"'
-            
-            return response
-
-        except Exception as e:
-            return Response(
-                {'error': 'Failed to export PDF', 'details': str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
 
 class OrganizationDashboardViewSet(viewsets.ModelViewSet):
     """

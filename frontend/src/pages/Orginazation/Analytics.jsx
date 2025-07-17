@@ -88,44 +88,6 @@ const Analytics = () => {
     }
   };
 
-  const handleExport = async (format) => {
-    try {
-      setExporting(prev => ({ ...prev, [format]: true }));
-
-      // Prepare parameters
-      const params = { period };
-      
-      if (period === 'custom' && customDateRange.start && customDateRange.end) {
-        params.start_date = customDateRange.start;
-        params.end_date = customDateRange.end;
-      }
-
-      console.log(`Exporting ${format} with params:`, params);
-
-      let response;
-      let defaultFilename;
-      
-      if (format === 'excel') {
-        response = await AnalyticsAPI.exportAnalyticsExcel(params);
-        defaultFilename = `analytics_${period}_${new Date().toISOString().split('T')[0]}.xlsx`;
-      } else {
-        response = await AnalyticsAPI.exportAnalyticsPDF(params);
-        defaultFilename = `analytics_${period}_${new Date().toISOString().split('T')[0]}.pdf`;
-      }
-
-      // Download the file
-      await AnalyticsAPI.downloadFile(response, defaultFilename);
-      
-      console.log(`${format} export completed successfully`);
-
-    } catch (err) {
-      console.error(`Export ${format} error:`, err);
-      setError(`Failed to export ${format}: ${err.message}`);
-    } finally {
-      setExporting(prev => ({ ...prev, [format]: false }));
-    }
-  };
-
   const formatCurrency = (amount) => {
     return AnalyticsAPI.formatCurrency(amount);
   };
@@ -197,7 +159,7 @@ const Analytics = () => {
 
   if (!analyticsData) return null;
 
-  const { overview, campaign_performance, donation_trends, top_donors, campaign_status, payment_methods } = analyticsData;
+  const { overview, campaign_performance, donation_trends, top_donors, campaign_health } = analyticsData;
 
   return (
     <div className="space-y-6">
@@ -215,32 +177,6 @@ const Analytics = () => {
           </div>
           
           <div className="flex items-center space-x-3 mt-4 sm:mt-0">
-            {/* Export Buttons */}
-            <button
-              onClick={() => handleExport('excel')}
-              disabled={exporting.excel}
-              className="flex items-center px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50"
-            >
-              {exporting.excel ? (
-                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <FileSpreadsheet className="h-4 w-4 mr-2" />
-              )}
-              Excel
-            </button>
-            <button
-              onClick={() => handleExport('pdf')}
-              disabled={exporting.pdf}
-              className="flex items-center px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
-            >
-              {exporting.pdf ? (
-                <RefreshCw className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <FileText className="h-4 w-4 mr-2" />
-              )}
-              PDF
-            </button>
-
             {/* Filter Toggle */}
             <button
               onClick={() => setShowFilters(!showFilters)}
@@ -325,252 +261,212 @@ const Analytics = () => {
         )}
 
         {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-lg border border-gray-200 p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-lg bg-blue-100">
-              <DollarSign className="w-5 h-5 text-blue-600" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="bg-white rounded-lg border border-gray-200 p-5">
+            <div className="flex items-center">
+              <div className="p-2 rounded-lg bg-blue-100">
+                <DollarSign className="w-5 h-5 text-blue-600" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-600">Total Raised</p>
+                <p className="text-xl font-semibold text-gray-900">{formatCurrency(overview.period_raised)}</p>
+                <div className="flex items-center mt-1">
+                  {overview.growth_rate >= 0 ? (
+                    <ArrowUp className="h-3 w-3 text-green-500 mr-1" />
+                  ) : (
+                    <ArrowDown className="h-3 w-3 text-red-500 mr-1" />
+                  )}
+                  <span className={`text-xs ${overview.growth_rate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                    {Math.abs(overview.growth_rate)}% vs previous
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="ml-3">
-              <p className="text-sm text-gray-600">Total Raised</p>
-              <p className="text-xl font-semibold text-gray-900">{formatCurrency(overview.period_raised)}</p>
-              <div className="flex items-center mt-1">
-                {overview.growth_rate >= 0 ? (
-                  <ArrowUp className="h-3 w-3 text-green-500 mr-1" />
-                ) : (
-                  <ArrowDown className="h-3 w-3 text-red-500 mr-1" />
-                )}
-                <span className={`text-xs ${overview.growth_rate >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-                  {Math.abs(overview.growth_rate)}% vs previous
-                </span>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-5">
+            <div className="flex items-center">
+              <div className="p-2 rounded-lg bg-green-100">
+                <Activity className="w-5 h-5 text-green-600" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-600">Donations</p>
+                <p className="text-xl font-semibold text-gray-900">{overview.period_donations}</p>
+                <p className="text-xs text-gray-500 mt-1">Avg: {formatCurrency(overview.avg_donation)}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-5">
+            <div className="flex items-center">
+              <div className="p-2 rounded-lg bg-purple-100">
+                <Users className="w-5 h-5 text-purple-600" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-600">Unique Donors</p>
+                <p className="text-xl font-semibold text-gray-900">{overview.unique_donors}</p>
+                <p className="text-xs text-gray-500 mt-1">This period</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg border border-gray-200 p-5">
+            <div className="flex items-center">
+              <div className="p-2 rounded-lg bg-orange-100">
+                <Target className="w-5 h-5 text-orange-600" />
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-gray-600">Active Campaigns</p>
+                <p className="text-xl font-semibold text-gray-900">{overview.total_campaigns}</p>
+                <p className="text-xs text-gray-500 mt-1">Total campaigns</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-lg bg-green-100">
-              <Activity className="w-5 h-5 text-green-600" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-gray-600">Donations</p>
-              <p className="text-xl font-semibold text-gray-900">{overview.period_donations}</p>
-              <p className="text-xs text-gray-500 mt-1">Avg: {formatCurrency(overview.avg_donation)}</p>
+        {/* Charts Grid */}
+        <div className="grid grid-cols-1 gap-8 mb-8">
+          {/* Donation Trends */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <TrendingUp className="h-5 w-5 text-blue-600 mr-2" />
+              Donation Trends ({donation_trends.label})
+            </h3>
+            <div className="h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={donation_trends.data}>
+                  <defs>
+                    <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8}/>
+                      <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
+                  <XAxis 
+                    dataKey="date" 
+                    tickFormatter={formatDate}
+                    className="text-xs"
+                  />
+                  <YAxis 
+                    tickFormatter={(value) => formatCurrency(value)}
+                    className="text-xs"
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Area 
+                    type="monotone" 
+                    dataKey="amount" 
+                    stroke="#3B82F6" 
+                    fillOpacity={1} 
+                    fill="url(#colorAmount)" 
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
           </div>
-        </div>
 
-        <div className="bg-white rounded-lg border border-gray-200 p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-lg bg-purple-100">
-              <Users className="w-5 h-5 text-purple-600" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-gray-600">Unique Donors</p>
-              <p className="text-xl font-semibold text-gray-900">{overview.unique_donors}</p>
-              <p className="text-xs text-gray-500 mt-1">This period</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border border-gray-200 p-5">
-          <div className="flex items-center">
-            <div className="p-2 rounded-lg bg-orange-100">
-              <Target className="w-5 h-5 text-orange-600" />
-            </div>
-            <div className="ml-3">
-              <p className="text-sm text-gray-600">Active Campaigns</p>
-              <p className="text-xl font-semibold text-gray-900">{overview.total_campaigns}</p>
-              <p className="text-xs text-gray-500 mt-1">Total campaigns</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Donation Trends */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <TrendingUp className="h-5 w-5 text-blue-600 mr-2" />
-            Donation Trends ({donation_trends.label})
-          </h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={donation_trends.data}>
-                <defs>
-                  <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3B82F6" stopOpacity={0.8}/>
-                    <stop offset="95%" stopColor="#3B82F6" stopOpacity={0.1}/>
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis 
-                  dataKey="date" 
-                  tickFormatter={formatDate}
-                  className="text-xs"
-                />
-                <YAxis 
-                  tickFormatter={(value) => formatCurrency(value)}
-                  className="text-xs"
-                />
-                <Tooltip content={<CustomTooltip />} />
-                <Area 
-                  type="monotone" 
-                  dataKey="amount" 
-                  stroke="#3B82F6" 
-                  fillOpacity={1} 
-                  fill="url(#colorAmount)" 
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Campaign Status */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Activity className="h-5 w-5 text-blue-600 mr-2" />
-            Campaign Status
-          </h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={campaign_status}
-                  cx="50%"
-                  cy="50%"
-                  labelLine={false}
-                  label={({ name, value, percent }) => `${name}: ${value} (${(percent * 100).toFixed(0)}%)`}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                >
-                  {campaign_status.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Campaign Performance and Top Donors */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Campaign Performance */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Award className="h-5 w-5 text-blue-600 mr-2" />
-            Top Campaign Performance
-          </h3>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={campaign_performance} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" className="opacity-30" />
-                <XAxis type="number" tickFormatter={(value) => formatCurrency(value)} className="text-xs" />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  width={120}
-                  tick={{ fontSize: 12 }}
-                  tickFormatter={(value) => value.length > 15 ? value.substring(0, 15) + '...' : value}
-                />
-                <Tooltip 
-                  formatter={(value, name) => [formatCurrency(value), name === 'total_raised' ? 'Raised' : 'Target']}
-                  labelFormatter={(label) => `Campaign: ${label}`}
-                />
-                <Bar dataKey="total_raised" fill="#3B82F6" name="Raised" />
-                <Bar dataKey="target" fill="#E5E7EB" name="Target" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Top Donors */}
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Users className="h-5 w-5 text-blue-600 mr-2" />
-            Top Donors
-          </h3>
-          <div className="space-y-4">
-            {top_donors.map((donor, index) => (
-              <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                <div className="flex items-center">
-                  <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
-                    <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-gray-900">{donor.name}</p>
-                    <p className="text-sm text-gray-500">{donor.donation_count} donations</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-semibold text-gray-900">{formatCurrency(donor.total_donated)}</p>
-                </div>
+          {/* Campaign Performance */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Award className="h-5 w-5 text-blue-600 mr-2" />
+              Top Campaign Performance
+            </h3>
+            {campaign_performance && campaign_performance.length > 0 ? (
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={campaign_performance}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 60,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis 
+                      dataKey="name" 
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                      fontSize={12}
+                      tickFormatter={(value) => value.length > 15 ? value.substring(0, 15) + '...' : value}
+                    />
+                    <YAxis 
+                      tickFormatter={(value) => formatCurrency(value)}
+                      fontSize={12}
+                    />
+                    <Tooltip 
+                      formatter={(value, name) => [
+                        formatCurrency(value), 
+                        name === 'total_raised' ? 'Amount Raised' : 'Target Amount'
+                      ]}
+                      labelFormatter={(label) => `Campaign: ${label}`}
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #e5e7eb', 
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
+                      }}
+                    />
+                    <Legend />
+                    <Bar 
+                      dataKey="total_raised" 
+                      stackId="a" 
+                      fill="#8884d8" 
+                      name="Amount Raised"
+                    />
+                    <Bar 
+                      dataKey="target" 
+                      stackId="a" 
+                      fill="#82ca9d" 
+                      name="Target Amount"
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-            {top_donors.length === 0 && (
-              <div className="text-center py-8 text-gray-500">
-                <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>No donors in this period</p>
+            ) : (
+              <div className="h-80 flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <Award className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p className="text-lg font-medium mb-2">No Campaign Data</p>
+                  <p className="text-sm">Create campaigns to see performance metrics</p>
+                </div>
               </div>
             )}
           </div>
-        </div>
-      </div>
 
-      {/* Payment Methods */}
-      {payment_methods && payment_methods.length > 0 && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-            <Activity className="h-5 w-5 text-blue-600 mr-2" />
-            Payment Methods Distribution
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="h-64">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={payment_methods}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    label={({ name, value }) => `${name}: ${value}`}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {payment_methods.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="space-y-3">
-              {payment_methods.map((method, index) => (
-                <div key={index} className="flex items-center justify-between">
+          {/* Top Donors */}
+          <div className="bg-white rounded-lg border border-gray-200 p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Users className="h-5 w-5 text-blue-600 mr-2" />
+              Top Donors
+            </h3>
+            <div className="space-y-4">
+              {top_donors.map((donor, index) => (
+                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                   <div className="flex items-center">
-                    <div 
-                      className="w-4 h-4 rounded mr-3"
-                      style={{ backgroundColor: method.color }}
-                    ></div>
-                    <span className="text-gray-700">{method.name}</span>
+                    <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                      <span className="text-sm font-medium text-blue-600">#{index + 1}</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">{donor.name}</p>
+                      <p className="text-sm text-gray-500">{donor.donation_count} donations</p>
+                    </div>
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">{method.value} donations</p>
-                    <p className="text-sm text-gray-500">{formatCurrency(method.amount)}</p>
+                    <p className="font-semibold text-gray-900">{formatCurrency(donor.total_donated)}</p>
                   </div>
                 </div>
-              
               ))}
+              {top_donors.length === 0 && (
+                <div className="text-center py-8 text-gray-500">
+                  <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                  <p>No donors in this period</p>
+                </div>
+              )}
             </div>
           </div>
-        </div>)}
+        </div>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ import OrganizationProfile from './pages/Orginazation/Profile/OrganizationProfil
 import DonationPaymentPage from './pages/User/DonationPaymentPage';
 import DonationSuccessPage from './components/ui/DonationSuccessPage';
 import FacebookOAuthCallback from './pages/FacebookOAuthCallback';
-import VolunteerPage from './pages/User/VolunteerPage';
 import UserProfilePage from './pages/User/UserProfilePage';
 import OrganizationDashboard from './pages/Orginazation/Home/OrganizationDashboard';
 import CampaignEdit from './pages/Orginazation/CampaignEdit';
@@ -114,7 +113,6 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/campaign/:campaignId/donate/:donationAmount" element={<DonationPaymentPage />} />
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
-        <Route path="/volunteer" element={<VolunteerPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
 
         <Route path="/auth/facebook/callback" element={<FacebookOAuthCallback />} />

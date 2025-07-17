@@ -3,7 +3,7 @@ from .models import Campaign, Category, Donation, DonationWebhookLog, File
 from .serializers import CampaignSerializer, CategorySerializer, FileSerializer, DonationSerializer, DonationCreateSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Count, Case, When, Q
+from django.db.models import Count, Case, When, Sum, Count, Q
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import JsonResponse, HttpResponse
@@ -17,10 +17,11 @@ from rest_framework import parsers
 from .services.payment_service import payment_client
 from django.utils import timezone
 from .utils.facebook_live import FacebookLiveAPI, update_campaign_live_status
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes,authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from django.utils.decorators import method_decorator
-
+from datetime import datetime, timedelta
+from accounts.authentication import SupabaseAuthentication
 
 logger = logging.getLogger(__name__)
 
@@ -670,3 +671,143 @@ def payment_health_check(request):
             'error': 'Could not connect to payment service',
             'timestamp': timezone.now().isoformat()
         }, status=503)
+    
+@api_view(['GET'])
+@authentication_classes([SupabaseAuthentication])
+@permission_classes([IsAuthenticated])
+def user_donations(request):
+    """
+    Get user's donation history with filtering, sorting, and statistics
+    """
+    user = request.user
+    
+    # Base queryset - just select_related for campaign
+    queryset = Donation.objects.filter(donor=user).select_related('campaign')
+    
+    # Apply filters
+    status_filter = request.query_params.get('status')
+    if status_filter:
+        queryset = queryset.filter(status=status_filter)
+    
+    campaign_filter = request.query_params.get('campaign')
+    if campaign_filter:
+        queryset = queryset.filter(campaign_id=campaign_filter)
+    
+    # Date range filtering
+    start_date = request.query_params.get('start_date')
+    end_date = request.query_params.get('end_date')
+    
+    if start_date:
+        try:
+            start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+            queryset = queryset.filter(created_at__date__gte=start_date)
+        except ValueError:
+            return Response(
+                {'error': 'Invalid start_date format. Use YYYY-MM-DD'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+    
+    if end_date:
+        try:
+            end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
+            queryset = queryset.filter(created_at__date__lte=end_date)
+        except ValueError:
+            return Response(
+                {'error': 'Invalid end_date format. Use YYYY-MM-DD'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+    
+    # Search functionality
+    search = request.query_params.get('search')
+    if search:
+        queryset = queryset.filter(
+            Q(campaign__name__icontains=search) |
+            Q(message__icontains=search)
+        )
+    
+    # Sorting
+    sort_field = request.query_params.get('sort', '-created_at')
+    valid_sort_fields = ['created_at', '-created_at', 'amount', '-amount', 'campaign__name', '-campaign__name']
+    
+    if sort_field in valid_sort_fields:
+        queryset = queryset.order_by(sort_field)
+    else:
+        queryset = queryset.order_by('-created_at')
+    
+    # Calculate statistics
+    stats = queryset.aggregate(
+        total_donated=Sum('amount'),
+        donation_count=Count('id'),
+        completed_donations=Count('id', filter=Q(status='completed')),
+        pending_donations=Count('id', filter=Q(status='pending')),
+        failed_donations=Count('id', filter=Q(status='failed')),
+        campaigns_supported=Count('campaign', distinct=True)
+    )
+    
+    # Calculate average donation (avoid division by zero)
+    stats['average_donation'] = (
+        stats['total_donated'] / stats['donation_count'] 
+        if stats['donation_count'] > 0 else 0
+    )
+    
+    # Pagination
+    page = int(request.query_params.get('page', 1))
+    limit = int(request.query_params.get('limit', 20))
+    
+    # Ensure reasonable limits
+    if limit > 100:
+        limit = 100
+    if limit < 1:
+        limit = 20
+    
+    offset = (page - 1) * limit
+    total_count = queryset.count()
+    donations = queryset[offset:offset + limit]
+    
+    # Serialize data
+    serializer = DonationSerializer(donations, many=True)
+    
+    return Response({
+        'donations': serializer.data,
+        'statistics': {
+            'total_donated': str(stats['total_donated'] or 0),
+            'donation_count': stats['donation_count'],
+            'completed_donations': stats['completed_donations'],
+            'pending_donations': stats['pending_donations'],
+            'failed_donations': stats['failed_donations'],
+            'campaigns_supported': stats['campaigns_supported'],
+            'average_donation': str(stats['average_donation'] or 0)
+        },
+        'pagination': {
+            'page': page,
+            'limit': limit,
+            'total_count': total_count,
+            'total_pages': (total_count + limit - 1) // limit,
+            'has_next': offset + limit < total_count,
+            'has_previous': page > 1
+        }
+    })
+
+@api_view(['GET'])
+@authentication_classes([SupabaseAuthentication])
+@permission_classes([IsAuthenticated])
+def donation_summary(request):
+    """
+    Optimized donation summary - much faster than full donation list
+    """
+    user = request.user
+    
+    # Use only aggregations - no individual record fetching
+    summary = Donation.objects.filter(donor=user).aggregate(
+        total_donated=Sum('amount'),
+        total_donations=Count('id'),
+        campaigns_supported=Count('campaign', distinct=True)
+    )
+    
+    return Response({
+        'summary': {
+            'total_donated': str(summary['total_donated'] or 0),
+            'total_donations': summary['total_donations'],
+            'campaigns_supported': summary['campaigns_supported']
+        }
+    }, status=status.HTTP_200_OK)

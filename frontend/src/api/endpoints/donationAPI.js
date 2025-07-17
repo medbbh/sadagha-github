@@ -1,4 +1,4 @@
-// api/endpoints/donationAPI.js - Fixed for your axios config
+// api/endpoints/donationAPI.js - Updated with user donation functions
 import api from '../axiosConfig'; // Your axios instance
 
 export const DonationService = {
@@ -58,7 +58,53 @@ export const DonationService = {
     } catch (error) {
       return { healthy: false };
     }
-  }
+  },
+
+  // ============ NEW USER DONATION FUNCTIONS ============
+
+  // Get user's donation history with filtering and pagination
+  getUserDonations: async (params = {}) => {
+    try {
+      const queryParams = new URLSearchParams();
+      
+      // Add query parameters
+      if (params.campaign) queryParams.append('campaign', params.campaign);
+      if (params.start_date) queryParams.append('start_date', params.start_date);
+      if (params.end_date) queryParams.append('end_date', params.end_date);
+      if (params.search) queryParams.append('search', params.search);
+      if (params.sort) queryParams.append('sort', params.sort);
+      if (params.page) queryParams.append('page', params.page);
+      if (params.limit) queryParams.append('limit', params.limit);
+
+      const data = await api.get(`/donations/my-donations/?${queryParams}`);
+      return data; // Your axios returns data directly
+    } catch (error) {
+      console.error('DonationService: Error fetching user donations:', error);
+      throw new Error(error.message || 'Failed to fetch donations');
+    }
+  },
+
+  // Get donation summary for dashboard
+  getDonationSummary: async () => {
+    try {
+      const data = await api.get('/donations/summary/');
+      return data;
+    } catch (error) {
+      console.error('DonationService: Error fetching donation summary:', error);
+      throw new Error(error.message || 'Failed to fetch donation summary');
+    }
+  },
+
 };
+
+// Export individual functions for convenience (keeping backward compatibility)
+export const createDonation = DonationService.createDonation;
+export const getPaymentStatus = DonationService.getPaymentStatus;
+export const getCampaignDonations = DonationService.getCampaignDonations;
+export const checkPaymentServiceHealth = DonationService.checkPaymentServiceHealth;
+
+// Export new user donation functions
+export const fetchUserDonations = DonationService.getUserDonations;
+export const fetchDonationSummary = DonationService.getDonationSummary;
 
 export default DonationService;

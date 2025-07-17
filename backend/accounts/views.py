@@ -10,6 +10,7 @@ from rest_framework.decorators import action
 from .serializers import UserProfileSerializer  # Add this import
 from django.db.models import Prefetch
 from campaign.models import Donation
+from .serializers import UserUpdateSerializer
 
 @api_view(["GET"])
 @authentication_classes([SupabaseAuthentication])
@@ -173,14 +174,15 @@ def check_user_exists(request):
     })
 
 
-# Add this action method to your existing views.py (wherever you have your user-related views)
-@api_view(['GET'])
+# User Profile View
+@api_view(['GET', 'PUT']) 
 @authentication_classes([SupabaseAuthentication])
 @permission_classes([IsAuthenticated])
 def user_profile(request):
     """
-    Get comprehensive user profile including donations, volunteer info, and statistics
-    GET /api/auth/profile/
+    Get or update comprehensive user profile
+    GET /api/auth/profile/ - Get profile
+    PUT /api/auth/profile/ - Update profile
     """
     user = request.user
     
@@ -191,26 +193,48 @@ def user_profile(request):
             status=status.HTTP_403_FORBIDDEN
         )
     
-    try:
-        # Optimize queries with select_related and prefetch_related
-        user_with_data = User.objects.select_related('volunteer_profile').prefetch_related(
-            Prefetch(
-                'donations',
-                queryset=Donation.objects.select_related('campaign').order_by('-created_at')
+    if request.method == 'GET':
+        try:
+            # Your existing GET logic
+            user_with_data = User.objects.select_related('volunteer_profile').prefetch_related(
+                Prefetch(
+                    'donations',
+                    queryset=Donation.objects.select_related('campaign').order_by('-created_at')
+                )
+            ).get(id=user.id)
+            
+            serializer = UserProfileSerializer(user_with_data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'User not found'}, 
+                status=status.HTTP_404_NOT_FOUND
             )
-        ).get(id=user.id)
-        
-        serializer = UserProfileSerializer(user_with_data)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-        
-    except User.DoesNotExist:
-        return Response(
-            {'error': 'User not found'}, 
-            status=status.HTTP_404_NOT_FOUND
-        )
-    except Exception as e:
-        print(f"Error in user_profile: {str(e)}")
-        return Response(
-            {'error': 'An error occurred while fetching profile'}, 
-            status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        )
+    
+    elif request.method == 'PUT':
+        try:
+            # Update user profile
+            serializer = UserUpdateSerializer(user, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                
+                # Return updated profile data
+                user_with_data = User.objects.select_related('volunteer_profile').prefetch_related(
+                    Prefetch(
+                        'donations',
+                        queryset=Donation.objects.select_related('campaign').order_by('-created_at')
+                    )
+                ).get(id=user.id)
+                
+                response_serializer = UserProfileSerializer(user_with_data)
+                return Response(response_serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Exception as e:
+            print(f"Error in PUT: {str(e)}")  # Debug line
+            return Response(
+                {'error': str(e)}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

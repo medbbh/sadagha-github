@@ -62,12 +62,6 @@ export default function OrganizationLayout() {
       icon: BarChart3,
       current: location.pathname.startsWith('/organization/analytics')
     },
-    {
-      name: 'Settings',
-      href: '/organization/settings',
-      icon: Settings,
-      current: location.pathname.startsWith('/organization/settings')
-    }
   ];
 
   const currentPageName = navigationItems.find(item => item.current)?.name || 'Dashboard';
