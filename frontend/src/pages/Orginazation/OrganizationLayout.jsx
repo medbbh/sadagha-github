@@ -4,7 +4,8 @@ import {
   Home, 
   FileText, 
   BarChart3, 
-  Settings
+  Settings,
+  Users
 } from "lucide-react";
 import { supabase } from "../../supabaseClient";
 import { useAuth } from "../../contexts/AuthContext";
@@ -61,6 +62,12 @@ export default function OrganizationLayout() {
       href: '/organization/analytics',
       icon: BarChart3,
       current: location.pathname.startsWith('/organization/analytics')
+    },
+    {
+      name: 'Volunteers',
+      href: '/organization/volunteers',
+      icon: Users,
+      current: location.pathname.startsWith('/organization/volunteers')
     },
   ];
 

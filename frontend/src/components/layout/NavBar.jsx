@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Search, Menu, X, User, Heart, ChevronRight, Plus } from 'lucide-react';
+import { Search, Menu, X, User, Heart, ChevronRight, Plus, HandHeart  } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../supabaseClient';
 import { useNavigate, Link } from 'react-router-dom';
 import { getFavoriteCampaigns, getCampaignsByIds } from '../../api/endpoints/CampaignAPI';
+import NotificationBadge from '../../pages/User/NotificationBadge';
+import { fetchMyVolunteerProfile } from '../../api/endpoints/VolunteerAPI';
 
 export default function NavBar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +18,10 @@ export default function NavBar() {
   const [displayedCount, setDisplayedCount] = useState(1); // Show 5 initially
   const [totalFavorites, setTotalFavorites] = useState(0);
   const { user, logout: authLogout } = useAuth();
+  const [hasVolunteerProfile, setHasVolunteerProfile] = useState(false);
+
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +30,23 @@ export default function NavBar() {
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+
+  // Check if user has volunteer profile
+  useEffect(() => {
+    const checkVolunteerProfile = async () => {
+      try {
+        const response = await fetchMyVolunteerProfile();
+        if (response) {
+          setHasVolunteerProfile(true);
+          
+        }
+      } catch (err) {
+        setHasVolunteerProfile(false);
+      }
+    };
+    checkVolunteerProfile();
   }, []);
 
   const handleLogout = async () => {
@@ -136,30 +158,28 @@ export default function NavBar() {
 
             {/* Centered Navigation Links - Desktop */}
             <div className="hidden md:flex items-center space-x-8 mx-8 flex-1 justify-center">
-              <a 
-                href="/explore" 
+              <Link
+                to="/explore" 
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
               >
                 Explore
-              </a>
-              <a 
-                href="/volunteer" 
-                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
+              </Link>
+              
+              <Link 
+                to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
+                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
               >
-                Volunteer
-              </a>
-              <a 
-                href="/start-campaign" 
-                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
-              >
-                Start Campaign
-              </a>
-              <a 
-                href="/how-it-works" 
+                <HandHeart className="w-4 h-4" />
+                <span>Volunteer</span>
+                <NotificationBadge />
+              </Link>
+
+              <Link 
+                to="/how-it-works" 
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
               >
                 How It Works
-              </a>
+              </Link>
             </div>
 
             {/* Right Section - Conditional rendering based on auth state */}

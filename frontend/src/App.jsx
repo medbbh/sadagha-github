@@ -28,6 +28,13 @@ import UserProfilePage from './pages/User/UserProfilePage';
 import OrganizationDashboard from './pages/Orginazation/Home/OrganizationDashboard';
 import CampaignEdit from './pages/Orginazation/CampaignEdit';
 import Analytics from './pages/Orginazation/Analytics';
+import VolunteerRequestsList from './pages/Orginazation/VolunteerRequestsList';
+import VolunteerDashboard from './pages/User/VolunteerDashboard';
+import CreateVolunteerRequest from './pages/Orginazation/CreateVolunteerRequest';
+import VolunteerRequestDetail from './pages/Orginazation/VolunteerRequestDetail';
+import VolunteerMatching from './pages/Orginazation/VolunteerMatching';
+import EditVolunteerRequest from './pages/Orginazation/EditVolunteerRequest';
+import VolunteerInvitations from './pages/User/VolunteerInvitations';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
@@ -115,7 +122,11 @@ function App() {
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
 
+        <Route path="/volunteer" element={<VolunteerDashboard />} />
+        <Route path="/volunteer/invitations" element={<VolunteerInvitations />} />
+
         <Route path="/auth/facebook/callback" element={<FacebookOAuthCallback />} />
+
 
 
      </Route>
@@ -133,7 +144,13 @@ function App() {
         <Route path="/organization/campaigns/:campaignId/edit" element={<CampaignEdit />} />
         <Route path="/organization/profile" element={<OrganizationProfile />} />
         <Route path="/organization/analytics" element={<Analytics />} />
-        R
+
+        <Route path="/organization/volunteers" element={<VolunteerRequestsList />} />
+        <Route path="/organization/volunteers/requests" element={<VolunteerRequestsList />} />
+        <Route path="/organization/volunteers/requests/create" element={<CreateVolunteerRequest />} />
+        <Route path="/organization/volunteers/requests/:requestId/edit" element={<EditVolunteerRequest />} />
+        <Route path="/organization/volunteers/requests/:requestId" element={<VolunteerRequestDetail />} />
+        <Route path="/organization/volunteers/requests/:requestId/matches" element={<VolunteerMatching />} />     
       </Route>
 
       <Route path="*" element={<NotFound />} />

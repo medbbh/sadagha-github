@@ -17,6 +17,8 @@ django-extensions = "*"
 django-filter = "*"
 xlsxwriter = "==3.1.9"
 reportlab = "==4.0.7"
+channels = "*"
+channels-redis = "*"
 
 [dev-packages]
 

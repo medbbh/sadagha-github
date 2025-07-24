@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'campaign',
     'organizations',
     'volunteers',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -214,3 +215,15 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'accounts.User'
+
+# Channels
+ASGI_APPLICATION = 'sadagha.routing.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

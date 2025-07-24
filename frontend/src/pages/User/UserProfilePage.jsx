@@ -9,9 +9,11 @@ import VolunteerTab from '../../components/ui/VolunteerTab';
 import DonationsTab from '../../components/ui/DonationsTab';
 import SettingsTab from '../../components/ui/SettingsTab';
 import { fetchUserProfile, updateUserProfile } from '../../api/endpoints/UserAPI';
+import { useSearchParams } from 'react-router-dom';
 
 const UserProfilePage = () => {
-  const [activeTab, setActiveTab] = useState('profile');
+  const [searchParams] = useSearchParams();
+  const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   
