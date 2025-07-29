@@ -5,6 +5,7 @@ from accounts.models import User
 from django.contrib.auth.models import AnonymousUser
 
 SUPABASE_JWT_SECRET = settings.SUPABASE_JWT_SECRET
+    
 
 class SupabaseAuthentication(authentication.BaseAuthentication):
     """
@@ -83,3 +84,12 @@ class SupabaseRegistrationAuthentication(authentication.BaseAuthentication):
         except Exception as e:
             print(f"Registration authentication error: {str(e)}")
             return None
+
+
+class SupabaseAdminAuthentication(SupabaseAuthentication):
+    """Admin-specific authentication"""
+    def authenticate(self, request):
+        user, auth = super().authenticate(request)
+        if user and (user.role == 'admin' or user.is_platform_admin):
+            return (user, auth)
+        return None

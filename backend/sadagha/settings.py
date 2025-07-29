@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'organizations',
     'volunteers',
     'channels',
+    'admin_panel',
 ]
 
 MIDDLEWARE = [
