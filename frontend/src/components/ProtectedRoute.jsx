@@ -65,6 +65,8 @@ const RoleBasedRedirect = () => {
     return <Navigate to="/organization" replace />;
   } else if (role === 'user') {
     return <Navigate to="/feed" replace />;
+  } else if (role === 'admin') {
+    return <Navigate to="/admin" replace />;
   } else {
     return <Navigate to="/confirm-role" replace />;
   }

@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Count, Sum, Q, Avg, F, Case, When, FloatField, Max, Min
+from django.db.models import Count, Sum, Q, Avg, F, Case, When, FloatField, Max, Min, ExpressionWrapper, DurationField
 from django.utils import timezone
 from datetime import timedelta
 from accounts.models import User
@@ -1513,14 +1513,12 @@ class FinancialManagementService:
             
             # Calculate platform fees (assuming 2.5% platform fee)
             total_amount = day_donations['total_amount'] or 0
-            platform_fees = total_amount * 0.025  # 2.5% fee
             
             daily_revenue.append({
                 'date': current_date.isoformat(),
                 'donation_count': day_donations['count'],
                 'total_donations': str(total_amount),
-                'platform_fees': str(round(platform_fees, 2)),
-                'net_to_campaigns': str(round(total_amount - platform_fees, 2))
+                'net_to_campaigns': str(round(total_amount, 2))
             })
             
             current_date += timedelta(days=1)
@@ -1537,7 +1535,6 @@ class FinancialManagementService:
         )
         
         total_amount = period_totals['total_amount'] or 0
-        total_platform_fees = total_amount * 0.025
         
         return {
             'period': {
@@ -1549,8 +1546,7 @@ class FinancialManagementService:
                 'total_donations': period_totals['total_donations'],
                 'total_amount': str(total_amount),
                 'average_donation': str(round(period_totals['avg_donation'] or 0, 2)),
-                'total_platform_fees': str(round(total_platform_fees, 2)),
-                'net_to_campaigns': str(round(total_amount - total_platform_fees, 2))
+                'net_to_campaigns': str(round(total_amount, 2))
             },
             'daily_breakdown': daily_revenue[-7:] if len(daily_revenue) > 7 else daily_revenue  # Last 7 days for response size
         }
@@ -1755,45 +1751,6 @@ class FinancialManagementService:
             'total_donations_period': total_donations
         }
     
-    @staticmethod
-    def calculate_platform_fees(days=30):
-        """Calculate platform fees and revenue"""
-        cutoff_date = timezone.now() - timedelta(days=days)
-        
-        completed_donations = Donation.objects.filter(
-            status='completed',
-            created_at__gte=cutoff_date
-        ).aggregate(
-            count=Count('id'),
-            total_amount=Sum('amount')
-        )
-        
-        total_amount = completed_donations['total_amount'] or 0
-        
-        # Assuming different fee structures
-        platform_fee_rate = 0.025  # 2.5%
-        payment_gateway_fee_rate = 0.015  # 1.5%
-        
-        platform_fees = total_amount * platform_fee_rate
-        gateway_fees = total_amount * payment_gateway_fee_rate
-        net_revenue = platform_fees - gateway_fees  # Platform's net revenue
-        
-        return {
-            'period_days': days,
-            'transaction_volume': {
-                'count': completed_donations['count'],
-                'total_amount': str(total_amount)
-            },
-            'fee_breakdown': {
-                'platform_fees': str(round(platform_fees, 2)),
-                'gateway_fees': str(round(gateway_fees, 2)),
-                'net_platform_revenue': str(round(net_revenue, 2))
-            },
-            'fee_rates': {
-                'platform_fee_rate': f"{platform_fee_rate * 100}%",
-                'gateway_fee_rate': f"{payment_gateway_fee_rate * 100}%"
-            }
-        }
     
     @staticmethod
     def log_admin_action(admin_user, action_type, target_donation=None, description="", metadata=None):
@@ -1843,13 +1800,36 @@ class FraudDetectionService:
             })
         
         # Very fast processing times (potential automated/bot donations)
-        fast_donations = Donation.objects.filter(
+        # fast_donations = Donation.objects.annotate(
+        #     processing_time=ExpressionWrapper(
+        #         F('completed_at') - F('created_at'),
+        #         output_field=DurationField()
+        #     )
+        # ).annotate(
+        #     processing_seconds=ExtractEpoch(F('processing_time'))
+        # ).filter(
+        #     processing_seconds__lt=10,
+        #     status='completed',
+        #     completed_at__isnull=False,
+        #     created_at__gte=now - timedelta(days=1)
+        # ).select_related('donor', 'campaign')
+
+        now = timezone.now()
+        one_day_ago = now - timedelta(days=1)
+
+        # Fetch donations completed in last 1 day with non-null completed_at
+        recent_donations = Donation.objects.filter(
             status='completed',
             completed_at__isnull=False,
-            created_at__gte=now - timedelta(days=1)
-        ).extra(
-            where=["EXTRACT(EPOCH FROM (completed_at - created_at)) < 10"]  # Less than 10 seconds
+            created_at__gte=one_day_ago
         ).select_related('donor', 'campaign')
+
+        fast_donations = []
+
+        for donation in recent_donations:
+            processing_time = donation.completed_at - donation.created_at
+            if processing_time < timedelta(seconds=10):  # less than 10 seconds
+                fast_donations.append(donation)
         
         for donation in fast_donations:
             suspicious_transactions.append({

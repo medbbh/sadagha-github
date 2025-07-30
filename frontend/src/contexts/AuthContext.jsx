@@ -40,6 +40,51 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Add this function inside AuthProvider component
+  const syncUserRole = useCallback(async () => {
+    try {
+      const token = await getToken();
+      if (!token) return null;
+
+      // Use your existing check_user_exists endpoint
+      const response = await axios.post(
+        `${import.meta.env.VITE_APP_API_BASE_URL}/auth/check-user/`,
+        {},
+        {
+          headers: { 'Authorization': `Bearer ${token}` }
+        }
+      );
+
+      const backendRole = response.data.user?.role;
+      const supabaseRole = user?.user_metadata?.role;
+
+      console.log('🔄 Role sync check:', { backendRole, supabaseRole });
+
+      // If roles don't match, update Supabase metadata
+      if (backendRole && backendRole !== supabaseRole) {
+        console.log('🔄 Syncing role from backend to Supabase...');
+        
+        const { error } = await supabase.auth.updateUser({
+          data: { role: backendRole }
+        });
+
+        if (!error) {
+          // Refresh session to get updated metadata
+          const { data } = await supabase.auth.refreshSession();
+          console.log('✅ Role synced successfully:', backendRole);
+          return backendRole;
+        } else {
+          console.error('❌ Failed to update Supabase metadata:', error);
+        }
+      }
+
+      return backendRole;
+    } catch (error) {
+      console.error('Role sync failed:', error);
+      return null;
+    }
+  }, [getToken, user]);
+
   // Inject auth functions into axios
   useEffect(() => {
     injectAuth({ 
@@ -103,6 +148,20 @@ export const AuthProvider = ({ children }) => {
     };
   }, []);
 
+  // auto role sync
+  useEffect(() => {
+    // Auto-sync role when user is authenticated
+    if (user && !loading) {
+      const timer = setTimeout(() => {
+        syncUserRole();
+      }, 1000); // Small delay to ensure everything is loaded
+
+      return () => clearTimeout(timer);
+    }
+  }, [user, loading, syncUserRole]);
+
+
+
   // Helper function to get user role - simplified
   const getUserRole = () => {
     const role = user?.user_metadata?.role;
@@ -153,27 +212,26 @@ export const AuthProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `HTTP ${response.status}`);
-      }
+        const data = response.data;
 
-      const data = await response.json();
-      // Then update user metadata in Supabase
-      const { error } = await supabase.auth.updateUser({
-        data: { role: role }
-      });
-      
-      if (error) {
-        console.error('⚠️ Supabase metadata update failed:', error);
-        // Don't throw here since Django registration succeeded
-      }
-      
-      return data;
-    } catch (error) {
-      console.error('❌ Registration error:', error);
-      throw new Error(error.message || 'Registration failed');
-    }
+  // Update Supabase metadata
+  const { error } = await supabase.auth.updateUser({
+    data: { role: role }
+  });
+
+  if (error) {
+    console.error('⚠️ Supabase metadata update failed:', error);
+  }
+
+  return data;
+
+} catch (error) {
+  if (error.response && error.response.status === 400) {
+    const errorMsg = error.response.data?.error || error.response.data?.detail || 'User already registered.';
+    throw new Error(errorMsg);
+  }
+  throw new Error(error.message || 'Registration failed');
+}
   };
 
   const value = {
@@ -181,6 +239,7 @@ export const AuthProvider = ({ children }) => {
     loading,
     logout,
     getUserRole,
+    syncUserRole,
     getUserDisplayName,
     getToken,
     registerDjangoUser,

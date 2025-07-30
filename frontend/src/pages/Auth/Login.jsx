@@ -36,7 +36,10 @@ const Login = () => {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: `${window.location.origin}/`
+        redirectTo: `${window.location.origin}/`,
+        queryParams: {
+          prompt: 'select_account',
+        },
       }
     });
     
@@ -45,6 +48,7 @@ const Login = () => {
       setLoading(false);
     }
   };
+
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

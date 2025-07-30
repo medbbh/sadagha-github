@@ -18,7 +18,7 @@ class Campaign(models.Model):
     ]
     name= models.CharField(max_length=255)
     description= models.TextField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='campaigns')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="campaigns")
     target = models.DecimalField(max_digits=10, decimal_places=2)
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)

@@ -61,7 +61,9 @@ const ConfirmRole = () => {
       // The useEffect will handle navigation once isFullyAuthenticated becomes true
     } catch (err) {
       console.error('❌ Registration failed:', err);
-      setError(err.message || 'Failed to register. Please try again.');
+      setError(err.message.includes('already') 
+        ? 'You are already registered. Please refresh or go to the dashboard.' 
+        : err.message || 'Failed to register. Please try again.');
       setIsRegistering(false);
     }
   };

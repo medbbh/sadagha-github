@@ -20,3 +20,4 @@ export const updateUserProfile = async (profileData) => {
     throw error;
   }
 };
+

@@ -35,6 +35,12 @@ import VolunteerRequestDetail from './pages/Orginazation/VolunteerRequestDetail'
 import VolunteerMatching from './pages/Orginazation/VolunteerMatching';
 import EditVolunteerRequest from './pages/Orginazation/EditVolunteerRequest';
 import VolunteerInvitations from './pages/User/VolunteerInvitations';
+import UserManagement from './pages/Admin/UserManagement';
+import OrganizationManagement from './pages/Admin/OrganizationManagement';
+import CampaignManagement from './pages/Admin/CampaignManagement';
+import CategoryManagement from './pages/Admin/CategoryManagement';
+import FinancialManagement from './pages/Admin/FinancialManagement';
+import AdminLayout from './pages/Admin/AdminLayout';
 
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
@@ -78,6 +84,10 @@ const RoleBasedRedirect = () => {
   } else if (role === 'user') {
     console.log('Redirecting to user feed');
     return <Navigate to="/feed" replace />;
+  }
+  else if (role === 'admin') {
+    console.log('Redirecting to admin dashboard');
+    return <Navigate to="/admin" replace />;
   } else {
     console.log('No valid role, redirecting to confirm-role');
     return <Navigate to="/confirm-role" replace />;
@@ -108,6 +118,21 @@ function App() {
       <Route path="/confirm-role" element={<ConfirmRole />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
 
+
+      {/* Admin routes */}
+      <Route path="/admin" element={
+        <ProtectedRoute allowedRoles={['admin']}>
+          <AdminLayout />
+        </ProtectedRoute>
+      } >
+
+      <Route path="/admin/users" element={<UserManagement />} />
+      <Route path="/admin/organizations" element={<OrganizationManagement />} />
+      <Route path="/admin/campaigns" element={<CampaignManagement />} />
+      <Route path="/admin/financial" element={<FinancialManagement />} />
+      <Route path="/admin/categories" element={<CategoryManagement />} />
+      </Route>
+      
       {/* USER routes */}
       <Route element={
         <ProtectedRoute allowedRoles={['user']}>

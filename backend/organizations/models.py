@@ -17,7 +17,7 @@ class OrganizationProfile(models.Model):
 
     def has_payment_methods_configured(self):
         """Check if organization has any payment methods configured"""
-        return bool(self.phone_number) or self.commercial_numbers.filter(is_active=True).exists()
+        return bool(self.phone_number)
 
 class WalletProvider(models.Model):
     name = models.CharField(max_length=50, unique=True) # Bankily, Sedad ...

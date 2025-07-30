@@ -7,7 +7,7 @@ urlpatterns = [
     path("api/campaigns/", include("campaign.urls")),
     path("api/donations/", include("campaign.donation_urls")),
     path("api/volunteers/", include("volunteers.urls")),
-    path("api/admin/", include("admin_panel.urls")),  # ADD THIS
-
+    path("api/admin/", include("admin_panel.urls")), 
+    
     path("admin/", admin.site.urls),
 ]

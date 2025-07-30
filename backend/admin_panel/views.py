@@ -1451,10 +1451,3 @@ class AdminFinancialViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
     
-    @action(detail=False, methods=['get'])
-    def platform_fees(self, request):
-        """Platform fee analysis and revenue"""
-        days = int(request.query_params.get('days', 30))
-        
-        fee_analysis = FinancialManagementService.calculate_platform_fees(days=days)
-        return Response(fee_analysis)

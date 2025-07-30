@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Count, Q, Sum, Avg
 from campaign.models import DonationWebhookLog
 from django.utils import timezone
+from datetime import timedelta
 
 class AdminUserSerializer(serializers.ModelSerializer):
     """Base serializer for user management in admin panel"""
@@ -45,7 +46,6 @@ class AdminUserSerializer(serializers.ModelSerializer):
         if not obj.is_active:
             return 'inactive'
         elif obj.last_login:
-            from django.utils import timezone
             days_since_login = (timezone.now() - obj.last_login).days
             if days_since_login > 30:
                 return 'dormant'
@@ -122,8 +122,6 @@ class AdminUserDetailSerializer(AdminUserSerializer):
         return []
     
     def get_activity_summary(self, obj):
-        from django.utils import timezone
-        from datetime import timedelta
         
         thirty_days_ago = timezone.now() - timedelta(days=30)
         
@@ -286,7 +284,6 @@ class AdminOrganizationDetailSerializer(AdminOrganizationSerializer):
     
     def get_financial_summary(self, obj):
         from django.utils import timezone
-        from datetime import timedelta
         
         campaigns = obj.owner.campaigns.all()
         thirty_days_ago = timezone.now() - timedelta(days=30)
@@ -340,7 +337,6 @@ class PaymentMethodSerializer(serializers.ModelSerializer):
     def get_method_type(self, obj):
         return 'NextPay' if hasattr(obj, 'commercial_number') else 'Manual'
 
-
 class AdminCampaignSerializer(serializers.ModelSerializer):
     """Base serializer for campaign management in admin panel"""
     
@@ -359,7 +355,7 @@ class AdminCampaignSerializer(serializers.ModelSerializer):
     success_rate = serializers.FloatField(read_only=True)
     avg_donation = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
     file_count = serializers.IntegerField(read_only=True)
-    days_active = serializers.IntegerField(read_only=True)
+    days_active = serializers.SerializerMethodField(read_only=True)
     
     # Status indicators
     campaign_status = serializers.SerializerMethodField()
@@ -398,11 +394,23 @@ class AdminCampaignSerializer(serializers.ModelSerializer):
         else:
             return 'new'
     
+    def get_days_active(self, obj):
+        value = getattr(obj, 'days_active', None)
+        if isinstance(value, timedelta):
+            return value.days
+        return int(value or 0)
+
+    
     def get_performance_rating(self, obj):
         """Rate campaign performance based on various factors"""
         success_rate = getattr(obj, 'success_rate', 0) or 0
-        days_active = getattr(obj, 'days_active', 0) or 0
         donation_count = getattr(obj, 'donation_count', 0) or 0
+        # Convert timedelta to int if needed
+        days_active = getattr(obj, 'days_active', 0)
+        if isinstance(days_active, timedelta):
+            days_active = days_active.days
+        else:
+            days_active = int(days_active or 0)
         
         score = 0
         
@@ -480,7 +488,6 @@ class AdminCampaignDetailSerializer(AdminCampaignSerializer):
     
     def get_donation_trends(self, obj):
         from django.utils import timezone
-        from datetime import timedelta
         
         now = timezone.now()
         trends = {}
@@ -493,7 +500,7 @@ class AdminCampaignDetailSerializer(AdminCampaignSerializer):
             )
             trends[f'last_{days}_days'] = {
                 'count': donations.count(),
-                'total': str(donations.aggregate(Sum('amount'))['total'] or 0)
+                'total': str(donations.aggregate(total=Sum('amount'))['total'] or 0)
             }
         
         return trends
@@ -539,7 +546,6 @@ class AdminCategorySerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
 
-
 class AdminDonationSerializer(serializers.ModelSerializer):
     """Base serializer for donation monitoring in admin panel"""
     
@@ -553,7 +559,7 @@ class AdminDonationSerializer(serializers.ModelSerializer):
     campaign_owner = serializers.SerializerMethodField()
     
     # Computed fields from annotations
-    days_since_created = serializers.IntegerField(read_only=True)
+    days_since_created = serializers.SerializerMethodField(read_only=True)
     processing_time_seconds = serializers.SerializerMethodField()
     
     # Status indicators
@@ -642,6 +648,12 @@ class AdminDonationSerializer(serializers.ModelSerializer):
             return 'medium'
         else:
             return 'low'
+        
+    def get_days_since_created(self, obj):
+        delta = getattr(obj, 'days_since_created', None)
+        if isinstance(delta, timedelta):
+            return delta.days
+        return int(delta or 0)
 
 class AdminDonationDetailSerializer(AdminDonationSerializer):
     """Detailed donation serializer with all related data"""
