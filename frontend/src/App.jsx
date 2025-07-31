@@ -41,7 +41,9 @@ import CampaignManagement from './pages/Admin/CampaignManagement';
 import CategoryManagement from './pages/Admin/CategoryManagement';
 import FinancialManagement from './pages/Admin/FinancialManagement';
 import AdminLayout from './pages/Admin/AdminLayout';
-
+import './i18n';
+import { useTranslation } from 'react-i18next';
+import { useEffect } from 'react';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -96,6 +98,26 @@ const RoleBasedRedirect = () => {
 
 function App() {
   const { user, loading } = useAuth();
+  const { i18n } = useTranslation();
+
+  useEffect(() => {
+    // Set document direction and language based on current language
+    const setDocumentLanguage = (language) => {
+      document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.lang = language;
+    };
+
+    // Set initial language
+    setDocumentLanguage(i18n.language);
+
+    // Listen for language changes
+    i18n.on('languageChanged', setDocumentLanguage);
+
+    // Cleanup
+    return () => {
+      i18n.off('languageChanged', setDocumentLanguage);
+    };
+  }, [i18n]);
 
   // Show loading screen while checking authentication
   if (loading) return <Loading />;
@@ -152,9 +174,7 @@ function App() {
 
         <Route path="/auth/facebook/callback" element={<FacebookOAuthCallback />} />
 
-
-
-     </Route>
+      </Route>
 
       {/* ORGANIZATION routes */}
       <Route element={

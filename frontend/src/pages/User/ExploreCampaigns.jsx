@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { fetchCampaigns } from '../../api/endpoints/CampaignAPI';
 import { fetchCategories } from '../../api/endpoints/CategoryAPI';
 import CampaignCard from '../../components/ui/CampaignCard';
@@ -12,6 +13,9 @@ import Loading from '../../components/common/Loading';
 import { Search, SlidersHorizontal } from 'lucide-react';
 
 export default function ExploreCampaigns() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   // State management
   const [campaigns, setCampaigns] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -139,6 +143,7 @@ export default function ExploreCampaigns() {
       console.log('Loading campaigns with params:', params);
 
       const data = await fetchCampaigns(params);
+      console.log('Campaigns API response:', data);
       setCampaigns(data.results || data);
       
       // Calculate total pages if pagination data is available
@@ -201,7 +206,7 @@ export default function ExploreCampaigns() {
   const categoriesWithCount = [
     { 
       id: 'all', 
-      name: 'All Categories', 
+      name: t('explore.allCategories'), 
       campaign_count: allCampaignsCount 
     },
     ...categories.map(cat => ({
@@ -211,22 +216,30 @@ export default function ExploreCampaigns() {
     }))
   ];
 
+  // Get translated sort options
+  const getSortOptions = () => [
+    { value: 'newest', label: t('explore.sortOptions.newest') },
+    { value: 'oldest', label: t('explore.sortOptions.oldest') },
+    { value: 'most-funded', label: t('explore.sortOptions.mostFunded') },
+    { value: 'most-donors', label: t('explore.sortOptions.mostDonors') }
+  ];
+
   // Empty state component
   const EmptyState = () => (
     <div className="text-center py-12">
       <div className="text-gray-400 mb-4">
         <Search className="h-16 w-16 mx-auto" />
       </div>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">No campaigns found</h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-2">{t('explore.noCampaignsFound')}</h3>
       <p className="text-gray-600 mb-4">
-        Try adjusting your search or filter criteria to find more campaigns.
+        {t('explore.noCampaignsSubtext')}
       </p>
       {hasActiveFilters && (
         <button
           onClick={clearFilters}
           className="text-blue-600 hover:text-blue-700 font-medium"
         >
-          Clear all filters
+          {t('explore.clearAllFilters')}
         </button>
       )}
     </div>
@@ -240,13 +253,13 @@ export default function ExploreCampaigns() {
           <span className="text-2xl">⚠️</span>
         </div>
       </div>
-      <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading campaigns</h3>
+      <h3 className="text-lg font-medium text-gray-900 mb-2">{t('explore.errorLoadingCampaigns')}</h3>
       <p className="text-gray-600 mb-4">{error}</p>
       <button
         onClick={loadCampaigns}
         className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
       >
-        Try Again
+        {t('explore.tryAgain')}
       </button>
     </div>
   );
@@ -256,45 +269,40 @@ export default function ExploreCampaigns() {
       {/* Header Section */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">Explore Campaigns</h1>
+          <div className={`text-center mb-8 `}>
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">{t('explore.title')}</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Discover amazing projects and causes that need your support. Every contribution makes a difference.
+              {t('explore.subtitle')}
             </p>
           </div>
 
           {/* Search and Controls */}
-          <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+          <div className={`flex flex-col lg:flex-row gap-4 items-center justify-between ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
             {/* Search Bar */}
             <div className="flex-1 max-w-md">
               <SearchBar
                 value={searchQuery}
                 onChange={handleSearch}
-                placeholder="Search campaigns..."
+                placeholder={t('explore.searchPlaceholder')}
               />
             </div>
 
             {/* Filter Controls */}
-            <div className="flex items-center space-x-4">
+            <div className={`flex items-center space-x-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
               {/* Mobile Filter Toggle */}
               <button
                 onClick={() => setShowMobileFilters(!showMobileFilters)}
-                className="lg:hidden flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className={`lg:hidden flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
               >
-                <SlidersHorizontal className="h-4 w-4 mr-2" />
-                Filters
+                <SlidersHorizontal className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('explore.filters')}
               </button>
 
               {/* Sort Dropdown */}
               <SortDropdown
                 value={sortBy}
                 onChange={handleSortChange}
-                options={[
-                  { value: 'newest', label: 'Newest First' },
-                  { value: 'oldest', label: 'Oldest First' },
-                  { value: 'most-funded', label: 'Most Funded' },
-                  { value: 'most-donors', label: 'Most Donors' }
-                ]}
+                options={getSortOptions()}
               />
 
               {/* View Mode Toggle */}
@@ -309,7 +317,7 @@ export default function ExploreCampaigns() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className={`flex flex-col lg:flex-row gap-8 ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
           {/* Sidebar - Category Filter */}
           <CategoryFilter
             categories={categoriesWithCount}
@@ -322,11 +330,13 @@ export default function ExploreCampaigns() {
           {/* Main Content Area */}
           <div className="flex-1">
             {/* Results Header */}
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-gray-600">
-                {loading ? 'Loading...' : `Showing ${campaigns.length} campaigns`}
+            <div className={`flex items-center justify-between mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <p className={`text-gray-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {loading ? t('explore.loading') : 
+                  `${t('explore.showing')} ${campaigns.length} ${campaigns.length === 1 ? t('explore.campaign') : t('explore.campaigns')}`
+                }
                 {selectedCategory !== 'all' && !loading && (
-                  <span> in <span className="font-medium text-blue-600">
+                  <span> {t('explore.in')} <span className="font-medium text-blue-600">
                     {categoriesWithCount.find(c => c.id === selectedCategory)?.name || 'Selected Category'}
                   </span></span>
                 )}
@@ -337,7 +347,7 @@ export default function ExploreCampaigns() {
                   onClick={clearFilters}
                   className="text-blue-600 hover:text-blue-700 text-sm font-medium transition-colors"
                 >
-                  Clear filters
+                  {t('explore.clearFilters')}
                 </button>
               )}
             </div>

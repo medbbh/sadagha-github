@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Pagination({ 
@@ -9,6 +10,9 @@ export default function Pagination({
   maxVisiblePages = 5,
   className = ''
 }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   if (totalPages <= 1) return null;
 
   const getVisiblePages = () => {
@@ -54,18 +58,35 @@ export default function Pagination({
     <span className="px-3 py-2 text-gray-500 text-sm">...</span>
   );
 
+  // For RTL, we need to reverse the entire pagination logic
+  const PreviousButton = () => (
+    <PageButton
+      page={currentPage - 1}
+      disabled={currentPage === 1}
+    >
+      <div className={`flex items-center space-x-1 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <ChevronLeft className={`h-4 w-4 ${isRTL ? 'rotate-180' : ''}`} />
+        <span className="hidden sm:inline">{t('pagination.previous')}</span>
+      </div>
+    </PageButton>
+  );
+
+  const NextButton = () => (
+    <PageButton
+      page={currentPage + 1}
+      disabled={currentPage === totalPages}
+    >
+      <div className={`flex items-center space-x-1 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
+        <span className="hidden sm:inline">{t('pagination.next')}</span>
+        <ChevronRight className={`h-4 w-4 ${isRTL ? 'rotate-180' : ''}`} />
+      </div>
+    </PageButton>
+  );
+
   return (
-    <div className={`flex items-center justify-center space-x-1 mt-8 ${className}`}>
-      {/* Previous Button */}
-      <PageButton
-        page={currentPage - 1}
-        disabled={currentPage === 1}
-      >
-        <div className="flex items-center space-x-1">
-          <ChevronLeft className="h-4 w-4" />
-          <span className="hidden sm:inline">Previous</span>
-        </div>
-      </PageButton>
+    <div className={`flex items-center justify-center space-x-1 mt-8 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} ${className}`}>
+      {/* Navigation Buttons - swap for RTL */}
+      {isRTL ? <NextButton /> : <PreviousButton />}
 
       {showPageNumbers && (
         <>
@@ -98,20 +119,12 @@ export default function Pagination({
         </>
       )}
 
-      {/* Next Button */}
-      <PageButton
-        page={currentPage + 1}
-        disabled={currentPage === totalPages}
-      >
-        <div className="flex items-center space-x-1">
-          <span className="hidden sm:inline">Next</span>
-          <ChevronRight className="h-4 w-4" />
-        </div>
-      </PageButton>
+      {/* Navigation Buttons - swap for RTL */}
+      {isRTL ? <PreviousButton /> : <NextButton />}
 
       {/* Page Info (for mobile) */}
-      <div className="sm:hidden ml-4 text-sm text-gray-500">
-        {currentPage} of {totalPages}
+      <div className={`sm:hidden text-sm text-gray-500 ${isRTL ? 'mr-4' : 'ml-4'}`}>
+        {currentPage} {t('pagination.of')} {totalPages}
       </div>
     </div>
   );

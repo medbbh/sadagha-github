@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Search, Menu, X, User, Heart, ChevronRight, Plus, HandHeart  } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../supabaseClient';
@@ -6,8 +7,10 @@ import { useNavigate, Link } from 'react-router-dom';
 import { getFavoriteCampaigns, getCampaignsByIds } from '../../api/endpoints/CampaignAPI';
 import NotificationBadge from '../../pages/User/NotificationBadge';
 import { fetchMyVolunteerProfile } from '../../api/endpoints/VolunteerAPI';
+import LanguageSelector from '../LanguageSelector';
 
 export default function NavBar() {
+  const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [error, setError] = useState('');
@@ -15,13 +18,12 @@ export default function NavBar() {
   const [favoriteCampaigns, setFavoriteCampaigns] = useState([]);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [displayedCount, setDisplayedCount] = useState(1); // Show 5 initially
+  const [displayedCount, setDisplayedCount] = useState(1);
   const [totalFavorites, setTotalFavorites] = useState(0);
   const { user, logout: authLogout } = useAuth();
   const [hasVolunteerProfile, setHasVolunteerProfile] = useState(false);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,7 +34,6 @@ export default function NavBar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-
   // Check if user has volunteer profile
   useEffect(() => {
     const checkVolunteerProfile = async () => {
@@ -40,7 +41,6 @@ export default function NavBar() {
         const response = await fetchMyVolunteerProfile();
         if (response) {
           setHasVolunteerProfile(true);
-          
         }
       } catch (err) {
         setHasVolunteerProfile(false);
@@ -75,22 +75,19 @@ export default function NavBar() {
     
     if (!loadMore) {
       setLoadingFavorites(true);
-      setDisplayedCount(1); // Reset to initial count
+      setDisplayedCount(1);
     } else {
       setLoadingMore(true);
     }
 
     try {
-      // Get all favorite campaign IDs
       const favoriteIds = await getFavoriteCampaigns();
       setTotalFavorites(favoriteIds.length);
       
       if (favoriteIds && favoriteIds.length > 0) {
-        // Determine how many to fetch
         const countToShow = loadMore ? displayedCount + 5 : 5;
         const idsToFetch = favoriteIds.slice(0, Math.min(countToShow, favoriteIds.length));
         
-        // Get campaigns by IDs
         const response = await getCampaignsByIds(idsToFetch);
         const campaigns = response.campaigns || response;
         
@@ -153,7 +150,7 @@ export default function NavBar() {
               href="/" 
               className="text-lg font-medium text-[#3366CC] hover:opacity-80 transition-opacity duration-200"
             >
-              SADA9A
+              {t('navbar.logo')}
             </a>
 
             {/* Centered Navigation Links - Desktop */}
@@ -162,7 +159,7 @@ export default function NavBar() {
                 to="/explore" 
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
               >
-                Explore
+                {t('navbar.explore')}
               </Link>
               
               <Link 
@@ -170,7 +167,7 @@ export default function NavBar() {
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
               >
                 <HandHeart className="w-4 h-4" />
-                <span>Volunteer</span>
+                <span>{t('navbar.volunteer')}</span>
                 <NotificationBadge />
               </Link>
 
@@ -178,7 +175,7 @@ export default function NavBar() {
                 to="/how-it-works" 
                 className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
               >
-                How It Works
+                {t('navbar.howItWorks')}
               </Link>
             </div>
 
@@ -187,7 +184,7 @@ export default function NavBar() {
               <div className="relative hover:opacity-90 transition-opacity duration-200">
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder={t('navbar.search')}
                   className="pl-8 pr-4 py-1.5 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] focus:border-transparent text-sm w-40"
                 />
                 <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60" />
@@ -197,7 +194,7 @@ export default function NavBar() {
                 <button
                   onClick={handleFavoritesClick}
                   className="relative p-2 rounded-md text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
-                  title="My Favorites"
+                  title={t('navbar.favorites')}
                 >
                   <Heart className="h-4 w-4" />
                   {totalFavorites > 0 && (
@@ -207,6 +204,8 @@ export default function NavBar() {
                   )}
                 </button>
               )}
+
+              <LanguageSelector />
 
               {user ? (
                 <>
@@ -228,7 +227,7 @@ export default function NavBar() {
                   onClick={handleLogout}
                   className="px-4 py-1.5 rounded-md text-sm bg-[#FF9800] text-white border border-[#FF9800] font-medium hover:bg-[#FB8C00] transition-colors duration-200"
                 >
-                  Logout
+                  {t('navbar.logout')}
                 </button>
                 </>
               ) : (
@@ -236,7 +235,7 @@ export default function NavBar() {
                   href="/login" 
                   className="px-4 py-1.5 rounded-md text-sm text-white bg-[#4CAF50] border border-[#4CAF50] font-medium hover:bg-[#43A047] transition-colors duration-200"
                 >
-                  Login
+                  {t('navbar.login')}
                 </a>
               )}
             </div>
@@ -258,10 +257,14 @@ export default function NavBar() {
               <div className="relative mb-2">
                 <input
                   type="text"
-                  placeholder="Search..."
+                  placeholder={t('navbar.search')}
                   className="w-full pl-8 pr-4 py-2 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] text-sm"
                 />
                 <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-[#3366CC]/60" />
+              </div>
+              
+              <div className="px-3 py-2">
+                <LanguageSelector />
               </div>
               
               {user && (
@@ -271,7 +274,7 @@ export default function NavBar() {
                 >
                   <div className="flex items-center space-x-2">
                     <Heart className="h-4 w-4" />
-                    <span>My Favorites</span>
+                    <span>{t('navbar.favorites')}</span>
                   </div>
                   {totalFavorites > 0 && (
                     <span className="bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -285,19 +288,19 @@ export default function NavBar() {
                 href="/explore" 
                 className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
               >
-                Explore
+                {t('navbar.explore')}
               </a>
               <a 
                 href="/start-campaign" 
                 className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
               >
-                Start Campaign
+                {t('navbar.startCampaign')}
               </a>
               <a 
                 href="/how-it-works" 
                 className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
               >
-                How It Works
+                {t('navbar.howItWorks')}
               </a>
               {user ? (
                 <a 
@@ -311,14 +314,14 @@ export default function NavBar() {
                       <User className="h-3 w-3 text-[#3366CC]" />
                     )}
                   </div>
-                  <span>My Profile</span>
+                  <span>{t('navbar.profile')}</span>
                 </a>
               ) : (
                 <a 
                   href="/login" 
                   className="block px-3 py-2 rounded text-sm font-medium text-white bg-[#4CAF50] border border-[#4CAF50] mt-2 text-center hover:bg-[#43A047] transition-colors duration-200"
                 >
-                  Login
+                  {t('navbar.login')}
                 </a>
               )}
             </div>
@@ -347,7 +350,7 @@ export default function NavBar() {
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <div className="flex items-center space-x-2">
               <Heart className="h-5 w-5 text-red-600" />
-              <h2 className="text-lg font-semibold text-gray-900">My Favorites</h2>
+              <h2 className="text-lg font-semibold text-gray-900">{t('navbar.favorites')}</h2>
               {totalFavorites > 0 && (
                 <span className="bg-gray-100 text-gray-600 text-sm px-2 py-1 rounded-full">
                   {displayedCount} of {totalFavorites}
@@ -371,14 +374,14 @@ export default function NavBar() {
             ) : favoriteCampaigns.length === 0 ? (
               <div className="text-center py-8 px-4">
                 <Heart className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 mb-2">No favorite campaigns yet</p>
-                <p className="text-sm text-gray-400">Start exploring and add campaigns to your favorites!</p>
+                <p className="text-gray-500 mb-2">{t('navbar.noFavorites')}</p>
+                <p className="text-sm text-gray-400">{t('navbar.noFavoritesSubtext')}</p>
                 <Link
                   to="/explore"
                   className="inline-block mt-4 px-4 py-2 bg-[#3366CC] text-white rounded-lg hover:bg-[#2952A3] transition-colors"
                   onClick={() => setShowFavorites(false)}
                 >
-                  Explore Campaigns
+                  {t('navbar.exploreCampaigns')}
                 </Link>
               </div>
             ) : (
@@ -408,7 +411,7 @@ export default function NavBar() {
                             </h3>
                             <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
                               <span>{formatCurrency(campaign.current_amount)}</span>
-                              <span>{progress.toFixed(0)}% funded</span>
+                              <span>{progress.toFixed(0)}% {t('navbar.funded')}</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-1">
                               <div 
@@ -435,12 +438,12 @@ export default function NavBar() {
                       {loadingMore ? (
                         <>
                           <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-400"></div>
-                          <span>Loading...</span>
+                          <span>{t('navbar.loading')}</span>
                         </>
                       ) : (
                         <>
                           <Plus className="h-4 w-4" />
-                          <span>Load More ({totalFavorites - displayedCount} remaining)</span>
+                          <span>{t('navbar.loadMore')} ({totalFavorites - displayedCount} {t('navbar.remaining')})</span>
                         </>
                       )}
                     </button>

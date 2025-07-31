@@ -31,6 +31,9 @@ class FileSerializer(serializers.ModelSerializer):
 class CampaignSerializer(serializers.ModelSerializer):
     files = FileSerializer(many=True, read_only=True)
     organization = OrganizationProfileSerializer(source='owner.organization_profile', read_only=True)
+    # Get the category name directly
+    category_name = serializers.CharField(source='category.name', read_only=True)
+    
     # Facebook Live fields
     facebook_live_url = serializers.URLField(required=False, allow_blank=True)
     is_live = serializers.BooleanField(read_only=True)
@@ -42,6 +45,7 @@ class CampaignSerializer(serializers.ModelSerializer):
             'name',
             'description',
             'category',
+            'category_name',
             'owner',
             'target',
             'current_amount',

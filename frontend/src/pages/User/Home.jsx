@@ -1,10 +1,7 @@
 import { HeroSection } from './sections/HeroSection';
-import { StatisticsSection } from './sections/StatisticsSection';
 import { CategoriesSection } from './sections/CategoriesSection';
 import { FeaturedCampaignsCarousel } from './sections/FeaturedCampaignsCarousel';
-import { TrendingCampaignsSection } from './sections/TrendingCampaignsSection';
 import { CallToActionSection } from './sections/CallToActionSection';
-import CampaignCard from '../../components/ui/CampaignCard';
 import { fetchCampaigns, featuredCampaigns } from '../../api/endpoints/CampaignAPI';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/common/Loading';
@@ -98,18 +95,14 @@ export default function HomePage() {
   }
 
   return (
-    <div className="">
-      {/* <CampaignCard data={campaigns} /> */}
-      
+    <div className="">      
       {/* Uncomment these sections when ready */}
       <HeroSection />
-      {/* <StatisticsSection /> */}
       <CategoriesSection />
       <FeaturedCampaignsCarousel 
         Campaigns={featuredData || []} 
         loading={loading && !featuredData?.length} 
       />
-      {/* <TrendingCampaignsSection Campaigns={trendingCampaigns} /> */}
       <CallToActionSection />
     </div>
   );

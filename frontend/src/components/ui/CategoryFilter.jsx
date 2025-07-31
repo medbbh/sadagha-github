@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { X } from 'lucide-react';
 
 export default function CategoryFilter({ 
@@ -9,12 +10,16 @@ export default function CategoryFilter({
   onCloseMobile,
   className = ''
 }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
   return (
     <div className={`lg:w-64 ${showMobile ? 'block' : 'hidden lg:block'} ${className}`}>
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sticky top-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-gray-900">Categories</h3>
+        <div className={`flex items-center justify-between mb-4 `}>
+          <h3 className={`text-lg font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {t('categoryFilter.categories')}
+          </h3>
           {showMobile && (
             <button
               onClick={onCloseMobile}
@@ -36,7 +41,7 @@ export default function CategoryFilter({
               <button
                 key={category.id}
                 onClick={() => onCategoryChange && onCategoryChange(category.id)}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg text-left transition-colors ${
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-lg transition-colors ${isRTL ? 'text-right' : 'text-left'} ${
                   isSelected
                     ? 'bg-blue-100 text-blue-800 border border-blue-200'
                     : 'hover:bg-gray-50 text-gray-700'
@@ -60,7 +65,7 @@ export default function CategoryFilter({
               onClick={() => onCategoryChange && onCategoryChange('all')}
               className="w-full text-center text-sm text-blue-600 hover:text-blue-700 font-medium transition-colors"
             >
-              Clear Category Filter
+              {t('categoryFilter.clearCategoryFilter')}
             </button>
           </div>
         )}

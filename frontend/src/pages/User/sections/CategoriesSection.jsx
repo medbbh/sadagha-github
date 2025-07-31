@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { fetchCategories } from '../../../api/endpoints/CategoryAPI';
 
 export function CategoriesSection() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const categoryRef = useRef(null);
-  const [categoriesVisible, setCategoriesVisible] = useState(true); // Force visibility
+  const [categoriesVisible, setCategoriesVisible] = useState(true);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -70,7 +73,7 @@ export function CategoriesSection() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading categories...</p>
+            <p className="text-gray-600">{t('categories.loadingCategories')}</p>
           </div>
         </div>
       </section>
@@ -82,7 +85,7 @@ export function CategoriesSection() {
       <section className="py-16 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center text-red-500">
-            <p>Error loading categories: {error}</p>
+            <p>{t('categories.errorLoading')} {error}</p>
           </div>
         </div>
       </section>
@@ -94,7 +97,7 @@ export function CategoriesSection() {
       <section className="py-16 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center text-gray-500">
-            <p>No categories available at the moment.</p>
+            <p>{t('categories.noCategories')}</p>
           </div>
         </div>
       </section>
@@ -104,13 +107,17 @@ export function CategoriesSection() {
   return (
     <section ref={categoryRef} className="py-16 bg-gradient-to-b from-white to-blue-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-end mb-10">
-          <div>
-            <h2 className="text-3xl font-bold text-blue-600">explore campaigns Categories</h2>
-            <p className="text-gray-600 mt-2">Discover Campaigns by the cause they support</p>
+        <div className={`flex justify-between items-end mb-10 ${isRTL ? '' : ''}`}>
+          <div className={isRTL ? 'text-right' : 'text-left'}>
+            <h2 className="text-3xl font-bold text-blue-600">{t('categories.title')}</h2>
+            <p className="text-gray-600 mt-2">{t('categories.subtitle')}</p>
           </div>
-          <a href="/categories" className="text-blue-600 font-medium flex items-center hover:underline">
-            View All <ChevronRight className="h-4 w-4 ml-1" />
+          <a 
+            href="/categories" 
+            className={`text-blue-600 font-medium flex items-center hover:underline ${isRTL ? '' : ''}`}
+          >
+            {t('categories.viewAll')} 
+            <ChevronRight className={`h-4 w-4 ${isRTL ? 'mr-1 rotate-180' : 'ml-1'}`} />
           </a>
         </div>
         
@@ -144,10 +151,10 @@ export function CategoriesSection() {
                     {categoryIcon}
                   </div>
                   <h3 className="font-semibold text-gray-800 text-sm mb-1" style={{ color: '#1f2937' }}>
-                    {category.name || 'Unnamed Category'}
+                    {category.name || t('categories.unnamedCategory')}
                   </h3>
                   <p className="text-xs text-gray-500" style={{ color: '#6b7280' }}>
-                    {campaignCount} Campaigns
+                    {campaignCount} {campaignCount === 1 ? t('categories.campaign') : t('categories.campaigns')}
                   </p>
                 </div>
                 <div 

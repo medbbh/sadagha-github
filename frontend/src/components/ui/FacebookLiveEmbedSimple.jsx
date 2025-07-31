@@ -1,5 +1,5 @@
-// components/FacebookLiveEmbedSimple.jsx
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Video, ExternalLink, AlertCircle, RefreshCw } from 'lucide-react';
 
 export default function FacebookLiveEmbedSimple({ 
@@ -7,6 +7,8 @@ export default function FacebookLiveEmbedSimple({
   showDonationOverlay = true,
   className = ''
 }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [embedError, setEmbedError] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,10 +22,9 @@ export default function FacebookLiveEmbedSimple({
       width: '560',
       height: '315',
       show_text: 'false',
-      autoplay: 'true',  // Enable autoplay for live streams
+      autoplay: 'true',
       muted: 'false',
       allowfullscreen: 'true',
-      // Add cache-busting parameter
       t: Date.now()
     });
     
@@ -51,26 +52,26 @@ export default function FacebookLiveEmbedSimple({
     <div className={`bg-white rounded-lg border border-gray-200 overflow-hidden ${className}`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className={`flex items-center justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center space-x-3 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
             <Video className="w-5 h-5 text-blue-600" />
-            <h3 className="text-lg font-semibold text-gray-900">Facebook Live Stream</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('facebookLive.facebookLiveStream')}</h3>
             
             {/* Connection Status */}
             {campaign.facebook_video_id && (
-              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                <div className="w-2 h-2 bg-green-500 rounded-full mr-1 animate-pulse"></div>
-                Connected
+              <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`w-2 h-2 bg-green-500 rounded-full animate-pulse ${isRTL ? 'ml-1' : 'mr-1'}`}></div>
+                {t('facebookLive.connected')}
               </span>
             )}
           </div>
           
-          <div className="flex items-center space-x-2">
+          <div className={`flex items-center space-x-2 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
             <button
               onClick={() => window.location.reload()}
               disabled={isLoading}
               className="p-2 text-gray-400 hover:text-gray-600 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
-              title="Refresh page"
+              title={t('facebookLive.refreshPage')}
             >
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
             </button>
@@ -79,10 +80,10 @@ export default function FacebookLiveEmbedSimple({
               href={campaign.facebook_live_url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 transition-colors"
+              className={`flex items-center px-3 py-1.5 text-sm text-blue-600 hover:text-blue-800 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
             >
-              <ExternalLink className="w-3 h-3 mr-1" />
-              Open on Facebook
+              <ExternalLink className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+              {t('facebookLive.openOnFacebook')}
             </a>
           </div>
         </div>
@@ -104,27 +105,30 @@ export default function FacebookLiveEmbedSimple({
             
             {/* Donation Progress Overlay */}
             {showDonationOverlay && (
-              <div className="absolute top-4 right-4 bg-black/80 text-white px-3 py-2 rounded-lg backdrop-blur-sm">
-                <div className="text-sm font-medium">Campaign Progress</div>
+              <div className={`absolute top-4 bg-black/80 text-white px-3 py-2 rounded-lg backdrop-blur-sm ${isRTL ? 'left-4 text-right' : 'right-4 text-left'}`}>
+                <div className="text-sm font-medium">{t('facebookLive.campaignProgress')}</div>
                 <div className="text-lg font-bold">
                   {formatCurrency(campaign.current_amount)}
                 </div>
                 <div className="text-xs opacity-90">
-                  of {formatCurrency(campaign.target)} goal
+                  {t('facebookLive.of')} {formatCurrency(campaign.target)} {t('facebookLive.goalText')}
                 </div>
                 <div className="w-20 bg-gray-600 rounded-full h-1 mt-1">
                   <div 
                     className="bg-blue-500 h-1 rounded-full transition-all duration-300"
-                    style={{ width: `${getProgress()}%` }}
+                    style={{ 
+                      width: `${getProgress()}%`,
+                      transformOrigin: isRTL ? 'right' : 'left'
+                    }}
                   />
                 </div>
               </div>
             )}
 
-            {/* Live Indicator (if video ID exists, assume it could be live) */}
+            {/* Live Indicator */}
             {campaign.facebook_video_id && (
-              <div className="absolute top-4 left-4 bg-red-600 text-white px-2 py-1 rounded text-xs font-medium animate-pulse">
-                ● LIVE
+              <div className={`absolute top-4 bg-red-600 text-white px-2 py-1 rounded text-xs font-medium animate-pulse ${isRTL ? 'right-4' : 'left-4'}`}>
+                ● {t('facebookLive.live')}
               </div>
             )}
           </div>
@@ -139,22 +143,22 @@ export default function FacebookLiveEmbedSimple({
               
               <div>
                 <h4 className="text-lg font-medium text-gray-900 mb-2">
-                  {embedError ? 'Embed Not Available' : 'Facebook Live Stream'}
+                  {embedError ? t('facebookLive.embedNotAvailable') : t('facebookLive.facebookLiveStream')}
                 </h4>
                 <p className="text-gray-600 mb-4">
                   {embedError 
-                    ? 'The video embed is not available. You can still watch on Facebook.'
-                    : 'Click below to watch the live stream on Facebook.'
+                    ? t('facebookLive.embedNotAvailableDescription')
+                    : t('facebookLive.clickToWatch')
                   }
                 </p>
                 <a
                   href={campaign.facebook_live_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className={`inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  <ExternalLink className="w-4 h-4 mr-2" />
-                  Watch on Facebook
+                  <ExternalLink className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  {t('facebookLive.watchOnFacebook')}
                 </a>
               </div>
             </div>
@@ -164,35 +168,35 @@ export default function FacebookLiveEmbedSimple({
 
       {/* Info Section */}
       <div className="p-4 bg-gray-50 border-t border-gray-200">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-          <div className="flex items-center space-x-4 text-sm">
-            <span className="flex items-center text-gray-600">
-              <Video className="w-4 h-4 mr-1" />
-              Facebook Live Connected
+        <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 ${isRTL ? 'sm:flex-row-reverse' : ''}`}>
+          <div className={`flex items-center space-x-4 text-sm ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
+            <span className={`flex items-center text-gray-600 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Video className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+              {t('facebookLive.facebookLiveConnected')}
             </span>
             {campaign.facebook_video_id && (
               <span className="text-gray-500 text-xs">
-                Video ID: {campaign.facebook_video_id}
+                {t('facebookLive.videoId')} {campaign.facebook_video_id}
               </span>
             )}
           </div>
           
           <div className="text-sm text-gray-500">
-            {campaign.facebook_video_id ? 'Stream available' : 'External link only'}
+            {campaign.facebook_video_id ? t('facebookLive.streamAvailable') : t('facebookLive.externalLinkOnly')}
           </div>
         </div>
         
         {/* Status Message */}
         <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-start space-x-2">
+          <div className={`flex items-start space-x-2 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
             <Video className="w-4 h-4 text-blue-600 mt-0.5" />
-            <div className="text-sm">
-              <p className="text-blue-800 font-medium">Facebook Live Integration Active</p>
+            <div className={`text-sm ${isRTL ? 'text-right' : 'text-left'}`}>
+              <p className="text-blue-800 font-medium">{t('facebookLive.facebookLiveIntegrationActive')}</p>
               <p className="text-blue-600 text-xs mt-1">
-                This campaign is connected to a Facebook Live stream. 
+                {t('facebookLive.integrationDescription')}
                 {campaign.facebook_video_id 
-                  ? ' The stream will appear above when live.'
-                  : ' Click "Open on Facebook" to watch.'
+                  ? ` ${t('facebookLive.streamWillAppear')}`
+                  : ` ${t('facebookLive.clickOpenFacebook')}`
                 }
               </p>
             </div>

@@ -1,0 +1,66 @@
+/* RTL Support Styles */
+[dir="rtl"] {
+  text-align: right;
+}
+
+/* Navbar RTL adjustments */
+[dir="rtl"] .navbar-logo {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+[dir="rtl"] .navbar-menu {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .navbar-menu > * {
+  margin-left: 0;
+  margin-right: 2rem;
+}
+
+[dir="rtl"] .navbar-menu > *:last-child {
+  margin-right: 0;
+}
+
+/* Search input RTL */
+[dir="rtl"] .search-input {
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+
+[dir="rtl"] .search-icon {
+  left: auto;
+  right: 0.625rem;
+}
+
+/* Dropdown menus RTL */
+[dir="rtl"] .dropdown {
+  left: auto;
+  right: 0;
+}
+
+/* Favorites drawer RTL */
+[dir="rtl"] .favorites-drawer {
+  left: 0;
+  right: auto;
+  transform: translateX(-100%);
+}
+
+[dir="rtl"] .favorites-drawer.open {
+  transform: translateX(0);
+}
+
+/* Flex items RTL */
+[dir="rtl"] .flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .space-x-reverse > * + * {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+/* Icons that should flip in RTL */
+[dir="rtl"] .flip-rtl {
+  transform: scaleX(-1);
+}

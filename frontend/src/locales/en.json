@@ -1,0 +1,223 @@
+{
+    "navbar": {
+        "logo": "SADA9A",
+        "explore": "Explore",
+        "volunteer": "Volunteer",
+        "howItWorks": "How It Works",
+        "search": "Search...",
+        "favorites": "My Favorites",
+        "profile": "My Profile",
+        "login": "Login",
+        "logout": "Logout",
+        "startCampaign": "Start Campaign",
+        "noFavorites": "No favorite campaigns yet",
+        "noFavoritesSubtext": "Start exploring and add campaigns to your favorites!",
+        "exploreCampaigns": "Explore Campaigns",
+        "loadMore": "Load More",
+        "remaining": "remaining",
+        "loading": "Loading...",
+        "funded": "funded"
+    },
+
+    "hero": {
+        "title": {
+        "fund": "Fund Your",
+        "dreams": "Dreams",
+        "support": "Support",
+        "innovation": "Innovation"
+        },
+        "subtitle": "Join our global community of changemakers and bring creative Campaigns to life through the power of collective funding.",
+        "exploreCampaigns": "Explore Campaigns",
+        "startCampaign": "Start a Campaign",
+        "featured": "Featured",
+        "featuredTitle": "Changing Lives Through Crowdfunding",
+        "featuredSubtitle": "Discover the stories of impact from our community",
+        "imageAlt": "Crowdfunding Success"
+    },
+
+    "categories": {
+        "title": "Explore Campaigns Categories",
+        "subtitle": "Discover Campaigns by the cause they support",
+        "viewAll": "View All",
+        "campaigns": "Campaigns",
+        "campaign": "Campaign",
+        "loadingCategories": "Loading categories...",
+        "errorLoading": "Error loading categories:",
+        "noCategories": "No categories available at the moment.",
+        "unnamedCategory": "Unnamed Category"
+    },
+
+    "featured": {
+        "title": "Featured Campaigns",
+        "subtitle": "Campaigns making a big impact right now",
+        "loading": "Loading featured campaigns...",
+        "noFeatured": "No featured campaigns available at the moment",
+        "featured": "Featured",
+        "untitledCampaign": "Untitled Campaign",
+        "raised": "raised",
+        "donors": "donors",
+        "donor": "donor",
+        "viewCampaign": "View Campaign",
+        "previousSlide": "Previous slide",
+        "nextSlide": "Next slide",
+        "goToSlide": "Go to slide"
+    },
+    
+    "cta": {
+        "title": "Ready to Make a Difference?",
+        "subtitle": "Join thousands of changemakers and innovators who are turning their ideas into reality through the power of community funding.",
+        "startCampaign": "Start Your Campaign",
+        "exploreCampaigns": "Explore Campaigns"
+    },
+
+    "explore": {
+        "title": "Explore Campaigns",
+        "subtitle": "Discover amazing projects and causes that need your support. Every contribution makes a difference.",
+        "searchPlaceholder": "Search campaigns...",
+        "filters": "Filters",
+        "sortOptions": {
+        "newest": "Newest First",
+        "oldest": "Oldest First",
+        "mostFunded": "Most Funded",
+        "mostDonors": "Most Donors"
+        },
+        "allCategories": "All Categories",
+        "loading": "Loading...",
+        "showing": "Showing",
+        "campaigns": "campaigns",
+        "campaign": "campaign",
+        "in": "in",
+        "clearFilters": "Clear filters",
+        "clearAllFilters": "Clear all filters",
+        "noCampaignsFound": "No campaigns found",
+        "noCampaignsSubtext": "Try adjusting your search or filter criteria to find more campaigns.",
+        "errorLoadingCampaigns": "Error loading campaigns",
+        "tryAgain": "Try Again"
+    },
+
+    "campaignCard": {
+        "featured": "Featured",
+        "general": "General",
+        "funded": "funded",
+        "donors": "donors",
+        "donor": "donor",
+        "raised": "raised",
+        "of": "of",
+        "goal": "Goal:",
+        "created": "Created",
+        "viewDetails": "View Details",
+        "watchLive": "Watch Live",
+        "loading": "Loading..."
+    },
+
+    "categoryFilter": {
+        "categories": "Categories",
+        "clearCategoryFilter": "Clear Category Filter"
+    },
+    
+    "pagination": {
+        "previous": "Previous",
+        "next": "Next",
+        "of": "of"
+    },
+
+    "campaignDetail": {
+        "created": "Created",
+        "raised": "Raised:",
+        "goal": "Goal:",
+        "funded": "funded",
+        "donors": "donors",
+        "ourStory": "Our Story",
+        "noDescription": "No description provided yet.",
+        "target": "Target",
+        "errorLoadingCampaign": "Error Loading Campaign",
+        "tryAgain": "Try Again",
+        "campaignNotFound": "Campaign not found",
+        "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
+        "noImagesAvailable": "No images available",
+        "aboutTheOrganization": "About the Organization",
+        "contactNumber": "Contact Number",
+        "address": "Address",
+        "website": "Website",
+        "memberSince": "Member Since",
+        "verifiedOrganization": "Verified Organization"
+    },
+
+    "facebookLive": {
+        "liveStream": "Live Stream",
+        "refreshStatus": "Refresh status",
+        "openOnFacebook": "Open on Facebook",
+        "campaignProgress": "Campaign Progress",
+        "of": "of",
+        "goalText": "goal",
+        "liveStreamEnded": "Live Stream Ended",
+        "liveStreamEndedDescription": "This live stream has ended. Check back later for future streams!",
+        "viewOnFacebook": "View on Facebook",
+        "streamNotActive": "Stream Not Active",
+        "streamNotActiveDescription": "The live stream is not currently active. Follow the campaign for updates!",
+        "checkStatus": "Check Status",
+        "watching": "watching",
+        "liveNow": "Live now",
+        "lastUpdated": "Last updated:",
+        "facebookLiveStream": "Facebook Live Stream",
+        "connected": "Connected",
+        "refreshPage": "Refresh page",
+        "embedNotAvailable": "Embed Not Available",
+        "embedNotAvailableDescription": "The video embed is not available. You can still watch on Facebook.",
+        "clickToWatch": "Click below to watch the live stream on Facebook.",
+        "watchOnFacebook": "Watch on Facebook",
+        "facebookLiveConnected": "Facebook Live Connected",
+        "videoId": "Video ID:",
+        "streamAvailable": "Stream available",
+        "externalLinkOnly": "External link only",
+        "facebookLiveIntegrationActive": "Facebook Live Integration Active",
+        "integrationDescription": "This campaign is connected to a Facebook Live stream.",
+        "streamWillAppear": "The stream will appear above when live.",
+        "clickOpenFacebook": "Click \"Open on Facebook\" to watch.",
+        "live": "LIVE"
+    },
+    
+    "donationForm": {
+        "supportThisCampaign": "Support This Campaign",
+        "makeDifference": "Make a difference with your contribution",
+        "thankyouDonation": "Thank you for your donation! 🎉",
+        "redirectingSuccess": "Redirecting to success page...",
+        "choosePaymentMethod": "Choose Payment Method",
+        "browserBlockedPopup": "Your browser blocked the payment popup. Please choose how you'd like to proceed:",
+        "tryPopupAgain": "Try Popup Again",
+        "openInNewTab": "Open in New Tab",
+        "enablePopupsTip": "💡 Tip: You can enable popups for this site in your browser settings for a smoother experience.",
+        "raised": "raised",
+        "of": "of",
+        "goal": "goal",
+        "funded": "funded",
+        "supporters": "supporters",
+        "toGo": "to go",
+        "chooseDonationAmount": "Choose your donation amount",
+        "customAmount": "Custom Amount",
+        "enterAmount": "Enter amount",
+        "donorInformation": "Donor Information",
+        "fullName": "Full Name",
+        "yourFullName": "Your full name",
+        "messageOfSupport": "Message of Support",
+        "shareMessage": "Share a message of encouragement...",
+        "makeAnonymous": "Make this donation anonymous",
+        "processing": "Processing...",
+        "donate": "Donate",
+        "securePaymentInfo": "Secure Payment Information",
+        "sslEncryption": "256-bit SSL encryption",
+        "multiplePaymentMethods": "Multiple payment methods",
+        "instantConfirmation": "Instant confirmation",
+        "support247": "24/7 support",
+        "poweredBy": "Powered by",
+        "supportingBanks": "Supporting Bankily, Sedad, Bimbank & more",
+        "errorCampaignMissing": "Error: Campaign ID is missing",
+        "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
+        "validationEmail": "Please enter a valid email address",
+        "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site."
+    }
+
+    
+
+    
+}

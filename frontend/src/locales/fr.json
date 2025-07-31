@@ -1,0 +1,221 @@
+{
+    "navbar": {
+        "logo": "SADA9A",
+        "explore": "Explorer",
+        "volunteer": "Bénévole",
+        "howItWorks": "Comment ça marche",
+        "search": "Rechercher...",
+        "favorites": "Mes Favoris",
+        "profile": "Mon Profil",
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "startCampaign": "Créer une Campagne",
+        "noFavorites": "Aucune campagne favorite pour le moment",
+        "noFavoritesSubtext": "Commencez à explorer et ajoutez des campagnes à vos favoris !",
+        "exploreCampaigns": "Explorer les Campagnes",
+        "loadMore": "Charger Plus",
+        "remaining": "restant",
+        "loading": "Chargement...",
+        "funded": "financé"
+    },
+
+    "hero": {
+        "title": {
+        "fund": "Financez Vos",
+        "dreams": "Rêves",
+        "support": "Soutenez",
+        "innovation": "l'Innovation"
+        },
+        "subtitle": "Rejoignez notre communauté mondiale de créateurs de changement et donnez vie aux campagnes créatives grâce au pouvoir du financement collectif.",
+        "exploreCampaigns": "Explorer les Campagnes",
+        "startCampaign": "Créer une Campagne",
+        "featured": "À la Une",
+        "featuredTitle": "Changer des Vies Grâce au Financement Participatif",
+        "featuredSubtitle": "Découvrez les histoires d'impact de notre communauté",
+        "imageAlt": "Succès du Financement Participatif"
+    },
+
+    "categories": {
+        "title": "Explorer les Catégories de Campagnes",
+        "subtitle": "Découvrez les campagnes selon la cause qu'elles soutiennent",
+        "viewAll": "Voir Tout",
+        "campaigns": "Campagnes",
+        "campaign": "Campagne",
+        "loadingCategories": "Chargement des catégories...",
+        "errorLoading": "Erreur lors du chargement des catégories :",
+        "noCategories": "Aucune catégorie disponible pour le moment.",
+        "unnamedCategory": "Catégorie Sans Nom"
+    },
+    
+    "featured": {
+        "title": "Campagnes en Vedette",
+        "subtitle": "Campagnes ayant un grand impact en ce moment",
+        "loading": "Chargement des campagnes en vedette...",
+        "noFeatured": "Aucune campagne en vedette disponible pour le moment",
+        "featured": "En Vedette",
+        "untitledCampaign": "Campagne Sans Titre",
+        "raised": "collecté",
+        "donors": "donateurs",
+        "donor": "donateur",
+        "viewCampaign": "Voir la Campagne",
+        "previousSlide": "Diapositive précédente",
+        "nextSlide": "Diapositive suivante",
+        "goToSlide": "Aller à la diapositive"
+    },
+
+    "cta": {
+        "title": "Prêt à Faire la Différence ?",
+        "subtitle": "Rejoignez des milliers de créateurs de changement et d'innovateurs qui transforment leurs idées en réalité grâce au pouvoir du financement communautaire.",
+        "startCampaign": "Créer Votre Campagne",
+        "exploreCampaigns": "Explorer les Campagnes"
+    },
+    
+    "explore": {
+        "title": "Explorer les Campagnes",
+        "subtitle": "Découvrez des projets et des causes incroyables qui ont besoin de votre soutien. Chaque contribution fait la différence.",
+        "searchPlaceholder": "Rechercher des campagnes...",
+        "filters": "Filtres",
+        "sortOptions": {
+        "newest": "Plus Récentes",
+        "oldest": "Plus Anciennes",
+        "mostFunded": "Plus Financées",
+        "mostDonors": "Plus de Donateurs"
+        },
+        "allCategories": "Toutes les Catégories",
+        "loading": "Chargement...",
+        "showing": "Affichage de",
+        "campaigns": "campagnes",
+        "campaign": "campagne",
+        "in": "dans",
+        "clearFilters": "Effacer les filtres",
+        "clearAllFilters": "Effacer tous les filtres",
+        "noCampaignsFound": "Aucune campagne trouvée",
+        "noCampaignsSubtext": "Essayez d'ajuster vos critères de recherche ou de filtre pour trouver plus de campagnes.",
+        "errorLoadingCampaigns": "Erreur lors du chargement des campagnes",
+        "tryAgain": "Réessayer"
+    },
+
+    "campaignCard": {
+        "featured": "En Vedette",
+        "general": "Général",
+        "funded": "financé",
+        "donors": "donateurs",
+        "donor": "donateur",
+        "raised": "collecté",
+        "of": "sur",
+        "goal": "Objectif :",
+        "created": "Créé le",
+        "viewDetails": "Voir Détails",
+        "watchLive": "Regarder en Direct",
+        "loading": "Chargement..."
+    },
+
+    "categoryFilter": {
+        "categories": "Catégories",
+        "clearCategoryFilter": "Effacer le Filtre de Catégorie"
+    },
+
+    "pagination": {
+        "previous": "Précédent",
+        "next": "Suivant",
+        "of": "sur"
+    },
+
+    "campaignDetail": {
+        "created": "Créé le",
+        "raised": "Collecté :",
+        "goal": "Objectif :",
+        "funded": "financé",
+        "donors": "donateurs",
+        "ourStory": "Notre Histoire",
+        "noDescription": "Aucune description fournie pour le moment.",
+        "target": "Objectif",
+        "errorLoadingCampaign": "Erreur lors du Chargement de la Campagne",
+        "tryAgain": "Réessayer",
+        "campaignNotFound": "Campagne introuvable",
+        "campaignNotFoundDescription": "La campagne que vous recherchez n'existe pas ou a été supprimée.",
+        "noImagesAvailable": "Aucune image disponible",
+        "aboutTheOrganization": "À Propos de l'Organisation",
+        "contactNumber": "Numéro de Contact",
+        "address": "Adresse",
+        "website": "Site Web",
+        "memberSince": "Membre depuis",
+        "verifiedOrganization": "Organisation Vérifiée"
+    },
+    "facebookLive": {
+        "liveStream": "Diffusion en Direct",
+        "refreshStatus": "Actualiser le statut",
+        "openOnFacebook": "Ouvrir sur Facebook",
+        "campaignProgress": "Progression de la Campagne",
+        "of": "sur",
+        "goalText": "objectif",
+        "liveStreamEnded": "Diffusion en Direct Terminée",
+        "liveStreamEndedDescription": "Cette diffusion en direct est terminée. Revenez plus tard pour les futures diffusions !",
+        "viewOnFacebook": "Voir sur Facebook",
+        "streamNotActive": "Diffusion Non Active",
+        "streamNotActiveDescription": "La diffusion en direct n'est pas actuellement active. Suivez la campagne pour les mises à jour !",
+        "checkStatus": "Vérifier le Statut",
+        "watching": "regardent",
+        "liveNow": "En direct maintenant",
+        "lastUpdated": "Dernière mise à jour :",
+        "facebookLiveStream": "Diffusion en Direct Facebook",
+        "connected": "Connecté",
+        "refreshPage": "Actualiser la page",
+        "embedNotAvailable": "Intégration Non Disponible",
+        "embedNotAvailableDescription": "L'intégration vidéo n'est pas disponible. Vous pouvez toujours regarder sur Facebook.",
+        "clickToWatch": "Cliquez ci-dessous pour regarder la diffusion en direct sur Facebook.",
+        "watchOnFacebook": "Regarder sur Facebook",
+        "facebookLiveConnected": "Facebook Live Connecté",
+        "videoId": "ID Vidéo :",
+        "streamAvailable": "Diffusion disponible",
+        "externalLinkOnly": "Lien externe uniquement",
+        "facebookLiveIntegrationActive": "Intégration Facebook Live Active",
+        "integrationDescription": "Cette campagne est connectée à une diffusion en direct Facebook.",
+        "streamWillAppear": "La diffusion apparaîtra ci-dessus lorsqu'elle sera en direct.",
+        "clickOpenFacebook": "Cliquez sur \"Ouvrir sur Facebook\" pour regarder.",
+        "live": "EN DIRECT"
+    },
+        
+    "donationForm": {
+        "supportThisCampaign": "Soutenir Cette Campagne",
+        "makeDifference": "Faites la différence avec votre contribution",
+        "thankyouDonation": "Merci pour votre don ! 🎉",
+        "redirectingSuccess": "Redirection vers la page de succès...",
+        "choosePaymentMethod": "Choisir le Mode de Paiement",
+        "browserBlockedPopup": "Votre navigateur a bloqué la popup de paiement. Veuillez choisir comment vous souhaitez procéder :",
+        "tryPopupAgain": "Réessayer la Popup",
+        "openInNewTab": "Ouvrir dans un Nouvel Onglet",
+        "enablePopupsTip": "💡 Astuce : Vous pouvez activer les popups pour ce site dans les paramètres de votre navigateur pour une meilleure expérience.",
+        "raised": "collecté",
+        "of": "sur",
+        "goal": "objectif",
+        "funded": "financé",
+        "supporters": "supporters",
+        "toGo": "restant",
+        "chooseDonationAmount": "Choisissez le montant de votre don",
+        "customAmount": "Montant Personnalisé",
+        "enterAmount": "Entrez le montant",
+        "donorInformation": "Informations du Donateur",
+        "fullName": "Nom Complet",
+        "yourFullName": "Votre nom complet",
+        "messageOfSupport": "Message de Soutien",
+        "shareMessage": "Partagez un message d'encouragement...",
+        "makeAnonymous": "Rendre ce don anonyme",
+        "processing": "Traitement...",
+        "donate": "Faire un Don",
+        "securePaymentInfo": "Informations de Paiement Sécurisé",
+        "sslEncryption": "Chiffrement SSL 256-bit",
+        "multiplePaymentMethods": "Plusieurs méthodes de paiement",
+        "instantConfirmation": "Confirmation instantanée",
+        "support247": "Support 24/7",
+        "poweredBy": "Propulsé par",
+        "supportingBanks": "Soutenant Bankily, Sedad, Bimbank et plus",
+        "errorCampaignMissing": "Erreur : ID de campagne manquant",
+        "validationMinAmount": "Veuillez entrer un montant de don valide (minimum 1 MRU)",
+        "validationEmail": "Veuillez entrer une adresse email valide",
+        "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site."
+    }
+
+
+
+}
