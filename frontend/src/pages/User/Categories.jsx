@@ -1,15 +1,24 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, TrendingUp, Users, Target, ArrowRight, Grid, Heart } from 'lucide-react';
+import { Search, ArrowRight, Grid, Heart } from 'lucide-react';
 import { fetchCategories } from '../../api/endpoints/CategoryAPI';
 import Loading from '../../components/common/Loading';
 
 export default function Categories() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const navigate = useNavigate();
+
+  // Format numbers - always use Latin numerals even for Arabic
+  const formatNumber = (num) => {
+    const locale = i18n.language === 'fr' ? 'fr-FR' : 'en-US';
+    return new Intl.NumberFormat(locale).format(num || 0);
+  };
 
   useEffect(() => {
     loadCategories();
@@ -50,7 +59,7 @@ export default function Categories() {
     category.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Helper function to get category icon
+  // Helper function to get category icon (simplified)
   const getCategoryIcon = (categoryName) => {
     const icons = {
       'health': '🏥',
@@ -81,23 +90,8 @@ export default function Categories() {
     return icons[matchedIcon] || '📁';
   };
 
-  // Helper function to get category color
-  const getCategoryColor = (index) => {
-    const colors = [
-      { bg: 'from-blue-500 to-blue-600', light: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-700' },
-      { bg: 'from-green-500 to-green-600', light: 'bg-green-50', border: 'border-green-200', text: 'text-green-700' },
-      { bg: 'from-purple-500 to-purple-600', light: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-700' },
-      { bg: 'from-orange-500 to-orange-600', light: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-700' },
-      { bg: 'from-pink-500 to-pink-600', light: 'bg-pink-50', border: 'border-pink-200', text: 'text-pink-700' },
-      { bg: 'from-indigo-500 to-indigo-600', light: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-700' },
-      { bg: 'from-red-500 to-red-600', light: 'bg-red-50', border: 'border-red-200', text: 'text-red-700' },
-      { bg: 'from-teal-500 to-teal-600', light: 'bg-teal-50', border: 'border-teal-200', text: 'text-teal-700' }
-    ];
-    return colors[index % colors.length];
-  };
-
   const handleCategoryClick = (categoryId) => {
-    console.log('Navigating to category:', categoryId); // Debug log
+    console.log('Navigating to category:', categoryId);
     navigate(`/explore?category=${categoryId}`);
   };
 
@@ -119,16 +113,16 @@ export default function Categories() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
             <span className="text-2xl">⚠️</span>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">Error Loading Categories</h2>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">{t('categories.errorTitle')}</h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <button 
             onClick={loadCategories}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
           >
-            Try Again
+            {t('categories.tryAgain')}
           </button>
         </div>
       </div>
@@ -136,177 +130,177 @@ export default function Categories() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 text-white">
+    <div className="min-h-screen bg-gray-50" dir={isRTL ? 'rtl' : 'ltr'}>
+      {/* Header Section - Warmer with subtle gradient */}
+      <div className="bg-gradient-to-b from-blue-50 to-white border-b border-blue-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Explore Categories
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
+              <Grid className="w-8 h-8 text-blue-600" />
+            </div>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {t('categories.title')}
             </h1>
-            <p className="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Discover campaigns across different causes and make a difference in the areas you care about most
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              {t('categories.subtitle')}
             </p>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  {categories.length}
+          </div>
+          
+          {/* Warmer Stats Cards */}
+          <div className="flex justify-center">
+            <div className={`flex items-center gap-6 ${isRTL ? '' : ''}`}>
+              <div className="bg-white rounded-xl border border-blue-100 px-6 py-4 shadow-sm">
+                <div className="text-center">
+                  <span className="block text-2xl font-bold text-blue-600">{formatNumber(categories.length)}</span>
+                  <span className="text-sm text-gray-600">{t('categories.stats.categories')}</span>
                 </div>
-                <div className="text-blue-200">Categories</div>
               </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  {totalCampaigns.toLocaleString()}
+              <div className="bg-white rounded-xl border border-green-100 px-6 py-4 shadow-sm">
+                <div className="text-center">
+                  <span className="block text-2xl font-bold text-green-600">{formatNumber(totalCampaigns)}</span>
+                  <span className="text-sm text-gray-600">{t('categories.stats.activeCampaigns')}</span>
                 </div>
-                <div className="text-blue-200">Active Campaigns</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-white mb-2">
-                  24/7
-                </div>
-                <div className="text-blue-200">Support Available</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Search Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-10">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="relative max-w-md mx-auto">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+      {/* Search Section - Warmer */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-md mx-auto">
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 ps-3 flex items-center pointer-events-none">
+              <Search className="h-5 w-5 text-blue-400" />
             </div>
             <input
               type="text"
-              placeholder="Search categories..."
+              placeholder={t('categories.searchPlaceholder')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg"
+              className="block w-full ps-10 pe-3 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white shadow-sm"
             />
           </div>
         </div>
       </div>
 
-      {/* Categories Grid */}
+      {/* Categories Grid - Clean Cards */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
         {filteredCategories.length === 0 ? (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Search className="w-8 h-8 text-gray-400" />
+            <div className="inline-flex items-center justify-center w-20 h-20 bg-blue-50 rounded-full mx-auto mb-6">
+              <Search className="w-10 h-10 text-blue-400" />
             </div>
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No categories found</h3>
-            <p className="text-gray-600">
-              {searchQuery ? 'Try adjusting your search terms' : 'No categories available at the moment'}
+            <h3 className="text-xl font-medium text-gray-900 mb-3">{t('categories.noCategoriesFound')}</h3>
+            <p className="text-gray-600 text-lg">
+              {searchQuery ? t('categories.adjustSearch') : t('categories.noCategoriesAvailable')}
             </p>
           </div>
         ) : (
           <>
             {/* Results Header */}
-            <div className="flex items-center justify-between mb-8">
+            <div className={`flex items-center justify-between mb-8 ${isRTL ? '' : ''}`}>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
-                  {searchQuery ? `Search Results (${filteredCategories.length})` : 'All Categories'}
+                  {searchQuery ? t('categories.searchResults', { count: filteredCategories.length }) : t('categories.allCategories')}
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  Choose a category to explore campaigns and make an impact
+                  {t('categories.chooseCategory')}
                 </p>
               </div>
               
+              {/* fix arrow */}
               <Link 
                 to="/explore"
-                className="hidden md:flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors"
+                className={`hidden md:flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors ${isRTL ? '' : ''}`}
               >
-                View All Campaigns
-                <ArrowRight className="w-4 h-4 ml-1" />
+                {t('categories.viewAllCampaigns')}
+              <ArrowRight className={`w-4 h-4 ${isRTL ? 'me-1 rotate-180' : 'ms-1'}`} />
               </Link>
             </div>
 
-            {/* Categories Grid */}
+            {/* Warmer Categories Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCategories.map((category, index) => {
-                const colorScheme = getCategoryColor(index);
                 const categoryIcon = getCategoryIcon(category.name);
                 const campaignCount = category.campaign_count || 0;
+                
+                // Subtle background variations for warmth
+                const backgroundVariations = [
+                  'bg-gradient-to-br from-blue-50 to-white',
+                  'bg-gradient-to-br from-green-50 to-white', 
+                  'bg-gradient-to-br from-purple-50 to-white',
+                  'bg-gradient-to-br from-orange-50 to-white',
+                  'bg-gradient-to-br from-pink-50 to-white',
+                  'bg-gradient-to-br from-indigo-50 to-white'
+                ];
+                const bgVariation = backgroundVariations[index % backgroundVariations.length];
                 
                 return (
                   <Link
                     key={category.id}
                     to={`/explore?category=${category.id}`}
-                    className="group relative bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 text-left block"
+                    className={`group ${bgVariation} rounded-xl border border-gray-100 p-6 hover:shadow-lg hover:border-blue-200 hover:-translate-y-1 transition-all duration-200 block`}
                   >
-                    {/* Gradient Header */}
-                    <div className={`h-20 bg-gradient-to-r ${colorScheme.bg} relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-black/10"></div>
-                      <div className="absolute top-4 right-4 text-white/80 text-xs font-medium">
-                        {campaignCount} campaigns
+                    {/* Icon and Count with subtle background */}
+                    <div className={`flex items-center justify-between mb-4 ${isRTL ? '' : ''}`}>
+                      <div className="flex items-center justify-center w-12 h-12 bg-white rounded-lg shadow-sm">
+                        <span className="text-2xl">{categoryIcon}</span>
                       </div>
-                      <div className="absolute bottom-4 left-4 text-4xl">
-                        {categoryIcon}
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
-                          {category.name}
-                        </h3>
-                        <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors" />
-                      </div>
-                      
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                        {category.description || `Explore ${category.name.toLowerCase()} campaigns and help make a difference in this important cause.`}
-                      </p>
-
-                      {/* Stats */}
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center text-gray-500">
-                          <Target className="w-4 h-4 mr-1" />
-                          <span>{campaignCount} active</span>
-                        </div>
-                        <div className={`px-2 py-1 ${colorScheme.light} ${colorScheme.border} border rounded-full`}>
-                          <span className={`text-xs font-medium ${colorScheme.text}`}>
-                            Explore
-                          </span>
-                        </div>
+                      <div className="bg-white/70 px-2 py-1 rounded-full text-xs font-medium text-gray-600">
+                        {formatNumber(campaignCount)}
                       </div>
                     </div>
 
-                    {/* Hover Effect Overlay */}
-                    <div className="absolute inset-0 bg-blue-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                    {/* Category Name */}
+                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">
+                      {category.name}
+                    </h3>
+                    
+                    {/* Description */}
+                    <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      {category.description || t('categories.defaultDescription', { category: category.name.toLowerCase() })}
+                    </p>
+
+                    {/* Action with enhanced styling */}
+                    <div className={`flex items-center justify-between ${isRTL ? '' : ''}`}>
+                      <span className="text-sm font-medium text-blue-600 group-hover:text-blue-700 bg-blue-50 group-hover:bg-blue-100 px-3 py-1 rounded-full transition-colors">
+                        {t('categories.explore')}
+                      </span>
+                      <div className="w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center group-hover:shadow-md group-hover:bg-blue-50 transition-all">
+                        <ArrowRight className={`w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors ${isRTL ? 'rotate-180' : ''}`} />
+
+                      </div>
+                    </div>
                   </Link>
                 );
               })}
             </div>
 
-            {/* Call to Action */}
-            <div className="mt-16 text-center">
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100">
-                <div className="max-w-2xl mx-auto">
+            {/* Call to Action - Warmer and more inviting */}
+            <div className="mt-16">
+              <div className="bg-gradient-to-r from-blue-50 via-white to-green-50 rounded-2xl border border-blue-100 p-8 text-center relative overflow-hidden">
+                {/* Subtle background decoration */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
+                <div className="absolute bottom-0 left-0 w-24 h-24 bg-green-100 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+                
+                <div className="relative">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 rounded-full mb-6">
+                    <Heart className="w-8 h-8 text-blue-600" />
+                  </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Can't find what you're looking for?
+                    {t('categories.cta.title')}
                   </h3>
-                  <p className="text-gray-600 mb-6">
-                    Browse all campaigns or start your own to create positive change in your community.
+                  <p className="text-gray-600 mb-8 max-w-2xl mx-auto text-lg">
+                    {t('categories.cta.description')}
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? '' : ''}`}>
                     <Link
                       to="/explore"
-                      className="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                      className={`inline-flex items-center px-8 py-4 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
                     >
-                      <Grid className="w-5 h-5 mr-2" />
-                      Browse All Campaigns
-                    </Link>
-                    <Link
-                      to="/start-campaign"
-                      className="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-medium rounded-lg border border-blue-200 hover:bg-blue-50 transition-colors"
-                    >
-                      <Heart className="w-5 h-5 mr-2" />
-                      Start a Campaign
+                      <Grid className={`w-5 h-5 ${isRTL ? 'ms-2' : 'me-2'}`} />
+                      {t('categories.cta.browseAll')}
                     </Link>
                   </div>
                 </div>

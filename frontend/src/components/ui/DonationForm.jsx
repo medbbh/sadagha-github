@@ -493,29 +493,35 @@ export default function DonationForm({
           ))}
         </div>
         
-        <div>
-          <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
-            {t('donationForm.customAmount')}
-          </label>
-          <div className="relative">
-            <div className={`absolute inset-y-0 ${isRTL ? 'end-0 pe-3' : 'start-0 ps-3'} flex items-center pointer-events-none`}>
-              <DollarSign className="h-5 w-5 text-gray-400" />
-            </div>
-            <input
-              type="number"
-              id="customAmount"
-              value={donationAmount}
-              onChange={(e) => setDonationAmount(Number(e.target.value))}
-              className={`block w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
-              placeholder={t('donationForm.enterAmount')}
-              min="1"
-              step="0.01"
-            />
-            <div className={`absolute inset-y-0 ${isRTL ? 'start-0 ps-3' : 'end-0 pe-3'} flex items-center pointer-events-none`}>
-              <span className="text-gray-500 text-sm">MRU</span>
-            </div>
-          </div>
-        </div>
+<div>
+  <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
+    {t('donationForm.customAmount')}
+  </label>
+  <div className="relative">
+    {/* Dollar Sign Icon */}
+    <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
+      <DollarSign className="h-5 w-5 text-gray-400" />
+    </div>
+    
+    {/* Input Field */}
+    <input
+      type="number"
+      id="customAmount"
+      value={donationAmount}
+      onChange={(e) => setDonationAmount(Number(e.target.value))}
+      className={`block w-full ${isRTL ? 'pr-10 pl-16' : 'pl-10 pr-16'} py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
+      placeholder={t('donationForm.enterAmount')}
+      min="1"
+      step="0.01"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    />
+    
+    {/* Currency Code */}
+    <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+      <span className="text-gray-500 text-sm font-medium">MRU</span>
+    </div>
+  </div>
+</div>
       </div>
 
       {/* Donor Information */}

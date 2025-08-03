@@ -80,6 +80,9 @@ BACKEND_URL = 'http://localhost:8002'   # Sada9a backend URL
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",  # Nextremitly frontend
     "http://localhost:5174",  # Sada9a frontend
+    "http://192.168.134.1:5174",
+    "http://172.20.144.1:5174",
+    "http://172.20.10.3:5174",  # Sada9a frontend
     "http://localhost:8000",  # Nextremitly backend
     "http://localhost:8001",  # Nextremitly microservice
 ]

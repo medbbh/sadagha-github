@@ -157,14 +157,21 @@ export default function NavBar() {
             <div className="hidden md:flex items-center space-x-8 mx-8 flex-1 justify-center">
               <Link
                 to="/explore" 
-                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
+                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
               >
                 {t('navbar.explore')}
               </Link>
               
+              <Link
+                to="/categories" 
+                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
+              >
+                {t('navbar.categories')}
+              </Link>
+
               <Link 
                 to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
-                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
+                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
               >
                 <HandHeart className="w-4 h-4" />
                 <span>{t('navbar.volunteer')}</span>
@@ -173,7 +180,7 @@ export default function NavBar() {
 
               <Link 
                 to="/how-it-works" 
-                className="text-[#3366CC] text-sm font-medium hover:opacity-70 transition-opacity duration-200"
+                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
               >
                 {t('navbar.howItWorks')}
               </Link>
@@ -211,7 +218,7 @@ export default function NavBar() {
                 <>
                 <a 
                   href="/profile" 
-                  className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-sm text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
+                  className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
                 >
                   <div className="h-6 w-6 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
                     {user.avatar ? (

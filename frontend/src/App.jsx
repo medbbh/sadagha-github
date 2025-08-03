@@ -169,7 +169,7 @@ function App() {
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
 
-        <Route path="/volunteer" element={<VolunteerDashboard />} />
+        {/* <Route path="/volunteer" element={<VolunteerDashboard />} /> */}
         <Route path="/volunteer/invitations" element={<VolunteerInvitations />} />
 
         <Route path="/auth/facebook/callback" element={<FacebookOAuthCallback />} />

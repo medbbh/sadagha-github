@@ -2,6 +2,7 @@
     "navbar": {
         "logo": "SADA9A",
         "explore": "Explore",
+        "categories": "Categories",
         "volunteer": "Volunteer",
         "howItWorks": "How It Works",
         "search": "Search...",
@@ -20,24 +21,24 @@
     },
 
     "hero": {
-        "title": {
-        "fund": "Fund Your",
-        "dreams": "Dreams",
-        "support": "Support",
-        "innovation": "Innovation"
-        },
-        "subtitle": "Join our global community of changemakers and bring creative Campaigns to life through the power of collective funding.",
-        "exploreCampaigns": "Explore Campaigns",
-        "startCampaign": "Start a Campaign",
-        "featured": "Featured",
-        "featuredTitle": "Changing Lives Through Crowdfunding",
-        "featuredSubtitle": "Discover the stories of impact from our community",
-        "imageAlt": "Crowdfunding Success"
+      "title": {
+        "fund": "Support",
+        "dreams": "Those in Need", 
+        "support": "Help",
+        "innovation": "Your Community"
+      },
+    "subtitle": "A bridge of giving that connects generous hearts with those in need through verified and transparent charity campaigns.",      
+    "exploreCampaigns": "Explore Campaigns",
+      "startCampaign": "Create Campaign",
+      "featured": "Urgent Needs",
+      "featuredTitle": "Making a Difference Through Sadaqah",
+      "featuredSubtitle": "See how your donations are transforming lives in our community",
+      "imageAlt": "Charity and Community Support"
     },
 
-    "categories": {
+    "categories_section": {
         "title": "Explore Campaigns Categories",
-        "subtitle": "Discover Campaigns by the cause they support",
+        "subtitle": "Discover campaigns by the category you care about",
         "viewAll": "View All",
         "campaigns": "Campaigns",
         "campaign": "Campaign",
@@ -215,7 +216,463 @@
         "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
         "validationEmail": "Please enter a valid email address",
         "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site."
+    },
+
+    "share": {
+        "shareThisCampaign": "Share This Campaign",
+        "share": "Share",
+        "copied": "Copied!",
+        "copyLink": "Copy Link",
+        "shareTitle": "Share campaign",
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "whatsapp": "WhatsApp",
+        "facebookNotification": "Campaign text copied to clipboard! Paste it in your Facebook post.",
+        "facebookNotificationFull": "Campaign text copied to clipboard! Paste it in your Facebook post for better engagement.",
+        "facebookTooltip": "Opens Facebook + copies text to clipboard",
+        "socialMediaPreview": "Social Media Preview",
+        "campaignPreviewAlt": "Campaign preview",
+        "shareDirectlyOn": "Share directly on",
+        "orCopyLink": "Or copy link",
+        "proTip": "Pro tip:",
+        "proTipText": "When you share on social media, your campaign image and progress will be displayed automatically to attract more supporters!",
+        "title": "Help Support: {{campaignName}}",
+        "defaultText": "Help support: {{campaignName}}! {{currentAmount}} MRU raised of {{target}} MRU so far. Join {{donorCount}} donors in making a difference!",
+        "description": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors • {{campaignDescription}}...",
+        "previewStats": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors",
+        "hashtags": ["fundraising", "support", "donate"]
+    },
+        
+    "volunteerInvitations": {
+        "title": "Volunteer Invitations",
+        "subtitle": "Respond to volunteer opportunities from organizations",
+        "stats": {
+        "total": "Total",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined"
+        },
+        "errors": {
+        "failedToLoad": "Failed to load invitations",
+        "failedToRespond": "Failed to respond to invitation"
+        },
+        "searchPlaceholder": "Search invitations...",
+        "filters": {
+        "allStatus": "All Status",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+        },
+        "empty": {
+        "noInvitationsTitle": "No invitations yet",
+        "noInvitationsText": "Organizations will send you invitations for volunteer opportunities that match your profile.",
+        "noMatchTitle": "No invitations match your filters",
+        "noMatchText": "Try adjusting your search or filter criteria."
+        },
+        "modal": {
+        "description": "Description",
+        "eventDate": "Event Date",
+        "duration": "Duration",
+        "durationHours": "{{hours}} hours",
+        "personalMessage": "Personal Message"
+        },
+        "responseModal": {
+        "acceptTitle": "Accept Invitation",
+        "declineTitle": "Decline Invitation",
+        "messageLabel": "Message (Optional)",
+        "reasonLabel": "Reason (Optional)",
+        "messagePlaceholder": "Let them know why you're excited...",
+        "reasonPlaceholder": "Let them know why you can't participate..."
+        },
+        "actions": {
+        "accept": "Accept",
+        "decline": "Decline",
+        "cancel": "Cancel",
+        "processing": "Processing..."
+        }
+    },
+
+    "invitationCard": {
+        "duration": "{{hours}} hours",
+        "invited": "Invited",
+        "matchScore": "{{score}}% match",
+        "viewDetails": "View Details",
+        "eventDetails": "Event Details",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "durationLabel": "Duration",
+        "expires": "Expires",
+        "organization": "Organization",
+        "invitationStatus": "Invitation Status",
+        "statusLabel": "Status",
+        "matchScoreLabel": "Match Score",
+        "responded": "Responded",
+        "messages": "Messages",
+        "organizationMessage": "Organization Message",
+        "yourResponse": "Your Response",
+        "viewRelatedCampaign": "View Related Campaign",
+        "acceptInvitation": "Accept Invitation",
+        "declineInvitation": "Decline Invitation",
+        "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+        }
+    },
+
+  "categories": {
+    "title": "Explore Categories",
+    "subtitle": "Discover campaigns across different causes and make a difference in the areas you care about most",
+    "errorTitle": "Error Loading Categories",
+    "tryAgain": "Try Again",
+    "searchPlaceholder": "Search categories...",
+    "noCategoriesFound": "No categories found",
+    "adjustSearch": "Try adjusting your search terms",
+    "noCategoriesAvailable": "No categories available at the moment",
+    "searchResults": "Search Results ({{count}})",
+    "allCategories": "All Categories",
+    "chooseCategory": "Choose a category to explore campaigns and make an impact",
+    "viewAllCampaigns": "View All Campaigns",
+    "campaigns": "campaigns",
+    "defaultDescription": "Explore {{category}} campaigns and help make a difference in this important cause.",
+    "explore": "Explore",
+    "stats": {
+      "categories": "Categories",
+      "activeCampaigns": "Active Campaigns"
+    },
+    "cta": {
+      "title": "Can't find what you're looking for?",
+      "description": "Browse all campaigns or start your own to create positive change in your community.",
+      "browseAll": "Browse All Campaigns",
+      "startCampaign": "Start a Campaign"
     }
+  },
+
+    "profile": {
+    "tabs": {
+      "profile": "Profile",
+      "volunteer": "Volunteer",
+      "donations": "Donations",
+      "settings": "Settings"
+    },
+    "header": {
+      "verified": "Verified",
+      "memberSince": "Member since",
+      "notAvailable": "N/A",
+      "mruDonated": "MRU Donated",
+      "campaignsSupported": "Campaigns Supported"
+    },
+    "errors": {
+      "failedToLoad": "Failed to load profile",
+      "failedToSave": "Failed to save profile. Please try again.",
+      "errorLoadingTitle": "Error Loading Profile",
+      "retry": "Retry"
+    },
+    "volunteer": {
+      "errors": {
+        "failedToLoad": "Failed to load volunteer profile",
+        "failedToUpdateStatus": "Failed to update volunteer status"
+      }
+    }
+  },
+
+  
+  "profileTab": {
+    "title": "Profile Information",
+    "actions": {
+      "editProfile": "Edit Profile",
+      "saveChanges": "Save Changes",
+      "cancel": "Cancel"
+    },
+    "fields": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phoneNumber": "Phone Number",
+      "phoneHelp": "8-digit Mauritanian phone number"
+    },
+    "security": {
+      "title": "Security",
+      "loadingOptions": "Loading security options...",
+      "accountType": "Account Type",
+      "signedInWith": "Signed in with {{provider}}",
+      "passwordManagedViaEmail": "Password managed via email",
+      "emailPasswordAccount": "Email and password account",
+      "changePasswordTitle": "Change Password",
+      "fields": {
+        "currentPassword": "Current Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password"
+      },
+      "placeholders": {
+        "currentPassword": "Enter current password",
+        "newPassword": "Enter new password",
+        "confirmPassword": "Confirm new password"
+      },
+      "actions": {
+        "changePassword": "Change Password",
+        "sending": "Sending...",
+        "setResetViaEmail": "Set/Reset Password via Email",
+        "resetViaEmail": "Reset Password via Email",
+        "updating": "Updating...",
+        "updatePassword": "Update Password"
+      },
+      "messages": {
+        "passwordSetSuccess": "Password set successfully! You can now sign in with email and password.",
+        "passwordUpdateSuccess": "Password updated successfully!",
+        "resetEmailSent": "Password reset email sent! Check your inbox."
+      },
+      "errors": {
+        "passwordMismatch": "Passwords do not match",
+        "passwordTooShort": "Password must be at least 6 characters long",
+        "passwordNotAvailable": "Password change not available for OAuth accounts.",
+        "currentPasswordIncorrect": "Current password is incorrect",
+        "updateFailed": "Failed to update password",
+        "resetEmailFailed": "Failed to send reset email"
+      }
+    }
+  },
+  
+  "volunteerTab": {
+    "title": "Volunteer Information",
+    "memberSince": "Member since",
+    "form": {
+      "createTitle": "Create Volunteer Profile",
+      "editTitle": "Edit Volunteer Profile"
+    },
+    "actions": {
+      "cancel": "Cancel",
+      "activate": "Activate",
+      "deactivate": "Deactivate",
+      "editProfile": "Edit Profile"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "welcome": {
+      "title": "Ready to Make a Difference?",
+      "description": "Join thousands of volunteers in Mauritania who are helping their communities through SADA9A. Create your volunteer profile to get matched with opportunities that fit your skills and availability.",
+      "createButton": "Create Volunteer Profile"
+    },
+    "benefits": {
+      "getMatched": {
+        "title": "Get Matched",
+        "description": "Organizations will find you based on your skills and availability"
+      },
+      "makeImpact": {
+        "title": "Make Impact",
+        "description": "Use your skills to help causes you care about in your community"
+      },
+      "flexibleSchedule": {
+        "title": "Flexible Schedule",
+        "description": "Volunteer when it works for you with our flexible scheduling system"
+      }
+    },
+    "messages": {
+      "updateSuccess": {
+        "title": "Volunteer Profile Updated!",
+        "description": "Your volunteer information has been saved successfully."
+      },
+      "error": {
+        "title": "Error"
+      }
+    },
+    "fields": {
+      "phone": "Phone",
+      "age": "Age",
+      "ageValue": "{{age}} years",
+      "profession": "Profession",
+      "motivation": "Motivation",
+      "skills": "Skills",
+      "interests": "Interests", 
+      "languages": "Languages",
+      "availableLocations": "Available Locations"
+    }
+  },
+  
+  "volunteerForm": {
+    "commaSeparated": "comma-separated",
+    "steps": {
+      "step1": {
+        "title": "Personal Information",
+        "createSubtitle": "Tell us about yourself",
+        "editSubtitle": "Update your details"
+      },
+      "step2": {
+        "title": "Skills & Interests"
+      },
+      "step3": {
+        "title": "Available Locations"
+      },
+      "step4": {
+        "title": "Availability"
+      }
+    },
+    "fields": {
+      "phone": "Phone Number",
+      "age": "Age",
+      "profession": "Profession",
+      "motivation": "Why do you want to volunteer?",
+      "skills": "Skills",
+      "interests": "Interests",
+      "languages": "Languages"
+    },
+    "placeholders": {
+      "profession": "Teacher, Engineer, Student...",
+      "motivation": "Tell us about your motivation...",
+      "skills": "Programming, Teaching, First Aid...",
+      "interests": "Education, Health, Environment...",
+      "languages": "Arabic, French, English..."
+    },
+    "locations": {
+      "nouakchott": "Nouakchott",
+      "adrar": "Adrar",
+      "assaba": "Assaba",
+      "brakna": "Brakna",
+      "dakhletNouadhibou": "Dakhlet Nouadhibou",
+      "gorgol": "Gorgol",
+      "guidimaka": "Guidimaka",
+      "hodhEchChargui": "Hodh Ech Chargui",
+      "hodhElGharbi": "Hodh El Gharbi",
+      "inchiri": "Inchiri",
+      "tagant": "Tagant",
+      "tirisZemmour": "Tiris Zemmour",
+      "trarza": "Trarza"
+    },
+    "locationTypes": {
+      "capitale": "capitale",
+      "wilaya": "wilaya"
+    },
+    "timeSlots": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "evening": "Evening",
+      "flexible": "Flexible",
+      "anytime": "Anytime"
+    },
+    "days": {
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday",
+      "sunday": "Sunday"
+    },
+    "availability": {
+      "day": "Day"
+    },
+    "validation": {
+      "phoneRequired": "Phone number is required",
+      "ageRange": "Age must be between 16 and 100",
+      "motivationRequired": "Motivation is required",
+      "motivationMinLength": "At least 20 characters required",
+      "skillsRequired": "Skills are required",
+      "interestsRequired": "Interests are required",
+      "languagesRequired": "Languages are required",
+      "locationsRequired": "Select at least one location",
+      "availabilityRequired": "Select at least one availability slot"
+    },
+    "navigation": {
+      "previous": "Previous",
+      "next": "Next",
+      "stepOf": "Step {{current}} of {{total}}",
+      "creating": "Creating...",
+      "joinSada9a": "Join SADA9A"
+    },
+    "errors": {
+      "general": "An error occurred. Please try again."
+    }
+  },
+
+  "donationsTab": {
+    "title": "Donation History",
+    "loading": "Loading donations...",
+    "totalDisplay": "Total",
+    "searchPlaceholder": "Search campaigns...",
+    "sortBy": "Sort by",
+    "stats": {
+      "totalDonated": "Total Donated",
+      "totalDonations": "Total Donations", 
+      "campaignsSupported": "Campaigns Supported"
+    },
+    "sortOptions": {
+      "newestFirst": "Newest First",
+      "oldestFirst": "Oldest First",
+      "highestAmount": "Highest Amount",
+      "lowestAmount": "Lowest Amount",
+      "campaignAZ": "Campaign A-Z",
+      "campaignZA": "Campaign Z-A"
+    },
+    "empty": {
+      "noDonationsFound": "No donations found",
+      "noDonationsYet": "No Donations Yet",
+      "adjustFilters": "Try adjusting your filters to see more donations.",
+      "startDonating": "Start making a difference by supporting campaigns that matter to you."
+    },
+    "donation": {
+      "payment": "Payment",
+      "anonymous": "Anonymous",
+      "message": "Message"
+    },
+    "actions": {
+      "tryAgain": "Try Again",
+      "exploreCampaigns": "Explore Campaigns",
+      "refresh": "Refresh"
+    },
+    "errors": {
+      "loadFailed": "Failed to load donations",
+      "errorLoadingTitle": "Error Loading Donations"
+    },
+    "pagination": {
+      "showing": "Showing {{start}} to {{end}} of {{total}} donations",
+      "previous": "Previous",
+      "next": "Next",
+      "pageOf": "Page {{current}} of {{total}}"
+    }
+  },
+
+    "settingsTab": {
+    "title": "Account Settings",
+    "notifications": {
+      "title": "Notifications",
+      "email": {
+        "title": "Email Notifications",
+        "description": "Receive updates about campaigns and volunteer opportunities"
+      },
+      "push": {
+        "title": "Push Notifications",
+        "description": "Get instant notifications on your device"
+      },
+      "volunteer": {
+        "title": "Volunteer Matching",
+        "description": "Allow organizations to find and contact you"
+      }
+    },
+    "privacy": {
+      "title": "Privacy & Preferences",
+      "profileVisibility": "Profile Visibility",
+      "language": "Language",
+      "currency": "Currency",
+      "visibility": {
+        "public": "Public",
+        "organizations": "Organizations Only",
+        "private": "Private"
+      }
+    },
+    "danger": {
+      "title": "Danger Zone",
+      "deleteAccount": {
+        "title": "Delete Account",
+        "description": "Permanently delete your account and all data",
+        "button": "Delete Account"
+      }
+    }
+  }
+
 
     
 

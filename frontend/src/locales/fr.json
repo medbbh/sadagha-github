@@ -2,6 +2,7 @@
     "navbar": {
         "logo": "SADA9A",
         "explore": "Explorer",
+        "categories": "Catégories",
         "volunteer": "Bénévole",
         "howItWorks": "Comment ça marche",
         "search": "Rechercher...",
@@ -26,7 +27,7 @@
         "support": "Soutenez",
         "innovation": "l'Innovation"
         },
-        "subtitle": "Rejoignez notre communauté mondiale de créateurs de changement et donnez vie aux campagnes créatives grâce au pouvoir du financement collectif.",
+        "subtitle": "Un pont de générosité qui unit les cœurs généreux aux personnes dans le besoin à travers des campagnes caritatives certifiées et transparentes.",
         "exploreCampaigns": "Explorer les Campagnes",
         "startCampaign": "Créer une Campagne",
         "featured": "À la Une",
@@ -35,9 +36,9 @@
         "imageAlt": "Succès du Financement Participatif"
     },
 
-    "categories": {
+    "categories_section": {
         "title": "Explorer les Catégories de Campagnes",
-        "subtitle": "Découvrez les campagnes selon la cause qu'elles soutiennent",
+        "subtitle": "Découvrez les campagnes selon la catégorie qui vous intéresse",
         "viewAll": "Voir Tout",
         "campaigns": "Campagnes",
         "campaign": "Campagne",
@@ -214,7 +215,461 @@
         "validationMinAmount": "Veuillez entrer un montant de don valide (minimum 1 MRU)",
         "validationEmail": "Veuillez entrer une adresse email valide",
         "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site."
+    },
+
+    "share": {
+        "shareThisCampaign": "Partager cette campagne",
+        "share": "Partager",
+        "copied": "Copié !",
+        "copyLink": "Copier le lien",
+        "shareTitle": "Partager la campagne",
+        "facebook": "Facebook",
+        "twitter": "Twitter",
+        "whatsapp": "WhatsApp",
+        "facebookNotification": "Texte de la campagne copié dans le presse-papiers ! Collez-le dans votre publication Facebook.",
+        "facebookNotificationFull": "Texte de la campagne copié dans le presse-papiers ! Collez-le dans votre publication Facebook pour un meilleur engagement.",
+        "facebookTooltip": "Ouvre Facebook + copie le texte dans le presse-papiers",
+        "socialMediaPreview": "Aperçu des réseaux sociaux",
+        "campaignPreviewAlt": "Aperçu de la campagne",
+        "shareDirectlyOn": "Partager directement sur",
+        "orCopyLink": "Ou copier le lien",
+        "proTip": "Conseil :",
+        "proTipText": "Lorsque vous partagez sur les réseaux sociaux, l'image et le progrès de votre campagne s'afficheront automatiquement pour attirer plus de supporters !",
+        "title": "Aidez à soutenir : {{campaignName}}",
+        "defaultText": "Aidez à soutenir : {{campaignName}} ! {{currentAmount}} MRU récoltés sur {{target}} MRU jusqu'à présent. Rejoignez {{donorCount}} donateurs pour faire la différence !",
+        "description": "{{currentAmount}} MRU récoltés sur un objectif de {{target}} MRU • {{donorCount}} donateurs • {{campaignDescription}}...",
+        "previewStats": "{{currentAmount}} MRU récoltés sur un objectif de {{target}} MRU • {{donorCount}} donateurs",
+        "hashtags": ["collecte_de_fonds", "soutien", "don"]
+    },
+    
+    "volunteerInvitations": {
+        "title": "Invitations de Bénévolat",
+        "subtitle": "Répondez aux opportunités de bénévolat des organisations",
+        "stats": {
+        "total": "Total",
+        "pending": "En attente",
+        "accepted": "Acceptées",
+        "declined": "Refusées"
+        },
+        "errors": {
+        "failedToLoad": "Échec du chargement des invitations",
+        "failedToRespond": "Échec de la réponse à l'invitation"
+        },
+        "searchPlaceholder": "Rechercher des invitations...",
+        "filters": {
+        "allStatus": "Tous les statuts",
+        "pending": "En attente",
+        "accepted": "Acceptées",
+        "declined": "Refusées",
+        "expired": "Expirées"
+        },
+        "empty": {
+        "noInvitationsTitle": "Aucune invitation pour le moment",
+        "noInvitationsText": "Les organisations vous enverront des invitations pour des opportunités de bénévolat qui correspondent à votre profil.",
+        "noMatchTitle": "Aucune invitation ne correspond à vos filtres",
+        "noMatchText": "Essayez d'ajuster vos critères de recherche ou de filtre."
+        },
+        "modal": {
+        "description": "Description",
+        "eventDate": "Date de l'événement",
+        "duration": "Durée",
+        "durationHours": "{{hours}} heures",
+        "personalMessage": "Message personnel"
+        },
+        "responseModal": {
+        "acceptTitle": "Accepter l'invitation",
+        "declineTitle": "Refuser l'invitation",
+        "messageLabel": "Message (Optionnel)",
+        "reasonLabel": "Raison (Optionnel)",
+        "messagePlaceholder": "Dites-leur pourquoi vous êtes enthousiaste...",
+        "reasonPlaceholder": "Dites-leur pourquoi vous ne pouvez pas participer..."
+        },
+        "actions": {
+        "accept": "Accepter",
+        "decline": "Refuser",
+        "cancel": "Annuler",
+        "processing": "Traitement en cours..."
+        }
+    },
+    "invitationCard": {
+        "duration": "{{hours}} heures",
+        "invited": "Invité",
+        "matchScore": "{{score}}% de correspondance",
+        "viewDetails": "Voir les détails",
+        "eventDetails": "Détails de l'événement",
+        "startDate": "Date de début",
+        "endDate": "Date de fin",
+        "durationLabel": "Durée",
+        "expires": "Expire",
+        "organization": "Organisation",
+        "invitationStatus": "Statut de l'invitation",
+        "statusLabel": "Statut",
+        "matchScoreLabel": "Score de correspondance",
+        "responded": "Répondu",
+        "messages": "Messages",
+        "organizationMessage": "Message de l'organisation",
+        "yourResponse": "Votre réponse",
+        "viewRelatedCampaign": "Voir la campagne associée",
+        "acceptInvitation": "Accepter l'invitation",
+        "declineInvitation": "Refuser l'invitation",
+        "status": {
+        "pending": "En attente",
+        "accepted": "Acceptée",
+        "declined": "Refusée",
+        "expired": "Expirée"
+        }
+    },
+
+  "categories": {
+    "title": "Explorer les Catégories",
+    "subtitle": "Découvrez des campagnes à travers différentes causes et faites la différence dans les domaines qui vous tiennent à cœur",
+    "errorTitle": "Erreur lors du chargement des catégories",
+    "tryAgain": "Réessayer",
+    "searchPlaceholder": "Rechercher des catégories...",
+    "noCategoriesFound": "Aucune catégorie trouvée",
+    "adjustSearch": "Essayez d'ajuster vos termes de recherche",
+    "noCategoriesAvailable": "Aucune catégorie disponible pour le moment",
+    "searchResults": "Résultats de recherche ({{count}})",
+    "allCategories": "Toutes les Catégories",
+    "chooseCategory": "Choisissez une catégorie pour explorer les campagnes et avoir un impact",
+    "viewAllCampaigns": "Voir Toutes les Campagnes",
+    "campaigns": "campagnes",
+    "defaultDescription": "Explorez les campagnes {{category}} et aidez à faire la différence dans cette cause importante.",
+    "explore": "Explorer",
+    "stats": {
+      "categories": "Catégories",
+      "activeCampaigns": "Campagnes Actives"
+    },
+    "cta": {
+      "title": "Vous ne trouvez pas ce que vous cherchez ?",
+      "description": "Parcourez toutes les campagnes ou créez la vôtre pour créer un changement positif dans votre communauté.",
+      "browseAll": "Parcourir Toutes les Campagnes",
+      "startCampaign": "Créer une Campagne"
     }
+  },
+
+    "profile": {
+    "tabs": {
+      "profile": "Profil",
+      "volunteer": "Bénévolat",
+      "donations": "Dons",
+      "settings": "Paramètres"
+    },
+    "header": {
+      "verified": "Vérifié",
+      "memberSince": "Membre depuis",
+      "notAvailable": "N/A",
+      "mruDonated": "MRU Donnés",
+      "campaignsSupported": "Campagnes Soutenues"
+    },
+    "errors": {
+      "failedToLoad": "Échec du chargement du profil",
+      "failedToSave": "Échec de la sauvegarde du profil. Veuillez réessayer.",
+      "errorLoadingTitle": "Erreur de Chargement du Profil",
+      "retry": "Réessayer"
+    },
+    "volunteer": {
+      "errors": {
+        "failedToLoad": "Échec du chargement du profil bénévole",
+        "failedToUpdateStatus": "Échec de la mise à jour du statut bénévole"
+      }
+    }
+  },
+  
+  "profileTab": {
+    "title": "Informations du Profil",
+    "actions": {
+      "editProfile": "Modifier le Profil",
+      "saveChanges": "Enregistrer les Modifications",
+      "cancel": "Annuler"
+    },
+    "fields": {
+      "firstName": "Prénom",
+      "lastName": "Nom de Famille",
+      "email": "Email",
+      "phoneNumber": "Numéro de Téléphone",
+      "phoneHelp": "Numéro de téléphone mauritanien à 8 chiffres"
+    },
+    "security": {
+      "title": "Sécurité",
+      "loadingOptions": "Chargement des options de sécurité...",
+      "accountType": "Type de Compte",
+      "signedInWith": "Connecté avec {{provider}}",
+      "passwordManagedViaEmail": "Mot de passe géré par email",
+      "emailPasswordAccount": "Compte email et mot de passe",
+      "changePasswordTitle": "Changer le Mot de Passe",
+      "fields": {
+        "currentPassword": "Mot de Passe Actuel",
+        "newPassword": "Nouveau Mot de Passe",
+        "confirmPassword": "Confirmer le Mot de Passe"
+      },
+      "placeholders": {
+        "currentPassword": "Entrez le mot de passe actuel",
+        "newPassword": "Entrez le nouveau mot de passe",
+        "confirmPassword": "Confirmez le nouveau mot de passe"
+      },
+      "actions": {
+        "changePassword": "Changer le Mot de Passe",
+        "sending": "Envoi en cours...",
+        "setResetViaEmail": "Définir/Réinitialiser le Mot de Passe par Email",
+        "resetViaEmail": "Réinitialiser le Mot de Passe par Email",
+        "updating": "Mise à jour...",
+        "updatePassword": "Mettre à Jour le Mot de Passe"
+      },
+      "messages": {
+        "passwordSetSuccess": "Mot de passe défini avec succès ! Vous pouvez maintenant vous connecter avec votre email et mot de passe.",
+        "passwordUpdateSuccess": "Mot de passe mis à jour avec succès !",
+        "resetEmailSent": "Email de réinitialisation de mot de passe envoyé ! Vérifiez votre boîte de réception."
+      },
+      "errors": {
+        "passwordMismatch": "Les mots de passe ne correspondent pas",
+        "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+        "passwordNotAvailable": "Changement de mot de passe non disponible pour les comptes OAuth.",
+        "currentPasswordIncorrect": "Le mot de passe actuel est incorrect",
+        "updateFailed": "Échec de la mise à jour du mot de passe",
+        "resetEmailFailed": "Échec de l'envoi de l'email de réinitialisation"
+      }
+    }
+  },
+  
+  "volunteerTab": {
+    "title": "Informations Bénévole",
+    "memberSince": "Membre depuis",
+    "form": {
+      "createTitle": "Créer un Profil Bénévole",
+      "editTitle": "Modifier le Profil Bénévole"
+    },
+    "actions": {
+      "cancel": "Annuler",
+      "activate": "Activer",
+      "deactivate": "Désactiver",
+      "editProfile": "Modifier le Profil"
+    },
+    "status": {
+      "active": "Actif",
+      "inactive": "Inactif"
+    },
+    "welcome": {
+      "title": "Prêt à Faire la Différence ?",
+      "description": "Rejoignez des milliers de bénévoles en Mauritanie qui aident leurs communautés grâce à SADA9A. Créez votre profil de bénévole pour être associé à des opportunités qui correspondent à vos compétences et à votre disponibilité.",
+      "createButton": "Créer un Profil Bénévole"
+    },
+    "benefits": {
+      "getMatched": {
+        "title": "Être Associé",
+        "description": "Les organisations vous trouveront en fonction de vos compétences et de votre disponibilité"
+      },
+      "makeImpact": {
+        "title": "Créer un Impact",
+        "description": "Utilisez vos compétences pour aider les causes qui vous tiennent à cœur dans votre communauté"
+      },
+      "flexibleSchedule": {
+        "title": "Horaire Flexible",
+        "description": "Faites du bénévolat quand cela vous convient grâce à notre système de planification flexible"
+      }
+    },
+    "messages": {
+      "updateSuccess": {
+        "title": "Profil Bénévole Mis à Jour !",
+        "description": "Vos informations de bénévole ont été enregistrées avec succès."
+      },
+      "error": {
+        "title": "Erreur"
+      }
+    },
+    "fields": {
+      "phone": "Téléphone",
+      "age": "Âge",
+      "ageValue": "{{age}} ans",
+      "profession": "Profession",
+      "motivation": "Motivation",
+      "skills": "Compétences",
+      "interests": "Centres d'Intérêt",
+      "languages": "Langues",
+      "availableLocations": "Lieux Disponibles"
+    }
+  },
+    "volunteerForm": {
+    "commaSeparated": "séparés par des virgules",
+    "steps": {
+      "step1": {
+        "title": "Informations Personnelles",
+        "createSubtitle": "Parlez-nous de vous",
+        "editSubtitle": "Mettez à jour vos détails"
+      },
+      "step2": {
+        "title": "Compétences et Centres d'Intérêt"
+      },
+      "step3": {
+        "title": "Lieux Disponibles"
+      },
+      "step4": {
+        "title": "Disponibilité"
+      }
+    },
+    "fields": {
+      "phone": "Numéro de Téléphone",
+      "age": "Âge",
+      "profession": "Profession",
+      "motivation": "Pourquoi voulez-vous faire du bénévolat ?",
+      "skills": "Compétences",
+      "interests": "Centres d'Intérêt",
+      "languages": "Langues"
+    },
+    "placeholders": {
+      "profession": "Enseignant, Ingénieur, Étudiant...",
+      "motivation": "Parlez-nous de votre motivation...",
+      "skills": "Programmation, Enseignement, Premiers Secours...",
+      "interests": "Éducation, Santé, Environnement...",
+      "languages": "Arabe, Français, Anglais..."
+    },
+    "locations": {
+      "nouakchott": "Nouakchott",
+      "adrar": "Adrar",
+      "assaba": "Assaba",
+      "brakna": "Brakna",
+      "dakhletNouadhibou": "Dakhlet Nouadhibou",
+      "gorgol": "Gorgol",
+      "guidimaka": "Guidimaka",
+      "hodhEchChargui": "Hodh Ech Chargui",
+      "hodhElGharbi": "Hodh El Gharbi",
+      "inchiri": "Inchiri",
+      "tagant": "Tagant",
+      "tirisZemmour": "Tiris Zemmour",
+      "trarza": "Trarza"
+    },
+    "locationTypes": {
+      "capitale": "capitale",
+      "wilaya": "wilaya"
+    },
+    "timeSlots": {
+      "morning": "Matin",
+      "afternoon": "Après-midi",
+      "evening": "Soir",
+      "flexible": "Flexible",
+      "anytime": "À tout moment"
+    },
+    "days": {
+      "monday": "Lundi",
+      "tuesday": "Mardi",
+      "wednesday": "Mercredi",
+      "thursday": "Jeudi",
+      "friday": "Vendredi",
+      "saturday": "Samedi",
+      "sunday": "Dimanche"
+    },
+    "availability": {
+      "day": "Jour"
+    },
+    "validation": {
+      "phoneRequired": "Le numéro de téléphone est requis",
+      "ageRange": "L'âge doit être entre 16 et 100 ans",
+      "motivationRequired": "La motivation est requise",
+      "motivationMinLength": "Au moins 20 caractères requis",
+      "skillsRequired": "Les compétences sont requises",
+      "interestsRequired": "Les centres d'intérêt sont requis",
+      "languagesRequired": "Les langues sont requises",
+      "locationsRequired": "Sélectionnez au moins un lieu",
+      "availabilityRequired": "Sélectionnez au moins un créneau de disponibilité"
+    },
+    "navigation": {
+      "previous": "Précédent",
+      "next": "Suivant",
+      "stepOf": "Étape {{current}} sur {{total}}",
+      "creating": "Création en cours...",
+      "joinSada9a": "Rejoindre SADA9A"
+    },
+    "errors": {
+      "general": "Une erreur s'est produite. Veuillez réessayer."
+    }
+  },
+
+  "donationsTab": {
+    "title": "Historique des Dons",
+    "loading": "Chargement des dons...",
+    "totalDisplay": "Total",
+    "searchPlaceholder": "Rechercher des campagnes...",
+    "sortBy": "Trier par",
+    "stats": {
+      "totalDonated": "Total Donné",
+      "totalDonations": "Total des Dons",
+      "campaignsSupported": "Campagnes Soutenues"
+    },
+    "sortOptions": {
+      "newestFirst": "Plus Récent d'Abord",
+      "oldestFirst": "Plus Ancien d'Abord",
+      "highestAmount": "Montant le Plus Élevé",
+      "lowestAmount": "Montant le Plus Bas",
+      "campaignAZ": "Campagne A-Z",
+      "campaignZA": "Campagne Z-A"
+    },
+    "empty": {
+      "noDonationsFound": "Aucun don trouvé",
+      "noDonationsYet": "Aucun Don Encore",
+      "adjustFilters": "Essayez d'ajuster vos filtres pour voir plus de dons.",
+      "startDonating": "Commencez à faire la différence en soutenant les campagnes qui vous tiennent à cœur."
+    },
+    "donation": {
+      "payment": "Paiement",
+      "anonymous": "Anonyme",
+      "message": "Message"
+    },
+    "actions": {
+      "tryAgain": "Réessayer",
+      "exploreCampaigns": "Explorer les Campagnes",
+      "refresh": "Actualiser"
+    },
+    "errors": {
+      "loadFailed": "Échec du chargement des dons",
+      "errorLoadingTitle": "Erreur de Chargement des Dons"
+    },
+    "pagination": {
+      "showing": "Affichage de {{start}} à {{end}} sur {{total}} dons",
+      "previous": "Précédent",
+      "next": "Suivant",
+      "pageOf": "Page {{current}} sur {{total}}"
+    }
+  },
+
+  "settingsTab": {
+    "title": "Paramètres du Compte",
+    "notifications": {
+      "title": "Notifications",
+      "email": {
+        "title": "Notifications Email",
+        "description": "Recevez des mises à jour sur les campagnes et opportunités de bénévolat"
+      },
+      "push": {
+        "title": "Notifications Push",
+        "description": "Recevez des notifications instantanées sur votre appareil"
+      },
+      "volunteer": {
+        "title": "Correspondance Bénévole",
+        "description": "Permettre aux organisations de vous trouver et vous contacter"
+      }
+    },
+    "privacy": {
+      "title": "Confidentialité et Préférences",
+      "profileVisibility": "Visibilité du Profil",
+      "language": "Langue",
+      "currency": "Devise",
+      "visibility": {
+        "public": "Public",
+        "organizations": "Organisations Seulement",
+        "private": "Privé"
+      }
+    },
+    "danger": {
+      "title": "Zone Dangereuse",
+      "deleteAccount": {
+        "title": "Supprimer le Compte",
+        "description": "Supprimer définitivement votre compte et toutes les données",
+        "button": "Supprimer le Compte"
+      }
+    }
+  }
+
+
 
 
 

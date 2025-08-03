@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { 
   User, CreditCard, Settings, Shield, Heart
 } from 'lucide-react';
@@ -12,6 +13,8 @@ import { fetchUserProfile, updateUserProfile } from '../../api/endpoints/UserAPI
 import { useSearchParams } from 'react-router-dom';
 
 const UserProfilePage = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState(searchParams.get('tab') || 'profile');
   const [loading, setLoading] = useState(true);
@@ -37,7 +40,6 @@ const UserProfilePage = () => {
   const [profileLoading, setProfileLoading] = useState(true);
   const [profileError, setProfileError] = useState(null);
 
-  
   const [volunteerStats, setVolunteerStats] = useState({
     totalHours: 45,
     missionsCompleted: 12,
@@ -84,57 +86,72 @@ const UserProfilePage = () => {
     currency: 'MRU'
   });
 
-
-useEffect(() => {
-  const fetchProfile = async () => {
-    try {
-      setProfileLoading(true);
-      setProfileError(null);
-      
-      const data = await fetchUserProfile();
-      
-      // Set user data
-      setUserData({
-        id: data.id,
-        email: data.email,
-        firstName: data.first_name,
-        lastName: data.last_name,
-        phoneNumber: data.phone_number || '', // Handle optional phone number
-        role: data.role || 'user'
-      });
-      
-      // Set profile data for other tabs
-      setProfileData(data);
-      
-      // Set donations
-      if (data.donations) {
-        const formattedDonations = data.donations.map(donation => ({
-          id: donation.id,
-          campaignId: donation.campaign_id,
-          campaignName: donation.campaign_name, // Fixed typo
-          amount: parseFloat(donation.amount),
-          currency: donation.currency,
-          date: donation.created_at,
-          status: donation.status,
-          isAnonymous: donation.is_anonymous
-        }));
-        setDonationHistory(formattedDonations);
-      }
-      
-      // Set volunteer profile if exists
-      if (data.volunteer_profile) {
-        setVolunteerProfile(data.volunteer_profile);
-      }
-      
-    } catch (error) {
-      setProfileError(error.message || 'Failed to load profile');
-    } finally {
-      setProfileLoading(false);
-    }
+  // Format numbers - always use Latin numerals even for Arabic
+  const formatNumber = (num) => {
+    const locale = i18n.language === 'fr' ? 'fr-FR' : 'en-US';
+    return new Intl.NumberFormat(locale).format(num || 0);
   };
 
-  fetchProfile();
-}, []);
+  // Format date with proper locale
+  const formatDate = (dateString) => {
+    const locale = i18n.language === 'fr' ? 'fr-FR' : 'en-US';
+    return new Date(dateString).toLocaleDateString(locale, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setProfileLoading(true);
+        setProfileError(null);
+        
+        const data = await fetchUserProfile();
+        
+        // Set user data
+        setUserData({
+          id: data.id,
+          email: data.email,
+          firstName: data.first_name,
+          lastName: data.last_name,
+          phoneNumber: data.phone_number || '', // Handle optional phone number
+          role: data.role || 'user'
+        });
+        
+        // Set profile data for other tabs
+        setProfileData(data);
+        
+        // Set donations
+        if (data.donations) {
+          const formattedDonations = data.donations.map(donation => ({
+            id: donation.id,
+            campaignId: donation.campaign_id,
+            campaignName: donation.campaign_name, // Fixed typo
+            amount: parseFloat(donation.amount),
+            currency: donation.currency,
+            date: donation.created_at,
+            status: donation.status,
+            isAnonymous: donation.is_anonymous
+          }));
+          setDonationHistory(formattedDonations);
+        }
+        
+        // Set volunteer profile if exists
+        if (data.volunteer_profile) {
+          setVolunteerProfile(data.volunteer_profile);
+        }
+        
+      } catch (error) {
+        setProfileError(error.message || t('profile.errors.failedToLoad'));
+      } finally {
+        setProfileLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [t]);
 
   useEffect(() => {
     // Simulate loading
@@ -160,7 +177,7 @@ useEffect(() => {
       }
     } catch (err) {
       if (err.response?.status !== 404) {
-        setVolunteerError(err.message || 'Failed to load volunteer profile');
+        setVolunteerError(err.message || t('profile.volunteer.errors.failedToLoad'));
       } else {
         setVolunteerProfile(null);
       }
@@ -195,7 +212,7 @@ useEffect(() => {
       setVolunteerSuccess(true);
       setTimeout(() => setVolunteerSuccess(false), 3000);
     } catch (err) {
-      setVolunteerError(err.message || 'Failed to update volunteer status');
+      setVolunteerError(err.message || t('profile.volunteer.errors.failedToUpdateStatus'));
     }
   };
 
@@ -226,7 +243,7 @@ useEffect(() => {
     } catch (error) {
       console.error('Error saving profile:', error);
       // Handle error - show error message to user
-      alert('Failed to save profile. Please try again.');
+      alert(t('profile.errors.failedToSave'));
     }
   };
 
@@ -244,10 +261,10 @@ useEffect(() => {
   };
 
   const tabs = [
-    { id: 'profile', name: 'Profile', icon: User },
-    { id: 'volunteer', name: 'Volunteer', icon: Heart },
-    { id: 'donations', name: 'Donations', icon: CreditCard },
-    { id: 'settings', name: 'Settings', icon: Settings }
+    { id: 'profile', name: t('profile.tabs.profile'), icon: User },
+    { id: 'volunteer', name: t('profile.tabs.volunteer'), icon: Heart },
+    { id: 'donations', name: t('profile.tabs.donations'), icon: CreditCard },
+    { id: 'settings', name: t('profile.tabs.settings'), icon: Settings }
   ];
 
   if (loading || profileLoading) {
@@ -260,67 +277,62 @@ useEffect(() => {
 
   // Handle profile error
   if (profileError) {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-indigo-50 flex items-center justify-center">
-      <div className="text-center">
-        <h2 className="text-xl font-semibold text-red-600 mb-2">Error Loading Profile</h2>
-        <p className="text-gray-600">{profileError}</p>
-        <button 
-          onClick={() => window.location.reload()} 
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-        >
-          Retry
-        </button>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-teal-50 to-indigo-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-red-600 mb-2">{t('profile.errors.errorLoadingTitle')}</h2>
+          <p className="text-gray-600">{profileError}</p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          >
+            {t('profile.errors.retry')}
+          </button>
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-indigo-50 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 to-indigo-50 py-8 px-4" dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-
-      <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-        <div className="flex items-center gap-6">
-          <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-            <span className="text-white text-2xl font-bold">
-              {userData.firstName?.[0] || ''}{userData.lastName?.[0] || ''}
-            </span>
-          </div>
-          <div className="flex-1">
-            <div className="flex items-center gap-3 mb-2">
-              <h1 className="text-3xl font-bold text-gray-900">
-                {userData.firstName} {userData.lastName}
-              </h1>
-              <div className="flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                <Shield className="w-4 h-4" />
-                Verified
-              </div>
+        <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
+          <div className={`flex items-center gap-6 ${isRTL ? '' : ''}`}>
+            <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+              <span className="text-white text-2xl font-bold">
+                {userData.firstName?.[0] || ''}{userData.lastName?.[0] || ''}
+              </span>
             </div>
-            <p className="text-gray-600 mb-2">@{userData.email}</p>
-            <p className="text-sm text-gray-500">
-              Member since {profileData?.created_at ? new Date(profileData.created_at).toLocaleDateString() : 'N/A'}
-            </p>
-          </div>
-          <div className="text-right">
-            <div className="grid grid-cols-2 gap-4 text-center">
-              <div className="bg-blue-50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-blue-600">
-                  {profileData?.statistics?.total_donated || 0}
-                </div>
-                <div className="text-xs text-blue-600">MRU Donated</div>
+            <div className="flex-1">
+              <div className={`flex items-center gap-3 mb-2 ${isRTL ? '' : ''}`}>
+                <h1 className="text-3xl font-bold text-gray-900">
+                  {userData.firstName} {userData.lastName}
+                </h1>
               </div>
-              <div className="bg-purple-50 rounded-lg p-3">
-                <div className="text-2xl font-bold text-purple-600">
-                  {profileData?.statistics?.campaigns_supported || 0}
+              <p className={`text-gray-600 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>@{userData.email}</p>
+              <p className={`text-sm text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('profile.header.memberSince')} {profileData?.created_at ? formatDate(profileData.created_at) : t('profile.header.notAvailable')}
+              </p>
+            </div>
+            <div className={`text-${isRTL ? 'left' : 'right'}`}>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="bg-blue-50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {formatNumber(profileData?.statistics?.total_donated || 0)}
+                  </div>
+                  <div className="text-xs text-blue-600">{t('profile.header.mruDonated')}</div>
                 </div>
-                <div className="text-xs text-purple-600">Campaigns Supported</div>
+                <div className="bg-purple-50 rounded-lg p-3">
+                  <div className="text-2xl font-bold text-purple-600">
+                    {formatNumber(profileData?.statistics?.campaigns_supported || 0)}
+                  </div>
+                  <div className="text-xs text-purple-600">{t('profile.header.campaignsSupported')}</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div className="grid grid-cols-12 gap-8">
           {/* Sidebar Navigation */}
@@ -333,7 +345,7 @@ useEffect(() => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
-                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
+                      className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isRTL ? ' text-right' : 'text-left'} ${
                         activeTab === tab.id
                           ? 'bg-blue-600 text-white shadow-md'
                           : 'text-gray-600 hover:bg-gray-100'

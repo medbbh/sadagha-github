@@ -1,22 +1,56 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bell, Globe, Trash2 } from 'lucide-react';
 
 const SettingsTab = ({ settings, handleSettingChange }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
+  const handleLanguageChange = (langCode) => {
+    // Update i18n language
+    i18n.changeLanguage(langCode);
+    
+    // Update document direction for Arabic
+    document.documentElement.dir = langCode === 'ar' ? 'rtl' : 'ltr';
+    document.documentElement.lang = langCode;
+    
+    // Update settings state
+    handleSettingChange('language', langCode);
+  };
+
+  const getProfileVisibilityOptions = () => [
+    { value: 'public', label: t('settingsTab.privacy.visibility.public') },
+    { value: 'organizations', label: t('settingsTab.privacy.visibility.organizations') },
+    { value: 'private', label: t('settingsTab.privacy.visibility.private') }
+  ];
+
+  const getLanguageOptions = () => [
+    { value: 'en', label: 'English 🇺🇸' },
+    { value: 'ar', label: 'العربية 🇲🇷' },
+    { value: 'fr', label: 'Français 🇫🇷' }
+  ];
+
+  const getCurrencyOptions = () => [
+    { value: 'MRU', label: t('settingsTab.privacy.currency.mru') },
+    { value: 'USD', label: t('settingsTab.privacy.currency.usd') },
+    { value: 'EUR', label: t('settingsTab.privacy.currency.eur') }
+  ];
+
   return (
-    <div className="space-y-8">
-      <h2 className="text-2xl font-bold text-gray-900">Account Settings</h2>
+    <div className="space-y-8" dir={isRTL ? 'rtl' : 'ltr'}>
+      <h2 className="text-2xl font-bold text-gray-900">{t('settingsTab.title')}</h2>
 
       {/* Notifications */}
       <div className="border-b pb-8">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <Bell className="w-5 h-5" />
-          Notifications
+          {t('settingsTab.notifications.title')}
         </h3>
         <div className="space-y-4">
           <div className="flex justify-between items-center">
             <div>
-              <div className="font-medium text-gray-900">Email Notifications</div>
-              <div className="text-sm text-gray-600">Receive updates about campaigns and volunteer opportunities</div>
+              <div className="font-medium text-gray-900">{t('settingsTab.notifications.email.title')}</div>
+              <div className="text-sm text-gray-600">{t('settingsTab.notifications.email.description')}</div>
             </div>
             <button
               onClick={() => handleSettingChange('emailNotifications', !settings.emailNotifications)}
@@ -25,15 +59,17 @@ const SettingsTab = ({ settings, handleSettingChange }) => {
               }`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                settings.emailNotifications ? 'translate-x-6' : 'translate-x-1'
+                settings.emailNotifications 
+                  ? (isRTL ? 'translate-x-[-1.5rem]' : 'translate-x-6') 
+                  : (isRTL ? 'translate-x-[-0.25rem]' : 'translate-x-1')
               }`} />
             </button>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
-              <div className="font-medium text-gray-900">Push Notifications</div>
-              <div className="text-sm text-gray-600">Get instant notifications on your device</div>
+              <div className="font-medium text-gray-900">{t('settingsTab.notifications.push.title')}</div>
+              <div className="text-sm text-gray-600">{t('settingsTab.notifications.push.description')}</div>
             </div>
             <button
               onClick={() => handleSettingChange('pushNotifications', !settings.pushNotifications)}
@@ -42,15 +78,17 @@ const SettingsTab = ({ settings, handleSettingChange }) => {
               }`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                settings.pushNotifications ? 'translate-x-6' : 'translate-x-1'
+                settings.pushNotifications 
+                  ? (isRTL ? 'translate-x-[-1.5rem]' : 'translate-x-6') 
+                  : (isRTL ? 'translate-x-[-0.25rem]' : 'translate-x-1')
               }`} />
             </button>
           </div>
 
           <div className="flex justify-between items-center">
             <div>
-              <div className="font-medium text-gray-900">Volunteer Matching</div>
-              <div className="text-sm text-gray-600">Allow organizations to find and contact you</div>
+              <div className="font-medium text-gray-900">{t('settingsTab.notifications.volunteer.title')}</div>
+              <div className="text-sm text-gray-600">{t('settingsTab.notifications.volunteer.description')}</div>
             </div>
             <button
               onClick={() => handleSettingChange('volunteerMatching', !settings.volunteerMatching)}
@@ -59,7 +97,9 @@ const SettingsTab = ({ settings, handleSettingChange }) => {
               }`}
             >
               <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                settings.volunteerMatching ? 'translate-x-6' : 'translate-x-1'
+                settings.volunteerMatching 
+                  ? (isRTL ? 'translate-x-[-1.5rem]' : 'translate-x-6') 
+                  : (isRTL ? 'translate-x-[-0.25rem]' : 'translate-x-1')
               }`} />
             </button>
           </div>
@@ -68,61 +108,53 @@ const SettingsTab = ({ settings, handleSettingChange }) => {
 
       {/* Privacy & Preferences */}
       <div className="border-b pb-8">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Privacy & Preferences</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('settingsTab.privacy.title')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Profile Visibility</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('settingsTab.privacy.profileVisibility')}</label>
             <select
               value={settings.profileVisibility}
               onChange={(e) => handleSettingChange('profileVisibility', e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="public">Public</option>
-              <option value="organizations">Organizations Only</option>
-              <option value="private">Private</option>
+              {getProfileVisibilityOptions().map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Language</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('settingsTab.privacy.language')}</label>
             <select
-              value={settings.language}
-              onChange={(e) => handleSettingChange('language', e.target.value)}
+              value={i18n.language || settings.language}
+              onChange={(e) => handleLanguageChange(e.target.value)}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
-              <option value="en">English</option>
-              <option value="ar">العربية</option>
-              <option value="fr">Français</option>
+              {getLanguageOptions().map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Currency</label>
-            <select
-              value={settings.currency}
-              onChange={(e) => handleSettingChange('currency', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="MRU">MRU - Mauritanian Ouguiya</option>
-              <option value="USD">USD - US Dollar</option>
-              <option value="EUR">EUR - Euro</option>
-            </select>
-          </div>
         </div>
       </div>
 
       {/* Danger Zone */}
       <div>
-        <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>
+        <h3 className="text-lg font-semibold text-red-600 mb-4">{t('settingsTab.danger.title')}</h3>
         <div className="bg-red-50 border border-red-200 rounded-lg p-6">
           <div className="flex justify-between items-center">
             <div>
-              <div className="font-medium text-red-900">Delete Account</div>
-              <div className="text-sm text-red-700">Permanently delete your account and all data</div>
+              <div className="font-medium text-red-900">{t('settingsTab.danger.deleteAccount.title')}</div>
+              <div className="text-sm text-red-700">{t('settingsTab.danger.deleteAccount.description')}</div>
             </div>
             <button className="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
               <Trash2 className="w-4 h-4" />
-              Delete Account
+              {t('settingsTab.danger.deleteAccount.button')}
             </button>
           </div>
         </div>

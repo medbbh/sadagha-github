@@ -1,7 +1,8 @@
 {
     "navbar": {
-        "logo": "صداقة",
+        "logo": "صدقة",
         "explore": "استكشاف",
+        "categories": "الفئات",
         "volunteer": "تطوع",
         "howItWorks": "كيف يعمل",
         "search": "بحث...",
@@ -20,24 +21,24 @@
     },
 
     "hero": {
-        "title": {
-        "fund": "مول",
-        "dreams": "أحلامك",
-        "support": "ادعم",
-        "innovation": "الابتكار"
-        },
-        "subtitle": "انضم إلى مجتمعنا العالمي من صناع التغيير وأحيِ الحملات الإبداعية من خلال قوة التمويل الجماعي.",
-        "exploreCampaigns": "استكشاف الحملات",
-        "startCampaign": "إنشاء حملة",
-        "featured": "مميز",
-        "featuredTitle": "تغيير الحياة من خلال التمويل الجماعي",
-        "featuredSubtitle": "اكتشف قصص التأثير من مجتمعنا",
-        "imageAlt": "نجاح التمويل الجماعي"
+      "title": {
+        "fund": "ادعم",
+        "dreams": "المحتاجين",
+        "support": "ساعد",
+        "innovation": "مجتمعك"
+      },
+    "subtitle": "جسر العطاء الذي يجمع أهل الخير مع المحتاجين عبر حملات خيرية معتمدة وشفافة.",
+    "exploreCampaigns": "استكشاف الحملات",
+      "startCampaign": "إنشاء حملة",
+      "featured": "احتياجات عاجلة",
+      "featuredTitle": "إحداث الفرق من خلال الصدقة",
+      "featuredSubtitle": "اكتشف كيف تغير تبرعاتك حياة أفراد مجتمعنا",
+      "imageAlt": "الخير والدعم المجتمعي"
     },
   
-    "categories": {
+    "categories_section": {
         "title": "استكشاف فئات الحملات",
-        "subtitle": "اكتشف الحملات حسب القضية التي تدعمها",
+        "subtitle": "اكتشف الحملات حسب الفئة التي تهتم بها",
         "viewAll": "عرض الكل",
         "campaigns": "حملات",
         "campaign": "حملة",
@@ -212,8 +213,460 @@
         "validationMinAmount": "الرجاء إدخال مبلغ تبرع صحيح (الحد الأدنى 1 أوقية)",
         "validationEmail": "الرجاء إدخال عنوان بريد إلكتروني صحيح",
         "popupBlocked": "النافذة المنبثقة ما زالت محجوبة. الرجاء تجربة خيار \"فتح في علامة تبويب جديدة\" أو السماح بالنوافذ المنبثقة لهذا الموقع."
-    }
+    },
+        
+    "share": {
+        "shareThisCampaign": "شارك هذه الحملة",
+        "share": "مشاركة",
+        "copied": "تم النسخ!",
+        "copyLink": "نسخ الرابط",
+        "shareTitle": "مشاركة الحملة",
+        "facebook": "فيسبوك",
+        "twitter": "تويتر",
+        "whatsapp": "واتساب",
+        "facebookNotification": "تم نسخ نص الحملة! الصقه في منشورك على فيسبوك.",
+        "facebookNotificationFull": "تم نسخ نص الحملة! الصقه في منشورك على فيسبوك لتحسين التفاعل.",
+        "facebookTooltip": "يفتح فيسبوك + ينسخ النص إلى الحافظة",
+        "socialMediaPreview": "معاينة وسائل التواصل الاجتماعي",
+        "campaignPreviewAlt": "معاينة الحملة",
+        "shareDirectlyOn": "شارك مباشرة على",
+        "orCopyLink": "أو انسخ الرابط",
+        "proTip": "نصيحة:",
+        "proTipText": "عندما تشارك على وسائل التواصل الاجتماعي، ستظهر صورة حملتك وتقدمها تلقائياً لجذب المزيد من الداعمين!",
+        "title": "ساعد في دعم: {{campaignName}}",
+        "defaultText": "ساعد في دعم: {{campaignName}}! تم جمع {{currentAmount}} أوقية من أصل {{target}} أوقية حتى الآن. انضم إلى {{donorCount}} متبرع في إحداث فرق!",
+        "description": "{{currentAmount}} أوقية تم جمعها من هدف {{target}} أوقية • {{donorCount}} متبرع • {{campaignDescription}}...",
+        "previewStats": "{{currentAmount}} أوقية تم جمعها من هدف {{target}} أوقية • {{donorCount}} متبرع",
+        "hashtags": ["جمع_تبرعات", "دعم", "تبرع"]
+    },
+        
+    "volunteerInvitations": {
+        "title": "دعوات التطوع",
+        "subtitle": "استجب لفرص التطوع من المنظمات",
+        "stats": {
+        "total": "المجموع",
+        "pending": "قيد الانتظار",
+        "accepted": "مقبولة",
+        "declined": "مرفوضة"
+        },
+        "errors": {
+        "failedToLoad": "فشل في تحميل الدعوات",
+        "failedToRespond": "فشل في الرد على الدعوة"
+        },
+        "searchPlaceholder": "البحث في الدعوات...",
+        "filters": {
+        "allStatus": "جميع الحالات",
+        "pending": "قيد الانتظار",
+        "accepted": "مقبولة",
+        "declined": "مرفوضة",
+        "expired": "منتهية الصلاحية"
+        },
+        "empty": {
+        "noInvitationsTitle": "لا توجد دعوات بعد",
+        "noInvitationsText": "ستقوم المنظمات بإرسال دعوات لك لفرص التطوع التي تتطابق مع ملفك الشخصي.",
+        "noMatchTitle": "لا توجد دعوات تطابق المرشحات",
+        "noMatchText": "حاول تعديل معايير البحث أو المرشح."
+        },
+        "modal": {
+        "description": "الوصف",
+        "eventDate": "تاريخ الفعالية",
+        "duration": "المدة",
+        "durationHours": "{{hours}} ساعات",
+        "personalMessage": "رسالة شخصية"
+        },
+        "responseModal": {
+        "acceptTitle": "قبول الدعوة",
+        "declineTitle": "رفض الدعوة",
+        "messageLabel": "رسالة (اختيارية)",
+        "reasonLabel": "السبب (اختياري)",
+        "messagePlaceholder": "أخبرهم لماذا أنت متحمس...",
+        "reasonPlaceholder": "أخبرهم لماذا لا يمكنك المشاركة..."
+        },
+        "actions": {
+        "accept": "قبول",
+        "decline": "رفض",
+        "cancel": "إلغاء",
+        "processing": "جاري المعالجة..."
+        }
+    },
+    "invitationCard": {
+        "duration": "{{hours}} ساعات",
+        "invited": "مدعو",
+        "matchScore": "{{score}}% تطابق",
+        "viewDetails": "عرض التفاصيل",
+        "eventDetails": "تفاصيل الفعالية",
+        "startDate": "تاريخ البداية",
+        "endDate": "تاريخ النهاية",
+        "durationLabel": "المدة",
+        "expires": "تنتهي",
+        "organization": "المنظمة",
+        "invitationStatus": "حالة الدعوة",
+        "statusLabel": "الحالة",
+        "matchScoreLabel": "نقاط التطابق",
+        "responded": "تم الرد",
+        "messages": "الرسائل",
+        "organizationMessage": "رسالة المنظمة",
+        "yourResponse": "ردك",
+        "viewRelatedCampaign": "عرض الحملة ذات الصلة",
+        "acceptInvitation": "قبول الدعوة",
+        "declineInvitation": "رفض الدعوة",
+        "status": {
+        "pending": "قيد الانتظار",
+        "accepted": "مقبولة",
+        "declined": "مرفوضة",
+        "expired": "منتهية الصلاحية"
+        }
+    },
 
+  "categories": {
+    "title": "استكشف الفئات",
+    "subtitle": "اكتشف الحملات عبر القضايا المختلفة واصنع فرقاً في المجالات التي تهتم بها أكثر",
+    "errorTitle": "خطأ في تحميل الفئات",
+    "tryAgain": "حاول مرة أخرى",
+    "searchPlaceholder": "البحث في الفئات...",
+    "noCategoriesFound": "لم يتم العثور على فئات",
+    "adjustSearch": "حاول تعديل مصطلحات البحث",
+    "noCategoriesAvailable": "لا توجد فئات متاحة في الوقت الحالي",
+    "searchResults": "نتائج البحث ({{count}})",
+    "allCategories": "جميع الفئات",
+    "chooseCategory": "اختر فئة لاستكشاف الحملات وإحداث تأثير",
+    "viewAllCampaigns": "عرض جميع الحملات",
+    "campaigns": "حملات",
+    "defaultDescription": "استكشف حملات {{category}} وساعد في إحداث فرق في هذه القضية المهمة.",
+    "explore": "استكشف",
+    "stats": {
+      "categories": "الفئات",
+      "activeCampaigns": "الحملات النشطة"
+    },
+    "cta": {
+      "title": "لا تجد ما تبحث عنه؟",
+      "description": "تصفح جميع الحملات أو ابدأ حملتك الخاصة لإحداث تغيير إيجابي في مجتمعك.",
+      "browseAll": "تصفح جميع الحملات",
+      "startCampaign": "ابدأ حملة"
+    }
+  },
+
+    "profile": {
+    "tabs": {
+      "profile": "الملف الشخصي",
+      "volunteer": "التطوع",
+      "donations": "التبرعات",
+      "settings": "الإعدادات"
+    },
+    "header": {
+      "verified": "موثق",
+      "memberSince": "عضو منذ",
+      "notAvailable": "غير متاح",
+      "mruDonated": "أوقية متبرع بها",
+      "campaignsSupported": "الحملات المدعومة"
+    },
+    "errors": {
+      "failedToLoad": "فشل في تحميل الملف الشخصي",
+      "failedToSave": "فشل في حفظ الملف الشخصي. يرجى المحاولة مرة أخرى.",
+      "errorLoadingTitle": "خطأ في تحميل الملف الشخصي",
+      "retry": "إعادة المحاولة"
+    },
+    "volunteer": {
+      "errors": {
+        "failedToLoad": "فشل في تحميل ملف التطوع",
+        "failedToUpdateStatus": "فشل في تحديث حالة التطوع"
+      }
+    }
+  },
+  
+  "profileTab": {
+    "title": "معلومات الملف الشخصي",
+    "actions": {
+      "editProfile": "تعديل الملف الشخصي",
+      "saveChanges": "حفظ التغييرات",
+      "cancel": "إلغاء"
+    },
+    "fields": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phoneNumber": "رقم الهاتف",
+      "phoneHelp": "رقم هاتف موريتاني مكون من 8 أرقام"
+    },
+    "security": {
+      "title": "الأمان",
+      "loadingOptions": "جاري تحميل خيارات الأمان...",
+      "accountType": "نوع الحساب",
+      "signedInWith": "تم تسجيل الدخول باستخدام {{provider}}",
+      "passwordManagedViaEmail": "كلمة المرور مُدارة عبر البريد الإلكتروني",
+      "emailPasswordAccount": "حساب البريد الإلكتروني وكلمة المرور",
+      "changePasswordTitle": "تغيير كلمة المرور",
+      "fields": {
+        "currentPassword": "كلمة المرور الحالية",
+        "newPassword": "كلمة المرور الجديدة",
+        "confirmPassword": "تأكيد كلمة المرور"
+      },
+      "placeholders": {
+        "currentPassword": "أدخل كلمة المرور الحالية",
+        "newPassword": "أدخل كلمة المرور الجديدة",
+        "confirmPassword": "أكد كلمة المرور الجديدة"
+      },
+      "actions": {
+        "changePassword": "تغيير كلمة المرور",
+        "sending": "جاري الإرسال...",
+        "setResetViaEmail": "تعيين/إعادة تعيين كلمة المرور عبر البريد الإلكتروني",
+        "resetViaEmail": "إعادة تعيين كلمة المرور عبر البريد الإلكتروني",
+        "updating": "جاري التحديث...",
+        "updatePassword": "تحديث كلمة المرور"
+      },
+      "messages": {
+        "passwordSetSuccess": "تم تعيين كلمة المرور بنجاح! يمكنك الآن تسجيل الدخول باستخدام البريد الإلكتروني وكلمة المرور.",
+        "passwordUpdateSuccess": "تم تحديث كلمة المرور بنجاح!",
+        "resetEmailSent": "تم إرسال بريد إعادة تعيين كلمة المرور! تحقق من صندوق الوارد الخاص بك."
+      },
+      "errors": {
+        "passwordMismatch": "كلمات المرور غير متطابقة",
+        "passwordTooShort": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل",
+        "passwordNotAvailable": "تغيير كلمة المرور غير متاح لحسابات OAuth.",
+        "currentPasswordIncorrect": "كلمة المرور الحالية غير صحيحة",
+        "updateFailed": "فشل في تحديث كلمة المرور",
+        "resetEmailFailed": "فشل في إرسال بريد إعادة التعيين"
+      }
+    }
+  },
+  
+  "volunteerTab": {
+    "title": "معلومات التطوع",
+    "memberSince": "عضو منذ",
+    "form": {
+      "createTitle": "إنشاء ملف تطوعي",
+      "editTitle": "تعديل الملف التطوعي"
+    },
+    "actions": {
+      "cancel": "إلغاء",
+      "activate": "تفعيل",
+      "deactivate": "إلغاء التفعيل",
+      "editProfile": "تعديل الملف الشخصي"
+    },
+    "status": {
+      "active": "نشط",
+      "inactive": "غير نشط"
+    },
+    "welcome": {
+      "title": "مستعد لإحداث فرق؟",
+      "description": "انضم إلى آلاف المتطوعين في موريتانيا الذين يساعدون مجتمعاتهم من خلال صدقة. قم بإنشاء ملفك التطوعي للحصول على فرص تتناسب مع مهاراتك وتوفرك.",
+      "createButton": "إنشاء ملف تطوعي"
+    },
+    "benefits": {
+      "getMatched": {
+        "title": "احصل على المطابقة",
+        "description": "ستجدك المنظمات بناءً على مهاراتك وتوفرك"
+      },
+      "makeImpact": {
+        "title": "احدث تأثيراً",
+        "description": "استخدم مهاراتك لمساعدة القضايا التي تهتم بها في مجتمعك"
+      },
+      "flexibleSchedule": {
+        "title": "جدول مرن",
+        "description": "تطوع عندما يناسبك مع نظام الجدولة المرن لدينا"
+      }
+    },
+    "messages": {
+      "updateSuccess": {
+        "title": "تم تحديث الملف التطوعي!",
+        "description": "تم حفظ معلومات التطوع الخاصة بك بنجاح."
+      },
+      "error": {
+        "title": "خطأ"
+      }
+    },
+    "fields": {
+      "phone": "الهاتف",
+      "age": "العمر",
+      "ageValue": "{{age}} سنة",
+      "profession": "المهنة",
+      "motivation": "الدافع",
+      "skills": "المهارات",
+      "interests": "الاهتمامات",
+      "languages": "اللغات",
+      "availableLocations": "المواقع المتاحة"
+    }
+  },
+  
+  "volunteerForm": {
+    "commaSeparated": "مفصولة بفواصل",
+    "steps": {
+      "step1": {
+        "title": "المعلومات الشخصية",
+        "createSubtitle": "أخبرنا عن نفسك",
+        "editSubtitle": "حدث تفاصيلك"
+      },
+      "step2": {
+        "title": "المهارات والاهتمامات"
+      },
+      "step3": {
+        "title": "المواقع المتاحة"
+      },
+      "step4": {
+        "title": "التوفر"
+      }
+    },
+    "fields": {
+      "phone": "رقم الهاتف",
+      "age": "العمر",
+      "profession": "المهنة",
+      "motivation": "لماذا تريد التطوع؟",
+      "skills": "المهارات",
+      "interests": "الاهتمامات",
+      "languages": "اللغات"
+    },
+    "placeholders": {
+      "profession": "معلم، مهندس، طالب...",
+      "motivation": "أخبرنا عن دافعك...",
+      "skills": "البرمجة، التدريس، الإسعافات الأولية...",
+      "interests": "التعليم، الصحة، البيئة...",
+      "languages": "العربية، الفرنسية، الإنجليزية..."
+    },
+    "locations": {
+      "nouakchott": "نواكشوط",
+      "adrar": "أدرار",
+      "assaba": "العصابة",
+      "brakna": "البراكنة",
+      "dakhletNouadhibou": "داخلة نواذيبو",
+      "gorgol": "كوركول",
+      "guidimaka": "كيديماغا",
+      "hodhEchChargui": "الحوض الشرقي",
+      "hodhElGharbi": "الحوض الغربي",
+      "inchiri": "إنشيري",
+      "tagant": "تكانت",
+      "tirisZemmour": "تيرس زمور",
+      "trarza": "ترارزة"
+    },
+    "locationTypes": {
+      "capitale": "عاصمة",
+      "wilaya": "ولاية"
+    },
+    "timeSlots": {
+      "morning": "الصباح",
+      "afternoon": "بعد الظهر",
+      "evening": "المساء",
+      "flexible": "مرن",
+      "anytime": "في أي وقت"
+    },
+    "days": {
+      "monday": "الاثنين",
+      "tuesday": "الثلاثاء",
+      "wednesday": "الأربعاء",
+      "thursday": "الخميس",
+      "friday": "الجمعة",
+      "saturday": "السبت",
+      "sunday": "الأحد"
+    },
+    "availability": {
+      "day": "اليوم"
+    },
+    "validation": {
+      "phoneRequired": "رقم الهاتف مطلوب",
+      "ageRange": "يجب أن يكون العمر بين 16 و 100 سنة",
+      "motivationRequired": "الدافع مطلوب",
+      "motivationMinLength": "مطلوب على الأقل 20 حرفاً",
+      "skillsRequired": "المهارات مطلوبة",
+      "interestsRequired": "الاهتمامات مطلوبة",
+      "languagesRequired": "اللغات مطلوبة",
+      "locationsRequired": "اختر موقعاً واحداً على الأقل",
+      "availabilityRequired": "اختر فترة توفر واحدة على الأقل"
+    },
+    "navigation": {
+      "previous": "السابق",
+      "next": "التالي",
+      "stepOf": "الخطوة {{current}} من {{total}}",
+      "creating": "جاري الإنشاء...",
+      "joinSada9a": "انضم إلى صدقة"
+    },
+    "errors": {
+      "general": "حدث خطأ. يرجى المحاولة مرة أخرى."
+    }
+  },
+
+  "donationsTab": {
+    "title": "تاريخ التبرعات",
+    "loading": "جاري تحميل التبرعات...",
+    "totalDisplay": "المجموع",
+    "searchPlaceholder": "البحث في الحملات...",
+    "sortBy": "ترتيب حسب",
+    "stats": {
+      "totalDonated": "إجمالي التبرعات",
+      "totalDonations": "عدد التبرعات",
+      "campaignsSupported": "الحملات المدعومة"
+    },
+    "sortOptions": {
+      "newestFirst": "الأحدث أولاً",
+      "oldestFirst": "الأقدم أولاً",
+      "highestAmount": "أعلى مبلغ",
+      "lowestAmount": "أقل مبلغ",
+      "campaignAZ": "الحملة أ-ي",
+      "campaignZA": "الحملة ي-أ"
+    },
+    "empty": {
+      "noDonationsFound": "لم يتم العثور على تبرعات",
+      "noDonationsYet": "لا توجد تبرعات بعد",
+      "adjustFilters": "جرب تعديل المرشحات لرؤية المزيد من التبرعات.",
+      "startDonating": "ابدأ في إحداث فرق من خلال دعم الحملات التي تهمك."
+    },
+    "donation": {
+      "payment": "الدفع",
+      "anonymous": "مجهول",
+      "message": "الرسالة"
+    },
+    "actions": {
+      "tryAgain": "حاول مرة أخرى",
+      "exploreCampaigns": "استكشف الحملات",
+      "refresh": "تحديث"
+    },
+    "errors": {
+      "loadFailed": "فشل في تحميل التبرعات",
+      "errorLoadingTitle": "خطأ في تحميل التبرعات"
+    },
+    "pagination": {
+      "showing": "عرض {{start}} إلى {{end}} من {{total}} تبرع",
+      "previous": "السابق",
+      "next": "التالي",
+      "pageOf": "الصفحة {{current}} من {{total}}"
+    }
+  },
+  
+  "settingsTab": {
+    "title": "إعدادات الحساب",
+    "notifications": {
+      "title": "الإشعارات",
+      "email": {
+        "title": "إشعارات البريد الإلكتروني",
+        "description": "تلقي تحديثات حول الحملات وفرص التطوع"
+      },
+      "push": {
+        "title": "الإشعارات الفورية",
+        "description": "احصل على إشعارات فورية على جهازك"
+      },
+      "volunteer": {
+        "title": "مطابقة المتطوعين",
+        "description": "السماح للمنظمات بالعثور عليك والتواصل معك"
+      }
+    },
+    "privacy": {
+      "title": "الخصوصية والتفضيلات",
+      "profileVisibility": "رؤية الملف الشخصي",
+      "language": "اللغة",
+      "currency": "العملة",
+      "visibility": {
+        "public": "عام",
+        "organizations": "المنظمات فقط",
+        "private": "خاص"
+      }
+    },
+    "danger": {
+      "title": "منطقة الخطر",
+      "deleteAccount": {
+        "title": "حذف الحساب",
+        "description": "حذف حسابك وجميع البيانات نهائياً",
+        "button": "حذف الحساب"
+      }
+    }
+  }
 
 
 

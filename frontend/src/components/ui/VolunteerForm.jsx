@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { User, Phone, MapPin, Clock, Star, Heart, CheckCircle, AlertCircle, ArrowLeft, ArrowRight, Sun, CloudSun, Sunset, RotateCcw } from 'lucide-react';
 import { createVolunteerProfile, updateVolunteerProfile } from '../../api/endpoints/VolunteerAPI';
 
 const VolunteerForm = ({ onSuccess, profile = null }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   const [formData, setFormData] = useState({
     phone: profile?.phone || '',
     age: profile?.age || '',
@@ -21,37 +25,43 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
   const totalSteps = 4;
   const isEditing = !!profile;
 
+  // Format numbers - always use Latin numerals even for Arabic
+  const formatNumber = (num) => {
+    const locale = i18n.language === 'fr' ? 'fr-FR' : 'en-US';
+    return new Intl.NumberFormat(locale).format(num || 0);
+  };
+
   const mauritanianLocations = [
-    { id: 'nouakchott', name: 'Nouakchott', type: 'capitale' },
-    { id: 'adrar', name: 'Adrar', type: 'wilaya' },
-    { id: 'assaba', name: 'Assaba', type: 'wilaya' },
-    { id: 'brakna', name: 'Brakna', type: 'wilaya' },
-    { id: 'dakhlet_nouadhibou', name: 'Dakhlet Nouadhibou', type: 'wilaya' },
-    { id: 'gorgol', name: 'Gorgol', type: 'wilaya' },
-    { id: 'guidimaka', name: 'Guidimaka', type: 'wilaya' },
-    { id: 'hodh_ech_chargui', name: 'Hodh Ech Chargui', type: 'wilaya' },
-    { id: 'hodh_el_gharbi', name: 'Hodh El Gharbi', type: 'wilaya' },
-    { id: 'inchiri', name: 'Inchiri', type: 'wilaya' },
-    { id: 'tagant', name: 'Tagant', type: 'wilaya' },
-    { id: 'tiris_zemmour', name: 'Tiris Zemmour', type: 'wilaya' },
-    { id: 'trarza', name: 'Trarza', type: 'wilaya' }
+    { id: 'nouakchott', name: t('volunteerForm.locations.nouakchott'), type: t('volunteerForm.locationTypes.capitale') },
+    { id: 'adrar', name: t('volunteerForm.locations.adrar'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'assaba', name: t('volunteerForm.locations.assaba'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'brakna', name: t('volunteerForm.locations.brakna'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'dakhlet_nouadhibou', name: t('volunteerForm.locations.dakhletNouadhibou'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'gorgol', name: t('volunteerForm.locations.gorgol'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'guidimaka', name: t('volunteerForm.locations.guidimaka'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'hodh_ech_chargui', name: t('volunteerForm.locations.hodhEchChargui'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'hodh_el_gharbi', name: t('volunteerForm.locations.hodhElGharbi'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'inchiri', name: t('volunteerForm.locations.inchiri'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'tagant', name: t('volunteerForm.locations.tagant'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'tiris_zemmour', name: t('volunteerForm.locations.tirisZemmour'), type: t('volunteerForm.locationTypes.wilaya') },
+    { id: 'trarza', name: t('volunteerForm.locations.trarza'), type: t('volunteerForm.locationTypes.wilaya') }
   ];
 
   const timeSlots = [
-    { id: 'morning', name: 'Morning', icon: 'Sun', color: 'text-amber-600', bgColor: 'bg-amber-50' },
-    { id: 'afternoon', name: 'Afternoon', icon: 'CloudSun', color: 'text-orange-600', bgColor: 'bg-orange-50' },
-    { id: 'evening', name: 'Evening', icon: 'Sunset', color: 'text-purple-600', bgColor: 'bg-purple-50' },
-    { id: 'flexible', name: 'Flexible', icon: 'RotateCcw', color: 'text-blue-600', bgColor: 'bg-blue-50' }
+    { id: 'morning', name: t('volunteerForm.timeSlots.morning'), icon: 'Sun', color: 'text-amber-600', bgColor: 'bg-amber-50', time: '8AM-12PM' },
+    { id: 'afternoon', name: t('volunteerForm.timeSlots.afternoon'), icon: 'CloudSun', color: 'text-orange-600', bgColor: 'bg-orange-50', time: '12PM-5PM' },
+    { id: 'evening', name: t('volunteerForm.timeSlots.evening'), icon: 'Sunset', color: 'text-purple-600', bgColor: 'bg-purple-50', time: '5PM-8PM' },
+    { id: 'flexible', name: t('volunteerForm.timeSlots.flexible'), icon: 'RotateCcw', color: 'text-blue-600', bgColor: 'bg-blue-50', time: t('volunteerForm.timeSlots.anytime') }
   ];
 
   const daysOfWeek = [
-    { id: 'monday', name: 'Monday' },
-    { id: 'tuesday', name: 'Tuesday' },
-    { id: 'wednesday', name: 'Wednesday' },
-    { id: 'thursday', name: 'Thursday' },
-    { id: 'friday', name: 'Friday' },
-    { id: 'saturday', name: 'Saturday' },
-    { id: 'sunday', name: 'Sunday' }
+    { id: 'monday', name: t('volunteerForm.days.monday') },
+    { id: 'tuesday', name: t('volunteerForm.days.tuesday') },
+    { id: 'wednesday', name: t('volunteerForm.days.wednesday') },
+    { id: 'thursday', name: t('volunteerForm.days.thursday') },
+    { id: 'friday', name: t('volunteerForm.days.friday') },
+    { id: 'saturday', name: t('volunteerForm.days.saturday') },
+    { id: 'sunday', name: t('volunteerForm.days.sunday') }
   ];
 
   const handleInputChange = (field, value) => {
@@ -102,27 +112,27 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
     const newErrors = {};
     
     if (step === 1) {
-      if (!formData.phone.trim()) newErrors.phone = 'Phone number is required';
-      if (!formData.age || formData.age < 16 || formData.age > 100) newErrors.age = 'Age must be between 16 and 100';
-      if (!formData.motivation.trim()) newErrors.motivation = 'Motivation is required';
-      else if (formData.motivation.trim().length < 20) newErrors.motivation = 'At least 20 characters required';
+      if (!formData.phone.trim()) newErrors.phone = t('volunteerForm.validation.phoneRequired');
+      if (!formData.age || formData.age < 16 || formData.age > 100) newErrors.age = t('volunteerForm.validation.ageRange');
+      if (!formData.motivation.trim()) newErrors.motivation = t('volunteerForm.validation.motivationRequired');
+      else if (formData.motivation.trim().length < 20) newErrors.motivation = t('volunteerForm.validation.motivationMinLength');
     }
     
     if (step === 2) {
-      if (!formData.skills.trim()) newErrors.skills = 'Skills are required';
-      if (!formData.interests.trim()) newErrors.interests = 'Interests are required';
-      if (!formData.languages.trim()) newErrors.languages = 'Languages are required';
+      if (!formData.skills.trim()) newErrors.skills = t('volunteerForm.validation.skillsRequired');
+      if (!formData.interests.trim()) newErrors.interests = t('volunteerForm.validation.interestsRequired');
+      if (!formData.languages.trim()) newErrors.languages = t('volunteerForm.validation.languagesRequired');
     }
     
     if (step === 3) {
-      if (formData.available_locations_data.length === 0) newErrors.locations = 'Select at least one location';
+      if (formData.available_locations_data.length === 0) newErrors.locations = t('volunteerForm.validation.locationsRequired');
     }
     
     if (step === 4) {
       const hasAvailability = Object.values(formData.availability_data).some(day => 
         Object.values(day || {}).some(slot => slot === true)
       );
-      if (!hasAvailability) newErrors.availability = 'Select at least one availability slot';
+      if (!hasAvailability) newErrors.availability = t('volunteerForm.validation.availabilityRequired');
     }
 
     setErrors(newErrors);
@@ -161,7 +171,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
     } catch (error) {
       console.error('Error submitting volunteer profile:', error);
       setErrors({ 
-        general: error.message || 'An error occurred. Please try again.' 
+        general: error.message || t('volunteerForm.errors.general')
       });
     } finally {
       setLoading(false);
@@ -175,7 +185,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
           <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
             step <= currentStep ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-600'
           }`}>
-            {step}
+            {formatNumber(step)}
           </div>
           {step < 4 && (
             <div className={`w-12 h-0.5 mx-2 ${
@@ -196,13 +206,13 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <User className="text-blue-600 w-8 h-8" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Personal Information</h2>
-              <p className="text-gray-600">{isEditing ? 'Update your details' : 'Tell us about yourself'}</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('volunteerForm.steps.step1.title')}</h2>
+              <p className="text-gray-600">{isEditing ? t('volunteerForm.steps.step1.editSubtitle') : t('volunteerForm.steps.step1.createSubtitle')}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.phone')} *</label>
                 <input
                   type="tel"
                   value={formData.phone}
@@ -216,7 +226,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Age *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.age')} *</label>
                 <input
                   type="number"
                   value={formData.age}
@@ -232,25 +242,25 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Profession</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.profession')}</label>
                 <input
                   type="text"
                   value={formData.profession}
                   onChange={(e) => handleInputChange('profession', e.target.value)}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                  placeholder="Teacher, Engineer, Student..."
+                  placeholder={t('volunteerForm.placeholders.profession')}
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Why do you want to volunteer? *</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.motivation')} *</label>
                 <textarea
                   value={formData.motivation}
                   onChange={(e) => handleInputChange('motivation', e.target.value)}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.motivation ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Tell us about your motivation..."
+                  placeholder={t('volunteerForm.placeholders.motivation')}
                   rows="3"
                 />
                 {errors.motivation && <p className="text-red-500 text-sm mt-1">{errors.motivation}</p>}
@@ -266,40 +276,40 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Star className="text-purple-600 w-8 h-8" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Skills & Interests</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('volunteerForm.steps.step2.title')}</h2>
             </div>
 
             <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Skills * (comma-separated)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.skills')} * ({t('volunteerForm.commaSeparated')})</label>
                 <textarea
                   value={formData.skills}
                   onChange={(e) => handleInputChange('skills', e.target.value)}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.skills ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Programming, Teaching, First Aid..."
+                  placeholder={t('volunteerForm.placeholders.skills')}
                   rows="2"
                 />
                 {errors.skills && <p className="text-red-500 text-sm mt-1">{errors.skills}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Interests * (comma-separated)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.interests')} * ({t('volunteerForm.commaSeparated')})</label>
                 <textarea
                   value={formData.interests}
                   onChange={(e) => handleInputChange('interests', e.target.value)}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.interests ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Education, Health, Environment..."
+                  placeholder={t('volunteerForm.placeholders.interests')}
                   rows="2"
                 />
                 {errors.interests && <p className="text-red-500 text-sm mt-1">{errors.interests}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Languages * (comma-separated)</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('volunteerForm.fields.languages')} * ({t('volunteerForm.commaSeparated')})</label>
                 <input
                   type="text"
                   value={formData.languages}
@@ -307,7 +317,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
                     errors.languages ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
-                  placeholder="Arabic, French, English..."
+                  placeholder={t('volunteerForm.placeholders.languages')}
                 />
                 {errors.languages && <p className="text-red-500 text-sm mt-1">{errors.languages}</p>}
               </div>
@@ -322,7 +332,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <MapPin className="text-green-600 w-8 h-8" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Available Locations</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('volunteerForm.steps.step3.title')}</h2>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -352,14 +362,14 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Clock className="text-orange-600 w-8 h-8" />
               </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Availability</h2>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('volunteerForm.steps.step4.title')}</h2>
             </div>
 
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="text-left p-3 border-b font-medium">Day</th>
+                    <th className={`${isRTL ? 'text-right' : 'text-left'} p-3 border-b font-medium`}>{t('volunteerForm.availability.day')}</th>
                     {timeSlots.map(slot => {
                       const IconComponent = slot.icon === 'Sun' ? Sun : 
                                            slot.icon === 'CloudSun' ? CloudSun :
@@ -370,9 +380,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
                           <div className="flex flex-col items-center">
                             <IconComponent className={`w-5 h-5 mb-1 ${slot.color}`} />
                             <span className="text-xs font-medium text-gray-700">{slot.name}</span>
-                            <span className="text-xs text-gray-500">{slot.id === 'morning' ? '8AM-12PM' : 
-                                                                   slot.id === 'afternoon' ? '12PM-5PM' :
-                                                                   slot.id === 'evening' ? '5PM-8PM' : 'Anytime'}</span>
+                            <span className="text-xs text-gray-500">{slot.time}</span>
                           </div>
                         </th>
                       );
@@ -413,7 +421,7 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg p-8">
+    <div className="bg-white rounded-xl shadow-lg p-8" dir={isRTL ? 'rtl' : 'ltr'}>
       {errors.general && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-2 mb-6">
           <AlertCircle className="text-red-500 w-5 h-5" />
@@ -434,12 +442,12 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
           }`}
         >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Previous
+          <ArrowLeft className={`w-4 h-4 ${isRTL ? 'rotate-180 ms-2' : 'me-2'}`} />
+          {t('volunteerForm.navigation.previous')}
         </button>
 
         <div className="text-sm text-gray-500">
-          Step {currentStep} of {totalSteps}
+          {t('volunteerForm.navigation.stepOf', { current: formatNumber(currentStep), total: formatNumber(totalSteps) })}
         </div>
 
         {currentStep === totalSteps ? (
@@ -454,13 +462,13 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
           >
             {loading ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                Creating...
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white me-2"></div>
+                {t('volunteerForm.navigation.creating')}
               </>
             ) : (
               <>
-                <Heart className="w-4 h-4 mr-2" />
-                Join SADA9A
+                <Heart className="w-4 h-4 me-2" />
+                {t('volunteerForm.navigation.joinSada9a')}
               </>
             )}
           </button>
@@ -469,8 +477,8 @@ const VolunteerForm = ({ onSuccess, profile = null }) => {
             onClick={nextStep}
             className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all"
           >
-            Next
-            <ArrowRight className="w-4 h-4 ml-2" />
+            {t('volunteerForm.navigation.next')}
+            <ArrowRight className={`w-4 h-4 ${isRTL ? 'rotate-180 me-2' : 'ms-2'}`} />
           </button>
         )}
       </div>

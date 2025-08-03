@@ -73,7 +73,7 @@ export function CategoriesSection() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">{t('categories.loadingCategories')}</p>
+            <p className="text-gray-600">{t('categories_section.loadingCategories')}</p>
           </div>
         </div>
       </section>
@@ -85,7 +85,7 @@ export function CategoriesSection() {
       <section className="py-16 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center text-red-500">
-            <p>{t('categories.errorLoading')} {error}</p>
+            <p>{t('categories_section.errorLoading')} {error}</p>
           </div>
         </div>
       </section>
@@ -97,7 +97,7 @@ export function CategoriesSection() {
       <section className="py-16 bg-gradient-to-b from-white to-blue-50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center text-gray-500">
-            <p>{t('categories.noCategories')}</p>
+            <p>{t('categories_section.noCategories')}</p>
           </div>
         </div>
       </section>
@@ -109,14 +109,14 @@ export function CategoriesSection() {
       <div className="max-w-7xl mx-auto px-6">
         <div className={`flex justify-between items-end mb-10 ${isRTL ? '' : ''}`}>
           <div className={isRTL ? 'text-right' : 'text-left'}>
-            <h2 className="text-3xl font-bold text-blue-600">{t('categories.title')}</h2>
-            <p className="text-gray-600 mt-2">{t('categories.subtitle')}</p>
+            <h2 className="text-3xl font-bold text-blue-600">{t('categories_section.title')}</h2>
+            <p className="text-gray-600 mt-2">{t('categories_section.subtitle')}</p>
           </div>
           <a 
             href="/categories" 
             className={`text-blue-600 font-medium flex items-center hover:underline ${isRTL ? '' : ''}`}
           >
-            {t('categories.viewAll')} 
+            {t('categories_section.viewAll')} 
             <ChevronRight className={`h-4 w-4 ${isRTL ? 'mr-1 rotate-180' : 'ml-1'}`} />
           </a>
         </div>
@@ -151,10 +151,10 @@ export function CategoriesSection() {
                     {categoryIcon}
                   </div>
                   <h3 className="font-semibold text-gray-800 text-sm mb-1" style={{ color: '#1f2937' }}>
-                    {category.name || t('categories.unnamedCategory')}
+                    {category.name || t('categories_section.unnamedCategory')}
                   </h3>
                   <p className="text-xs text-gray-500" style={{ color: '#6b7280' }}>
-                    {campaignCount} {campaignCount === 1 ? t('categories.campaign') : t('categories.campaigns')}
+                    {campaignCount} {campaignCount === 1 ? t('categories_section.campaign') : t('categories_section.campaigns')}
                   </p>
                 </div>
                 <div 

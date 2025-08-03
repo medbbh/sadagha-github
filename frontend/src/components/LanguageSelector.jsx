@@ -27,7 +27,7 @@ export default function LanguageSelector() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-sm text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
+        className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
       >
         <Globe className="h-4 w-4" />
         <span className="hidden sm:inline">{currentLanguage.flag}</span>
@@ -40,7 +40,7 @@ export default function LanguageSelector() {
             <button
               key={language.code}
               onClick={() => handleLanguageChange(language.code)}
-              className={`w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex items-center space-x-2 ${
+              className={`w-full text-left px-3 py-2 text-md hover:bg-gray-50 flex items-center space-x-2 ${
                 i18n.language === language.code ? 'bg-[#3366CC]/5 text-[#3366CC]' : 'text-gray-700'
               }`}
             >
