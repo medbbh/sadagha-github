@@ -3,6 +3,7 @@
 from rest_framework import serializers
 from .models import OrganizationProfile, WalletProvider, ManualPayment, NextPayPayment
 from django.core.exceptions import ValidationError as DjangoValidationError
+from campaign.models import Campaign
 
 class WalletProviderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -117,12 +118,14 @@ class OrganizationProfileSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'org_name', 'description', 'owner', 'owner_email', 'owner_id',
             'address', 'phone_number', 'website', 'document_url', 'document_path',
+            'profile_image_url', 'profile_image_path', 'cover_image_url', 'cover_image_path',
             'is_verified', 'manual_payments', 'nextpay_payments',
             'total_payment_methods', 'has_manual_payments', 'has_nextpay_payments',
             'created_at', 'updated_at'
         ]
         read_only_fields = [
             'owner', 'owner_email', 'owner_id', 'document_url', 'document_path',
+            'profile_image_url', 'profile_image_path', 'cover_image_url', 'cover_image_path',
             'created_at', 'updated_at'
         ]
 
@@ -161,3 +164,14 @@ class PaymentMethodsSummarySerializer(serializers.Serializer):
     
     manual_payments = ManualPaymentSerializer(many=True)
     nextpay_payments = NextPayPaymentSerializer(many=True)
+
+
+# This for the user
+
+class PublicOrganizationProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrganizationProfile
+        fields = [
+            'id', 'org_name', 'description', 'address', 'phone_number', 'website',
+            'profile_image_url', 'cover_image_url', 'is_verified', 'created_at'
+        ]

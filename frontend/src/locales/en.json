@@ -4,6 +4,7 @@
         "explore": "Explore",
         "categories": "Categories",
         "volunteer": "Volunteer",
+        "organizations":"Organizations",
         "howItWorks": "How It Works",
         "search": "Search...",
         "favorites": "My Favorites",
@@ -671,7 +672,192 @@
         "button": "Delete Account"
       }
     }
+  },
+
+  "howItWorks": {
+  "hero": {
+    "title": "How SADA9A",
+    "titleHighlight": "Works",
+    "subtitle": "Connecting generous hearts across Mauritania with verified organizations creating positive change in our communities.",
+    "watchDemo": "Watch Demo Video",
+    "getStarted": "Get Started"
+  },
+  "tabs": {
+    "forDonors": "For Donors",
+    "forVolunteers": "For Volunteers", 
+    "forOrganizations": "For Organizations"
+  },
+  "chooseYourRole": "Choose Your Role",
+  "seeHowSada9aWorks": "See how SADA9A works for different types of users",
+  "simpleProcessFlow": "Simple Process Flow",
+  "whyChooseSada9a": "Why Choose SADA9A?",
+  "builtForMauritania": "Built specifically for Mauritania with features that ensure safe, transparent, and impactful giving.",
+  
+  "donors": {
+    "title": "How Donors Create Impact",
+    "subtitle": "Support verified causes and see exactly how your donations make a difference.",
+    "steps": {
+      "createAccount": {
+        "title": "Create Your Account",
+        "description": "Join our community with a simple sign-up process using email or social login.",
+        "details": "Quick registration to start your giving journey"
+      },
+      "discoverCampaigns": {
+        "title": "Discover Campaigns",
+        "description": "Browse verified campaigns by category to find causes that matter to you.",
+        "details": "All campaigns are pre-approved by verified organizations"
+      },
+      "makeSecureDonations": {
+        "title": "Make Secure Donations",
+        "description": "Donate safely using multiple payment methods with instant confirmation.",
+        "details": "Multiple payment options with automatic receipts"
+      },
+      "trackProgress": {
+        "title": "Track Campaign Progress",
+        "description": "Follow campaign progress and receive updates from organizations on their milestones.",
+        "details": "Real-time progress tracking and updates from campaign organizers"
+      }
+    }
+  },
+  
+  "volunteers": {
+    "title": "How Volunteers Get Involved",
+    "subtitle": "Activate your volunteer profile and get matched with opportunities from verified organizations.",
+    "steps": {
+      "activateProfile": {
+        "title": "Activate Volunteer Profile",
+        "description": "Enable volunteering on your donor account and build a detailed volunteer profile.",
+        "details": "Showcase your skills, interests, and availability for better matching"
+      },
+      "getMatched": {
+        "title": "Get Matched by Organizations",
+        "description": "Organizations create volunteer programs and send invitations to volunteers who match their needs.",
+        "details": "Smart matching based on your skills, location, and interests"
+      },
+      "reviewPrograms": {
+        "title": "Review Program Details",
+        "description": "Receive invitations and review volunteer program details, requirements, and time commitment.",
+        "details": "Clear program descriptions with expectations and schedules"
+      },
+      "acceptContribute": {
+        "title": "Accept & Contribute",
+        "description": "Accept invitations that interest you and start contributing to meaningful causes.",
+        "details": "Participate in programs and make a difference in your community"
+      }
+    }
+  },
+  
+  "organizations": {
+    "title": "How Organizations Access Support",
+    "subtitle": "Get verified to access funding and volunteer resources for your mission.",
+    "steps": {
+      "applyVerification": {
+        "title": "Apply for Verification",
+        "description": "Submit your organization documents and undergo our verification process.",
+        "details": "Legal registration and mission validation required"
+      },
+      "completeProfile": {
+        "title": "Complete Organization Profile",
+        "description": "Build a comprehensive profile showcasing your mission and impact.",
+        "details": "Detailed profile helps donors and volunteers understand your work"
+      },
+      "launchCampaigns": {
+        "title": "Launch Funding Campaigns",
+        "description": "Create fundraising campaigns with Facebook Live integration and detailed project descriptions.",
+        "details": "Campaign builder with live streaming features and progress tracking"
+      },
+      "createVolunteerPrograms": {
+        "title": "Create Volunteer Programs",
+        "description": "Set up volunteer programs, invite matched volunteers, and link programs to your campaigns.",
+        "details": "Smart matching system and volunteer program management tools"
+      }
+    }
+  },
+  
+  "features": {
+    "bankLevelSecurity": {
+      "title": "Bank-Level Security",
+      "description": "Advanced encryption and secure payment processing protect every transaction.",
+      "highlight": "Secure & Trusted"
+    },
+    "multilingualPlatform": {
+      "title": "Multilingual Platform",
+      "description": "Available in Arabic, French, and English to serve all communities.",
+      "highlight": "3 Languages"
+    },
+    "completeTransparency": {
+      "title": "Complete Transparency",
+      "description": "Track donations in real-time with detailed reports and impact updates.",
+      "highlight": "Full Transparency"
+    },
+    "verifiedOrganizations": {
+      "title": "Verified Organizations",
+      "description": "Only verified nonprofits and community organizations can create campaigns.",
+      "highlight": "Verified Only"
+    }
+  },
+  
+  "orgVerification": {
+    "title": "Are you a registered organization?",
+    "description": "Only verified nonprofit organizations and community groups can create fundraising campaigns on SADA9A. This ensures donor trust and campaign legitimacy.",
+    "applyButton": "Apply for Verification"
+  },
+  
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Join SADA9A and be part of a community dedicated to positive change in Mauritania.",
+    "startDonating": "Start Donating",
+    "becomeVolunteer": "Become a Volunteer",
+    "freeToJoin": "✨ Free to join • Secure platform • Verified organizations only"
   }
+},
+
+    "organizations": {
+      "title": "Organizations",
+      "subtitle": "Discover and connect with verified organizations making a difference in their communities through transparent charitable work.",
+      "totalOrganizations": "Total Organizations",
+      "verifiedOrganizations": "Verified Organizations",
+      "searchPlaceholder": "Search organizations by name, location, or cause...",
+      "allOrganizations": "All Organizations",
+      "verifiedOnly": "Verified Only",
+      "pendingOnly": "Pending Only",
+      "showingResults": "Showing {{count}} organizations",
+      "showingAllResults": "Showing all {{count}} organizations",
+      "showingFilteredResults": "Showing {{filtered}} of {{total}} organizations",
+      "noOrganizationsFound": "No Organizations Found",
+      "noSearchResults": "No Search Results",
+      "tryDifferentSearch": "Try adjusting your search terms or browse all organizations.",
+      "noOrganizationsSubtext": "There are currently no organizations to display. Please check back later.",
+      "errorLoadingOrganizations": "Error Loading Organizations",
+      "verified": "Verified",
+      "pending": "Pending",
+      "viewDetails": "View Details",
+      "viewCampaigns": "View Campaigns",
+      "website": "Website",
+      "noCoverImage": "No Cover Image",
+      "noDescription": "No description available",
+      "backToOrganizations": "Back to Organizations",
+      "backToList": "Back to List",
+      "organizationProfile": "Organization Profile",
+      "profileSubtext": "Detailed information about this organization",
+      "aboutOrganization": "About Organization",
+      "contactInformation": "Contact Information",
+      "organizationStats": "Organization Statistics",
+      "campaigns": "Campaigns",
+      "campaignsSubtext": "Active campaigns by this organization",
+      "activeCampaigns": "Active Campaigns",
+      "noCampaigns": "No Active Campaigns",
+      "noCampaignsDescription": "This organization doesn't have any active campaigns at the moment.",
+      "organizationNotFound": "Organization Not Found",
+      "errorLoadingOrganization": "Error Loading Organization",
+      "organizationName": "Organization Name",
+      "address": "Address"
+    },
+    "common": {
+      "tryAgain": "Try Again",
+      "clearSearch": "Clear Search",
+      "loadMore": "Load More"
+    }
 
 
     

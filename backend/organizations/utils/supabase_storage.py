@@ -13,6 +13,8 @@ environ.Env.read_env()
 SUPABASE_URL = env("SUPABASE_URL")  
 SUPABASE_KEY = env("SUPABASE_ANON_KEY")  
 BUCKET_NAME = env("SUPABASE_STORAGE_BUCKET_ORG", default="org-documents") 
+ORG_IMAGES_BUCKET = env("SUPABASE_ORG_IMAGES_BUCKET", default="org-images")
+
 
 def upload_to_supabase(file, prefix=''):
     """
@@ -190,6 +192,7 @@ def delete_from_supabase(path):
         return False
 
 def test_supabase_connection():
+
     """Test the Supabase connection and bucket access"""
     try:
         # Test bucket access
@@ -206,4 +209,224 @@ def test_supabase_connection():
         
     except Exception as e:
         print(f"Connection test failed: {str(e)}")
+        return False
+
+
+
+# Organization Images bucket configuration
+
+def upload_organization_image(file, image_type, org_id):
+    """
+    Upload organization profile or cover image to dedicated org-images bucket.
+    
+    Args:
+        file: The image file to upload
+        image_type: 'profile' or 'cover'
+        org_id: Organization ID for unique naming
+    
+    Returns:
+        tuple: (url, path) where url is the accessible URL and path is the storage path
+    """
+    if not file:
+        print("No file provided")
+        return None, None
+    
+    # Validate image type
+    if image_type not in ['profile', 'cover']:
+        print(f"Invalid image type: {image_type}")
+        return None, None
+    
+    # Get file extension
+    original_name = getattr(file, 'name', 'image')
+    file_extension = os.path.splitext(original_name)[1] or '.jpg'
+    
+    # Validate file extension
+    allowed_extensions = ['.jpg', '.jpeg', '.png', '.webp']
+    if file_extension.lower() not in allowed_extensions:
+        print(f"Invalid file extension: {file_extension}. Allowed: {allowed_extensions}")
+        return None, None
+    
+    # Validate file size (max 5MB for images)
+    max_size = 5 * 1024 * 1024  # 5MB
+    if hasattr(file, 'size') and file.size > max_size:
+        print(f"File too large: {file.size} bytes. Max allowed: {max_size} bytes")
+        return None, None
+    
+    # Generate filename with organization prefix
+    filename = f"org_{org_id}_{image_type}_{uuid.uuid4()}{file_extension}"
+    
+    print(f"Generated filename: {filename}")
+    print(f"File size: {file.size if hasattr(file, 'size') else 'unknown'}")
+    print(f"Image type: {image_type}")
+    
+    try:
+        # Prepare the API URL for Supabase storage (org-images bucket)
+        upload_url = f"{SUPABASE_URL}/storage/v1/object/{ORG_IMAGES_BUCKET}/{filename}"
+        print(f"Upload URL: {upload_url}")
+        
+        # Get the content type
+        content_type = getattr(file, 'content_type', None)
+        if not content_type:
+            content_type, _ = mimetypes.guess_type(filename)
+        if not content_type:
+            # Default based on extension
+            content_type_map = {
+                '.jpg': 'image/jpeg',
+                '.jpeg': 'image/jpeg', 
+                '.png': 'image/png',
+                '.webp': 'image/webp'
+            }
+            content_type = content_type_map.get(file_extension.lower(), 'image/jpeg')
+        
+        print(f"Content type: {content_type}")
+        
+        # Prepare headers
+        headers = {
+            'Authorization': f'Bearer {SUPABASE_KEY}',
+            'Content-Type': content_type,
+        }
+        
+        # Handle different file objects properly
+        try:
+            if isinstance(file, InMemoryUploadedFile):
+                file_content = file.read()
+                file.seek(0)  # Reset file pointer after reading
+                print("Read InMemoryUploadedFile")
+            elif isinstance(file, TemporaryUploadedFile):
+                with open(file.temporary_file_path(), 'rb') as f:
+                    file_content = f.read()
+                print("Read TemporaryUploadedFile")
+            else:
+                # Try a generic approach if the file type is unknown
+                file_content = file.read()
+                try:
+                    file.seek(0)  # Attempt to reset file pointer
+                except:
+                    pass  # Ignore if seek fails
+                print(f"Read generic file type: {type(file)}")
+        except Exception as e:
+            print(f"Error reading file content: {str(e)}")
+            return None, None
+
+        print(f"File content length: {len(file_content)} bytes")
+        
+        # Upload the file content using PUT method
+        response = requests.put(
+            upload_url,
+            data=file_content,
+            headers=headers,
+            timeout=30
+        )
+        
+        print(f"Response status code: {response.status_code}")
+        print(f"Response headers: {dict(response.headers)}")
+        print(f"Response text: {response.text}")
+        
+        # Check response
+        if response.status_code >= 200 and response.status_code < 300:
+            # Create the file URL for org-images bucket
+            file_url = f"{SUPABASE_URL}/storage/v1/object/public/{ORG_IMAGES_BUCKET}/{filename}"
+            # The path reference for the file in Supabase
+            file_path = f"{ORG_IMAGES_BUCKET}/{filename}"
+            
+            print(f"Upload successful! File URL: {file_url}")
+            return file_url, file_path
+        else:
+            print(f"Error uploading to Supabase: {response.status_code}")
+            print(f"Error response: {response.text}")
+            
+            # Try to parse error response
+            try:
+                error_data = response.json()
+                print(f"Error details: {error_data}")
+            except:
+                pass
+                
+            return None, None
+            
+    except requests.exceptions.Timeout:
+        print("Upload timeout - file may be too large or connection is slow")
+        return None, None
+    except requests.exceptions.RequestException as e:
+        print(f"Request exception uploading to Supabase: {str(e)}")
+        return None, None
+    except Exception as e:
+        print(f"General exception uploading to Supabase: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return None, None
+
+def delete_organization_image(path):
+    """
+    Delete an organization image from Supabase Storage.
+    
+    Args:
+        path: The storage path of the image to delete (format: 'org-images/filename')
+    
+    Returns:
+        bool: True if deletion was successful, False otherwise
+    """
+    if not path or '/' not in path:
+        print(f"Invalid path for deletion: {path}")
+        return False
+    
+    try:
+        # Split the path into bucket and filename
+        parts = path.split('/', 1)
+        if len(parts) != 2:
+            print(f"Invalid path format: {path}")
+            return False
+            
+        bucket, filename = parts
+        print(f"Deleting image: {filename} from bucket: {bucket}")
+        
+        # Prepare the API URL for deletion
+        delete_url = f"{SUPABASE_URL}/storage/v1/object/{bucket}/{filename}"
+        
+        # Prepare headers
+        headers = {
+            'Authorization': f'Bearer {SUPABASE_KEY}'
+        }
+        
+        # Delete the file
+        response = requests.delete(
+            delete_url,
+            headers=headers,
+            timeout=30
+        )
+        
+        print(f"Delete response status: {response.status_code}")
+        print(f"Delete response: {response.text}")
+        
+        # Check response
+        if response.status_code >= 200 and response.status_code < 300:
+            print("Image deleted successfully")
+            return True
+        else:
+            print(f"Error deleting from Supabase: {response.status_code}, {response.text}")
+            return False
+            
+    except Exception as e:
+        print(f"Exception deleting from Supabase: {str(e)}")
+        import traceback
+        print(traceback.format_exc())
+        return False
+
+def test_org_images_bucket():
+    """Test the org-images bucket connection and access"""
+    try:
+        # Test bucket access
+        test_url = f"{SUPABASE_URL}/storage/v1/bucket/{ORG_IMAGES_BUCKET}"
+        headers = {
+            'Authorization': f'Bearer {SUPABASE_KEY}'
+        }
+        
+        response = requests.get(test_url, headers=headers)
+        print(f"Org Images bucket test response: {response.status_code}")
+        print(f"Org Images bucket test response: {response.text}")
+        
+        return response.status_code < 400
+        
+    except Exception as e:
+        print(f"Org Images bucket test failed: {str(e)}")
         return False

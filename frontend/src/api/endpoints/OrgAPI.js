@@ -312,6 +312,77 @@ export const uploadOrgDocument = async (profileId, documentFile) => {
   }
 };
 
+// Organization Profile Image Management
+export const uploadProfileImage = async (profileId, imageFile) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await api.post(`/org/organization-profile/${profileId}/upload_profile_image/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Failed to upload profile image:', error);
+    throw {
+      message: error.message || 'Failed to upload profile image',
+      details: error.details,
+      ...error
+    };
+  }
+};
+
+export const uploadCoverImage = async (profileId, imageFile) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+
+    const response = await api.post(`/org/organization-profile/${profileId}/upload_cover_image/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response;
+  } catch (error) {
+    console.error('Failed to upload cover image:', error);
+    throw {
+      message: error.message || 'Failed to upload cover image',
+      details: error.details,
+      ...error
+    };
+  }
+};
+
+export const deleteProfileImage = async (profileId) => {
+  try {
+    const response = await api.delete(`/org/organization-profile/${profileId}/delete_profile_image/`);
+    return response;
+  } catch (error) {
+    console.error('Failed to delete profile image:', error);
+    throw {
+      message: error.message || 'Failed to delete profile image',
+      details: error.details,
+      ...error
+    };
+  }
+};
+
+export const deleteCoverImage = async (profileId) => {
+  try {
+    const response = await api.delete(`/org/organization-profile/${profileId}/delete_cover_image/`);
+    return response;
+  } catch (error) {
+    console.error('Failed to delete cover image:', error);
+    throw {
+      message: error.message || 'Failed to delete cover image',
+      details: error.details,
+      ...error
+    };
+  }
+};
+
 // Verification Management
 export const requestVerification = async (profileId) => {
   try {
@@ -326,6 +397,7 @@ export const requestVerification = async (profileId) => {
     };
   }
 };
+
 
 // Helper Functions
 export const downloadExportedFile = (data, filename, type = 'text/csv') => {
@@ -390,6 +462,36 @@ export const formatPhoneNumber = (phoneNumber) => {
   return phoneNumber;
 };
 
+
+export const fetchOrganizations = async (params = {}) => {
+  try {
+    const response = await api.get('/org/public-organizations/', { params });
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch organizations:', error);
+    throw error;
+  }
+};
+
+export const fetchOrganizationById = async (id) => {
+  try {
+    const response = await api.get(`/org/public-organizations/${id}/`);
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch organization:', error);
+    throw error;
+  }
+};
+
+export const fetchOrganizationCampaigns = async (orgId) => {
+  try {
+    const response = await api.get(`/org/public-organizations/${orgId}/`);
+    return response.campaigns || [];
+  } catch (error) {
+    console.error('Failed to fetch organization campaigns:', error);
+    throw error;
+  }
+};
 // UPDATED: Combined Dashboard Data Fetch - Using correct endpoints
 export const fetchFullDashboardData = async (period = '30d') => {
   try {
@@ -543,6 +645,12 @@ export default {
   updateOrgProfile: withErrorHandling(updateOrgProfile),
   fetchPaymentMethods: withErrorHandling(fetchPaymentMethods),
   
+  // Image Management
+  uploadProfileImage: withErrorHandling(uploadProfileImage),
+  uploadCoverImage: withErrorHandling(uploadCoverImage),
+  deleteProfileImage: withErrorHandling(deleteProfileImage),
+  deleteCoverImage: withErrorHandling(deleteCoverImage),
+
   // Manual Payment Management
   fetchManualPayments: withErrorHandling(fetchManualPayments),
   createManualPayment: withErrorHandling(createManualPayment),
@@ -586,6 +694,9 @@ export default {
   validatePhoneNumber,
   validateCommercialNumber,
   
+  // Organization Fetching
+  fetchOrganizations: withErrorHandling(fetchOrganizations),
+  fetchOrganizationById: withErrorHandling(fetchOrganizationById),
   // Payment Operations
   paymentOperations
 };

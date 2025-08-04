@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from .views import ManualPaymentViewSet, NextPayPaymentViewSet, OrganizationProfileViewSet, WalletProviderViewSet, OrganizationDashboardViewSet \
-    , AnalyticsViewSet
+    , AnalyticsViewSet, PublicOrganizationViewSet
 
 router = DefaultRouter()
 
@@ -20,6 +20,9 @@ router.register(r'analytics', AnalyticsViewSet, basename='analytics')
 
 # New dashboard viewset
 router.register(r'dashboard', OrganizationDashboardViewSet, basename='organization-dashboard')
+
+router.register(r'public-organizations', PublicOrganizationViewSet, basename='public-organization')
+
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -4,6 +4,7 @@
         "explore": "Explorer",
         "categories": "Catégories",
         "volunteer": "Bénévole",
+        "organizations": "Organisations",
         "howItWorks": "Comment ça marche",
         "search": "Rechercher...",
         "favorites": "Mes Favoris",
@@ -667,7 +668,193 @@
         "button": "Supprimer le Compte"
       }
     }
-  }
+  },
+
+
+  "howItWorks": {
+      "hero": {
+        "title": "Comment SADA9A",
+        "titleHighlight": "Fonctionne",
+        "subtitle": "Connecter les cœurs généreux à travers la Mauritanie avec des organisations vérifiées créant un changement positif dans nos communautés.",
+        "watchDemo": "Regarder la Démo Vidéo",
+        "getStarted": "Commencer"
+      },
+      "tabs": {
+        "forDonors": "Pour les Donateurs",
+        "forVolunteers": "Pour les Bénévoles", 
+        "forOrganizations": "Pour les Organisations"
+      },
+      "chooseYourRole": "Choisissez Votre Rôle",
+      "seeHowSada9aWorks": "Découvrez comment SADA9A fonctionne pour différents types d'utilisateurs",
+      "simpleProcessFlow": "Processus Simple",
+      "whyChooseSada9a": "Pourquoi Choisir SADA9A ?",
+      "builtForMauritania": "Conçu spécifiquement pour la Mauritanie avec des fonctionnalités qui garantissent des dons sûrs, transparents et impactants.",
+      
+      "donors": {
+        "title": "Comment les Donateurs Créent un Impact",
+        "subtitle": "Soutenez des causes vérifiées et voyez exactement comment vos dons font la différence.",
+        "steps": {
+          "createAccount": {
+            "title": "Créez Votre Compte",
+            "description": "Rejoignez notre communauté avec un processus d'inscription simple utilisant email ou connexion sociale.",
+            "details": "Inscription rapide pour commencer votre parcours de don"
+          },
+          "discoverCampaigns": {
+            "title": "Découvrez les Campagnes",
+            "description": "Parcourez les campagnes vérifiées par catégorie pour trouver les causes qui vous tiennent à cœur.",
+            "details": "Toutes les campagnes sont pré-approuvées par des organisations vérifiées"
+          },
+          "makeSecureDonations": {
+            "title": "Faites des Dons Sécurisés",
+            "description": "Donnez en toute sécurité en utilisant plusieurs méthodes de paiement avec confirmation instantanée.",
+            "details": "Plusieurs options de paiement avec reçus automatiques"
+          },
+          "trackProgress": {
+            "title": "Suivez le Progrès des Campagnes",
+            "description": "Suivez les progrès des campagnes et recevez des mises à jour des organisations sur leurs étapes importantes.",
+            "details": "Suivi des progrès en temps réel et mises à jour des organisateurs de campagne"
+          }
+        }
+      },
+      
+      "volunteers": {
+        "title": "Comment les Bénévoles S'Impliquent",
+        "subtitle": "Activez votre profil de bénévole et soyez jumelé avec des opportunités d'organisations vérifiées.",
+        "steps": {
+          "activateProfile": {
+            "title": "Activez le Profil Bénévole",
+            "description": "Activez le bénévolat sur votre compte donateur et construisez un profil de bénévole détaillé.",
+            "details": "Mettez en valeur vos compétences, intérêts et disponibilité pour un meilleur jumelage"
+          },
+          "getMatched": {
+            "title": "Soyez Jumelé par les Organisations",
+            "description": "Les organisations créent des programmes de bénévolat et envoient des invitations aux bénévoles qui correspondent à leurs besoins.",
+            "details": "Jumelage intelligent basé sur vos compétences, localisation et intérêts"
+          },
+          "reviewPrograms": {
+            "title": "Examinez les Détails du Programme",
+            "description": "Recevez des invitations et examinez les détails des programmes de bénévolat, les exigences et l'engagement temps.",
+            "details": "Descriptions claires des programmes avec attentes et horaires"
+          },
+          "acceptContribute": {
+            "title": "Acceptez et Contribuez",
+            "description": "Acceptez les invitations qui vous intéressent et commencez à contribuer à des causes significatives.",
+            "details": "Participez aux programmes et faites une différence dans votre communauté"
+          }
+        }
+      },
+      
+      "organizations": {
+        "title": "Comment les Organisations Accèdent au Soutien",
+        "subtitle": "Obtenez une vérification pour accéder aux ressources de financement et de bénévolat pour votre mission.",
+        "steps": {
+          "applyVerification": {
+            "title": "Demandez la Vérification",
+            "description": "Soumettez les documents de votre organisation et subissez notre processus de vérification.",
+            "details": "Enregistrement légal et validation de mission requis"
+          },
+          "completeProfile": {
+            "title": "Complétez le Profil d'Organisation",
+            "description": "Construisez un profil complet mettant en valeur votre mission et votre impact.",
+            "details": "Un profil détaillé aide les donateurs et bénévoles à comprendre votre travail"
+          },
+          "launchCampaigns": {
+            "title": "Lancez des Campagnes de Financement",
+            "description": "Créez des campagnes de collecte de fonds avec intégration Facebook Live et descriptions détaillées de projet.",
+            "details": "Constructeur de campagne avec fonctionnalités de diffusion en direct et suivi des progrès"
+          },
+          "createVolunteerPrograms": {
+            "title": "Créez des Programmes de Bénévolat",
+            "description": "Configurez des programmes de bénévolat, invitez des bénévoles jumelés et liez les programmes à vos campagnes.",
+            "details": "Système de jumelage intelligent et outils de gestion des programmes de bénévolat"
+          }
+        }
+      },
+      
+      "features": {
+        "bankLevelSecurity": {
+          "title": "Sécurité de Niveau Bancaire",
+          "description": "Chiffrement avancé et traitement de paiement sécurisé protègent chaque transaction.",
+          "highlight": "Sécurisé et Fiable"
+        },
+        "multilingualPlatform": {
+          "title": "Plateforme Multilingue",
+          "description": "Disponible en arabe, français et anglais pour servir toutes les communautés.",
+          "highlight": "3 Langues"
+        },
+        "completeTransparency": {
+          "title": "Transparence Complète",
+          "description": "Suivez les dons en temps réel avec des rapports détaillés et des mises à jour d'impact.",
+          "highlight": "Transparence Totale"
+        },
+        "verifiedOrganizations": {
+          "title": "Organisations Vérifiées",
+          "description": "Seules les organisations à but non lucratif et communautaires vérifiées peuvent créer des campagnes.",
+          "highlight": "Vérifié Seulement"
+        }
+      },
+      
+      "orgVerification": {
+        "title": "Êtes-vous une organisation enregistrée ?",
+        "description": "Seules les organisations à but non lucratif vérifiées et les groupes communautaires peuvent créer des campagnes de collecte de fonds sur SADA9A. Cela garantit la confiance des donateurs et la légitimité des campagnes.",
+        "applyButton": "Demander la Vérification"
+      },
+      
+      "cta": {
+        "title": "Prêt à Commencer ?",
+        "subtitle": "Rejoignez SADA9A et faites partie d'une communauté dédiée au changement positif en Mauritanie.",
+        "startDonating": "Commencer à Donner",
+        "becomeVolunteer": "Devenir Bénévole",
+        "freeToJoin": "✨ Gratuit à rejoindre • Plateforme sécurisée • Organisations vérifiées seulement"
+      }
+    },
+
+        "organizations": {
+      "title": "Organisations",
+      "subtitle": "Découvrez et connectez-vous avec des organisations vérifiées qui font la différence dans leurs communautés grâce à un travail caritatif transparent.",
+      "totalOrganizations": "Total des Organisations",
+      "verifiedOrganizations": "Organisations Vérifiées",
+      "searchPlaceholder": "Rechercher des organisations par nom, lieu ou cause...",
+      "allOrganizations": "Toutes les Organisations",
+      "verifiedOnly": "Vérifiées Seulement",
+      "pendingOnly": "En Attente Seulement",
+      "showingResults": "Affichage de {{count}} organisations",
+      "showingAllResults": "Affichage de toutes les {{count}} organisations",
+      "showingFilteredResults": "Affichage de {{filtered}} sur {{total}} organisations",
+      "noOrganizationsFound": "Aucune Organisation Trouvée",
+      "noSearchResults": "Aucun Résultat de Recherche",
+      "tryDifferentSearch": "Essayez d'ajuster vos termes de recherche ou parcourez toutes les organisations.",
+      "noOrganizationsSubtext": "Il n'y a actuellement aucune organisation à afficher. Veuillez revenir plus tard.",
+      "errorLoadingOrganizations": "Erreur de Chargement des Organisations",
+      "verified": "Vérifiée",
+      "pending": "En Attente",
+      "viewDetails": "Voir les Détails",
+      "viewCampaigns": "Voir les Campagnes",
+      "website": "Site Web",
+      "noCoverImage": "Pas d'Image de Couverture",
+      "noDescription": "Aucune description disponible",
+      "backToOrganizations": "Retour aux Organisations",
+      "backToList": "Retour à la Liste",
+      "organizationProfile": "Profil de l'Organisation",
+      "profileSubtext": "Informations détaillées sur cette organisation",
+      "aboutOrganization": "À Propos de l'Organisation",
+      "contactInformation": "Informations de Contact",
+      "organizationStats": "Statistiques de l'Organisation",
+      "campaigns": "Campagnes",
+      "campaignsSubtext": "Campagnes actives de cette organisation",
+      "activeCampaigns": "Campagnes Actives",
+      "noCampaigns": "Aucune Campagne Active",
+      "noCampaignsDescription": "Cette organisation n'a aucune campagne active pour le moment.",
+      "organizationNotFound": "Organisation Non Trouvée",
+      "errorLoadingOrganization": "Erreur de Chargement de l'Organisation",
+      "organizationName": "Nom de l'Organisation",
+      "address": "Adresse"
+    },
+    "common": {
+      "tryAgain": "Réessayer",
+      "clearSearch": "Effacer la Recherche",
+      "loadMore": "Charger Plus"
+    }
 
 
 

@@ -44,6 +44,9 @@ import AdminLayout from './pages/Admin/AdminLayout';
 import './i18n';
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
+import HowItWorksPage from './pages/User/HowItWorksPage';
+import OrganizationsList from './components/ui/OrganizationsList';
+import OrganizationDetail from './components/ui/OrganizationDetail';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -168,6 +171,12 @@ function App() {
         <Route path="/campaign/:campaignId/donate/:donationAmount" element={<DonationPaymentPage />} />
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
+        <Route path="/how-it-works" element={<HowItWorksPage />} />
+
+        <Route path="/organizations" element={<OrganizationsList />} />
+        <Route path="/organizations/:id" element={<OrganizationDetail />} />
+
+        
 
         {/* <Route path="/volunteer" element={<VolunteerDashboard />} /> */}
         <Route path="/volunteer/invitations" element={<VolunteerInvitations />} />

@@ -1,20 +1,25 @@
 # organizations/views.py - Simple Payment System
 
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from .models import OrganizationProfile, WalletProvider, ManualPayment, NextPayPayment
 from campaign.models import Campaign, Donation
+from .utils.supabase_storage import upload_organization_image, delete_organization_image
+
 from .serializers import (
     OrganizationProfileSerializer, 
     WalletProviderSerializer,
     ManualPaymentSerializer, 
     NextPayPaymentSerializer,
-    PaymentMethodsSummarySerializer
+    PaymentMethodsSummarySerializer,
+    PublicOrganizationProfileSerializer,
 )
+from campaign.serializers import CampaignSerializer
+
 
 from rest_framework import serializers
 from django.db import models
@@ -67,6 +72,114 @@ class OrganizationProfileViewSet(viewsets.ModelViewSet):
         if OrganizationProfile.objects.filter(owner=self.request.user).exists():
             raise serializers.ValidationError("Organization profile already exists for this user")
         serializer.save(owner=self.request.user)
+
+    @action(detail=True, methods=['post'])
+    def upload_profile_image(self, request, pk=None):
+        """Upload profile image"""
+        organization = self.get_object()
+        
+        if 'image' not in request.FILES:
+            return Response({'error': 'No image file provided'}, status=400)
+        
+        image_file = request.FILES['image']
+        
+        # Validate image file
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+        if image_file.content_type not in allowed_types:
+            return Response({'error': 'Invalid file type. Please upload JPEG, PNG, or WebP images only.'}, status=400)
+        
+        # Validate file size (5MB max)
+        max_size = 5 * 1024 * 1024  # 5MB
+        if image_file.size > max_size:
+            return Response({'error': 'File size too large. Maximum size is 5MB.'}, status=400)
+        
+        # Delete old image if exists
+        if organization.profile_image_path:
+            delete_organization_image(organization.profile_image_path)
+        
+        # Upload new image
+        url, path = upload_organization_image(image_file, 'profile', organization.id)
+        
+        if url and path:
+            organization.profile_image_url = url
+            organization.profile_image_path = path
+            organization.save()
+            return Response({
+                'profile_image_url': url,
+                'message': 'Profile image uploaded successfully'
+            })
+        else:
+            return Response({'error': 'Failed to upload image'}, status=500)
+
+    @action(detail=True, methods=['post'])
+    def upload_cover_image(self, request, pk=None):
+        """Upload cover image"""
+        organization = self.get_object()
+        
+        if 'image' not in request.FILES:
+            return Response({'error': 'No image file provided'}, status=400)
+        
+        image_file = request.FILES['image']
+        
+        # Validate image file
+        allowed_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+        if image_file.content_type not in allowed_types:
+            return Response({'error': 'Invalid file type. Please upload JPEG, PNG, or WebP images only.'}, status=400)
+        
+        # Validate file size (5MB max)
+        max_size = 5 * 1024 * 1024  # 5MB
+        if image_file.size > max_size:
+            return Response({'error': 'File size too large. Maximum size is 5MB.'}, status=400)
+        
+        # Delete old image if exists
+        if organization.cover_image_path:
+            delete_organization_image(organization.cover_image_path)
+        
+        # Upload new image
+        url, path = upload_organization_image(image_file, 'cover', organization.id)
+        
+        if url and path:
+            organization.cover_image_url = url
+            organization.cover_image_path = path
+            organization.save()
+            return Response({
+                'cover_image_url': url,
+                'message': 'Cover image uploaded successfully'
+            })
+        else:
+            return Response({'error': 'Failed to upload image'}, status=500)
+
+    @action(detail=True, methods=['delete'])
+    def delete_profile_image(self, request, pk=None):
+        """Delete profile image"""
+        organization = self.get_object()
+        
+        if not organization.profile_image_path:
+            return Response({'error': 'No profile image to delete'}, status=400)
+        
+        if delete_organization_image(organization.profile_image_path):
+            organization.profile_image_url = ''
+            organization.profile_image_path = ''
+            organization.save()
+            return Response({'message': 'Profile image deleted successfully'})
+        else:
+            return Response({'error': 'Failed to delete profile image'}, status=500)
+
+    @action(detail=True, methods=['delete'])
+    def delete_cover_image(self, request, pk=None):
+        """Delete cover image"""
+        organization = self.get_object()
+        
+        if not organization.cover_image_path:
+            return Response({'error': 'No cover image to delete'}, status=400)
+        
+        if delete_organization_image(organization.cover_image_path):
+            organization.cover_image_url = ''
+            organization.cover_image_path = ''
+            organization.save()
+            return Response({'message': 'Cover image deleted successfully'})
+        else:
+            return Response({'error': 'Failed to delete cover image'}, status=500)
 
     @action(detail=True, methods=['get'])
     def payment_methods(self, request, pk=None):
@@ -1006,3 +1119,29 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 {'error': 'Failed to fetch dashboard overview', 'details': str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+        
+
+
+class PublicOrganizationViewSet(viewsets.ReadOnlyModelViewSet):
+    """Public endpoint for viewing organizations and their campaigns"""
+    queryset = OrganizationProfile.objects.filter(is_verified=True)
+    serializer_class = PublicOrganizationProfileSerializer
+    permission_classes = [AllowAny]
+    pagination_class = None
+
+    def retrieve(self, request, pk=None):
+        organization = self.get_object()
+        serializer = self.get_serializer(organization)
+        
+        # Get organization's active campaigns
+        campaigns = Campaign.objects.filter(
+            owner=organization.owner,
+            current_amount__lt=models.F('target')  # Only active campaigns
+        ).order_by('-created_at')[:10]
+        
+        campaign_data = CampaignSerializer(campaigns, many=True).data
+        
+        return Response({
+            'organization': serializer.data,
+            'campaigns': campaign_data
+        })

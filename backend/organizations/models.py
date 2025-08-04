@@ -11,6 +11,12 @@ class OrganizationProfile(models.Model):
     website = models.URLField(max_length=255, blank=True)
     document_url = models.URLField(blank=True)
     document_path = models.CharField(max_length=500, blank=True, null=True)
+
+    profile_image_url = models.URLField(blank=True)
+    profile_image_path = models.CharField(max_length=500, blank=True, null=True)
+    cover_image_url = models.URLField(blank=True)
+    cover_image_path = models.CharField(max_length=500, blank=True, null=True)
+
     is_verified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Search, Menu, X, User, Heart, ChevronRight, Plus, HandHeart  } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../supabaseClient';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { getFavoriteCampaigns, getCampaignsByIds } from '../../api/endpoints/CampaignAPI';
 import NotificationBadge from '../../pages/User/NotificationBadge';
 import { fetchMyVolunteerProfile } from '../../api/endpoints/VolunteerAPI';
@@ -18,12 +18,16 @@ export default function NavBar() {
   const [favoriteCampaigns, setFavoriteCampaigns] = useState([]);
   const [loadingFavorites, setLoadingFavorites] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
-  const [displayedCount, setDisplayedCount] = useState(1);
+  const [displayedCount, setDisplayedCount] = useState(0);
   const [totalFavorites, setTotalFavorites] = useState(0);
+  const [isToggling, setIsToggling] = useState(false);
   const { user, logout: authLogout } = useAuth();
   const [hasVolunteerProfile, setHasVolunteerProfile] = useState(false);
-
+  
   const navigate = useNavigate();
+  const location = useLocation();
+  const abortControllerRef = useRef(null);
+  const lastFetchRef = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,6 +53,52 @@ export default function NavBar() {
     checkVolunteerProfile();
   }, []);
 
+  // Listen for favorites changes across the app
+  useEffect(() => {
+    const handleFavoritesChange = () => {
+      // Refresh favorites count when location changes (e.g., after favoriting)
+      if (user && showFavorites) {
+        loadFavoriteCampaigns();
+      } else if (user) {
+        // Just refresh the count without loading full data
+        refreshFavoritesCount();
+      }
+    };
+
+    // Listen for custom events from other components
+    window.addEventListener('favoritesChanged', handleFavoritesChange);
+    
+    // Also refresh on location change (when navigating between pages)
+    handleFavoritesChange();
+
+    return () => {
+      window.removeEventListener('favoritesChanged', handleFavoritesChange);
+    };
+  }, [location, user, showFavorites]);
+
+  // Refresh just the favorites count (lightweight)
+  const refreshFavoritesCount = useCallback(async () => {
+    if (!user) return;
+    
+    try {
+      const favoriteIds = await getFavoriteCampaigns();
+      setTotalFavorites(favoriteIds?.length || 0);
+    } catch (error) {
+      console.error('Failed to refresh favorites count:', error);
+    }
+  }, [user]);
+
+  // Initial load of favorites count when user logs in
+  useEffect(() => {
+    if (user) {
+      refreshFavoritesCount();
+    } else {
+      setTotalFavorites(0);
+      setFavoriteCampaigns([]);
+      setDisplayedCount(0);
+    }
+  }, [user, refreshFavoritesCount]);
+
   const handleLogout = async () => {
     setError('');
     try {
@@ -70,28 +120,48 @@ export default function NavBar() {
     }
   };
 
-  const loadFavoriteCampaigns = async (loadMore = false) => {
+  const loadFavoriteCampaigns = useCallback(async (loadMore = false) => {
     if (!user) return;
+    
+    // Prevent multiple simultaneous requests
+    const currentTime = Date.now();
+    if (currentTime - lastFetchRef.current < 500) return;
+    lastFetchRef.current = currentTime;
+
+    // Cancel any ongoing request
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    
+    abortControllerRef.current = new AbortController();
     
     if (!loadMore) {
       setLoadingFavorites(true);
-      setDisplayedCount(1);
+      setDisplayedCount(0);
     } else {
       setLoadingMore(true);
     }
 
     try {
       const favoriteIds = await getFavoriteCampaigns();
-      setTotalFavorites(favoriteIds.length);
+      
+      // Check if request was aborted
+      if (abortControllerRef.current.signal.aborted) return;
+      
+      setTotalFavorites(favoriteIds?.length || 0);
       
       if (favoriteIds && favoriteIds.length > 0) {
         const countToShow = loadMore ? displayedCount + 5 : 5;
         const idsToFetch = favoriteIds.slice(0, Math.min(countToShow, favoriteIds.length));
         
         const response = await getCampaignsByIds(idsToFetch);
+        
+        // Check if request was aborted
+        if (abortControllerRef.current.signal.aborted) return;
+        
         const campaigns = response.campaigns || response;
         
-        setFavoriteCampaigns(campaigns);
+        setFavoriteCampaigns(campaigns || []);
         setDisplayedCount(idsToFetch.length);
       } else {
         setFavoriteCampaigns([]);
@@ -99,24 +169,65 @@ export default function NavBar() {
         setDisplayedCount(0);
       }
     } catch (error) {
-      console.error('Failed to load favorite campaigns:', error);
-      setFavoriteCampaigns([]);
+      if (error.name !== 'AbortError') {
+        console.error('Failed to load favorite campaigns:', error);
+        setFavoriteCampaigns([]);
+      }
     } finally {
       setLoadingFavorites(false);
       setLoadingMore(false);
+      abortControllerRef.current = null;
     }
-  };
+  }, [user, displayedCount]);
 
-  const handleFavoritesClick = async () => {
-    if (!showFavorites) {
-      await loadFavoriteCampaigns();
+  const handleFavoritesClick = useCallback(async () => {
+    if (isToggling) return; // Prevent double-clicks
+    
+    setIsToggling(true);
+    
+    try {
+      if (!showFavorites) {
+        // Opening drawer - load favorites
+        setShowFavorites(true);
+        await loadFavoriteCampaigns();
+      } else {
+        // Closing drawer
+        setShowFavorites(false);
+      }
+    } finally {
+      // Add small delay to prevent rapid clicking
+      setTimeout(() => setIsToggling(false), 300);
     }
-    setShowFavorites(!showFavorites);
-  };
+  }, [showFavorites, loadFavoriteCampaigns, isToggling]);
 
-  const handleLoadMore = () => {
-    loadFavoriteCampaigns(true);
-  };
+  const handleLoadMore = useCallback(() => {
+    if (!loadingMore) {
+      loadFavoriteCampaigns(true);
+    }
+  }, [loadFavoriteCampaigns, loadingMore]);
+
+  // Close drawer when clicking outside or pressing escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && showFavorites) {
+        setShowFavorites(false);
+      }
+    };
+
+    if (showFavorites) {
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  }, [showFavorites]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   const formatCurrency = (amount) => {
     if (amount === null || amount === undefined || amount === '') {
@@ -169,6 +280,13 @@ export default function NavBar() {
                 {t('navbar.categories')}
               </Link>
 
+              <Link
+                to="/organizations" 
+                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
+              >
+                {t('navbar.organizations')}
+              </Link>
+
               <Link 
                 to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
                 className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
@@ -200,12 +318,15 @@ export default function NavBar() {
               {user && (
                 <button
                   onClick={handleFavoritesClick}
-                  className="relative p-2 rounded-md text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
+                  disabled={isToggling}
+                  className={`relative p-2 rounded-md text-[#3366CC] hover:bg-[#3366CC]/5 transition-all duration-200 ${
+                    isToggling ? 'opacity-50 cursor-not-allowed' : ''
+                  } ${showFavorites ? 'bg-[#3366CC]/10' : ''}`}
                   title={t('navbar.favorites')}
                 >
-                  <Heart className="h-4 w-4" />
+                  <Heart className={`h-4 w-4 transition-transform duration-200 ${isToggling ? 'scale-90' : ''}`} />
                   {totalFavorites > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all duration-200">
                       {totalFavorites > 9 ? '9+' : totalFavorites}
                     </span>
                   )}
@@ -277,7 +398,10 @@ export default function NavBar() {
               {user && (
                 <button
                   onClick={handleFavoritesClick}
-                  className="flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
+                  disabled={isToggling}
+                  className={`flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200 ${
+                    isToggling ? 'opacity-50 cursor-not-allowed' : ''
+                  }`}
                 >
                   <div className="flex items-center space-x-2">
                     <Heart className="h-4 w-4" />
@@ -352,7 +476,7 @@ export default function NavBar() {
         />
         
         {/* Drawer */}
-        <div className={`absolute right-0 top-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ${showFavorites ? 'translate-x-0' : 'translate-x-full'}`}>
+        <div className={`absolute right-0 top-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-out ${showFavorites ? 'translate-x-0' : 'translate-x-full'}`}>
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-gray-200">
             <div className="flex items-center space-x-2">
