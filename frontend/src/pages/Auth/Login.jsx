@@ -1,9 +1,13 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../supabaseClient';
 import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Chrome } from 'lucide-react';
 
 const Login = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -49,9 +53,8 @@ const Login = () => {
     }
   };
 
-
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo/Brand */}
         <div className="flex justify-center">
@@ -60,15 +63,15 @@ const Login = () => {
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Welcome back
+          {t('auth.login.welcomeBack')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          {t('auth.login.noAccount')}{' '}
           <Link
             to="/signup"
             className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
           >
-            Sign up for free
+            {t('auth.login.signUpFree')}
           </Link>
         </p>
       </div>
@@ -81,8 +84,8 @@ const Login = () => {
             disabled={loading}
             className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Chrome className="h-5 w-5 mr-3 text-gray-500" />
-            Continue with Google
+            <Chrome className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            {t('auth.login.continueWithGoogle')}
           </button>
 
           <div className="mt-6">
@@ -91,7 +94,9 @@ const Login = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or continue with email</span>
+                <span className="px-2 bg-white text-gray-500">
+                  {t('auth.login.orContinueEmail')}
+                </span>
               </div>
             </div>
           </div>
@@ -106,10 +111,10 @@ const Login = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                {t('auth.common.emailAddress')}
               </label>
               <div className="mt-1 relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className={`absolute top-3 h-5 w-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
                 <input
                   id="email"
                   name="email"
@@ -118,18 +123,20 @@ const Login = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your email"
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? 'pr-10 pl-3 text-right' : 'pl-10 pr-3 text-left'
+                  }`}
+                  placeholder={t('auth.common.enterEmail')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                {t('auth.common.password')}
               </label>
               <div className="mt-1 relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className={`absolute top-3 h-5 w-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
                 <input
                   id="password"
                   name="password"
@@ -138,13 +145,15 @@ const Login = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your password"
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'
+                  }`}
+                  placeholder={t('auth.common.enterPassword')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className={`absolute top-3 text-gray-400 hover:text-gray-600 ${isRTL ? 'left-3' : 'right-3'}`}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -159,8 +168,8 @@ const Login = () => {
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Remember me
+                <label htmlFor="remember-me" className={`block text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
+                  {t('auth.login.rememberMe')}
                 </label>
               </div>
 
@@ -168,7 +177,7 @@ const Login = () => {
                 to="/forgot-password"
                 className="text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors"
               >
-                Forgot password?
+                {t('auth.login.forgotPassword')}
               </Link>
             </div>
 
@@ -180,10 +189,10 @@ const Login = () => {
               {loading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Signing in...
+                  {t('auth.login.signingIn')}
                 </div>
               ) : (
-                'Sign in'
+                t('auth.login.signIn')
               )}
             </button>
           </form>

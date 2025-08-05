@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { supabase } from '../../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Chrome, User } from 'lucide-react';
 
 const Signup = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,12 +22,12 @@ const Signup = () => {
     setError('');
 
     if (password !== confirmPassword) {
-      setError("Passwords don't match");
+      setError(t('auth.signup.passwordsDontMatch'));
       return;
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      setError(t('auth.signup.passwordTooShort'));
       return;
     }
 
@@ -63,7 +67,7 @@ const Signup = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo/Brand */}
         <div className="flex justify-center">
@@ -72,15 +76,15 @@ const Signup = () => {
           </div>
         </div>
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
-          Create your account
+          {t('auth.signup.createAccount')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{' '}
+          {t('auth.signup.alreadyHaveAccount')}{' '}
           <Link
             to="/login"
             className="font-medium text-blue-600 hover:text-blue-500 transition-colors"
           >
-            Sign in instead
+            {t('auth.signup.signInInstead')}
           </Link>
         </p>
       </div>
@@ -93,8 +97,8 @@ const Signup = () => {
             disabled={loading}
             className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Chrome className="h-5 w-5 mr-3 text-gray-500" />
-            Continue with Google
+            <Chrome className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            {t('auth.signup.continueWithGoogle')}
           </button>
 
           <div className="mt-6">
@@ -103,7 +107,9 @@ const Signup = () => {
                 <div className="w-full border-t border-gray-300" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Or create account with email</span>
+                <span className="px-2 bg-white text-gray-500">
+                  {t('auth.signup.orCreateWithEmail')}
+                </span>
               </div>
             </div>
           </div>
@@ -118,10 +124,10 @@ const Signup = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
+                {t('auth.common.emailAddress')}
               </label>
               <div className="mt-1 relative">
-                <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Mail className={`absolute top-3 h-5 w-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
                 <input
                   id="email"
                   name="email"
@@ -130,18 +136,20 @@ const Signup = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Enter your email"
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? 'pr-10 pl-3 text-right' : 'pl-10 pr-3 text-left'
+                  }`}
+                  placeholder={t('auth.common.enterEmail')}
                 />
               </div>
             </div>
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                {t('auth.common.password')}
               </label>
               <div className="mt-1 relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className={`absolute top-3 h-5 w-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
                 <input
                   id="password"
                   name="password"
@@ -150,26 +158,30 @@ const Signup = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Create a password"
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'
+                  }`}
+                  placeholder={t('auth.signup.createPassword')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className={`absolute top-3 text-gray-400 hover:text-gray-600 ${isRTL ? 'left-3' : 'right-3'}`}
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
-              <p className="mt-1 text-xs text-gray-500">Must be at least 6 characters</p>
+              <p className="mt-1 text-xs text-gray-500">
+                {t('auth.signup.passwordRequirement')}
+              </p>
             </div>
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm password
+                {t('auth.signup.confirmPassword')}
               </label>
               <div className="mt-1 relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                <Lock className={`absolute top-3 h-5 w-5 text-gray-400 ${isRTL ? 'right-3' : 'left-3'}`} />
                 <input
                   id="confirmPassword"
                   name="confirmPassword"
@@ -178,13 +190,15 @@ const Signup = () => {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  placeholder="Confirm your password"
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
+                    isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'
+                  }`}
+                  placeholder={t('auth.signup.confirmPasswordPlaceholder')}
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
+                  className={`absolute top-3 text-gray-400 hover:text-gray-600 ${isRTL ? 'left-3' : 'right-3'}`}
                 >
                   {showConfirmPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -199,14 +213,14 @@ const Signup = () => {
                 required
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
-                I agree to the{' '}
+              <label htmlFor="terms" className={`block text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
+                {t('auth.signup.agreeToTerms')}{' '}
                 <a href="#" className="text-blue-600 hover:text-blue-500">
-                  Terms of Service
+                  {t('auth.signup.termsOfService')}
                 </a>{' '}
-                and{' '}
+                {t('auth.signup.and')}{' '}
                 <a href="#" className="text-blue-600 hover:text-blue-500">
-                  Privacy Policy
+                  {t('auth.signup.privacyPolicy')}
                 </a>
               </label>
             </div>
@@ -219,10 +233,10 @@ const Signup = () => {
               {loading ? (
                 <div className="flex items-center">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Creating account...
+                  {t('auth.signup.creatingAccount')}
                 </div>
               ) : (
-                'Create account'
+                t('auth.signup.createAccount')
               )}
             </button>
           </form>

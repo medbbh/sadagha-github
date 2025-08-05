@@ -1,4 +1,76 @@
 {
+
+  "auth": {
+    "common": {
+      "emailAddress": "Email address",
+      "password": "Password",
+      "enterEmail": "Enter your email",
+      "enterPassword": "Enter your password"
+    },
+    "login": {
+      "welcomeBack": "Welcome back",
+      "noAccount": "Don't have an account?",
+      "signUpFree": "Sign up for free",
+      "continueWithGoogle": "Continue with Google",
+      "orContinueEmail": "Or continue with email",
+      "rememberMe": "Remember me",
+      "forgotPassword": "Forgot password?",
+      "signIn": "Sign in",
+      "signingIn": "Signing in..."
+    },
+    "signup": {
+      "createAccount": "Create your account",
+      "alreadyHaveAccount": "Already have an account?",
+      "signInInstead": "Sign in instead",
+      "continueWithGoogle": "Continue with Google",
+      "orCreateWithEmail": "Or create account with email",
+      "createPassword": "Create a password",
+      "confirmPassword": "Confirm password",
+      "confirmPasswordPlaceholder": "Confirm your password",
+      "passwordRequirement": "Must be at least 6 characters",
+      "passwordsDontMatch": "Passwords don't match",
+      "passwordTooShort": "Password must be at least 6 characters",
+      "agreeToTerms": "I agree to the",
+      "termsOfService": "Terms of Service",
+      "and": "and",
+      "privacyPolicy": "Privacy Policy",
+      "creatingAccount": "Creating account..."
+    },
+    "forgotPassword": {
+      "title": "Forgot Password",
+      "description": "Enter your email address and we'll send you a link to reset your password.",
+      "sendResetLink": "Send Reset Link",
+      "sendingLink": "Sending link...",
+      "resetLinkSent": "Password reset link sent! Check your email.",
+      "emailSent": "Email Sent!",
+      "checkEmail": "We've sent a password reset link to your email address. Please check your inbox and follow the instructions.",
+      "backToLogin": "Back to Login",
+      "sendAnother": "Send Another Email"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "setNewPassword": "Set New Password",
+      "enterNewPassword": "Enter your new password below",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "confirmNewPassword": "Confirm new password",
+      "updatePassword": "Update Password",
+      "updatingPassword": "Updating Password...",
+      "passwordUpdated": "Password Updated!",
+      "successMessage": "Password updated successfully! Please sign in with your new password.",
+      "redirectingToLogin": "Your password has been successfully updated. Redirecting to login...",
+      "resetLinkInvalid": "Reset Link Invalid",
+      "requestNewLink": "Request New Reset Link",
+      "verifyingLink": "Verifying reset link...",
+      "sessionError": "Session error",
+      "noValidSession": "No valid session. Please request a new reset link.",
+      "verifyLinkFailed": "Failed to verify reset link.",
+      "passwordsDontMatch": "Passwords do not match",
+      "passwordTooShort": "Password must be at least 6 characters long",
+      "updateError": "An error occurred while updating your password."
+    }
+  },
+
     "navbar": {
         "logo": "SADA9A",
         "browse":"Browse",

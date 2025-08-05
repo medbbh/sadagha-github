@@ -1,4 +1,75 @@
 {
+
+  "auth": {
+    "common": {
+      "emailAddress": "Adresse e-mail",
+      "password": "Mot de passe",
+      "enterEmail": "Saisissez votre e-mail",
+      "enterPassword": "Saisissez votre mot de passe"
+    },
+    "login": {
+      "welcomeBack": "Bon retour",
+      "noAccount": "Vous n'avez pas de compte ?",
+      "signUpFree": "Inscrivez-vous gratuitement",
+      "continueWithGoogle": "Continuer avec Google",
+      "orContinueEmail": "Ou continuer avec l'e-mail",
+      "rememberMe": "Se souvenir de moi",
+      "forgotPassword": "Mot de passe oublié ?",
+      "signIn": "Se connecter",
+      "signingIn": "Connexion en cours..."
+    },
+    "signup": {
+      "createAccount": "Créer votre compte",
+      "alreadyHaveAccount": "Vous avez déjà un compte ?",
+      "signInInstead": "Connectez-vous plutôt",
+      "continueWithGoogle": "Continuer avec Google",
+      "orCreateWithEmail": "Ou créer un compte avec l'e-mail",
+      "createPassword": "Créer un mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmPasswordPlaceholder": "Confirmez votre mot de passe",
+      "passwordRequirement": "Doit contenir au moins 6 caractères",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+      "agreeToTerms": "J'accepte les",
+      "termsOfService": "Conditions d'utilisation",
+      "and": "et la",
+      "privacyPolicy": "Politique de confidentialité",
+      "creatingAccount": "Création du compte..."
+    },
+    "forgotPassword": {
+      "title": "Mot de passe oublié",
+      "description": "Saisissez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.",
+      "sendResetLink": "Envoyer le lien de réinitialisation",
+      "sendingLink": "Envoi du lien...",
+      "resetLinkSent": "Lien de réinitialisation envoyé ! Vérifiez votre e-mail.",
+      "emailSent": "E-mail envoyé !",
+      "checkEmail": "Nous avons envoyé un lien de réinitialisation à votre adresse e-mail. Veuillez vérifier votre boîte de réception et suivre les instructions.",
+      "backToLogin": "Retour à la connexion",
+      "sendAnother": "Envoyer un autre e-mail"
+    },
+    "resetPassword": {
+      "title": "Réinitialiser le mot de passe",
+      "setNewPassword": "Définir un nouveau mot de passe",
+      "enterNewPassword": "Saisissez votre nouveau mot de passe ci-dessous",
+      "newPassword": "Nouveau mot de passe",
+      "confirmPassword": "Confirmer le mot de passe",
+      "confirmNewPassword": "Confirmer le nouveau mot de passe",
+      "updatePassword": "Mettre à jour le mot de passe",
+      "updatingPassword": "Mise à jour du mot de passe...",
+      "passwordUpdated": "Mot de passe mis à jour !",
+      "successMessage": "Mot de passe mis à jour avec succès ! Veuillez vous connecter avec votre nouveau mot de passe.",
+      "redirectingToLogin": "Votre mot de passe a été mis à jour avec succès. Redirection vers la connexion...",
+      "resetLinkInvalid": "Lien de réinitialisation invalide",
+      "requestNewLink": "Demander un nouveau lien de réinitialisation",
+      "verifyingLink": "Vérification du lien de réinitialisation...",
+      "sessionError": "Erreur de session",
+      "noValidSession": "Aucune session valide. Veuillez demander un nouveau lien de réinitialisation.",
+      "verifyLinkFailed": "Échec de la vérification du lien de réinitialisation.",
+      "passwordsDontMatch": "Les mots de passe ne correspondent pas",
+      "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
+      "updateError": "Une erreur s'est produite lors de la mise à jour de votre mot de passe."
+    }
+  },
     "navbar": {
         "logo": "SADA9A",
         "browse" : "Explorer",

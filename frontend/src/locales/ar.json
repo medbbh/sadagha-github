@@ -1,4 +1,77 @@
 {
+
+  
+  "auth": {
+    "common": {
+      "emailAddress": "عنوان البريد الإلكتروني",
+      "password": "كلمة المرور",
+      "enterEmail": "أدخل بريدك الإلكتروني",
+      "enterPassword": "أدخل كلمة المرور"
+    },
+    "login": {
+      "welcomeBack": "مرحباً بعودتك",
+      "noAccount": "ليس لديك حساب؟",
+      "signUpFree": "سجل مجاناً",
+      "continueWithGoogle": "المتابعة مع جوجل",
+      "orContinueEmail": "أو المتابعة بالبريد الإلكتروني",
+      "rememberMe": "تذكرني",
+      "forgotPassword": "نسيت كلمة المرور؟",
+      "signIn": "تسجيل الدخول",
+      "signingIn": "جاري تسجيل الدخول..."
+    },
+    "signup": {
+      "createAccount": "إنشاء حسابك",
+      "alreadyHaveAccount": "لديك حساب بالفعل؟",
+      "signInInstead": "سجل الدخول بدلاً من ذلك",
+      "continueWithGoogle": "المتابعة مع جوجل",
+      "orCreateWithEmail": "أو إنشاء حساب بالبريد الإلكتروني",
+      "createPassword": "إنشاء كلمة مرور",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmPasswordPlaceholder": "أكد كلمة المرور",
+      "passwordRequirement": "يجب أن تكون 6 أحرف على الأقل",
+      "passwordsDontMatch": "كلمات المرور غير متطابقة",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "agreeToTerms": "أوافق على",
+      "termsOfService": "شروط الخدمة",
+      "and": "و",
+      "privacyPolicy": "سياسة الخصوصية",
+      "creatingAccount": "جاري إنشاء الحساب..."
+    },
+    "forgotPassword": {
+      "title": "نسيت كلمة المرور",
+      "description": "أدخل عنوان بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
+      "sendResetLink": "إرسال رابط إعادة التعيين",
+      "sendingLink": "جاري إرسال الرابط...",
+      "resetLinkSent": "تم إرسال رابط إعادة تعيين كلمة المرور! تحقق من بريدك الإلكتروني.",
+      "emailSent": "تم إرسال البريد الإلكتروني!",
+      "checkEmail": "لقد أرسلنا رابط إعادة تعيين كلمة المرور إلى عنوان بريدك الإلكتروني. يرجى التحقق من صندوق الوارد واتباع التعليمات.",
+      "backToLogin": "العودة لتسجيل الدخول",
+      "sendAnother": "إرسال بريد إلكتروني آخر"
+    },
+    "resetPassword": {
+      "title": "إعادة تعيين كلمة المرور",
+      "setNewPassword": "تعيين كلمة مرور جديدة",
+      "enterNewPassword": "أدخل كلمة المرور الجديدة أدناه",
+      "newPassword": "كلمة مرور جديدة",
+      "confirmPassword": "تأكيد كلمة المرور",
+      "confirmNewPassword": "تأكيد كلمة المرور الجديدة",
+      "updatePassword": "تحديث كلمة المرور",
+      "updatingPassword": "جاري تحديث كلمة المرور...",
+      "passwordUpdated": "تم تحديث كلمة المرور!",
+      "successMessage": "تم تحديث كلمة المرور بنجاح! يرجى تسجيل الدخول بكلمة المرور الجديدة.",
+      "redirectingToLogin": "تم تحديث كلمة المرور بنجاح. جاري التوجيه لصفحة تسجيل الدخول...",
+      "resetLinkInvalid": "رابط إعادة التعيين غير صالح",
+      "requestNewLink": "طلب رابط إعادة تعيين جديد",
+      "verifyingLink": "جاري التحقق من رابط إعادة التعيين...",
+      "sessionError": "خطأ في الجلسة",
+      "noValidSession": "لا توجد جلسة صالحة. يرجى طلب رابط إعادة تعيين جديد.",
+      "verifyLinkFailed": "فشل في التحقق من رابط إعادة التعيين.",
+      "passwordsDontMatch": "كلمات المرور غير متطابقة",
+      "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+      "updateError": "حدث خطأ أثناء تحديث كلمة المرور."
+    }
+  },
+
     "navbar": {
         "logo": "صدقة",
         "browse":"استكشف",
