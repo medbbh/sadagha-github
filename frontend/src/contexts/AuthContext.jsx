@@ -161,6 +161,11 @@ export const AuthProvider = ({ children }) => {
   }, [user, loading, syncUserRole]);
 
 
+  useEffect(() => {
+    if (user) {
+      console.log('User data : ', user);
+    }
+  }, [user]);
 
   // Helper function to get user role - simplified
   const getUserRole = () => {

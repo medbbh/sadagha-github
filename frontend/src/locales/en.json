@@ -1,6 +1,7 @@
 {
     "navbar": {
         "logo": "SADA9A",
+        "browse":"Browse",
         "explore": "Explore",
         "categories": "Categories",
         "volunteer": "Volunteer",
@@ -298,6 +299,7 @@
         "duration": "{{hours}} hours",
         "invited": "Invited",
         "matchScore": "{{score}}% match",
+        "fullDescription": "Full Description",
         "viewDetails": "View Details",
         "eventDetails": "Event Details",
         "startDate": "Start Date",

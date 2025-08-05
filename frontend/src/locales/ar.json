@@ -1,6 +1,7 @@
 {
     "navbar": {
         "logo": "صدقة",
+        "browse":"استكشف",
         "explore": "استكشاف",
         "categories": "الفئات",
         "volunteer": "تطوع",
@@ -294,6 +295,7 @@
         "duration": "{{hours}} ساعات",
         "invited": "مدعو",
         "matchScore": "{{score}}% تطابق",
+        "fullDescription": "الوصف الكامل",
         "viewDetails": "عرض التفاصيل",
         "eventDetails": "تفاصيل الفعالية",
         "startDate": "تاريخ البداية",

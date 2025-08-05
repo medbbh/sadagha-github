@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import volunteerRequestApi from '../../api/endpoints/VolunteerRequestAPI';
 import { fetchMyVolunteerProfile } from '../../api/endpoints/VolunteerAPI';
 
-const NotificationBadge = () => {
+const NotificationBadge = ({ className = "" }) => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [hasProfile, setHasProfile] = useState(false);
 
@@ -54,16 +54,25 @@ const NotificationBadge = () => {
     };
   }, [hasProfile]);
 
-  if (!hasProfile) return null;
+  if (!hasProfile || unreadCount === 0) return null;
 
   return (
-    <>
-      {unreadCount > 0 && (
-        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-medium rounded-full w-5 h-5 flex items-center justify-center">
-          {unreadCount > 9 ? '9+' : unreadCount}
-        </span>
-      )}
-    </>
+    <span className={`
+      absolute 
+      -top-1 -right-1
+      bg-red-500 text-white 
+      text-xs font-medium 
+      rounded-full 
+      min-w-[1.25rem] h-5 
+      flex items-center justify-center 
+      px-1
+      border-2 border-white
+      shadow-sm
+      z-10
+      ${className}
+    `}>
+      {unreadCount > 99 ? '99+' : unreadCount > 9 ? '9+' : unreadCount}
+    </span>
   );
 };
 

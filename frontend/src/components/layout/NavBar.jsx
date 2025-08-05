@@ -23,7 +23,8 @@ export default function NavBar() {
   const [isToggling, setIsToggling] = useState(false);
   const { user, logout: authLogout } = useAuth();
   const [hasVolunteerProfile, setHasVolunteerProfile] = useState(false);
-  
+  const [browseOpen, setBrowseOpen] = useState(false);
+
   const navigate = useNavigate();
   const location = useLocation();
   const abortControllerRef = useRef(null);
@@ -256,36 +257,51 @@ export default function NavBar() {
       <nav className={`fixed w-full z-50 ${scrolled ? 'bg-white shadow-sm py-3' : 'bg-white/90 py-4'} backdrop-blur-sm transition-all duration-300`}>
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
-            {/* Logo - Left aligned */}
-            <a 
-              href="/" 
-              className="text-lg font-medium text-[#3366CC] hover:opacity-80 transition-opacity duration-200"
-            >
-              {t('navbar.logo')}
-            </a>
-
-            {/* Centered Navigation Links - Desktop */}
-            <div className="hidden md:flex items-center space-x-8 mx-8 flex-1 justify-center">
-              <Link
-                to="/explore" 
-                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
-              >
-                {t('navbar.explore')}
-              </Link>
-              
-              <Link
-                to="/categories" 
-                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
-              >
-                {t('navbar.categories')}
-              </Link>
-
-              <Link
-                to="/organizations" 
-                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
-              >
-                {t('navbar.organizations')}
-              </Link>
+            {/* Left Side */}
+            <div className="hidden md:flex items-center space-x-6">
+              {/* Browse Dropdown */}
+              <div className="relative">
+                <button 
+                  onClick={() => setBrowseOpen(!browseOpen)}
+                  className="flex items-center space-x-1 text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
+                >
+                  <span>{t('navbar.browse')}</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {browseOpen && (
+                  <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                    <Link
+                      to="/explore" 
+                      className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => setBrowseOpen(false)}
+                    >
+                      {t('navbar.explore')}
+                    </Link>
+                    <Link
+                      to="/categories" 
+                      className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => setBrowseOpen(false)}
+                    >
+                      {t('navbar.categories')}
+                    </Link>
+                    <Link
+                      to="/organizations" 
+                      className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => setBrowseOpen(false)}
+                    >
+                      {t('navbar.organizations')}
+                    </Link>
+                  </div>
+                )}
+              </div>
 
               <Link 
                 to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
@@ -302,9 +318,20 @@ export default function NavBar() {
               >
                 {t('navbar.howItWorks')}
               </Link>
+
             </div>
 
-            {/* Right Section - Conditional rendering based on auth state */}
+            {/* Center - Logo */}
+            <div className="flex-1 flex justify-center">
+              <a 
+                href="/" 
+                className="text-lg font-medium text-[#3366CC] hover:opacity-80 transition-opacity duration-200"
+              >
+                {t('navbar.logo')}
+              </a>
+            </div>
+
+            {/* Right Side */}
             <div className="hidden md:flex items-center space-x-4">
               <div className="relative hover:opacity-90 transition-opacity duration-200">
                 <input
@@ -315,48 +342,30 @@ export default function NavBar() {
                 <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60" />
               </div>
 
-              {user && (
-                <button
-                  onClick={handleFavoritesClick}
-                  disabled={isToggling}
-                  className={`relative p-2 rounded-md text-[#3366CC] hover:bg-[#3366CC]/5 transition-all duration-200 ${
-                    isToggling ? 'opacity-50 cursor-not-allowed' : ''
-                  } ${showFavorites ? 'bg-[#3366CC]/10' : ''}`}
-                  title={t('navbar.favorites')}
-                >
-                  <Heart className={`h-4 w-4 transition-transform duration-200 ${isToggling ? 'scale-90' : ''}`} />
-                  {totalFavorites > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center transition-all duration-200">
-                      {totalFavorites > 9 ? '9+' : totalFavorites}
-                    </span>
-                  )}
-                </button>
-              )}
-
               <LanguageSelector />
 
               {user ? (
                 <>
-                <a 
-                  href="/profile" 
-                  className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
-                >
-                  <div className="h-6 w-6 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
-                    {user.avatar ? (
-                      <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
-                    ) : (
-                      <User className="h-3.5 w-3.5 text-[#3366CC]" />
-                    )}
-                  </div>
-                  <span>{user.name || user.username}</span>
-                </a>
+                  <a 
+                    href="/profile" 
+                    className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
+                  >
+                    <div className="h-6 w-6 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
+                      {user.avatar ? (
+                        <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                      ) : (
+                        <User className="h-3.5 w-3.5 text-[#3366CC]" />
+                      )}
+                    </div>
+                    <span>{user.name || user.username}</span>
+                  </a>
 
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-1.5 rounded-md text-sm bg-[#FF9800] text-white border border-[#FF9800] font-medium hover:bg-[#FB8C00] transition-colors duration-200"
-                >
-                  {t('navbar.logout')}
-                </button>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-1.5 rounded-md text-sm bg-[#FF9800] text-white border border-[#FF9800] font-medium hover:bg-[#FB8C00] transition-colors duration-200"
+                  >
+                    {t('navbar.logout')}
+                  </button>
                 </>
               ) : (
                 <a 
@@ -391,10 +400,76 @@ export default function NavBar() {
                 <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-[#3366CC]/60" />
               </div>
               
-              <div className="px-3 py-2">
-                <LanguageSelector />
+              <div className="border-t border-gray-200 pt-2">
+                <button 
+                  onClick={() => setBrowseOpen(!browseOpen)}
+                  className="flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                >
+                  <span>{t('navbar.browse')}</span>
+                  <svg 
+                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`} 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                
+                {browseOpen && (
+                  <div className="pl-4 space-y-1">
+                    <Link
+                      to="/explore" 
+                      className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => {
+                        setBrowseOpen(false);
+                        setIsOpen(false);
+                      }}
+                    >
+                      {t('navbar.explore')}
+                    </Link>
+                    <Link
+                      to="/categories" 
+                      className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => {
+                        setBrowseOpen(false);
+                        setIsOpen(false);
+                      }}
+                    >
+                      {t('navbar.categories')}
+                    </Link>
+                    <Link
+                      to="/organizations" 
+                      className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                      onClick={() => {
+                        setBrowseOpen(false);
+                        setIsOpen(false);
+                      }}
+                    >
+                      {t('navbar.organizations')}
+                    </Link>
+                  </div>
+                )}
               </div>
-              
+
+              <Link 
+                to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
+                className="relative flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                onClick={() => setIsOpen(false)}
+              >
+                <HandHeart className="h-4 w-4" />
+                <span>{t('navbar.volunteer')}</span>
+                <NotificationBadge />
+              </Link>
+
+              <Link 
+                to="/how-it-works" 
+                className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                onClick={() => setIsOpen(false)}
+              >
+                {t('navbar.howItWorks')}
+              </Link>
+
               {user && (
                 <button
                   onClick={handleFavoritesClick}
@@ -414,46 +489,45 @@ export default function NavBar() {
                   )}
                 </button>
               )}
-              
-              <a 
-                href="/explore" 
-                className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
-              >
-                {t('navbar.explore')}
-              </a>
-              <a 
-                href="/start-campaign" 
-                className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
-              >
-                {t('navbar.startCampaign')}
-              </a>
-              <a 
-                href="/how-it-works" 
-                className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200"
-              >
-                {t('navbar.howItWorks')}
-              </a>
+
+              <div className="px-3 py-2">
+                <LanguageSelector />
+              </div>
+
               {user ? (
-                <a 
-                  href="/profile" 
-                  className="flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] mt-2 hover:bg-[#3366CC]/5 transition-colors duration-200"
-                >
-                  <div className="h-5 w-5 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
-                    {user.avatar ? (
-                      <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
-                    ) : (
-                      <User className="h-3 w-3 text-[#3366CC]" />
-                    )}
-                  </div>
-                  <span>{t('navbar.profile')}</span>
-                </a>
+                <div className="border-t border-gray-200 pt-2">
+                  <Link 
+                    to="/profile" 
+                    className="flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <div className="h-5 w-5 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
+                      {user.avatar ? (
+                        <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                      ) : (
+                        <User className="h-3 w-3 text-[#3366CC]" />
+                      )}
+                    </div>
+                    <span>{user.user_metadata.full_name}</span>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsOpen(false);
+                    }}
+                    className="w-full mt-2 px-3 py-2 rounded text-sm font-medium text-white bg-[#FF9800] border border-[#FF9800] text-center hover:bg-[#FB8C00]"
+                  >
+                    {t('navbar.logout')}
+                  </button>
+                </div>
               ) : (
-                <a 
-                  href="/login" 
-                  className="block px-3 py-2 rounded text-sm font-medium text-white bg-[#4CAF50] border border-[#4CAF50] mt-2 text-center hover:bg-[#43A047] transition-colors duration-200"
+                <Link 
+                  to="/login" 
+                  className="block px-3 py-2 rounded text-sm font-medium text-white bg-[#4CAF50] border border-[#4CAF50] mt-2 text-center hover:bg-[#43A047]"
+                  onClick={() => setIsOpen(false)}
                 >
                   {t('navbar.login')}
-                </a>
+                </Link>
               )}
             </div>
           </div>

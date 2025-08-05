@@ -1,6 +1,7 @@
 {
     "navbar": {
         "logo": "SADA9A",
+        "browse" : "Explorer",
         "explore": "Explorer",
         "categories": "Catégories",
         "volunteer": "Bénévole",
@@ -296,6 +297,7 @@
         "duration": "{{hours}} heures",
         "invited": "Invité",
         "matchScore": "{{score}}% de correspondance",
+        "fullDescription": "Description Complète",
         "viewDetails": "Voir les détails",
         "eventDetails": "Détails de l'événement",
         "startDate": "Date de début",

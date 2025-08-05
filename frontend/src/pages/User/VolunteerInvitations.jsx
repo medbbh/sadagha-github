@@ -207,7 +207,7 @@ const VolunteerInvitations = () => {
         </div>
 
         {/* Invitations List */}
-        <div className="space-y-4">
+        <div className="space-y-4 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 lg:grid-cols-2 gap-2">
           {filteredInvitations.length === 0 ? (
             <div className="bg-white rounded-xl shadow-lg p-8 text-center">
               <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
