@@ -490,3 +490,46 @@ INFO 2025-07-10 10:54:44,073 supabase_storage 21232 6684 Deleting file: campaign
 INFO 2025-07-10 10:54:44,238 supabase_storage 21232 6684 Successfully deleted file: campaign_4/b7e04f48-8853-4996-8bb5-4a973579f7f3.jpg
 INFO 2025-07-10 10:54:44,380 serializers 21232 6684 Found 0 new files to process: []
 INFO 2025-07-10 10:54:44,586 serializers 21232 6684 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-08-06 09:43:28,952 serializers 19084 11632 === CAMPAIGN CREATION STARTED ===
+INFO 2025-08-06 09:43:29,308 serializers 19084 11632 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: WhatsApp Image 2025-06-03 at 17.45.26.jpeg (image/jpeg)>]}>
+INFO 2025-08-06 09:43:29,351 serializers 19084 11632 Creating campaign...
+INFO 2025-08-06 09:43:29,543 serializers 19084 11632 Found 1 files to process: ['file_0']
+INFO 2025-08-06 09:43:32,484 supabase_storage 19084 11632 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-08-06 09:43:32,485 serializers 19084 11632 Processing file file_0: WhatsApp Image 2025-06-03 at 17.45.26.jpeg, size=72764, content_type=image/jpeg
+INFO 2025-08-06 09:43:32,486 serializers 19084 11632 Uploading file WhatsApp Image 2025-06-03 at 17.45.26.jpeg to Supabase...
+INFO 2025-08-06 09:43:34,124 supabase_storage 19084 11632 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-08-06 09:43:34,125 supabase_storage 19084 11632 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-08-06 09:43:34,125 supabase_storage 19084 11632 Starting upload for file: WhatsApp Image 2025-06-03 at 17.45.26.jpeg to campaign_20
+INFO 2025-08-06 09:43:34,127 supabase_storage 19084 11632 Generated path: campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg
+INFO 2025-08-06 09:43:34,127 supabase_storage 19084 11632 Read file content, size: 72764 bytes
+INFO 2025-08-06 09:43:34,325 supabase_storage 19084 11632 Available buckets: []
+WARNING 2025-08-06 09:43:34,327 supabase_storage 19084 11632 Bucket 'campaign' not found in Supabase
+INFO 2025-08-06 09:43:34,328 supabase_storage 19084 11632 Uploading file to bucket: campaign, path: campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg
+INFO 2025-08-06 09:43:34,837 supabase_storage 19084 11632 Upload response: UploadResponse(path='campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg', full_path='campaign/campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg', fullPath='campaign/campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg')
+INFO 2025-08-06 09:43:34,838 supabase_storage 19084 11632 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg?
+INFO 2025-08-06 09:43:34,839 serializers 19084 11632 SUCCESS: Uploaded WhatsApp Image 2025-06-03 at 17.45.26.jpeg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_20/aa4fa59f-c525-4faf-a12b-4a71685d9bbf.jpeg?
+INFO 2025-08-06 09:43:34,840 serializers 19084 11632 Creating File DB record...
+INFO 2025-08-06 09:43:35,036 serializers 19084 11632 File record created with ID: 15
+INFO 2025-08-06 09:43:35,040 serializers 19084 11632 === CAMPAIGN CREATION COMPLETED ===
+INFO 2025-08-06 11:00:04,771 serializers 19084 2768 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-08-06 11:00:04,781 serializers 19084 2768 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: OIP.webp (image/webp)>]}>
+INFO 2025-08-06 11:00:04,782 serializers 19084 2768 Request FILES keys: ['file_0']
+INFO 2025-08-06 11:00:04,782 serializers 19084 2768 Files to delete: []
+INFO 2025-08-06 11:00:04,783 serializers 19084 2768 Found 1 new files to process: ['file_0']
+INFO 2025-08-06 11:00:04,783 serializers 19084 2768 Processing file file_0: OIP.webp, size=17738, content_type=image/webp
+INFO 2025-08-06 11:00:04,784 serializers 19084 2768 Uploading file OIP.webp to Supabase...
+INFO 2025-08-06 11:00:05,290 supabase_storage 19084 2768 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-08-06 11:00:05,291 supabase_storage 19084 2768 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-08-06 11:00:05,291 supabase_storage 19084 2768 Starting upload for file: OIP.webp to campaign_20
+INFO 2025-08-06 11:00:05,292 supabase_storage 19084 2768 Generated path: campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp
+INFO 2025-08-06 11:00:05,292 supabase_storage 19084 2768 Read file content, size: 17738 bytes
+INFO 2025-08-06 11:00:05,597 supabase_storage 19084 2768 Available buckets: []
+WARNING 2025-08-06 11:00:05,598 supabase_storage 19084 2768 Bucket 'campaign' not found in Supabase
+INFO 2025-08-06 11:00:05,598 supabase_storage 19084 2768 Uploading file to bucket: campaign, path: campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp
+INFO 2025-08-06 11:00:06,414 supabase_storage 19084 2768 Upload response: UploadResponse(path='campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp', full_path='campaign/campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp', fullPath='campaign/campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp')
+INFO 2025-08-06 11:00:06,416 supabase_storage 19084 2768 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp?
+INFO 2025-08-06 11:00:06,416 serializers 19084 2768 SUCCESS: Uploaded OIP.webp to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp?
+INFO 2025-08-06 11:00:06,417 serializers 19084 2768 File path: campaign_20/04d30d01-5794-458f-add4-ac1693959548.webp
+INFO 2025-08-06 11:00:06,544 serializers 19084 2768 File record created with ID: 16
+INFO 2025-08-06 11:00:06,546 serializers 19084 2768 Upload summary: 1 successful, 0 failed
+INFO 2025-08-06 11:00:06,721 serializers 19084 2768 === CAMPAIGN UPDATE COMPLETED ===

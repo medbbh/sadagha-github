@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../contexts/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { Settings, CreditCard, FileText, AlertCircle, CheckCircle } from 'lucide-react';
 import Loading from '../../../components/common/Loading';
 import OrganizationProfileForm from '../../../components/ui/OrganzationProfileForm';
@@ -21,6 +22,8 @@ const TabButton = ({ isActive, onClick, icon: Icon, children }) => (
 );
 
 const ProfileCompletionBanner = ({ orgProfile, paymentMethods }) => {
+  const { t } = useTranslation();
+  
   const getCompletionItems = () => {
     const hasPaymentMethods = (paymentMethods?.manual_payments?.length > 0) || 
                              (paymentMethods?.nextpay_payments?.length > 0);
@@ -28,22 +31,22 @@ const ProfileCompletionBanner = ({ orgProfile, paymentMethods }) => {
     const items = [
       {
         key: 'basic_info',
-        label: 'Basic Information',
+        label: t('organization.orgProfile.completion.basicInfo'),
         completed: orgProfile?.org_name && orgProfile?.description && orgProfile?.address && orgProfile?.phone_number
       },
       {
         key: 'documents',
-        label: 'Organization Documents',
+        label: t('organization.orgProfile.completion.documents'),
         completed: orgProfile?.document_url
       },
       {
         key: 'payment_methods',
-        label: 'Payment Methods',
+        label: t('organization.orgProfile.completion.paymentMethods'),
         completed: hasPaymentMethods
       },
       {
         key: 'verification',
-        label: 'Verification',
+        label: t('organization.orgProfile.completion.verification'),
         completed: orgProfile?.is_verified
       }
     ];
@@ -64,16 +67,18 @@ const ProfileCompletionBanner = ({ orgProfile, paymentMethods }) => {
         <div className="flex-1">
           <div className="flex items-center mb-2">
             <AlertCircle className="w-5 h-5 text-blue-600 mr-2" />
-            <h3 className="text-lg font-semibold text-gray-900">Complete Your Profile</h3>
+            <h3 className="text-lg font-semibold text-gray-900">{t('organization.orgProfile.completion.title')}</h3>
           </div>
           <p className="text-sm text-gray-600 mb-3">
-            Complete your organization profile to start receiving donations and build trust with donors.
+            {t('organization.orgProfile.completion.subtitle')}
           </p>
           
           <div className="space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-gray-600">Progress</span>
-              <span className="font-medium text-gray-900">{completedCount} of {completionItems.length} completed</span>
+              <span className="text-gray-600">{t('organization.orgProfile.completion.progress')}</span>
+              <span className="font-medium text-gray-900">
+                {t('organization.orgProfile.completion.progressCount', { completed: completedCount, total: completionItems.length })}
+              </span>
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
@@ -103,6 +108,8 @@ const ProfileCompletionBanner = ({ orgProfile, paymentMethods }) => {
 
 export default function OrganizationProfile() {
   const { user } = useAuth();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [activeTab, setActiveTab] = useState('profile');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -230,13 +237,13 @@ export default function OrganizationProfile() {
     return (
       <div className="p-6">
         <div className="bg-red-100 border border-red-200 text-red-700 rounded-lg p-4">
-          <h3 className="font-semibold mb-2">Error Loading Profile</h3>
+          <h3 className="font-semibold mb-2">{t('organization.orgProfile.error.title')}</h3>
           <p>{error}</p>
           <button
             onClick={loadProfileData}
             className="mt-3 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
           >
-            Retry
+            {t('organization.orgProfile.error.retry')}
           </button>
         </div>
       </div>
@@ -244,12 +251,12 @@ export default function OrganizationProfile() {
   }
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className={`p-6 max-w-6xl mx-auto ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Organization Settings</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('organization.orgProfile.header.title')}</h1>
         <p className="text-gray-600">
-          Manage your organization's profile, payment methods, and verification status.
+          {t('organization.orgProfile.header.subtitle')}
         </p>
       </div>
 
@@ -263,7 +270,7 @@ export default function OrganizationProfile() {
           onClick={() => setActiveTab('profile')}
           icon={Settings}
         >
-          Profile Information
+          {t('organization.orgProfile.tabs.profile')}
         </TabButton>
         
         <TabButton
@@ -271,7 +278,7 @@ export default function OrganizationProfile() {
           onClick={() => setActiveTab('payments')}
           icon={CreditCard}
         >
-          Payment Methods
+          {t('organization.orgProfile.tabs.payments')}
         </TabButton>
         
         <TabButton
@@ -279,7 +286,7 @@ export default function OrganizationProfile() {
           onClick={() => setActiveTab('verification')}
           icon={FileText}
         >
-          Verification
+          {t('organization.orgProfile.tabs.verification')}
         </TabButton>
       </div>
 
@@ -306,39 +313,39 @@ export default function OrganizationProfile() {
               <div className="text-gray-400 mb-4">
                 <FileText className="w-16 h-16 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">Verification Status</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">{t('organization.orgProfile.verification.title')}</h3>
               
               {orgProfile?.is_verified ? (
                 <div className="text-green-600">
-                  <p className="mb-4">Your organization is verified!</p>
+                  <p className="mb-4">{t('organization.orgProfile.verification.verified.message')}</p>
                   <div className="inline-flex items-center px-4 py-2 bg-green-100 text-green-800 rounded-lg">
                     <CheckCircle className="w-5 h-5 mr-2" />
-                    Verified Organization
+                    {t('organization.orgProfile.verification.verified.badge')}
                   </div>
                 </div>
               ) : (
                 <div className="text-gray-600">
                   <p className="mb-4">
-                    Your organization is pending verification. Make sure you have:
+                    {t('organization.orgProfile.verification.pending.message')}
                   </p>
                   <ul className="text-left max-w-md mx-auto space-y-2 mb-6">
                     <li className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-3 ${
                         orgProfile?.org_name && orgProfile?.description ? 'bg-green-500' : 'bg-gray-300'
                       }`}></div>
-                      Complete basic information
+                      {t('organization.orgProfile.verification.requirements.basicInfo')}
                     </li>
                     <li className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-3 ${
                         orgProfile?.document_url ? 'bg-green-500' : 'bg-gray-300'
                       }`}></div>
-                      Uploaded organization documents
+                      {t('organization.orgProfile.verification.requirements.documents')}
                     </li>
                     <li className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-3 ${
                         paymentMethods?.summary?.payment_ready ? 'bg-green-500' : 'bg-gray-300'
                       }`}></div>
-                      Added at least one payment method
+                      {t('organization.orgProfile.verification.requirements.paymentMethod')}
                     </li>
                   </ul>
                   
@@ -347,11 +354,11 @@ export default function OrganizationProfile() {
                       onClick={() => organizationApi.requestVerification(orgProfile.id)}
                       className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                      Request Verification
+                      {t('organization.orgProfile.verification.pending.requestButton')}
                     </button>
                   ) : (
                     <p className="text-sm text-gray-500">
-                      Complete the requirements above to request verification
+                      {t('organization.orgProfile.verification.pending.completeRequirements')}
                     </p>
                   )}
                 </div>
@@ -368,7 +375,7 @@ export default function OrganizationProfile() {
             <div className="text-2xl font-bold text-gray-900">
               {paymentMethods?.summary?.manual_count || 0}
             </div>
-            <div className="text-sm text-gray-600">Manual Payments</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.manualPayments')}</div>
           </div>
         </div>
         
@@ -377,16 +384,16 @@ export default function OrganizationProfile() {
             <div className="text-2xl font-bold text-gray-900">
               {paymentMethods?.summary?.nextpay_count || 0}
             </div>
-            <div className="text-sm text-gray-600">NextPay Methods</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.nextpayMethods')}</div>
           </div>
         </div>
         
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-900">
-              {orgProfile?.is_verified ? 'Yes' : 'No'}
+              {orgProfile?.is_verified ? t('organization.common.yes') : t('organization.common.no')}
             </div>
-            <div className="text-sm text-gray-600">Verified Status</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.verifiedStatus')}</div>
           </div>
         </div>
         
@@ -395,7 +402,7 @@ export default function OrganizationProfile() {
             <div className="text-2xl font-bold text-gray-900">
               {orgProfile?.created_at ? new Date(orgProfile.created_at).getFullYear() : '-'}
             </div>
-            <div className="text-sm text-gray-600">Member Since</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.memberSince')}</div>
           </div>
         </div>
       </div>

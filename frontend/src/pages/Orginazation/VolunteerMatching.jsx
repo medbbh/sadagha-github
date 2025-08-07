@@ -19,10 +19,13 @@ import {
   MessageSquare
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Loading from '../../components/common/Loading';
 import volunteerRequestApi from '../../api/endpoints/VolunteerRequestAPI';
 
 export default function VolunteerMatching() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const { requestId } = useParams();
   const navigate = useNavigate();
   
@@ -37,18 +40,15 @@ export default function VolunteerMatching() {
   const [sendingInvitations, setSendingInvitations] = useState(false);
   const [showInvitationModal, setShowInvitationModal] = useState(false);
 
-  // Fetch request details and matching volunteers
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       setError(null);
       
       try {
-        // Fetch request details
         const requestData = await volunteerRequestApi.fetchVolunteerRequestById(requestId);
         setRequest(requestData);
         
-        // Find matching volunteers
         setMatchingLoading(true);
         const matchesData = await volunteerRequestApi.findMatchingVolunteers(requestId, {
           limit: 50,
@@ -58,7 +58,7 @@ export default function VolunteerMatching() {
         
       } catch (err) {
         console.error('Failed to fetch data:', err);
-        setError(err.message || 'Failed to load data');
+        setError(err.message || t('organization.volunteerMatching.errorLoadingData'));
       } finally {
         setLoading(false);
         setMatchingLoading(false);
@@ -68,9 +68,8 @@ export default function VolunteerMatching() {
     if (requestId) {
       fetchData();
     }
-  }, [requestId, minScore]);
+  }, [requestId, minScore, t]);
 
-  // Handle volunteer selection
   const toggleVolunteerSelection = (volunteerId) => {
     const newSelected = new Set(selectedVolunteers);
     if (newSelected.has(volunteerId)) {
@@ -81,21 +80,18 @@ export default function VolunteerMatching() {
     setSelectedVolunteers(newSelected);
   };
 
-  // Select all volunteers
   const selectAllVolunteers = () => {
     const allIds = matchingVolunteers.map(v => v.id);
     setSelectedVolunteers(new Set(allIds));
   };
 
-  // Clear selection
   const clearSelection = () => {
     setSelectedVolunteers(new Set());
   };
 
-  // Send invitations
   const handleSendInvitations = async () => {
     if (selectedVolunteers.size === 0) {
-      setError('Please select at least one volunteer');
+      setError(t('organization.volunteerMatching.validationErrors.selectVolunteer'));
       return;
     }
 
@@ -109,16 +105,15 @@ export default function VolunteerMatching() {
         message: invitationMessage
       });
 
-      // Success - redirect back to request details
       navigate(`/organization/volunteers/requests/${requestId}`, {
         state: { 
-          message: `Successfully sent invitations to ${volunteerIds.length} volunteers!`,
+          message: t('organization.volunteerMatching.successMessage', { count: volunteerIds.length }),
           type: 'success'
         }
       });
     } catch (err) {
       console.error('Failed to send invitations:', err);
-      setError(err.message || 'Failed to send invitations');
+      setError(err.message || t('organization.volunteerMatching.errorSendingInvitations'));
     } finally {
       setSendingInvitations(false);
       setShowInvitationModal(false);
@@ -136,26 +131,26 @@ export default function VolunteerMatching() {
     const details = [];
     
     if (matchDetails.required_matches?.skills) {
-      details.push(`✓ Required skills: ${matchDetails.required_matches.skills.join(', ')}`);
+      details.push(`${t('organization.volunteerMatching.requiredSkills')} ${matchDetails.required_matches.skills.join(', ')}`);
     }
     if (matchDetails.required_matches?.languages) {
-      details.push(`✓ Required languages: ${matchDetails.required_matches.languages.join(', ')}`);
+      details.push(`${t('organization.volunteerMatching.requiredLanguages')} ${matchDetails.required_matches.languages.join(', ')}`);
     }
     if (matchDetails.required_matches?.location) {
-      details.push(`✓ Location match`);
+      details.push(t('organization.volunteerMatching.locationMatch'));
     }
     if (matchDetails.required_matches?.age) {
-      details.push(`✓ Age requirement met`);
+      details.push(t('organization.volunteerMatching.ageRequirementMet'));
     }
     
     if (matchDetails.preferred_matches?.skills) {
-      details.push(`+ Preferred skills: ${matchDetails.preferred_matches.skills.join(', ')}`);
+      details.push(`${t('organization.volunteerMatching.preferredSkills')} ${matchDetails.preferred_matches.skills.join(', ')}`);
     }
     if (matchDetails.preferred_matches?.languages) {
-      details.push(`+ Preferred languages: ${matchDetails.preferred_matches.languages.join(', ')}`);
+      details.push(`${t('organization.volunteerMatching.preferredLanguages')} ${matchDetails.preferred_matches.languages.join(', ')}`);
     }
     if (matchDetails.preferred_matches?.interests) {
-      details.push(`+ Interests: ${matchDetails.preferred_matches.interests.join(', ')}`);
+      details.push(`${t('organization.volunteerMatching.interests')}: ${matchDetails.preferred_matches.interests.join(', ')}`);
     }
     
     return details;
@@ -178,18 +173,20 @@ export default function VolunteerMatching() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6 p-4 sm:p-0">
+    <div className={`space-y-4 sm:space-y-6 p-4 sm:p-0 ${isRTL ? 'rtl' : ''}`}>
       {/* Header */}
       <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-        <div className="flex items-center space-x-4 mb-4">
+        <div className={`flex items-center space-x-4 mb-4 ${isRTL ? 'space-x-reverse' : ''}`}>
           <button
             onClick={() => navigate(`/organization/volunteers/requests/${requestId}`)}
             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''} `} />
           </button>
           <div className="flex-1">
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Find Volunteers</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+              {t('organization.volunteerMatching.title')}
+            </h1>
             <p className="text-gray-600 mt-1 text-sm sm:text-base">
               {request?.title}
             </p>
@@ -200,16 +197,22 @@ export default function VolunteerMatching() {
         <div className="bg-gray-50 rounded-lg p-4 mb-4">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
             <div>
-              <span className="text-gray-500">Volunteers Needed:</span>
-              <span className="ml-2 font-medium">{request?.volunteers_needed}</span>
+              <span className="text-gray-500">
+                {t('organization.volunteerMatching.volunteersNeeded')}
+              </span>
+              <span className="ms-2 font-medium">{request?.volunteers_needed}</span>
             </div>
             <div>
-              <span className="text-gray-500">Already Found:</span>
-              <span className="ml-2 font-medium text-green-600">{request?.accepted_count || 0}</span>
+              <span className="text-gray-500">
+                {t('organization.volunteerMatching.alreadyFound')}
+              </span>
+              <span className="ms-2 font-medium text-green-600">{request?.accepted_count || 0}</span>
             </div>
             <div>
-              <span className="text-gray-500">Still Need:</span>
-              <span className="ml-2 font-medium text-orange-600">
+              <span className="text-gray-500">
+                {t('organization.volunteerMatching.stillNeed')}
+              </span>
+              <span className="ms-2 font-medium text-orange-600">
                 {Math.max(0, (request?.volunteers_needed || 0) - (request?.accepted_count || 0))}
               </span>
             </div>
@@ -223,22 +226,24 @@ export default function VolunteerMatching() {
               <div className="flex items-center space-x-3">
                 <Users className="w-5 h-5 text-blue-600" />
                 <span className="font-medium text-blue-900">
-                  {selectedVolunteers.size} volunteer{selectedVolunteers.size !== 1 ? 's' : ''} selected
+                  {selectedVolunteers.size} {selectedVolunteers.size !== 1 
+                    ? t('organization.volunteerMatching.volunteersSelected')
+                    : t('organization.volunteerMatching.volunteerSelected')}
                 </span>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                 <button
                   onClick={clearSelection}
                   className="text-sm text-blue-600 hover:text-blue-800"
                 >
-                  Clear
+                  {t('organization.volunteerMatching.clear')}
                 </button>
                 <button
                   onClick={() => setShowInvitationModal(true)}
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm flex items-center space-x-2"
                 >
                   <Send className="w-4 h-4" />
-                  <span>Send Invitations</span>
+                  <span>{t('organization.volunteerMatching.sendInvitations')}</span>
                 </button>
               </div>
             </div>
@@ -266,17 +271,17 @@ export default function VolunteerMatching() {
         <div className="flex flex-col sm:flex-row gap-4">
           <div className="flex-1">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Minimum Match Score
+              {t('organization.volunteerMatching.minimumMatchScore')}
             </label>
             <select
               value={minScore}
               onChange={(e) => setMinScore(Number(e.target.value))}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option value={0}>All Matches (0%+)</option>
-              <option value={40}>Good Matches (40%+)</option>
-              <option value={60}>Great Matches (60%+)</option>
-              <option value={80}>Perfect Matches (80%+)</option>
+              <option value={0}>{t('organization.volunteerMatching.allMatches')}</option>
+              <option value={40}>{t('organization.volunteerMatching.goodMatches')}</option>
+              <option value={60}>{t('organization.volunteerMatching.greatMatches')}</option>
+              <option value={80}>{t('organization.volunteerMatching.perfectMatches')}</option>
             </select>
           </div>
           
@@ -286,7 +291,7 @@ export default function VolunteerMatching() {
               disabled={matchingVolunteers.length === 0}
               className="px-4 py-2 text-sm text-blue-600 hover:text-blue-800 disabled:text-gray-400"
             >
-              Select All
+              {t('organization.volunteerMatching.selectAll')}
             </button>
           </div>
         </div>
@@ -305,9 +310,11 @@ export default function VolunteerMatching() {
           {matchingVolunteers.length === 0 ? (
             <div className="bg-white rounded-lg border border-gray-200 p-8 text-center">
               <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No matching volunteers found</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {t('organization.volunteerMatching.noMatchingVolunteers')}
+              </h3>
               <p className="text-gray-600 mb-4">
-                Try lowering the minimum match score or adjusting your request requirements.
+                {t('organization.volunteerMatching.noMatchingVolunteersDesc')}
               </p>
             </div>
           ) : (
@@ -346,7 +353,7 @@ export default function VolunteerMatching() {
                         <div className="flex items-center space-x-2">
                           {getMatchScoreIcon(volunteer.match_score)}
                           <span className={`px-2 py-1 rounded-full text-sm font-medium ${volunteerRequestApi.getMatchScoreColor(volunteer.match_score)}`}>
-                            {volunteer.match_score}% match
+                            {volunteer.match_score}% {t('organization.volunteerMatching.match')}
                           </span>
                         </div>
                       </div>
@@ -354,17 +361,17 @@ export default function VolunteerMatching() {
                       {/* Basic Info */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div className="flex items-center text-sm text-gray-600">
-                          <Calendar className="w-4 h-4 mr-2" />
-                          <span>Age: {volunteer.age}</span>
+                          <Calendar className="w-4 h-4 me-2" />
+                          <span>{t('organization.volunteerMatching.age')} {volunteer.age}</span>
                         </div>
                         
                         <div className="flex items-center text-sm text-gray-600">
-                          <Mail className="w-4 h-4 mr-2" />
+                          <Mail className="w-4 h-4 me-2" />
                           <span className="truncate">{volunteer.email}</span>
                         </div>
                         
                         <div className="flex items-center text-sm text-gray-600">
-                          <Phone className="w-4 h-4 mr-2" />
+                          <Phone className="w-4 h-4 me-2" />
                           <span>{volunteer.phone}</span>
                         </div>
                       </div>
@@ -373,8 +380,10 @@ export default function VolunteerMatching() {
                       {volunteer.skills_list && volunteer.skills_list.length > 0 && (
                         <div className="mb-4">
                           <div className="flex items-center mb-2">
-                            <Award className="w-4 h-4 mr-2 text-gray-500" />
-                            <span className="text-sm font-medium text-gray-700">Skills</span>
+                            <Award className="w-4 h-4 me-2 text-gray-500" />
+                            <span className="text-sm font-medium text-gray-700">
+                              {t('organization.volunteerMatching.skills')}
+                            </span>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {volunteer.skills_list.map((skill, index) => (
@@ -393,8 +402,10 @@ export default function VolunteerMatching() {
                       {volunteer.languages_list && volunteer.languages_list.length > 0 && (
                         <div className="mb-4">
                           <div className="flex items-center mb-2">
-                            <Languages className="w-4 h-4 mr-2 text-gray-500" />
-                            <span className="text-sm font-medium text-gray-700">Languages</span>
+                            <Languages className="w-4 h-4 me-2 text-gray-500" />
+                            <span className="text-sm font-medium text-gray-700">
+                              {t('organization.volunteerMatching.languages')}
+                            </span>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {volunteer.languages_list.map((language, index) => (
@@ -413,8 +424,10 @@ export default function VolunteerMatching() {
                       {volunteer.interests_list && volunteer.interests_list.length > 0 && (
                         <div className="mb-4">
                           <div className="flex items-center mb-2">
-                            <Heart className="w-4 h-4 mr-2 text-gray-500" />
-                            <span className="text-sm font-medium text-gray-700">Interests</span>
+                            <Heart className="w-4 h-4 me-2 text-gray-500" />
+                            <span className="text-sm font-medium text-gray-700">
+                              {t('organization.volunteerMatching.interests')}
+                            </span>
                           </div>
                           <div className="flex flex-wrap gap-2">
                             {volunteer.interests_list.map((interest, index) => (
@@ -433,8 +446,10 @@ export default function VolunteerMatching() {
                       {volunteer.match_details && (
                         <div className="border-t pt-4">
                           <div className="flex items-center mb-2">
-                            <CheckCircle className="w-4 h-4 mr-2 text-gray-500" />
-                            <span className="text-sm font-medium text-gray-700">Match Details</span>
+                            <CheckCircle className="w-4 h-4 me-2 text-gray-500" />
+                            <span className="text-sm font-medium text-gray-700">
+                              {t('organization.volunteerMatching.matchDetails')}
+                            </span>
                           </div>
                           <div className="space-y-1">
                             {formatMatchDetails(volunteer.match_details).map((detail, index) => (
@@ -460,7 +475,9 @@ export default function VolunteerMatching() {
           <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Send Invitations</h3>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  {t('organization.volunteerMatching.invitationModal.title')}
+                </h3>
                 <button
                   onClick={() => setShowInvitationModal(false)}
                   className="text-gray-400 hover:text-gray-600"
@@ -470,33 +487,33 @@ export default function VolunteerMatching() {
               </div>
 
               <p className="text-sm text-gray-600 mb-4">
-                You're about to send invitations to {selectedVolunteers.size} volunteers.
+                {t('organization.volunteerMatching.invitationModal.description')} {selectedVolunteers.size} {t('organization.volunteerMatching.invitationModal.volunteers')}
               </p>
 
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Personal Message (Optional)
+                  {t('organization.volunteerMatching.invitationModal.personalMessage')}
                 </label>
                 <textarea
                   value={invitationMessage}
                   onChange={(e) => setInvitationMessage(e.target.value)}
-                  placeholder="Add a personal message to make your invitation more appealing..."
+                  placeholder={t('organization.volunteerMatching.invitationModal.messagePlaceholder')}
                   rows={4}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   maxLength={1000}
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  {invitationMessage.length}/1000 characters
+                  {invitationMessage.length}/1000 {t('organization.volunteerMatching.invitationModal.charactersLimit')}
                 </p>
               </div>
 
-              <div className="flex items-center justify-end space-x-3">
+              <div className={`flex items-center justify-end space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
                 <button
                   onClick={() => setShowInvitationModal(false)}
                   disabled={sendingInvitations}
                   className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
                 >
-                  Cancel
+                  {t('organization.volunteerMatching.invitationModal.cancel')}
                 </button>
                 <button
                   onClick={handleSendInvitations}
@@ -506,12 +523,12 @@ export default function VolunteerMatching() {
                   {sendingInvitations ? (
                     <>
                       <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                      <span>Sending...</span>
+                      <span>{t('organization.volunteerMatching.invitationModal.sending')}</span>
                     </>
                   ) : (
                     <>
                       <Send className="w-4 h-4" />
-                      <span>Send Invitations</span>
+                      <span>{t('organization.volunteerMatching.invitationModal.send')}</span>
                     </>
                   )}
                 </button>

@@ -160,7 +160,7 @@ const ShareButton = ({
         )}
         
         {/* Quick share buttons */}
-        <div className={`flex flex-wrap gap-2 mb-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className={`flex flex-wrap gap-2 mb-3 `}>
           {platforms.includes('facebook') && (
             <button
               onClick={() => shareOnPlatform('facebook')}
@@ -216,7 +216,7 @@ const ShareButton = ({
           <div className="border border-slate-200 rounded-lg p-4 bg-slate-50">
             <p className="text-xs text-slate-600 mb-3">{t('share.socialMediaPreview')}:</p>
             <div className="bg-white border border-slate-200 rounded-lg p-3">
-              <div className={`flex ${isRTL ? 'flex-row-reverse' : ''} space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
+              <div className={`flex  space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
                 {shareData.image && (
                   <img 
                     src={shareData.image} 
@@ -295,7 +295,7 @@ const ShareButton = ({
         {/* Copy URL Section */}
         <div className="border-t border-slate-200 pt-4">
           <p className="text-sm font-medium text-slate-700 mb-2">{t('share.orCopyLink')}:</p>
-          <div className={`flex items-center space-x-2 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
+          <div className={`flex items-center space-x-2 ${isRTL ? ' space-x-reverse' : ''}`}>
             <input
               type="text"
               value={shareData.url}

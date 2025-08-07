@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { CheckCircle, XCircle, Upload, ExternalLink, AlertCircle, Phone, Building2, CreditCard, Camera } from 'lucide-react';
 import Loading from '../../components/common/Loading';
@@ -6,6 +7,8 @@ import organizationApi from '../../api/endpoints/OrgAPI';
 import ImageUpload from './ImageUpload';
 
 export default function OrganizationProfileForm({ orgProfile = null, onSave = null, onProfileUpdate = null, loading: parentLoading = false }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -49,13 +52,13 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
     if (file) {
       // Validate file type (PDF only for organization documents)
       if (file.type !== 'application/pdf') {
-        setError('Please upload a PDF document only');
+        setError(t('organization.organizationProfileForm.uploadPdfOnly'));
         return;
       }
       
       // Validate file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
-        setError('File size must be less than 10MB');
+        setError(t('organization.organizationProfileForm.fileSizeLimit'));
         return;
       }
       
@@ -99,7 +102,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
       } else {
         // This shouldn't happen in normal flow since profile is auto-created
         console.error('No profile ID available for update');
-        throw new Error('Profile ID not found');
+        throw new Error(t('organization.organizationProfileForm.profileIdNotFound'));
       }
       
       setSuccess(true);
@@ -109,7 +112,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
       setTimeout(() => setSuccess(false), 3000);
       
     } catch (err) {
-      setError(err.message || 'Failed to update organization profile');
+      setError(err.message || t('organization.organizationProfileForm.profileUpdateFailed'));
       console.error('Profile update error:', err);
     } finally {
       setLoading(false);
@@ -134,11 +137,11 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
         });
       }
       
-      setSuccess('Profile image updated successfully!');
+      setSuccess(t('organization.organizationProfileForm.profileImageUpdatedSuccess'));
       setTimeout(() => setSuccess(false), 3000);
       
     } catch (err) {
-      setError(err.message || 'Failed to upload profile image');
+      setError(err.message || t('organization.organizationProfileForm.profileImageUploadFailed'));
     } finally {
       setImageLoading(prev => ({ ...prev, profile: false }));
     }
@@ -162,11 +165,11 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
         });
       }
       
-      setSuccess('Cover image updated successfully!');
+      setSuccess(t('organization.organizationProfileForm.coverImageUpdatedSuccess'));
       setTimeout(() => setSuccess(false), 3000);
       
     } catch (err) {
-      setError(err.message || 'Failed to upload cover image');
+      setError(err.message || t('organization.organizationProfileForm.coverImageUploadFailed'));
     } finally {
       setImageLoading(prev => ({ ...prev, cover: false }));
     }
@@ -191,11 +194,11 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
         });
       }
       
-      setSuccess('Profile image deleted successfully!');
+      setSuccess(t('organization.organizationProfileForm.profileImageDeletedSuccess'));
       setTimeout(() => setSuccess(false), 3000);
       
     } catch (err) {
-      setError(err.message || 'Failed to delete profile image');
+      setError(err.message || t('organization.organizationProfileForm.profileImageDeleteFailed'));
     } finally {
       setImageLoading(prev => ({ ...prev, profile: false }));
     }
@@ -220,11 +223,11 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
         });
       }
       
-      setSuccess('Cover image deleted successfully!');
+      setSuccess(t('organization.organizationProfileForm.coverImageDeletedSuccess'));
       setTimeout(() => setSuccess(false), 3000);
       
     } catch (err) {
-      setError(err.message || 'Failed to delete cover image');
+      setError(err.message || t('organization.organizationProfileForm.coverImageDeleteFailed'));
     } finally {
       setImageLoading(prev => ({ ...prev, cover: false }));
     }
@@ -252,9 +255,9 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
 
   if (!orgProfile && !parentLoading && !loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+      <div className={`bg-white rounded-xl shadow-sm border border-gray-100 p-6 ${isRTL ? 'text-right' : 'text-left'}`}>
         <div className="text-center py-8">
-          <p className="text-gray-500">No organization profile found.</p>
+          <p className="text-gray-500">{t('organization.organizationProfileForm.noProfileFound')}</p>
           <div className="mt-4 text-sm text-gray-400">
             Debug: orgProfile = {JSON.stringify(!!orgProfile)}, parentLoading = {JSON.stringify(parentLoading)}, loading = {JSON.stringify(loading)}
           </div>
@@ -266,47 +269,47 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
   const paymentSummary = getPaymentMethodsSummary();
 
   return (
-    <div className="space-y-6">
+    <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Page Header */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div className="flex items-center justify-between">
+        <div className={`flex items-center justify-between `}>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">Organization Profile</h1>
+            <h1 className="text-2xl font-bold text-gray-900">{t('organization.organizationProfileForm.title')}</h1>
             <p className="text-sm text-gray-600 mt-1">
-              Manage your organization's information, images, and verification documents
+              {t('organization.organizationProfileForm.subtitle')}
             </p>
           </div>
           {orgProfile && (
-            <div className="flex items-center space-x-4">
+            <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
               {/* Verification Status */}
-              <div className="flex items-center space-x-2">
+              <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                 {orgProfile.is_verified ? (
-                  <div className="flex items-center text-green-600">
-                    <CheckCircle className="w-5 h-5 mr-1" />
-                    <span className="text-sm font-medium">Verified</span>
+                  <div className={`flex items-center text-green-600 `}>
+                    <CheckCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    <span className="text-sm font-medium">{t('organization.organizationProfileForm.verified')}</span>
                   </div>
                 ) : (
-                  <div className="flex items-center text-yellow-600">
-                    <XCircle className="w-5 h-5 mr-1" />
-                    <span className="text-sm font-medium">Pending Verification</span>
+                  <div className={`flex items-center text-yellow-600 `}>
+                    <XCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    <span className="text-sm font-medium">{t('organization.organizationProfileForm.pendingVerification')}</span>
                   </div>
                 )}
               </div>
               
               {/* Payment Methods Status */}
               {paymentSummary && (
-                <div className="flex items-center space-x-2">
+                <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                   {paymentSummary.hasPaymentMethods ? (
-                    <div className="flex items-center text-green-600">
-                      <CreditCard className="w-5 h-5 mr-1" />
+                    <div className={`flex items-center text-green-600 `}>
+                      <CreditCard className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                       <span className="text-sm font-medium">
-                        {paymentSummary.totalActive} Payment Method{paymentSummary.totalActive !== 1 ? 's' : ''}
+                        {paymentSummary.totalActive} {paymentSummary.totalActive !== 1 ? t('organization.organizationProfileForm.paymentMethodsPlural') : t('organization.organizationProfileForm.paymentMethods')}
                       </span>
                     </div>
                   ) : (
-                    <div className="flex items-center text-orange-600">
-                      <AlertCircle className="w-5 h-5 mr-1" />
-                      <span className="text-sm font-medium">No Payment Methods</span>
+                    <div className={`flex items-center text-orange-600 `}>
+                      <AlertCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                      <span className="text-sm font-medium">{t('organization.organizationProfileForm.noPaymentMethods')}</span>
                     </div>
                   )}
                 </div>
@@ -324,7 +327,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
 
         {success && (
           <div className="mt-4 p-3 bg-green-100 border border-green-200 text-green-700 rounded text-sm">
-            {typeof success === 'string' ? success : 'Organization profile updated successfully!'}
+            {typeof success === 'string' ? success : t('organization.organizationProfileForm.profileUpdatedSuccess')}
           </div>
         )}
       </div>
@@ -332,12 +335,12 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
       {/* Visual Assets Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 flex items-center">
-            <Camera className="w-5 h-5 mr-2" />
-            Visual Assets
+          <h2 className={`text-lg font-semibold text-gray-900 flex items-center `}>
+            <Camera className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            {t('organization.organizationProfileForm.visualAssets')}
           </h2>
           <p className="text-sm text-gray-600 mt-1">
-            Upload images that represent your organization
+            {t('organization.organizationProfileForm.visualAssetsDescription')}
           </p>
         </div>
         
@@ -345,10 +348,9 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Cover Image */}
             <div>
-              <h3 className="text-base font-medium text-gray-900 mb-3">Cover Image</h3>
+              <h3 className="text-base font-medium text-gray-900 mb-3">{t('organization.organizationProfileForm.coverImage')}</h3>
               <p className="text-sm text-gray-600 mb-4">
-                A wide banner image that appears at the top of your organization profile. 
-                This creates the first impression for potential donors.
+                {t('organization.organizationProfileForm.coverImageDescription')}
               </p>
               <ImageUpload
                 currentImage={orgProfile?.cover_image_url}
@@ -358,18 +360,17 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
                 loading={imageLoading.cover}
               />
               <p className="text-xs text-gray-500 mt-2">
-                Recommended: 1200x400px • Accepted: JPEG, PNG, WebP • Max: 5MB
+                {t('organization.organizationProfileForm.coverImageSpecs')}
               </p>
             </div>
             
             {/* Profile Image */}
             <div>
-              <h3 className="text-base font-medium text-gray-900 mb-3">Profile Image</h3>
+              <h3 className="text-base font-medium text-gray-900 mb-3">{t('organization.organizationProfileForm.profileImage')}</h3>
               <p className="text-sm text-gray-600 mb-4">
-                A circular logo or image that represents your organization. 
-                This appears alongside your organization name across the platform.
+                {t('organization.organizationProfileForm.profileImageDescription')}
               </p>
-              <div className="flex items-start space-x-4">
+              <div className={`flex items-start space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
                 <ImageUpload
                   currentImage={orgProfile?.profile_image_url}
                   onImageUpload={handleProfileImageUpload}
@@ -379,7 +380,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-500">
-                    Recommended: 400x400px • Accepted: JPEG, PNG, WebP • Max: 5MB
+                    {t('organization.organizationProfileForm.profileImageSpecs')}
                   </p>
                 </div>
               </div>
@@ -391,43 +392,43 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
       {/* Organization Information Form */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <div className="mb-6 border-b border-gray-200 pb-4">
-          <h2 className="text-lg font-semibold text-gray-900">Organization Information</h2>
+          <h2 className="text-lg font-semibold text-gray-900">{t('organization.organizationProfileForm.organizationInformation')}</h2>
           <p className="text-sm text-gray-600 mt-1">
-            Basic details about your organization
+            {t('organization.organizationProfileForm.organizationInformationDescription')}
           </p>
         </div>
 
         {/* Payment Methods Summary */}
         {paymentSummary && (
           <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className="text-sm font-medium text-blue-900 mb-2 flex items-center">
-              <CreditCard className="w-4 h-4 mr-2" />
-              Payment Methods Summary
+            <h3 className={`text-sm font-medium text-blue-900 mb-2 flex items-center `}>
+              <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.organizationProfileForm.paymentMethodsSummary')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className="flex items-center">
-                <Phone className="w-4 h-4 text-blue-600 mr-2" />
+              <div className={`flex items-center `}>
+                <Phone className={`w-4 h-4 text-blue-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className="text-blue-700">
-                  <strong>{paymentSummary.manualCount}</strong> Manual Payment{paymentSummary.manualCount !== 1 ? 's' : ''}
+                  <strong>{paymentSummary.manualCount}</strong> {paymentSummary.manualCount !== 1 ? t('organization.organizationProfileForm.manualPaymentsPlural') : t('organization.organizationProfileForm.manualPayments')}
                 </span>
               </div>
-              <div className="flex items-center">
-                <Building2 className="w-4 h-4 text-purple-600 mr-2" />
+              <div className={`flex items-center `}>
+                <Building2 className={`w-4 h-4 text-purple-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className="text-blue-700">
-                  <strong>{paymentSummary.nextpayCount}</strong> NextPay Payment{paymentSummary.nextpayCount !== 1 ? 's' : ''}
+                  <strong>{paymentSummary.nextpayCount}</strong> {paymentSummary.nextpayCount !== 1 ? t('organization.organizationProfileForm.nextpayPaymentsPlural') : t('organization.organizationProfileForm.nextpayPayments')}
                 </span>
               </div>
-              <div className="flex items-center">
-                <CreditCard className="w-4 h-4 text-green-600 mr-2" />
+              <div className={`flex items-center `}>
+                <CreditCard className={`w-4 h-4 text-green-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className="text-blue-700">
-                  <strong>{paymentSummary.totalActive}</strong> Total Active
+                  <strong>{paymentSummary.totalActive}</strong> {t('organization.organizationProfileForm.totalActive')}
                 </span>
               </div>
             </div>
             {!paymentSummary.hasPaymentMethods && (
               <div className="mt-3 p-2 bg-orange-100 border border-orange-200 rounded text-sm text-orange-800">
-                <AlertCircle className="w-4 h-4 inline mr-2" />
-                Add payment methods to start receiving donations
+                <AlertCircle className={`w-4 h-4 inline ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.organizationProfileForm.addPaymentMethodsWarning')}
               </div>
             )}
           </div>
@@ -438,7 +439,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
             {/* Organization Name */}
             <div className="md:col-span-2">
               <label htmlFor="org_name" className="block text-sm font-medium text-gray-700 mb-1">
-                Organization Name *
+                {t('organization.organizationProfileForm.organizationName')} *
               </label>
               <input
                 type="text"
@@ -448,14 +449,14 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter your organization name"
+                placeholder={t('organization.organizationProfileForm.organizationNamePlaceholder')}
               />
             </div>
 
             {/* Phone Number */}
             <div>
               <label htmlFor="phone_number" className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number *
+                {t('organization.organizationProfileForm.phoneNumber')} *
               </label>
               <input
                 type="tel"
@@ -465,14 +466,14 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
                 onChange={handleChange}
                 required
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Enter phone number"
+                placeholder={t('organization.organizationProfileForm.phoneNumberPlaceholder')}
               />
             </div>
 
             {/* Website */}
             <div>
               <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-1">
-                Website
+                {t('organization.organizationProfileForm.website')}
               </label>
               <input
                 type="url"
@@ -481,7 +482,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
                 value={formData.website}
                 onChange={handleChange}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="https://www.yourorganization.com"
+                placeholder={t('organization.organizationProfileForm.websitePlaceholder')}
               />
             </div>
           </div>
@@ -489,7 +490,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
           {/* Description */}
           <div>
             <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-              Description *
+              {t('organization.organizationProfileForm.description')} *
             </label>
             <textarea
               id="description"
@@ -499,14 +500,14 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               required
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Describe your organization's mission and goals"
+              placeholder={t('organization.organizationProfileForm.descriptionPlaceholder')}
             />
           </div>
 
           {/* Address */}
           <div>
             <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-1">
-              Address *
+              {t('organization.organizationProfileForm.address')} *
             </label>
             <textarea
               id="address"
@@ -516,29 +517,29 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               required
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              placeholder="Enter your organization's complete address"
+              placeholder={t('organization.organizationProfileForm.addressPlaceholder')}
             />
           </div>
 
           {/* Document Upload */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Organization Document {!orgProfile?.document_url && '*'}
+              {t('organization.organizationProfileForm.organizationDocument')} {!orgProfile?.document_url && '*'}
             </label>
             
             {/* Current Document */}
             {orgProfile?.document_url && (
               <div className="mb-3 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-600">Current document uploaded</span>
+                <div className={`flex items-center justify-between `}>
+                  <span className="text-sm text-gray-600">{t('organization.organizationProfileForm.currentDocumentUploaded')}</span>
                   <a 
                     href={orgProfile.document_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center text-blue-600 hover:text-blue-700 text-sm"
+                    className={`flex items-center text-blue-600 hover:text-blue-700 text-sm `}
                   >
-                    <ExternalLink className="w-4 h-4 mr-1" />
-                    View Document
+                    <ExternalLink className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    {t('organization.organizationProfileForm.viewDocument')}
                   </a>
                 </div>
               </div>
@@ -555,30 +556,30 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               />
               <label
                 htmlFor="document-upload"
-                className="flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors"
+                className={`flex items-center justify-center w-full px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors `}
               >
-                <Upload className="w-5 h-5 text-gray-400 mr-2" />
+                <Upload className={`w-5 h-5 text-gray-400 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                 <span className="text-sm text-gray-600">
-                  {documentFile ? documentFile.name : 'Upload new PDF document (max 10MB)'}
+                  {documentFile ? documentFile.name : t('organization.organizationProfileForm.uploadPdfDocument')}
                 </span>
               </label>
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              Upload official organization documents (registration, license, etc.)
+              {t('organization.organizationProfileForm.uploadOfficialDocuments')}
             </p>
           </div>
 
           {/* Submit Button */}
-          <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+          <div className={`flex justify-end space-x-3 pt-4 border-t border-gray-200 ${isRTL ? ' space-x-reverse' : ''}`}>
             <button
               type="submit"
               disabled={loading || imageLoading.profile || imageLoading.cover}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors flex items-center"
+              className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors flex items-center `}
             >
               {loading && (
-                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white mr-2"></div>
+                <div className={`animate-spin rounded-full h-4 w-4 border-t-2 border-white ${isRTL ? 'ml-2' : 'mr-2'}`}></div>
               )}
-              {loading ? 'Saving...' : 'Save Profile'}
+              {loading ? t('organization.organizationProfileForm.saving') : t('organization.organizationProfileForm.saveProfile')}
             </button>
           </div>
         </form>
@@ -587,8 +588,8 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
       {/* Organization Preview Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Organization Preview</h2>
-          <p className="text-sm text-gray-600 mt-1">See how your organization will appear to donors</p>
+          <h2 className="text-lg font-semibold text-gray-900">{t('organization.organizationProfileForm.organizationPreview')}</h2>
+          <p className="text-sm text-gray-600 mt-1">{t('organization.organizationProfileForm.organizationPreviewDescription')}</p>
         </div>
         
         {/* Preview Card */}
@@ -605,13 +606,13 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               <div className="flex items-center justify-center h-full">
                 <div className="text-center text-white">
                   <Camera className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm opacity-75">No cover image</p>
+                  <p className="text-sm opacity-75">{t('organization.organizationProfileForm.noCoverImage')}</p>
                 </div>
               </div>
             )}
             
             {/* Profile Image Overlay */}
-            <div className="absolute -bottom-8 left-6">
+            <div className={`absolute -bottom-8 ${isRTL ? 'right-6' : 'left-6'}`}>
               <div className="w-16 h-16 rounded-full border-4 border-white bg-gray-200 overflow-hidden">
                 {orgProfile?.profile_image_url ? (
                   <img
@@ -630,33 +631,33 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
           
           {/* Organization Info */}
           <div className="pt-12 pb-6 px-6">
-            <div className="flex items-start justify-between">
+            <div className={`flex items-start justify-between `}>
               <div className="flex-1">
                 <h4 className="text-xl font-bold text-gray-900 mb-1">
-                  {formData.org_name || 'Organization Name'}
+                  {formData.org_name || t('organization.organizationProfileForm.organizationNamePreview')}
                 </h4>
                 <p className="text-sm text-gray-600 mb-3">
-                  {formData.description || 'Organization description will appear here...'}
+                  {formData.description || t('organization.organizationProfileForm.organizationDescriptionPreview')}
                 </p>
                 
                 {/* Quick Info */}
-                <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                <div className={`flex flex-wrap gap-4 text-sm text-gray-500 `}>
                   {formData.phone_number && (
-                    <div className="flex items-center">
-                      <Phone className="w-4 h-4 mr-1" />
+                    <div className={`flex items-center `}>
+                      <Phone className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                       {formData.phone_number}
                     </div>
                   )}
                   {formData.website && (
-                    <div className="flex items-center">
-                      <ExternalLink className="w-4 h-4 mr-1" />
+                    <div className={`flex items-center `}>
+                      <ExternalLink className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                       <a 
                         href={formData.website} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-700"
                       >
-                        Website
+                        {t('organization.organizationProfileForm.website')}
                       </a>
                     </div>
                   )}
@@ -664,16 +665,16 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               </div>
               
               {/* Verification Badge */}
-              <div className="ml-4">
+              <div className={`${isRTL ? 'mr-4' : 'ml-4'}`}>
                 {orgProfile?.is_verified ? (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                    <CheckCircle className="w-3 h-3 mr-1" />
-                    Verified
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 `}>
+                    <CheckCircle className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    {t('organization.organizationProfileForm.verified')}
                   </span>
                 ) : (
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                    <XCircle className="w-3 h-3 mr-1" />
-                    Pending
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 `}>
+                    <XCircle className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    {t('organization.organizationProfileForm.pending')}
                   </span>
                 )}
               </div>
@@ -683,7 +684,7 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
             {formData.address && (
               <div className="mt-4 p-3 bg-gray-50 rounded-lg">
                 <p className="text-sm text-gray-600">
-                  <strong>Address:</strong> {formData.address}
+                  <strong>{t('organization.organizationProfileForm.addressLabel')}</strong> {formData.address}
                 </p>
               </div>
             )}
@@ -691,10 +692,10 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
             {/* Payment Methods Preview */}
             {paymentSummary && paymentSummary.hasPaymentMethods && (
               <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className="flex items-center text-green-700">
-                  <CreditCard className="w-4 h-4 mr-2" />
+                <div className={`flex items-center text-green-700 `}>
+                  <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
                   <span className="text-sm font-medium">
-                    {paymentSummary.totalActive} Payment Method{paymentSummary.totalActive !== 1 ? 's' : ''} Available
+                    {paymentSummary.totalActive} {t('organization.organizationProfileForm.paymentMethodsAvailable')} {paymentSummary.totalActive !== 1 ? t('organization.organizationProfileForm.paymentMethodsPlural') : t('organization.organizationProfileForm.paymentMethods')}
                   </span>
                 </div>
               </div>
@@ -704,17 +705,17 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
         
         {/* Preview Actions */}
         <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-          <div className="flex justify-between items-center text-sm">
-            <p className="text-gray-600">This is how your organization will appear to potential donors</p>
-            <div className="flex space-x-4 text-xs">
+          <div className={`flex justify-between items-center text-sm `}>
+            <p className="text-gray-600">{t('organization.organizationProfileForm.previewDescription')}</p>
+            <div className={`flex space-x-4 text-xs ${isRTL ? 'space-x-reverse' : ''}`}>
               {!orgProfile?.profile_image_url && (
-                <span className="text-orange-600">• Add profile image</span>
+                <span className="text-orange-600">{t('organization.organizationProfileForm.addProfileImage')}</span>
               )}
               {!orgProfile?.cover_image_url && (
-                <span className="text-orange-600">• Add cover image</span>
+                <span className="text-orange-600">{t('organization.organizationProfileForm.addCoverImage')}</span>
               )}
               {!paymentSummary?.hasPaymentMethods && (
-                <span className="text-red-600">• Add payment methods</span>
+                <span className="text-red-600">{t('organization.organizationProfileForm.addPaymentMethods')}</span>
               )}
             </div>
           </div>

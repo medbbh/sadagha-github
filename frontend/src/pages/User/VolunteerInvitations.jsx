@@ -134,7 +134,7 @@ const VolunteerInvitations = () => {
         <div className="bg-white rounded-xl shadow-lg p-6">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h1 className={`text-2xl font-bold text-gray-900 flex items-center gap-2 ${isRTL ? '' : ''}`}>
+              <h1 className={`text-2xl font-bold text-gray-900 flex items-center gap-2 `}>
                 <Bell className="w-7 h-7 text-blue-600" />
                 {t('volunteerInvitations.title')}
               </h1>
@@ -172,7 +172,7 @@ const VolunteerInvitations = () => {
         {/* Error Display */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-            <div className={`flex justify-between items-center ${isRTL ? '' : ''}`}>
+            <div className={`flex justify-between items-center `}>
               <span className="text-sm">{error}</span>
               <button onClick={() => setError(null)} className="text-red-500 hover:text-red-700">×</button>
             </div>
@@ -181,7 +181,7 @@ const VolunteerInvitations = () => {
 
         {/* Filters */}
         <div className="bg-white rounded-xl shadow-lg p-4">
-          <div className={`flex flex-col sm:flex-row gap-4 ${isRTL ? '' : ''}`}>
+          <div className={`flex flex-col sm:flex-row gap-4 `}>
             <div className="flex-1 relative">
               <Search className="absolute start-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
@@ -238,12 +238,12 @@ const VolunteerInvitations = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl" dir={isRTL ? 'rtl' : 'ltr'}>
               <div className="p-6">
-                <div className={`flex items-start justify-between mb-4 ${isRTL ? '' : ''}`}>
+                <div className={`flex items-start justify-between mb-4 `}>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900 mb-2">
                       {selectedInvitation.request_title}
                     </h2>
-                    <div className={`flex items-center text-gray-600 mb-2 ${isRTL ? '' : ''}`}>
+                    <div className={`flex items-center text-gray-600 mb-2 `}>
                       <Building className="w-4 h-4 me-2" />
                       <span>{selectedInvitation.organization_name}</span>
                     </div>
@@ -283,7 +283,7 @@ const VolunteerInvitations = () => {
                   )}
 
                   {selectedInvitation.status === 'pending' && (
-                    <div className={`flex space-x-3 pt-4 ${isRTL ? '' : ''}`}>
+                    <div className={`flex space-x-3 pt-4 `}>
                       <button
                         onClick={() => {
                           setShowDetailModal(false);

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, Power, PowerOff, Phone, Building2, CreditCard, Smartphone } from 'lucide-react';
 import Loading from '../common/Loading';
 import organizationApi from '../../api/endpoints/OrgAPI';
 
 const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
+  const { t } = useTranslation();
   const [isToggling, setIsToggling] = useState(false);
 
   const handleToggleActive = async () => {
@@ -23,16 +25,14 @@ const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
     }`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          {/* Payment Header */}
           <div className="flex items-center space-x-3 mb-3">
             <div className="flex items-center">
-              <Phone className="w-5 h-5 text-blue-600 mr-2" />
+              <Phone className="w-5 h-5 text-blue-600 me-2" />
               <span className="text-lg font-semibold text-gray-900">
                 {payment.phone_number}
               </span>
             </div>
             
-            {/* Status Badge */}
             <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
               payment.is_active 
                 ? 'bg-green-100 text-green-800 border border-green-200' 
@@ -40,35 +40,33 @@ const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
             }`}>
               {payment.is_active ? (
                 <>
-                  <Power className="w-3 h-3 mr-1" />
-                  Active
+                  <Power className="w-3 h-3 me-1" />
+                  {t('organization.paymentMethods.active')}
                 </>
               ) : (
                 <>
-                  <PowerOff className="w-3 h-3 mr-1" />
-                  Inactive
+                  <PowerOff className="w-3 h-3 me-1" />
+                  {t('organization.paymentMethods.inactive')}
                 </>
               )}
             </div>
           </div>
           
-          {/* Payment Details */}
           <div className="space-y-1 mb-3">
             <div className="text-sm text-gray-700">
-              <span className="font-semibold">Wallet:</span>{' '}
+              <span className="font-semibold">{t('organization.paymentMethods.wallet')}:</span>{' '}
               <span className="text-gray-600">{payment.wallet_provider_name}</span>
             </div>
             {payment.account_name && (
               <div className="text-sm text-gray-700">
-                <span className="font-semibold">Account Name:</span>{' '}
+                <span className="font-semibold">{t('organization.paymentMethods.accountName')}:</span>{' '}
                 <span className="text-gray-600">{payment.account_name}</span>
               </div>
             )}
           </div>
           
-          {/* Created Date */}
           <div className="text-xs text-gray-500">
-            Added on {new Date(payment.created_at).toLocaleDateString('en-US', {
+            {t('organization.paymentMethods.addedOn')} {new Date(payment.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'short',
               day: 'numeric'
@@ -76,9 +74,7 @@ const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
           </div>
         </div>
         
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2 ml-6">
-          {/* Toggle Active Button */}
+        <div className="flex items-center space-x-2 ms-6">
           <button
             onClick={handleToggleActive}
             disabled={isToggling}
@@ -89,42 +85,39 @@ const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
             } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {isToggling ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current mr-2"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current me-2"></div>
             ) : payment.is_active ? (
-              <ToggleRight className="w-4 h-4 mr-1" />
+              <ToggleRight className="w-4 h-4 me-1" />
             ) : (
-              <ToggleLeft className="w-4 h-4 mr-1" />
+              <ToggleLeft className="w-4 h-4 me-1" />
             )}
-            {payment.is_active ? 'Deactivate' : 'Activate'}
+            {payment.is_active ? t('organization.paymentMethods.deactivate') : t('organization.paymentMethods.activate')}
           </button>
           
-          {/* Edit Button */}
           <button
             onClick={() => onEdit(payment, 'manual')}
             className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 border border-blue-200 transition-colors"
           >
-            <Edit2 className="w-4 h-4 mr-1" />
-            Edit
+            <Edit2 className="w-4 h-4 me-1" />
+            {t('organization.paymentMethods.edit')}
           </button>
           
-          {/* Delete Button */}
           <button
             onClick={() => onDelete(payment.id, 'manual')}
             className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 border border-red-200 transition-colors"
           >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Delete
+            <Trash2 className="w-4 h-4 me-1" />
+            {t('organization.paymentMethods.delete')}
           </button>
         </div>
       </div>
       
-      {/* Inactive Warning */}
       {!payment.is_active && (
         <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
           <div className="flex items-center">
-            <PowerOff className="w-4 h-4 text-yellow-600 mr-2" />
+            <PowerOff className="w-4 h-4 text-yellow-600 me-2" />
             <span className="text-sm text-yellow-800">
-              This payment method is inactive and won't receive donations.
+              {t('organization.paymentMethods.inactiveWarning')}
             </span>
           </div>
         </div>
@@ -134,6 +127,7 @@ const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
 };
 
 const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
+  const { t } = useTranslation();
   const [isToggling, setIsToggling] = useState(false);
 
   const handleToggleActive = async () => {
@@ -153,16 +147,14 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
     }`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          {/* Payment Header */}
           <div className="flex items-center space-x-3 mb-3">
             <div className="flex items-center">
-              <Building2 className="w-5 h-5 text-purple-600 mr-2" />
+              <Building2 className="w-5 h-5 text-purple-600 me-2" />
               <span className="text-lg font-semibold text-gray-900">
                 {payment.commercial_number}
               </span>
             </div>
             
-            {/* Status Badge */}
             <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
               payment.is_active 
                 ? 'bg-purple-100 text-purple-800 border border-purple-200' 
@@ -170,40 +162,38 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
             }`}>
               {payment.is_active ? (
                 <>
-                  <Power className="w-3 h-3 mr-1" />
-                  Active
+                  <Power className="w-3 h-3 me-1" />
+                  {t('organization.paymentMethods.active')}
                 </>
               ) : (
                 <>
-                  <PowerOff className="w-3 h-3 mr-1" />
-                  Inactive
+                  <PowerOff className="w-3 h-3 me-1" />
+                  {t('organization.paymentMethods.inactive')}
                 </>
               )}
             </div>
 
-            {/* Verified Badge */}
             {payment.verified_at && (
               <div className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                Verified
+                {t('organization.paymentMethods.verified')}
               </div>
             )}
           </div>
           
-          {/* Payment Details */}
           <div className="space-y-1 mb-3">
             <div className="text-sm text-gray-700">
-              <span className="font-semibold">Wallet:</span>{' '}
+              <span className="font-semibold">{t('organization.paymentMethods.wallet')}:</span>{' '}
               <span className="text-gray-600">{payment.wallet_provider_name}</span>
             </div>
             {payment.account_name && (
               <div className="text-sm text-gray-700">
-                <span className="font-semibold">Account Name:</span>{' '}
+                <span className="font-semibold">{t('organization.paymentMethods.accountName')}:</span>{' '}
                 <span className="text-gray-600">{payment.account_name}</span>
               </div>
             )}
             {payment.verified_at && (
               <div className="text-sm text-gray-700">
-                <span className="font-semibold">Verified:</span>{' '}
+                <span className="font-semibold">{t('organization.paymentMethods.verified')}:</span>{' '}
                 <span className="text-gray-600">
                   {new Date(payment.verified_at).toLocaleDateString()}
                 </span>
@@ -211,9 +201,8 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
             )}
           </div>
           
-          {/* Created Date */}
           <div className="text-xs text-gray-500">
-            Added on {new Date(payment.created_at).toLocaleDateString('en-US', {
+            {t('organization.paymentMethods.addedOn')} {new Date(payment.created_at).toLocaleDateString('en-US', {
               year: 'numeric',
               month: 'short',
               day: 'numeric'
@@ -221,9 +210,7 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
           </div>
         </div>
         
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-2 ml-6">
-          {/* Toggle Active Button */}
+        <div className="flex items-center space-x-2 ms-6">
           <button
             onClick={handleToggleActive}
             disabled={isToggling}
@@ -234,42 +221,39 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
             } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {isToggling ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current mr-2"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current me-2"></div>
             ) : payment.is_active ? (
-              <ToggleRight className="w-4 h-4 mr-1" />
+              <ToggleRight className="w-4 h-4 me-1" />
             ) : (
-              <ToggleLeft className="w-4 h-4 mr-1" />
+              <ToggleLeft className="w-4 h-4 me-1" />
             )}
-            {payment.is_active ? 'Deactivate' : 'Activate'}
+            {payment.is_active ? t('paymentMethods.deactivate') : t('paymentMethods.activate')}
           </button>
           
-          {/* Edit Button */}
           <button
             onClick={() => onEdit(payment, 'nextpay')}
             className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 border border-blue-200 transition-colors"
           >
-            <Edit2 className="w-4 h-4 mr-1" />
-            Edit
+            <Edit2 className="w-4 h-4 me-1" />
+            {t('organization.paymentMethods.edit')}
           </button>
           
-          {/* Delete Button */}
           <button
             onClick={() => onDelete(payment.id, 'nextpay')}
             className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 border border-red-200 transition-colors"
           >
-            <Trash2 className="w-4 h-4 mr-1" />
-            Delete
+            <Trash2 className="w-4 h-4 me-1" />
+            {t('organization.paymentMethods.delete')}
           </button>
         </div>
       </div>
       
-      {/* Inactive Warning */}
       {!payment.is_active && (
         <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
           <div className="flex items-center">
-            <PowerOff className="w-4 h-4 text-yellow-600 mr-2" />
+            <PowerOff className="w-4 h-4 text-yellow-600 me-2" />
             <span className="text-sm text-yellow-800">
-              This payment method is inactive and won't receive donations.
+              {t('organization.paymentMethods.inactiveWarning')}
             </span>
           </div>
         </div>
@@ -279,6 +263,7 @@ const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
 };
 
 const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProviders, paymentType }) => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     wallet_provider_id: '',
     phone_number: '',
@@ -314,15 +299,15 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
 
     try {
       if (!formData.wallet_provider_id) {
-        throw new Error('Please select a wallet provider.');
+        throw new Error(t('paymentMethods.selectWallet'));
       }
 
       if (paymentType === 'manual' && !formData.phone_number) {
-        throw new Error('Phone number is required for manual payments.');
+        throw new Error(t('paymentMethods.phoneNumberRequired'));
       }
 
       if (paymentType === 'nextpay' && !formData.commercial_number) {
-        throw new Error('Commercial number is required for NextPay payments.');
+        throw new Error(t('paymentMethods.commercialNumberRequired'));
       }
 
       await onSave(formData, paymentType);
@@ -340,7 +325,7 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-lg max-w-md w-full p-6">
         <h3 className="text-lg font-semibold mb-4">
-          {editingPayment ? 'Edit' : 'Add'} {paymentType === 'manual' ? 'Manual Payment' : 'NextPay Payment'}
+          {editingPayment ? t('paymentMethods.edit') : t('paymentMethods.add')} {paymentType === 'manual' ? t('paymentMethods.manualPayment') : t('paymentMethods.nextPayPayment')}
         </h3>
         
         {error && (
@@ -350,10 +335,9 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Wallet Provider */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Wallet Provider *
+              {t('organization.paymentMethods.wallet')} *
             </label>
             <select
               value={formData.wallet_provider_id}
@@ -361,7 +345,7 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
-              <option value="">Select a wallet provider</option>
+              <option value="">{t('organization.paymentMethods.selectWallet')}</option>
               {walletProviders.map(wallet => (
                 <option key={wallet.id} value={wallet.id}>
                   {wallet.name}
@@ -370,52 +354,49 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
             </select>
           </div>
 
-          {/* Phone Number for Manual Payments */}
           {paymentType === 'manual' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number *
+                {t('organization.paymentMethods.phoneNumber')} *
               </label>
               <input
                 type="tel"
                 value={formData.phone_number}
                 onChange={(e) => setFormData(prev => ({ ...prev, phone_number: e.target.value }))}
-                placeholder="Enter phone number"
+                placeholder={t('organization.paymentMethods.phonePlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">The phone number donors will send money to</p>
+              <p className="text-xs text-gray-500 mt-1">{t('organization.paymentMethods.phoneHelp')}</p>
             </div>
           )}
 
-          {/* Commercial Number for NextPay */}
           {paymentType === 'nextpay' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Commercial Number *
+                {t('organization.paymentMethods.commercialNumber')} *
               </label>
               <input
                 type="text"
                 value={formData.commercial_number}
                 onChange={(e) => setFormData(prev => ({ ...prev, commercial_number: e.target.value }))}
-                placeholder="Enter commercial number"
+                placeholder={t('organization.paymentMethods.commercialPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-              <p className="text-xs text-gray-500 mt-1">Your commercial account number</p>
+              <p className="text-xs text-gray-500 mt-1">{t('organization.paymentMethods.commercialHelp')}</p>
             </div>
           )}
 
-          {/* Account Name */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
-              Account Name
+              {t('organization.paymentMethods.accountName')}
             </label>
             <input
               type="text"
               value={formData.account_name}
               onChange={(e) => setFormData(prev => ({ ...prev, account_name: e.target.value }))}
-              placeholder="Enter account holder name"
+              placeholder={t('organization.paymentMethods.accountNamePlaceholder')}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -426,7 +407,7 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
               onClick={onClose}
               className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
             >
-              Cancel
+              {t('organization.paymentMethods.cancel')}
             </button>
             <button
               type="submit"
@@ -434,9 +415,9 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 flex items-center"
             >
               {loading && (
-                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white me-2"></div>
               )}
-              {loading ? 'Saving...' : (editingPayment ? 'Update' : 'Add')}
+              {loading ? t('paymentMethods.saving') : (editingPayment ? t('paymentMethods.update') : t('paymentMethods.add'))}
             </button>
           </div>
         </form>
@@ -446,6 +427,7 @@ const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProv
 };
 
 export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
+  const { t } = useTranslation();
   const [manualPayments, setManualPayments] = useState([]);
   const [nextpayPayments, setNextpayPayments] = useState([]);
   const [walletProviders, setWalletProviders] = useState([]);
@@ -478,16 +460,12 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
         organizationApi.fetchWalletProviders().catch(() => [])
       ]);
 
-      console.log('Manual Payments:', manualResponse);
-      console.log('NextPay Payments:', nextpayResponse);
-      console.log('Wallet Providers:', walletsResponse);
-      
       setManualPayments(manualResponse || []);
       setNextpayPayments(nextpayResponse || []);
       setWalletProviders(walletsResponse || []);
     } catch (err) {
       console.error('Error loading payment data:', err);
-      setError(err.message || 'Failed to load payment data');
+      setError(err.message || t('paymentMethods.loadError'));
     } finally {
       setLoading(false);
     }
@@ -529,7 +507,7 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
   };
 
   const handleDeletePayment = async (paymentId, paymentType) => {
-    if (window.confirm('Are you sure you want to delete this payment method?')) {
+    if (window.confirm(t('paymentMethods.deleteConfirm'))) {
       try {
         if (paymentType === 'manual') {
           await organizationApi.deleteManualPayment(paymentId);
@@ -561,15 +539,15 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
   if (loading) return <Loading />;
 
   const totalPayments = manualPayments.length + nextpayPayments.length;
-  const maxPayments = 5; // Total across both types
+  const maxPayments = 5;
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-bold text-gray-900">Payment Methods</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('organization.paymentMethods.title')}</h2>
           <p className="text-sm text-gray-600 mt-1">
-            Manage your organization's payment methods for receiving donations
+            {t('organization.paymentMethods.description')}
           </p>
         </div>
         
@@ -579,15 +557,15 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
               onClick={() => handleAddPayment('manual')}
               className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              <Phone className="w-4 h-4 mr-2" />
-              Add Manual Payment
+              <Phone className="w-4 h-4 me-2" />
+              {t('organization.paymentMethods.addManual')}
             </button>
             <button
               onClick={() => handleAddPayment('nextpay')}
               className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
-              <Building2 className="w-4 h-4 mr-2" />
-              Add NextPay
+              <Building2 className="w-4 h-4 me-2" />
+              {t('organization.paymentMethods.addNextPay')}
             </button>
           </div>
         )}
@@ -599,7 +577,6 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
         </div>
       )}
 
-      {/* Payment Method Tabs */}
       <div className="flex space-x-2 mb-6 border-b border-gray-200">
         <button
           onClick={() => setActiveTab('manual')}
@@ -609,8 +586,8 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
               : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
-          <Phone className="w-4 h-4 inline mr-2" />
-          Manual Payments ({manualPayments.length})
+          <Phone className="w-4 h-4 inline me-2" />
+          {t('organization.paymentMethods.manualPayments')} ({manualPayments.length})
         </button>
         <button
           onClick={() => setActiveTab('nextpay')}
@@ -620,12 +597,11 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
               : 'border-transparent text-gray-600 hover:text-gray-900'
           }`}
         >
-          <Building2 className="w-4 h-4 inline mr-2" />
-          NextPay ({nextpayPayments.length})
+          <Building2 className="w-4 h-4 inline me-2" />
+          {t('organization.paymentMethods.nextPay')} ({nextpayPayments.length})
         </button>
       </div>
 
-      {/* Manual Payments Tab */}
       {activeTab === 'manual' && (
         <div>
           {manualPayments.length === 0 ? (
@@ -633,16 +609,18 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
               <div className="text-gray-400 mb-4">
                 <Phone className="w-16 h-16 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No Manual Payments</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {t('organization.paymentMethods.noManual')}
+              </h3>
               <p className="text-gray-600 mb-4">
-                Add manual payment methods where donors send money and provide proof
+                {t('organization.paymentMethods.noManualDescription')}
               </p>
               <button
                 onClick={() => handleAddPayment('manual')}
                 className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Add Manual Payment
+                <Plus className="w-4 h-4 me-2" />
+                {t('organization.paymentMethods.addManual')}
               </button>
             </div>
           ) : (
@@ -661,7 +639,6 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
         </div>
       )}
 
-      {/* NextPay Payments Tab */}
       {activeTab === 'nextpay' && (
         <div>
           {nextpayPayments.length === 0 ? (
@@ -669,16 +646,18 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
               <div className="text-gray-400 mb-4">
                 <Building2 className="w-16 h-16 mx-auto" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No NextPay Payments</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {t('organization.paymentMethods.noNextPay')}
+              </h3>
               <p className="text-gray-600 mb-4">
-                Add NextPay payment methods for automatic instant payments
+                {t('organization.paymentMethods.noNextPayDescription')}
               </p>
               <button
                 onClick={() => handleAddPayment('nextpay')}
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
               >
-                <Plus className="w-4 h-4 mr-2" />
-                Add NextPay Payment
+                <Plus className="w-4 h-4 me-2" />
+                {t('organization.paymentMethods.addNextPay')}
               </button>
             </div>
           ) : (
@@ -697,10 +676,9 @@ export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
         </div>
       )}
 
-      {/* Max Payments Warning */}
       {totalPayments >= maxPayments && (
         <div className="mt-4 text-center py-4 text-sm text-gray-500">
-          Maximum of {maxPayments} payment methods allowed (across all types)
+          {t('organization.paymentMethods.maxReached', { maxPayments })}
         </div>
       )}
 

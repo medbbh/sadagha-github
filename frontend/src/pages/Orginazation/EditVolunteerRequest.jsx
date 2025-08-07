@@ -14,11 +14,14 @@ import {
   Save
 } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Loading from '../../components/common/Loading';
 import volunteerRequestApi from '../../api/endpoints/VolunteerRequestAPI';
 import { myCampaigns } from '../../api/endpoints/CampaignAPI';
 
 export default function EditVolunteerRequest() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const { requestId } = useParams();
   const navigate = useNavigate();
   
@@ -144,7 +147,7 @@ export default function EditVolunteerRequest() {
 
   const addLocation = (type) => {
     if (!newLocation.city || !newLocation.state || !newLocation.country) {
-      setError('Please fill in all location fields (City, State, Country)');
+      setError(t('organization.editVolunteerRequest.locationFieldsRequired'));
       return;
     }
 
@@ -172,15 +175,15 @@ export default function EditVolunteerRequest() {
   const validateForm = () => {
     const errors = [];
 
-    if (!formData.title.trim()) errors.push('Title is required');
-    if (!formData.description.trim()) errors.push('Description is required');
-    if (!formData.event_date) errors.push('Event date is required');
-    if (!formData.duration_hours || formData.duration_hours <= 0) errors.push('Duration must be greater than 0');
-    if (!formData.volunteers_needed || formData.volunteers_needed <= 0) errors.push('Number of volunteers must be greater than 0');
+    if (!formData.title.trim()) errors.push(t('organization.editVolunteerRequest.validation.titleRequired'));
+    if (!formData.description.trim()) errors.push(t('organization.editVolunteerRequest.validation.descriptionRequired'));
+    if (!formData.event_date) errors.push(t('organization.editVolunteerRequest.validation.eventDateRequired'));
+    if (!formData.duration_hours || formData.duration_hours <= 0) errors.push(t('organization.editVolunteerRequest.validation.durationInvalid'));
+    if (!formData.volunteers_needed || formData.volunteers_needed <= 0) errors.push(t('organization.editVolunteerRequest.validation.volunteersInvalid'));
 
     // Validate age range
     if (formData.min_age && formData.max_age && parseInt(formData.min_age) > parseInt(formData.max_age)) {
-      errors.push('Minimum age cannot be greater than maximum age');
+      errors.push(t('organization.editVolunteerRequest.validation.ageRangeInvalid'));
     }
 
     // Validate event dates
@@ -188,11 +191,11 @@ export default function EditVolunteerRequest() {
     const eventEndDate = formData.event_end_date ? new Date(formData.event_end_date) : null;
     
     if (eventDate <= new Date()) {
-      errors.push('Event date must be in the future');
+      errors.push(t('organization.editVolunteerRequest.validation.eventDatePast'));
     }
 
     if (eventEndDate && eventEndDate <= eventDate) {
-      errors.push('Event end date must be after event start date');
+      errors.push(t('organization.editVolunteerRequest.validation.eventEndDateInvalid'));
     }
 
     return errors;
@@ -255,28 +258,28 @@ export default function EditVolunteerRequest() {
           <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Request Updated!</h3>
-          <p className="text-gray-600">Redirecting to request details...</p>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t('organization.editVolunteerRequest.requestUpdated')}</h3>
+          <p className="text-gray-600">{t('organization.editVolunteerRequest.redirecting')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6 p-4 sm:p-0">
+    <div className={`space-y-6 p-4 sm:p-0 ${isRTL ? 'rtl' : 'ltr'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Header */}
       <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6">
-        <div className="flex items-center space-x-4 mb-4">
+        <div className={`flex items-center space-x-4 mb-4 ${isRTL ? 'space-x-reverse' : ''}`}>
           <button
             onClick={() => navigate(`/organization/volunteers/requests/${requestId}`)}
             className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className={`w-5 h-5 ${isRTL ? 'transform rotate-180' : ''}`} />
           </button>
           <div>
-            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">Edit Volunteer Request</h1>
+            <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">{t('organization.editVolunteerRequest.title')}</h1>
             <p className="text-gray-600 mt-1 text-sm sm:text-base">
-              Update your volunteer opportunity details
+              {t('organization.editVolunteerRequest.subtitle')}
             </p>
           </div>
         </div>
@@ -300,18 +303,18 @@ export default function EditVolunteerRequest() {
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Basic Information */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Basic Information</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('organization.editVolunteerRequest.basicInformation')}</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Title *
+                {t('organization.editVolunteerRequest.titleLabel')} *
               </label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => handleInputChange('title', e.target.value)}
-                placeholder="e.g., Beach Cleanup Volunteers Needed"
+                placeholder={t('organization.editVolunteerRequest.titlePlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 required
               />
@@ -319,14 +322,14 @@ export default function EditVolunteerRequest() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Campaign (Optional)
+                {t('organization.editVolunteerRequest.campaignLabel')}
               </label>
               <select
                 value={formData.campaign}
                 onChange={(e) => handleInputChange('campaign', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="">Select a campaign</option>
+                <option value="">{t('organization.editVolunteerRequest.selectCampaign')}</option>
                 {campaigns.map(campaign => (
                   <option key={campaign.id} value={campaign.id}>
                     {campaign.name}
@@ -338,12 +341,12 @@ export default function EditVolunteerRequest() {
 
           <div className="mt-6">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Description *
+              {t('organization.editVolunteerRequest.descriptionLabel')} *
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
-              placeholder="Describe the volunteer opportunity, what volunteers will do, and why it's important..."
+              placeholder={t('organization.editVolunteerRequest.descriptionPlaceholder')}
               rows={4}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
               required
@@ -353,33 +356,33 @@ export default function EditVolunteerRequest() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Priority Level
+                {t('organization.editVolunteerRequest.priorityLevel')}
               </label>
               <select
                 value={formData.priority}
                 onChange={(e) => handleInputChange('priority', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="low">Low</option>
-                <option value="medium">Medium</option>
-                <option value="high">High</option>
-                <option value="urgent">Urgent</option>
+                <option value="low">{t('organization.editVolunteerRequest.priority.low')}</option>
+                <option value="medium">{t('organization.editVolunteerRequest.priority.medium')}</option>
+                <option value="high">{t('organization.editVolunteerRequest.priority.high')}</option>
+                <option value="urgent">{t('organization.editVolunteerRequest.priority.urgent')}</option>
               </select>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Status
+                {t('organization.editVolunteerRequest.status')}
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => handleInputChange('status', e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               >
-                <option value="open">Open</option>
-                <option value="in_progress">In Progress</option>
-                <option value="completed">Completed</option>
-                <option value="cancelled">Cancelled</option>
+                <option value="open">{t('organization.editVolunteerRequest.statusOptions.open')}</option>
+                <option value="in_progress">{t('organization.editVolunteerRequest.statusOptions.inProgress')}</option>
+                <option value="completed">{t('organization.editVolunteerRequest.statusOptions.completed')}</option>
+                <option value="cancelled">{t('organization.editVolunteerRequest.statusOptions.cancelled')}</option>
               </select>
             </div>
           </div>
@@ -387,12 +390,12 @@ export default function EditVolunteerRequest() {
 
         {/* Event Details */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Event Details</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('organization.editVolunteerRequest.eventDetails')}</h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Event Start Date & Time *
+                {t('organization.editVolunteerRequest.eventStartDate')} *
               </label>
               <input
                 type="datetime-local"
@@ -405,7 +408,7 @@ export default function EditVolunteerRequest() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Event End Date & Time (Optional)
+                {t('organization.editVolunteerRequest.eventEndDate')}
               </label>
               <input
                 type="datetime-local"
@@ -417,7 +420,7 @@ export default function EditVolunteerRequest() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duration (Hours) *
+                {t('organization.editVolunteerRequest.duration')} *
               </label>
               <input
                 type="number"
@@ -433,7 +436,7 @@ export default function EditVolunteerRequest() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Volunteers Needed *
+                {t('organization.editVolunteerRequest.volunteersNeeded')} *
               </label>
               <input
                 type="number"
@@ -451,33 +454,33 @@ export default function EditVolunteerRequest() {
 
         {/* Required Criteria */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Required Criteria</h2>
-          <p className="text-gray-600 text-sm mb-4">Volunteers must meet ALL of these requirements to be considered</p>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">{t('organization.editVolunteerRequest.requiredCriteria')}</h2>
+          <p className="text-gray-600 text-sm mb-4">{t('organization.editVolunteerRequest.requiredCriteriaDescription')}</p>
           
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Required Skills (comma-separated)
+                  {t('organization.editVolunteerRequest.requiredSkills')}
                 </label>
                 <input
                   type="text"
                   value={formData.required_skills}
                   onChange={(e) => handleInputChange('required_skills', e.target.value)}
-                  placeholder="e.g., teamwork, physical fitness, leadership"
+                  placeholder={t('organization.editVolunteerRequest.requiredSkillsPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Required Languages (comma-separated)
+                  {t('organization.editVolunteerRequest.requiredLanguages')}
                 </label>
                 <input
                   type="text"
                   value={formData.required_languages}
                   onChange={(e) => handleInputChange('required_languages', e.target.value)}
-                  placeholder="e.g., English, Spanish"
+                  placeholder={t('organization.editVolunteerRequest.requiredLanguagesPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -486,7 +489,7 @@ export default function EditVolunteerRequest() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Minimum Age
+                  {t('organization.editVolunteerRequest.minimumAge')}
                 </label>
                 <input
                   type="number"
@@ -501,7 +504,7 @@ export default function EditVolunteerRequest() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Maximum Age
+                  {t('organization.editVolunteerRequest.maximumAge')}
                 </label>
                 <input
                   type="number"
@@ -517,9 +520,9 @@ export default function EditVolunteerRequest() {
 
             {/* Required Locations */}
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className={`flex items-center justify-between mb-3 `}>
                 <label className="block text-sm font-medium text-gray-700">
-                  Required Locations
+                  {t('organization.editVolunteerRequest.requiredLocations')}
                 </label>
                 <button
                   type="button"
@@ -527,17 +530,17 @@ export default function EditVolunteerRequest() {
                     setLocationModalType('required');
                     setShowLocationModal(true);
                   }}
-                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1"
+                  className={`text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1 ${isRTL ? 'space-x-reverse' : ''}`}
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Location</span>
+                  <span>{t('organization.editVolunteerRequest.addLocation')}</span>
                 </button>
               </div>
               
               <div className="space-y-2">
                 {formData.required_locations_data.map((location, index) => (
-                  <div key={index} className="flex items-center justify-between bg-red-50 border border-red-200 rounded-lg p-3">
-                    <div className="flex items-center space-x-2">
+                  <div key={index} className={`flex items-center justify-between bg-red-50 border border-red-200 rounded-lg p-3 `}>
+                    <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                       <MapPin className="w-4 h-4 text-red-600" />
                       <span className="text-sm text-red-800">
                         {location.city}, {location.state}, {location.country}
@@ -559,33 +562,33 @@ export default function EditVolunteerRequest() {
 
         {/* Preferred Criteria */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Preferred Criteria</h2>
-          <p className="text-gray-600 text-sm mb-4">Nice to have - volunteers with these will be ranked higher</p>
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">{t('organization.editVolunteerRequest.preferredCriteria')}</h2>
+          <p className="text-gray-600 text-sm mb-4">{t('organization.editVolunteerRequest.preferredCriteriaDescription')}</p>
           
           <div className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Preferred Skills (comma-separated)
+                  {t('organization.editVolunteerRequest.preferredSkills')}
                 </label>
                 <input
                   type="text"
                   value={formData.preferred_skills}
                   onChange={(e) => handleInputChange('preferred_skills', e.target.value)}
-                  placeholder="e.g., environmental awareness, communication"
+                  placeholder={t('organization.editVolunteerRequest.preferredSkillsPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Preferred Languages (comma-separated)
+                  {t('organization.editVolunteerRequest.preferredLanguages')}
                 </label>
                 <input
                   type="text"
                   value={formData.preferred_languages}
                   onChange={(e) => handleInputChange('preferred_languages', e.target.value)}
-                  placeholder="e.g., French, Arabic"
+                  placeholder={t('organization.editVolunteerRequest.preferredLanguagesPlaceholder')}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
               </div>
@@ -593,22 +596,22 @@ export default function EditVolunteerRequest() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Preferred Interests (comma-separated)
+                {t('organization.editVolunteerRequest.preferredInterests')}
               </label>
               <input
                 type="text"
                 value={formData.preferred_interests}
                 onChange={(e) => handleInputChange('preferred_interests', e.target.value)}
-                placeholder="e.g., environment, education, community service"
+                placeholder={t('organization.editVolunteerRequest.preferredInterestsPlaceholder')}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
             {/* Preferred Locations */}
             <div>
-              <div className="flex items-center justify-between mb-3">
+              <div className={`flex items-center justify-between mb-3 `}>
                 <label className="block text-sm font-medium text-gray-700">
-                  Preferred Locations
+                  {t('organization.editVolunteerRequest.preferredLocations')}
                 </label>
                 <button
                   type="button"
@@ -616,17 +619,17 @@ export default function EditVolunteerRequest() {
                     setLocationModalType('preferred');
                     setShowLocationModal(true);
                   }}
-                  className="text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1"
+                  className={`text-sm text-blue-600 hover:text-blue-800 flex items-center space-x-1 ${isRTL ? 'space-x-reverse' : ''}`}
                 >
                   <Plus className="w-4 h-4" />
-                  <span>Add Location</span>
+                  <span>{t('organization.editVolunteerRequest.addLocation')}</span>
                 </button>
               </div>
               
               <div className="space-y-2">
                 {formData.preferred_locations_data.map((location, index) => (
-                  <div key={index} className="flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <div className="flex items-center space-x-2">
+                  <div key={index} className={`flex items-center justify-between bg-blue-50 border border-blue-200 rounded-lg p-3 `}>
+                    <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
                       <MapPin className="w-4 h-4 text-blue-600" />
                       <span className="text-sm text-blue-800">
                         {location.city}, {location.state}, {location.country}
@@ -648,16 +651,16 @@ export default function EditVolunteerRequest() {
 
         {/* Special Requirements */}
         <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Additional Information</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('organization.editVolunteerRequest.additionalInformation')}</h2>
           
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Special Requirements or Notes
+              {t('organization.editVolunteerRequest.specialRequirements')}
             </label>
             <textarea
               value={formData.special_requirements}
               onChange={(e) => handleInputChange('special_requirements', e.target.value)}
-              placeholder="Any additional requirements, what to bring, meeting location, etc..."
+              placeholder={t('organization.editVolunteerRequest.specialRequirementsPlaceholder')}
               rows={3}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
             />
@@ -665,15 +668,7 @@ export default function EditVolunteerRequest() {
         </div>
 
         {/* Submit Buttons */}
-        <div className="flex items-center justify-end space-x-4 bg-white rounded-lg border border-gray-200 p-6">
-          <button
-            type="button"
-            onClick={() => navigate(`/organization/volunteers/requests/${requestId}`)}
-            disabled={saving}
-            className="px-6 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
-          >
-            Cancel
-          </button>
+        <div className={`flex items-center justify-end space-x-4 bg-white rounded-lg border border-gray-200 p-6 ${isRTL ? 'space-x-reverse' : ''}`}>
           <button
             type="submit"
             disabled={saving}
@@ -682,12 +677,12 @@ export default function EditVolunteerRequest() {
             {saving ? (
               <>
                 <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Updating...</span>
+                <span>{t('organization.editVolunteerRequest.updating')}</span>
               </>
             ) : (
               <>
                 <Save className="w-4 h-4" />
-                <span>Update Request</span>
+                <span>{t('organization.editVolunteerRequest.updateRequest')}</span>
               </>
             )}
           </button>
@@ -699,9 +694,12 @@ export default function EditVolunteerRequest() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-md w-full">
             <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className={`flex items-center justify-between mb-4 `}>
                 <h3 className="text-lg font-semibold text-gray-900">
-                  Add {locationModalType === 'required' ? 'Required' : 'Preferred'} Location
+                  {locationModalType === 'required' 
+                    ? t('organization.editVolunteerRequest.addRequiredLocation') 
+                    : t('organization.editVolunteerRequest.addPreferredLocation')
+                  }
                 </h3>
                 <button
                   onClick={() => {
@@ -716,40 +714,40 @@ export default function EditVolunteerRequest() {
 
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('organization.editVolunteerRequest.city')} *</label>
                   <input
                     type="text"
                     value={newLocation.city}
                     onChange={(e) => setNewLocation(prev => ({ ...prev, city: e.target.value }))}
-                    placeholder="e.g., Miami"
+                    placeholder={t('organization.editVolunteerRequest.cityPlaceholder')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">State/Province *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('organization.editVolunteerRequest.state')} *</label>
                   <input
                     type="text"
                     value={newLocation.state}
                     onChange={(e) => setNewLocation(prev => ({ ...prev, state: e.target.value }))}
-                    placeholder="e.g., FL"
+                    placeholder={t('organization.editVolunteerRequest.statePlaceholder')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">{t('organization.editVolunteerRequest.country')} *</label>
                   <input
                     type="text"
                     value={newLocation.country}
                     onChange={(e) => setNewLocation(prev => ({ ...prev, country: e.target.value }))}
-                    placeholder="e.g., USA"
+                    placeholder={t('organization.editVolunteerRequest.countryPlaceholder')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
               </div>
 
-              <div className="flex items-center justify-end space-x-3 mt-6">
+              <div className={`flex items-center justify-end space-x-3 mt-6 ${isRTL ? 'space-x-reverse' : ''}`}>
                 <button
                   onClick={() => {
                     setShowLocationModal(false);
@@ -757,13 +755,13 @@ export default function EditVolunteerRequest() {
                   }}
                   className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
-                  Cancel
+                  {t('organization.editVolunteerRequest.cancel')}
                 </button>
                 <button
                   onClick={() => addLocation(locationModalType)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  Add Location
+                  {t('organization.editVolunteerRequest.addLocation')}
                 </button>
               </div>
             </div>

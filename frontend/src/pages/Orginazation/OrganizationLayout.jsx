@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { 
   Home, 
   FileText, 
@@ -15,6 +16,9 @@ import OrgFooter from "../../components/layout/OrgFooter";
 import OrgSidebar from "../../components/layout/OrgSidebar";
 
 export default function OrganizationLayout() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,7 +41,7 @@ export default function OrganizationLayout() {
         navigate('/login');
       }
     } catch (err) {
-      setError('An unexpected error occurred during logout');
+      setError(t('organization.layout.logoutError'));
       console.error('Logout error:', err);
     } finally {
       setLoading(false);
@@ -46,36 +50,40 @@ export default function OrganizationLayout() {
 
   const navigationItems = [
     {
-      name: 'Dashboard',
+      name: t('organization.navigation.dashboard'),
       href: '/organization',
       icon: Home,
       current: location.pathname === '/organization'
     },
     {
-      name: 'Campaigns',
+      name: t('organization.navigation.campaigns'),
       href: '/organization/campaigns',
       icon: FileText,
       current: location.pathname.startsWith('/organization/campaigns')
     },
     {
-      name: 'Analytics',
+      name: t('organization.navigation.analytics'),
       href: '/organization/analytics',
       icon: BarChart3,
       current: location.pathname.startsWith('/organization/analytics')
     },
     {
-      name: 'Volunteers',
+      name: t('organization.navigation.volunteers'),
       href: '/organization/volunteers',
       icon: Users,
       current: location.pathname.startsWith('/organization/volunteers')
     },
   ];
 
-  const currentPageName = navigationItems.find(item => item.current)?.name || 'Dashboard';
-  const mainMargin = sidebarCollapsed ? 'lg:ml-24' : 'lg:ml-64';
+  const currentPageName = navigationItems.find(item => item.current)?.name || t('organization.navigation.dashboard');
+  
+  // Adjust margins for RTL
+  const mainMargin = isRTL 
+    ? (sidebarCollapsed ? 'lg:mr-24' : 'lg:mr-64')
+    : (sidebarCollapsed ? 'lg:ml-24' : 'lg:ml-64');
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className={`min-h-screen bg-slate-50 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Mobile sidebar backdrop */}
       {sidebarOpen && (
         <div 
@@ -94,6 +102,7 @@ export default function OrganizationLayout() {
         user={user}
         onLogout={handleLogout}
         loading={loading}
+        isRTL={isRTL}
       />
 
       {/* Main content wrapper */}
@@ -102,17 +111,18 @@ export default function OrganizationLayout() {
         <OrgNavbar
           currentPageName={currentPageName}
           onMenuClick={() => setSidebarOpen(true)}
+          isRTL={isRTL}
         />
 
         {/* Error display */}
         {error && (
-          <div className="flex-shrink-0 mx-4 mt-4 sm:mx-6 lg:mx-8">
+          <div className={`flex-shrink-0 mx-4 mt-4 sm:mx-6 lg:mx-8 ${isRTL ? 'text-right' : 'text-left'}`}>
             <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
               <div className="flex justify-between items-center">
                 <span className="text-sm">{error}</span>
                 <button
                   onClick={() => setError('')}
-                  className="text-red-600 hover:text-red-800 ml-4"
+                  className={`text-red-600 hover:text-red-800 ${isRTL ? 'mr-4' : 'ml-4'}`}
                 >
                   ×
                 </button>
@@ -136,8 +146,9 @@ export default function OrganizationLayout() {
 
         {/* Footer Component */}
         <OrgFooter 
-          companyName="Fundraising Platform"
+          companyName={t('organization.layout.companyName')}
           year={2024}
+          isRTL={isRTL}
         />
       </div>
     </div>

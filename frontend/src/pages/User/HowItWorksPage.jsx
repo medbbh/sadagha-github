@@ -162,7 +162,7 @@ const HowItWorksPage = () => {
             
             return (
               <div key={index} className="bg-white rounded-2xl border border-gray-200 p-8 hover:shadow-lg transition-all duration-200">
-                <div className={`flex items-start gap-4 ${isRTL ? '' : ''}`}>
+                <div className={`flex items-start gap-4 `}>
                   <div className="flex-shrink-0">
                     <div className={`w-16 h-16 rounded-2xl flex items-center justify-center ${colorClasses[content.color]} relative`}>
                       <Icon className="w-8 h-8" />
@@ -185,7 +185,7 @@ const HowItWorksPage = () => {
         {/* Process Flow Visualization */}
         <div className="bg-gray-50 rounded-2xl p-8 mt-12">
           <h4 className="text-xl font-semibold text-gray-900 mb-6 text-center">{t('howItWorks.simpleProcessFlow')}</h4>
-          <div className={`flex items-center justify-between ${isRTL ? '' : ''}`}>
+          <div className={`flex items-center justify-between `}>
             {content.steps.map((step, index) => (
               <React.Fragment key={index}>
                 <div className="flex flex-col items-center text-center max-w-32">
@@ -253,7 +253,7 @@ const HowItWorksPage = () => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold transition-all duration-200 ${isRTL ? '' : ''} ${
+                  className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold transition-all duration-200  ${
                     isActive
                       ? 'bg-blue-600 text-white shadow-xl scale-105'
                       : 'bg-white text-gray-600 hover:bg-gray-50 border-2 border-gray-200 hover:border-blue-200 hover:scale-102'

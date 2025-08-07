@@ -1,5 +1,4 @@
 {
-
   "auth": {
     "common": {
       "emailAddress": "Email address",
@@ -70,333 +69,321 @@
       "updateError": "An error occurred while updating your password."
     }
   },
-
-    "navbar": {
-        "logo": "SADA9A",
-        "browse":"Browse",
-        "explore": "Explore",
-        "categories": "Categories",
-        "volunteer": "Volunteer",
-        "organizations":"Organizations",
-        "howItWorks": "How It Works",
-        "search": "Search...",
-        "favorites": "My Favorites",
-        "profile": "My Profile",
-        "login": "Login",
-        "logout": "Logout",
-        "startCampaign": "Start Campaign",
-        "noFavorites": "No favorite campaigns yet",
-        "noFavoritesSubtext": "Start exploring and add campaigns to your favorites!",
-        "exploreCampaigns": "Explore Campaigns",
-        "loadMore": "Load More",
-        "remaining": "remaining",
-        "loading": "Loading...",
-        "funded": "funded"
-    },
-
-    "hero": {
-      "title": {
-        "fund": "Support",
-        "dreams": "Those in Need", 
-        "support": "Help",
-        "innovation": "Your Community"
-      },
-    "subtitle": "A bridge of giving that connects generous hearts with those in need through verified and transparent charity campaigns.",      
+  "navbar": {
+    "logo": "SADA9A",
+    "browse": "Browse",
+    "explore": "Explore",
+    "categories": "Categories",
+    "volunteer": "Volunteer",
+    "organizations": "Organizations",
+    "howItWorks": "How It Works",
+    "search": "Search...",
+    "favorites": "My Favorites",
+    "profile": "My Profile",
+    "login": "Login",
+    "logout": "Logout",
+    "startCampaign": "Start Campaign",
+    "noFavorites": "No favorite campaigns yet",
+    "noFavoritesSubtext": "Start exploring and add campaigns to your favorites!",
     "exploreCampaigns": "Explore Campaigns",
-      "startCampaign": "Create Campaign",
-      "featured": "Urgent Needs",
-      "featuredTitle": "Making a Difference Through Sadaqah",
-      "featuredSubtitle": "See how your donations are transforming lives in our community",
-      "imageAlt": "Charity and Community Support"
+    "loadMore": "Load More",
+    "remaining": "remaining",
+    "loading": "Loading...",
+    "funded": "funded"
+  },
+  "hero": {
+    "title": {
+      "fund": "Support",
+      "dreams": "Those in Need",
+      "support": "Help",
+      "innovation": "Your Community"
     },
-
-    "categories_section": {
-        "title": "Explore Campaigns Categories",
-        "subtitle": "Discover campaigns by the category you care about",
-        "viewAll": "View All",
-        "campaigns": "Campaigns",
-        "campaign": "Campaign",
-        "loadingCategories": "Loading categories...",
-        "errorLoading": "Error loading categories:",
-        "noCategories": "No categories available at the moment.",
-        "unnamedCategory": "Unnamed Category"
+    "subtitle": "A bridge of giving that connects generous hearts with those in need through verified and transparent charity campaigns.",
+    "exploreCampaigns": "Explore Campaigns",
+    "startCampaign": "Create Campaign",
+    "featured": "Urgent Needs",
+    "featuredTitle": "Making a Difference Through Sadaqah",
+    "featuredSubtitle": "See how your donations are transforming lives in our community",
+    "imageAlt": "Charity and Community Support"
+  },
+  "categories_section": {
+    "title": "Explore Campaigns Categories",
+    "subtitle": "Discover campaigns by the category you care about",
+    "viewAll": "View All",
+    "campaigns": "Campaigns",
+    "campaign": "Campaign",
+    "loadingCategories": "Loading categories...",
+    "errorLoading": "Error loading categories:",
+    "noCategories": "No categories available at the moment.",
+    "unnamedCategory": "Unnamed Category"
+  },
+  "featured": {
+    "title": "Featured Campaigns",
+    "subtitle": "Campaigns making a big impact right now",
+    "loading": "Loading featured campaigns...",
+    "noFeatured": "No featured campaigns available at the moment",
+    "featured": "Featured",
+    "untitledCampaign": "Untitled Campaign",
+    "raised": "raised",
+    "donors": "donors",
+    "donor": "donor",
+    "viewCampaign": "View Campaign",
+    "previousSlide": "Previous slide",
+    "nextSlide": "Next slide",
+    "goToSlide": "Go to slide"
+  },
+  "cta": {
+    "title": "Ready to Make a Difference?",
+    "subtitle": "Join thousands of changemakers and innovators who are turning their ideas into reality through the power of community funding.",
+    "startCampaign": "Start Your Campaign",
+    "exploreCampaigns": "Explore Campaigns"
+  },
+  "explore": {
+    "title": "Explore Campaigns",
+    "subtitle": "Discover amazing projects and causes that need your support. Every contribution makes a difference.",
+    "searchPlaceholder": "Search campaigns...",
+    "filters": "Filters",
+    "sortOptions": {
+      "newest": "Newest First",
+      "oldest": "Oldest First",
+      "mostFunded": "Most Funded",
+      "mostDonors": "Most Donors"
     },
-
-    "featured": {
-        "title": "Featured Campaigns",
-        "subtitle": "Campaigns making a big impact right now",
-        "loading": "Loading featured campaigns...",
-        "noFeatured": "No featured campaigns available at the moment",
-        "featured": "Featured",
-        "untitledCampaign": "Untitled Campaign",
-        "raised": "raised",
-        "donors": "donors",
-        "donor": "donor",
-        "viewCampaign": "View Campaign",
-        "previousSlide": "Previous slide",
-        "nextSlide": "Next slide",
-        "goToSlide": "Go to slide"
+    "allCategories": "All Categories",
+    "loading": "Loading...",
+    "showing": "Showing",
+    "campaigns": "campaigns",
+    "campaign": "campaign",
+    "in": "in",
+    "clearFilters": "Clear filters",
+    "clearAllFilters": "Clear all filters",
+    "noCampaignsFound": "No campaigns found",
+    "noCampaignsSubtext": "Try adjusting your search or filter criteria to find more campaigns.",
+    "errorLoadingCampaigns": "Error loading campaigns",
+    "tryAgain": "Try Again"
+  },
+  "campaignCard": {
+    "featured": "Featured",
+    "general": "General",
+    "funded": "funded",
+    "donors": "donors",
+    "donor": "donor",
+    "raised": "raised",
+    "of": "of",
+    "goal": "Goal:",
+    "created": "Created",
+    "viewDetails": "View Details",
+    "watchLive": "Watch Live",
+    "loading": "Loading..."
+  },
+  "categoryFilter": {
+    "categories": "Categories",
+    "clearCategoryFilter": "Clear Category Filter"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "of": "of"
+  },
+  "campaignDetail": {
+    "created": "Created",
+    "raised": "Raised:",
+    "goal": "Goal:",
+    "funded": "funded",
+    "donors": "donors",
+    "ourStory": "Our Story",
+    "noDescription": "No description provided yet.",
+    "target": "Target",
+    "errorLoadingCampaign": "Error Loading Campaign",
+    "tryAgain": "Try Again",
+    "campaignNotFound": "Campaign not found",
+    "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
+    "noImagesAvailable": "No images available",
+    "aboutTheOrganization": "About the Organization",
+    "contactNumber": "Contact Number",
+    "address": "Address",
+    "website": "Website",
+    "memberSince": "Member Since",
+    "verifiedOrganization": "Verified Organization"
+  },
+  "facebookLive": {
+    "liveStream": "Live Stream",
+    "refreshStatus": "Refresh status",
+    "openOnFacebook": "Open on Facebook",
+    "campaignProgress": "Campaign Progress",
+    "of": "of",
+    "goalText": "goal",
+    "liveStreamEnded": "Live Stream Ended",
+    "liveStreamEndedDescription": "This live stream has ended. Check back later for future streams!",
+    "viewOnFacebook": "View on Facebook",
+    "streamNotActive": "Stream Not Active",
+    "streamNotActiveDescription": "The live stream is not currently active. Follow the campaign for updates!",
+    "checkStatus": "Check Status",
+    "watching": "watching",
+    "liveNow": "Live now",
+    "lastUpdated": "Last updated:",
+    "facebookLiveStream": "Facebook Live Stream",
+    "connected": "Connected",
+    "refreshPage": "Refresh page",
+    "embedNotAvailable": "Embed Not Available",
+    "embedNotAvailableDescription": "The video embed is not available. You can still watch on Facebook.",
+    "clickToWatch": "Click below to watch the live stream on Facebook.",
+    "watchOnFacebook": "Watch on Facebook",
+    "facebookLiveConnected": "Facebook Live Connected",
+    "videoId": "Video ID:",
+    "streamAvailable": "Stream available",
+    "externalLinkOnly": "External link only",
+    "facebookLiveIntegrationActive": "Facebook Live Integration Active",
+    "integrationDescription": "This campaign is connected to a Facebook Live stream.",
+    "streamWillAppear": "The stream will appear above when live.",
+    "clickOpenFacebook": "Click \"Open on Facebook\" to watch.",
+    "live": "LIVE"
+  },
+  "donationForm": {
+    "supportThisCampaign": "Support This Campaign",
+    "makeDifference": "Make a difference with your contribution",
+    "thankyouDonation": "Thank you for your donation! 🎉",
+    "redirectingSuccess": "Redirecting to success page...",
+    "choosePaymentMethod": "Choose Payment Method",
+    "browserBlockedPopup": "Your browser blocked the payment popup. Please choose how you'd like to proceed:",
+    "tryPopupAgain": "Try Popup Again",
+    "openInNewTab": "Open in New Tab",
+    "enablePopupsTip": "💡 Tip: You can enable popups for this site in your browser settings for a smoother experience.",
+    "raised": "raised",
+    "of": "of",
+    "goal": "goal",
+    "funded": "funded",
+    "supporters": "supporters",
+    "toGo": "to go",
+    "chooseDonationAmount": "Choose your donation amount",
+    "customAmount": "Custom Amount",
+    "enterAmount": "Enter amount",
+    "donorInformation": "Donor Information",
+    "fullName": "Full Name",
+    "yourFullName": "Your full name",
+    "messageOfSupport": "Message of Support",
+    "shareMessage": "Share a message of encouragement...",
+    "makeAnonymous": "Make this donation anonymous",
+    "processing": "Processing...",
+    "donate": "Donate",
+    "securePaymentInfo": "Secure Payment Information",
+    "sslEncryption": "256-bit SSL encryption",
+    "multiplePaymentMethods": "Multiple payment methods",
+    "instantConfirmation": "Instant confirmation",
+    "support247": "24/7 support",
+    "poweredBy": "Powered by",
+    "supportingBanks": "Supporting Bankily, Sedad, Bimbank & more",
+    "errorCampaignMissing": "Error: Campaign ID is missing",
+    "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
+    "validationEmail": "Please enter a valid email address",
+    "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site."
+  },
+  "share": {
+    "shareThisCampaign": "Share This Campaign",
+    "share": "Share",
+    "copied": "Copied!",
+    "copyLink": "Copy Link",
+    "shareTitle": "Share campaign",
+    "facebook": "Facebook",
+    "twitter": "Twitter",
+    "whatsapp": "WhatsApp",
+    "facebookNotification": "Campaign text copied to clipboard! Paste it in your Facebook post.",
+    "facebookNotificationFull": "Campaign text copied to clipboard! Paste it in your Facebook post for better engagement.",
+    "facebookTooltip": "Opens Facebook + copies text to clipboard",
+    "socialMediaPreview": "Social Media Preview",
+    "campaignPreviewAlt": "Campaign preview",
+    "shareDirectlyOn": "Share directly on",
+    "orCopyLink": "Or copy link",
+    "proTip": "Pro tip:",
+    "proTipText": "When you share on social media, your campaign image and progress will be displayed automatically to attract more supporters!",
+    "title": "Help Support: {{campaignName}}",
+    "defaultText": "Help support: {{campaignName}}! {{currentAmount}} MRU raised of {{target}} MRU so far. Join {{donorCount}} donors in making a difference!",
+    "description": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors • {{campaignDescription}}...",
+    "previewStats": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors",
+    "hashtags": [
+      "fundraising",
+      "support",
+      "donate"
+    ]
+  },
+  "volunteerInvitations": {
+    "title": "Volunteer Invitations",
+    "subtitle": "Respond to volunteer opportunities from organizations",
+    "stats": {
+      "total": "Total",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined"
     },
-    
-    "cta": {
-        "title": "Ready to Make a Difference?",
-        "subtitle": "Join thousands of changemakers and innovators who are turning their ideas into reality through the power of community funding.",
-        "startCampaign": "Start Your Campaign",
-        "exploreCampaigns": "Explore Campaigns"
+    "errors": {
+      "failedToLoad": "Failed to load invitations",
+      "failedToRespond": "Failed to respond to invitation"
     },
-
-    "explore": {
-        "title": "Explore Campaigns",
-        "subtitle": "Discover amazing projects and causes that need your support. Every contribution makes a difference.",
-        "searchPlaceholder": "Search campaigns...",
-        "filters": "Filters",
-        "sortOptions": {
-        "newest": "Newest First",
-        "oldest": "Oldest First",
-        "mostFunded": "Most Funded",
-        "mostDonors": "Most Donors"
-        },
-        "allCategories": "All Categories",
-        "loading": "Loading...",
-        "showing": "Showing",
-        "campaigns": "campaigns",
-        "campaign": "campaign",
-        "in": "in",
-        "clearFilters": "Clear filters",
-        "clearAllFilters": "Clear all filters",
-        "noCampaignsFound": "No campaigns found",
-        "noCampaignsSubtext": "Try adjusting your search or filter criteria to find more campaigns.",
-        "errorLoadingCampaigns": "Error loading campaigns",
-        "tryAgain": "Try Again"
+    "searchPlaceholder": "Search invitations...",
+    "filters": {
+      "allStatus": "All Status",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "expired": "Expired"
     },
-
-    "campaignCard": {
-        "featured": "Featured",
-        "general": "General",
-        "funded": "funded",
-        "donors": "donors",
-        "donor": "donor",
-        "raised": "raised",
-        "of": "of",
-        "goal": "Goal:",
-        "created": "Created",
-        "viewDetails": "View Details",
-        "watchLive": "Watch Live",
-        "loading": "Loading..."
+    "empty": {
+      "noInvitationsTitle": "No invitations yet",
+      "noInvitationsText": "Organizations will send you invitations for volunteer opportunities that match your profile.",
+      "noMatchTitle": "No invitations match your filters",
+      "noMatchText": "Try adjusting your search or filter criteria."
     },
-
-    "categoryFilter": {
-        "categories": "Categories",
-        "clearCategoryFilter": "Clear Category Filter"
+    "modal": {
+      "description": "Description",
+      "eventDate": "Event Date",
+      "duration": "Duration",
+      "durationHours": "{{hours}} hours",
+      "personalMessage": "Personal Message"
     },
-    
-    "pagination": {
-        "previous": "Previous",
-        "next": "Next",
-        "of": "of"
+    "responseModal": {
+      "acceptTitle": "Accept Invitation",
+      "declineTitle": "Decline Invitation",
+      "messageLabel": "Message (Optional)",
+      "reasonLabel": "Reason (Optional)",
+      "messagePlaceholder": "Let them know why you're excited...",
+      "reasonPlaceholder": "Let them know why you can't participate..."
     },
-
-    "campaignDetail": {
-        "created": "Created",
-        "raised": "Raised:",
-        "goal": "Goal:",
-        "funded": "funded",
-        "donors": "donors",
-        "ourStory": "Our Story",
-        "noDescription": "No description provided yet.",
-        "target": "Target",
-        "errorLoadingCampaign": "Error Loading Campaign",
-        "tryAgain": "Try Again",
-        "campaignNotFound": "Campaign not found",
-        "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
-        "noImagesAvailable": "No images available",
-        "aboutTheOrganization": "About the Organization",
-        "contactNumber": "Contact Number",
-        "address": "Address",
-        "website": "Website",
-        "memberSince": "Member Since",
-        "verifiedOrganization": "Verified Organization"
-    },
-
-    "facebookLive": {
-        "liveStream": "Live Stream",
-        "refreshStatus": "Refresh status",
-        "openOnFacebook": "Open on Facebook",
-        "campaignProgress": "Campaign Progress",
-        "of": "of",
-        "goalText": "goal",
-        "liveStreamEnded": "Live Stream Ended",
-        "liveStreamEndedDescription": "This live stream has ended. Check back later for future streams!",
-        "viewOnFacebook": "View on Facebook",
-        "streamNotActive": "Stream Not Active",
-        "streamNotActiveDescription": "The live stream is not currently active. Follow the campaign for updates!",
-        "checkStatus": "Check Status",
-        "watching": "watching",
-        "liveNow": "Live now",
-        "lastUpdated": "Last updated:",
-        "facebookLiveStream": "Facebook Live Stream",
-        "connected": "Connected",
-        "refreshPage": "Refresh page",
-        "embedNotAvailable": "Embed Not Available",
-        "embedNotAvailableDescription": "The video embed is not available. You can still watch on Facebook.",
-        "clickToWatch": "Click below to watch the live stream on Facebook.",
-        "watchOnFacebook": "Watch on Facebook",
-        "facebookLiveConnected": "Facebook Live Connected",
-        "videoId": "Video ID:",
-        "streamAvailable": "Stream available",
-        "externalLinkOnly": "External link only",
-        "facebookLiveIntegrationActive": "Facebook Live Integration Active",
-        "integrationDescription": "This campaign is connected to a Facebook Live stream.",
-        "streamWillAppear": "The stream will appear above when live.",
-        "clickOpenFacebook": "Click \"Open on Facebook\" to watch.",
-        "live": "LIVE"
-    },
-    
-    "donationForm": {
-        "supportThisCampaign": "Support This Campaign",
-        "makeDifference": "Make a difference with your contribution",
-        "thankyouDonation": "Thank you for your donation! 🎉",
-        "redirectingSuccess": "Redirecting to success page...",
-        "choosePaymentMethod": "Choose Payment Method",
-        "browserBlockedPopup": "Your browser blocked the payment popup. Please choose how you'd like to proceed:",
-        "tryPopupAgain": "Try Popup Again",
-        "openInNewTab": "Open in New Tab",
-        "enablePopupsTip": "💡 Tip: You can enable popups for this site in your browser settings for a smoother experience.",
-        "raised": "raised",
-        "of": "of",
-        "goal": "goal",
-        "funded": "funded",
-        "supporters": "supporters",
-        "toGo": "to go",
-        "chooseDonationAmount": "Choose your donation amount",
-        "customAmount": "Custom Amount",
-        "enterAmount": "Enter amount",
-        "donorInformation": "Donor Information",
-        "fullName": "Full Name",
-        "yourFullName": "Your full name",
-        "messageOfSupport": "Message of Support",
-        "shareMessage": "Share a message of encouragement...",
-        "makeAnonymous": "Make this donation anonymous",
-        "processing": "Processing...",
-        "donate": "Donate",
-        "securePaymentInfo": "Secure Payment Information",
-        "sslEncryption": "256-bit SSL encryption",
-        "multiplePaymentMethods": "Multiple payment methods",
-        "instantConfirmation": "Instant confirmation",
-        "support247": "24/7 support",
-        "poweredBy": "Powered by",
-        "supportingBanks": "Supporting Bankily, Sedad, Bimbank & more",
-        "errorCampaignMissing": "Error: Campaign ID is missing",
-        "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
-        "validationEmail": "Please enter a valid email address",
-        "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site."
-    },
-
-    "share": {
-        "shareThisCampaign": "Share This Campaign",
-        "share": "Share",
-        "copied": "Copied!",
-        "copyLink": "Copy Link",
-        "shareTitle": "Share campaign",
-        "facebook": "Facebook",
-        "twitter": "Twitter",
-        "whatsapp": "WhatsApp",
-        "facebookNotification": "Campaign text copied to clipboard! Paste it in your Facebook post.",
-        "facebookNotificationFull": "Campaign text copied to clipboard! Paste it in your Facebook post for better engagement.",
-        "facebookTooltip": "Opens Facebook + copies text to clipboard",
-        "socialMediaPreview": "Social Media Preview",
-        "campaignPreviewAlt": "Campaign preview",
-        "shareDirectlyOn": "Share directly on",
-        "orCopyLink": "Or copy link",
-        "proTip": "Pro tip:",
-        "proTipText": "When you share on social media, your campaign image and progress will be displayed automatically to attract more supporters!",
-        "title": "Help Support: {{campaignName}}",
-        "defaultText": "Help support: {{campaignName}}! {{currentAmount}} MRU raised of {{target}} MRU so far. Join {{donorCount}} donors in making a difference!",
-        "description": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors • {{campaignDescription}}...",
-        "previewStats": "{{currentAmount}} MRU raised of {{target}} MRU goal • {{donorCount}} donors",
-        "hashtags": ["fundraising", "support", "donate"]
-    },
-        
-    "volunteerInvitations": {
-        "title": "Volunteer Invitations",
-        "subtitle": "Respond to volunteer opportunities from organizations",
-        "stats": {
-        "total": "Total",
-        "pending": "Pending",
-        "accepted": "Accepted",
-        "declined": "Declined"
-        },
-        "errors": {
-        "failedToLoad": "Failed to load invitations",
-        "failedToRespond": "Failed to respond to invitation"
-        },
-        "searchPlaceholder": "Search invitations...",
-        "filters": {
-        "allStatus": "All Status",
-        "pending": "Pending",
-        "accepted": "Accepted",
-        "declined": "Declined",
-        "expired": "Expired"
-        },
-        "empty": {
-        "noInvitationsTitle": "No invitations yet",
-        "noInvitationsText": "Organizations will send you invitations for volunteer opportunities that match your profile.",
-        "noMatchTitle": "No invitations match your filters",
-        "noMatchText": "Try adjusting your search or filter criteria."
-        },
-        "modal": {
-        "description": "Description",
-        "eventDate": "Event Date",
-        "duration": "Duration",
-        "durationHours": "{{hours}} hours",
-        "personalMessage": "Personal Message"
-        },
-        "responseModal": {
-        "acceptTitle": "Accept Invitation",
-        "declineTitle": "Decline Invitation",
-        "messageLabel": "Message (Optional)",
-        "reasonLabel": "Reason (Optional)",
-        "messagePlaceholder": "Let them know why you're excited...",
-        "reasonPlaceholder": "Let them know why you can't participate..."
-        },
-        "actions": {
-        "accept": "Accept",
-        "decline": "Decline",
-        "cancel": "Cancel",
-        "processing": "Processing..."
-        }
-    },
-
-    "invitationCard": {
-        "duration": "{{hours}} hours",
-        "invited": "Invited",
-        "matchScore": "{{score}}% match",
-        "fullDescription": "Full Description",
-        "viewDetails": "View Details",
-        "eventDetails": "Event Details",
-        "startDate": "Start Date",
-        "endDate": "End Date",
-        "durationLabel": "Duration",
-        "expires": "Expires",
-        "organization": "Organization",
-        "invitationStatus": "Invitation Status",
-        "statusLabel": "Status",
-        "matchScoreLabel": "Match Score",
-        "responded": "Responded",
-        "messages": "Messages",
-        "organizationMessage": "Organization Message",
-        "yourResponse": "Your Response",
-        "viewRelatedCampaign": "View Related Campaign",
-        "acceptInvitation": "Accept Invitation",
-        "declineInvitation": "Decline Invitation",
-        "status": {
-        "pending": "Pending",
-        "accepted": "Accepted",
-        "declined": "Declined",
-        "expired": "Expired"
-        }
-    },
-
+    "actions": {
+      "accept": "Accept",
+      "decline": "Decline",
+      "cancel": "Cancel",
+      "processing": "Processing..."
+    }
+  },
+  "invitationCard": {
+    "duration": "{{hours}} hours",
+    "invited": "Invited",
+    "matchScore": "{{score}}% match",
+    "fullDescription": "Full Description",
+    "viewDetails": "View Details",
+    "eventDetails": "Event Details",
+    "startDate": "Start Date",
+    "endDate": "End Date",
+    "durationLabel": "Duration",
+    "expires": "Expires",
+    "organization": "Organization",
+    "invitationStatus": "Invitation Status",
+    "statusLabel": "Status",
+    "matchScoreLabel": "Match Score",
+    "responded": "Responded",
+    "messages": "Messages",
+    "organizationMessage": "Organization Message",
+    "yourResponse": "Your Response",
+    "viewRelatedCampaign": "View Related Campaign",
+    "acceptInvitation": "Accept Invitation",
+    "declineInvitation": "Decline Invitation",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "expired": "Expired"
+    }
+  },
   "categories": {
     "title": "Explore Categories",
     "subtitle": "Discover campaigns across different causes and make a difference in the areas you care about most",
@@ -424,8 +411,7 @@
       "startCampaign": "Start a Campaign"
     }
   },
-
-    "profile": {
+  "profile": {
     "tabs": {
       "profile": "Profile",
       "volunteer": "Volunteer",
@@ -452,8 +438,6 @@
       }
     }
   },
-
-  
   "profileTab": {
     "title": "Profile Information",
     "actions": {
@@ -509,7 +493,6 @@
       }
     }
   },
-  
   "volunteerTab": {
     "title": "Volunteer Information",
     "memberSince": "Member since",
@@ -562,12 +545,11 @@
       "profession": "Profession",
       "motivation": "Motivation",
       "skills": "Skills",
-      "interests": "Interests", 
+      "interests": "Interests",
       "languages": "Languages",
       "availableLocations": "Available Locations"
     }
   },
-  
   "volunteerForm": {
     "commaSeparated": "comma-separated",
     "steps": {
@@ -662,7 +644,6 @@
       "general": "An error occurred. Please try again."
     }
   },
-
   "donationsTab": {
     "title": "Donation History",
     "loading": "Loading donations...",
@@ -671,7 +652,7 @@
     "sortBy": "Sort by",
     "stats": {
       "totalDonated": "Total Donated",
-      "totalDonations": "Total Donations", 
+      "totalDonations": "Total Donations",
       "campaignsSupported": "Campaigns Supported"
     },
     "sortOptions": {
@@ -709,8 +690,7 @@
       "pageOf": "Page {{current}} of {{total}}"
     }
   },
-
-    "settingsTab": {
+  "settingsTab": {
     "title": "Account Settings",
     "notifications": {
       "title": "Notifications",
@@ -747,194 +727,970 @@
       }
     }
   },
-
   "howItWorks": {
-  "hero": {
-    "title": "How SADA9A",
-    "titleHighlight": "Works",
-    "subtitle": "Connecting generous hearts across Mauritania with verified organizations creating positive change in our communities.",
-    "watchDemo": "Watch Demo Video",
-    "getStarted": "Get Started"
-  },
-  "tabs": {
-    "forDonors": "For Donors",
-    "forVolunteers": "For Volunteers", 
-    "forOrganizations": "For Organizations"
-  },
-  "chooseYourRole": "Choose Your Role",
-  "seeHowSada9aWorks": "See how SADA9A works for different types of users",
-  "simpleProcessFlow": "Simple Process Flow",
-  "whyChooseSada9a": "Why Choose SADA9A?",
-  "builtForMauritania": "Built specifically for Mauritania with features that ensure safe, transparent, and impactful giving.",
-  
-  "donors": {
-    "title": "How Donors Create Impact",
-    "subtitle": "Support verified causes and see exactly how your donations make a difference.",
-    "steps": {
-      "createAccount": {
-        "title": "Create Your Account",
-        "description": "Join our community with a simple sign-up process using email or social login.",
-        "details": "Quick registration to start your giving journey"
-      },
-      "discoverCampaigns": {
-        "title": "Discover Campaigns",
-        "description": "Browse verified campaigns by category to find causes that matter to you.",
-        "details": "All campaigns are pre-approved by verified organizations"
-      },
-      "makeSecureDonations": {
-        "title": "Make Secure Donations",
-        "description": "Donate safely using multiple payment methods with instant confirmation.",
-        "details": "Multiple payment options with automatic receipts"
-      },
-      "trackProgress": {
-        "title": "Track Campaign Progress",
-        "description": "Follow campaign progress and receive updates from organizations on their milestones.",
-        "details": "Real-time progress tracking and updates from campaign organizers"
-      }
-    }
-  },
-  
-  "volunteers": {
-    "title": "How Volunteers Get Involved",
-    "subtitle": "Activate your volunteer profile and get matched with opportunities from verified organizations.",
-    "steps": {
-      "activateProfile": {
-        "title": "Activate Volunteer Profile",
-        "description": "Enable volunteering on your donor account and build a detailed volunteer profile.",
-        "details": "Showcase your skills, interests, and availability for better matching"
-      },
-      "getMatched": {
-        "title": "Get Matched by Organizations",
-        "description": "Organizations create volunteer programs and send invitations to volunteers who match their needs.",
-        "details": "Smart matching based on your skills, location, and interests"
-      },
-      "reviewPrograms": {
-        "title": "Review Program Details",
-        "description": "Receive invitations and review volunteer program details, requirements, and time commitment.",
-        "details": "Clear program descriptions with expectations and schedules"
-      },
-      "acceptContribute": {
-        "title": "Accept & Contribute",
-        "description": "Accept invitations that interest you and start contributing to meaningful causes.",
-        "details": "Participate in programs and make a difference in your community"
-      }
-    }
-  },
-  
-  "organizations": {
-    "title": "How Organizations Access Support",
-    "subtitle": "Get verified to access funding and volunteer resources for your mission.",
-    "steps": {
-      "applyVerification": {
-        "title": "Apply for Verification",
-        "description": "Submit your organization documents and undergo our verification process.",
-        "details": "Legal registration and mission validation required"
-      },
-      "completeProfile": {
-        "title": "Complete Organization Profile",
-        "description": "Build a comprehensive profile showcasing your mission and impact.",
-        "details": "Detailed profile helps donors and volunteers understand your work"
-      },
-      "launchCampaigns": {
-        "title": "Launch Funding Campaigns",
-        "description": "Create fundraising campaigns with Facebook Live integration and detailed project descriptions.",
-        "details": "Campaign builder with live streaming features and progress tracking"
-      },
-      "createVolunteerPrograms": {
-        "title": "Create Volunteer Programs",
-        "description": "Set up volunteer programs, invite matched volunteers, and link programs to your campaigns.",
-        "details": "Smart matching system and volunteer program management tools"
-      }
-    }
-  },
-  
-  "features": {
-    "bankLevelSecurity": {
-      "title": "Bank-Level Security",
-      "description": "Advanced encryption and secure payment processing protect every transaction.",
-      "highlight": "Secure & Trusted"
+    "hero": {
+      "title": "How SADA9A",
+      "titleHighlight": "Works",
+      "subtitle": "Connecting generous hearts across Mauritania with verified organizations creating positive change in our communities.",
+      "watchDemo": "Watch Demo Video",
+      "getStarted": "Get Started"
     },
-    "multilingualPlatform": {
-      "title": "Multilingual Platform",
-      "description": "Available in Arabic, French, and English to serve all communities.",
-      "highlight": "3 Languages"
+    "tabs": {
+      "forDonors": "For Donors",
+      "forVolunteers": "For Volunteers",
+      "forOrganizations": "For Organizations"
     },
-    "completeTransparency": {
-      "title": "Complete Transparency",
-      "description": "Track donations in real-time with detailed reports and impact updates.",
-      "highlight": "Full Transparency"
+    "chooseYourRole": "Choose Your Role",
+    "seeHowSada9aWorks": "See how SADA9A works for different types of users",
+    "simpleProcessFlow": "Simple Process Flow",
+    "whyChooseSada9a": "Why Choose SADA9A?",
+    "builtForMauritania": "Built specifically for Mauritania with features that ensure safe, transparent, and impactful giving.",
+    "donors": {
+      "title": "How Donors Create Impact",
+      "subtitle": "Support verified causes and see exactly how your donations make a difference.",
+      "steps": {
+        "createAccount": {
+          "title": "Create Your Account",
+          "description": "Join our community with a simple sign-up process using email or social login.",
+          "details": "Quick registration to start your giving journey"
+        },
+        "discoverCampaigns": {
+          "title": "Discover Campaigns",
+          "description": "Browse verified campaigns by category to find causes that matter to you.",
+          "details": "All campaigns are pre-approved by verified organizations"
+        },
+        "makeSecureDonations": {
+          "title": "Make Secure Donations",
+          "description": "Donate safely using multiple payment methods with instant confirmation.",
+          "details": "Multiple payment options with automatic receipts"
+        },
+        "trackProgress": {
+          "title": "Track Campaign Progress",
+          "description": "Follow campaign progress and receive updates from organizations on their milestones.",
+          "details": "Real-time progress tracking and updates from campaign organizers"
+        }
+      }
     },
-    "verifiedOrganizations": {
-      "title": "Verified Organizations",
-      "description": "Only verified nonprofits and community organizations can create campaigns.",
-      "highlight": "Verified Only"
-    }
-  },
-  
-  "orgVerification": {
-    "title": "Are you a registered organization?",
-    "description": "Only verified nonprofit organizations and community groups can create fundraising campaigns on SADA9A. This ensures donor trust and campaign legitimacy.",
-    "applyButton": "Apply for Verification"
-  },
-  
-  "cta": {
-    "title": "Ready to Get Started?",
-    "subtitle": "Join SADA9A and be part of a community dedicated to positive change in Mauritania.",
-    "startDonating": "Start Donating",
-    "becomeVolunteer": "Become a Volunteer",
-    "freeToJoin": "✨ Free to join • Secure platform • Verified organizations only"
-  }
-},
-
+    "volunteers": {
+      "title": "How Volunteers Get Involved",
+      "subtitle": "Activate your volunteer profile and get matched with opportunities from verified organizations.",
+      "steps": {
+        "activateProfile": {
+          "title": "Activate Volunteer Profile",
+          "description": "Enable volunteering on your donor account and build a detailed volunteer profile.",
+          "details": "Showcase your skills, interests, and availability for better matching"
+        },
+        "getMatched": {
+          "title": "Get Matched by Organizations",
+          "description": "Organizations create volunteer programs and send invitations to volunteers who match their needs.",
+          "details": "Smart matching based on your skills, location, and interests"
+        },
+        "reviewPrograms": {
+          "title": "Review Program Details",
+          "description": "Receive invitations and review volunteer program details, requirements, and time commitment.",
+          "details": "Clear program descriptions with expectations and schedules"
+        },
+        "acceptContribute": {
+          "title": "Accept & Contribute",
+          "description": "Accept invitations that interest you and start contributing to meaningful causes.",
+          "details": "Participate in programs and make a difference in your community"
+        }
+      }
+    },
     "organizations": {
-      "title": "Organizations",
-      "subtitle": "Discover and connect with verified organizations making a difference in their communities through transparent charitable work.",
-      "totalOrganizations": "Total Organizations",
-      "verifiedOrganizations": "Verified Organizations",
-      "searchPlaceholder": "Search organizations by name, location, or cause...",
-      "allOrganizations": "All Organizations",
-      "verifiedOnly": "Verified Only",
-      "pendingOnly": "Pending Only",
-      "showingResults": "Showing {{count}} organizations",
-      "showingAllResults": "Showing all {{count}} organizations",
-      "showingFilteredResults": "Showing {{filtered}} of {{total}} organizations",
-      "noOrganizationsFound": "No Organizations Found",
-      "noSearchResults": "No Search Results",
-      "tryDifferentSearch": "Try adjusting your search terms or browse all organizations.",
-      "noOrganizationsSubtext": "There are currently no organizations to display. Please check back later.",
-      "errorLoadingOrganizations": "Error Loading Organizations",
-      "verified": "Verified",
-      "pending": "Pending",
-      "viewDetails": "View Details",
-      "viewCampaigns": "View Campaigns",
-      "website": "Website",
-      "noCoverImage": "No Cover Image",
-      "noDescription": "No description available",
-      "backToOrganizations": "Back to Organizations",
-      "backToList": "Back to List",
-      "organizationProfile": "Organization Profile",
-      "profileSubtext": "Detailed information about this organization",
-      "aboutOrganization": "About Organization",
-      "contactInformation": "Contact Information",
-      "organizationStats": "Organization Statistics",
+      "title": "How Organizations Access Support",
+      "subtitle": "Get verified to access funding and volunteer resources for your mission.",
+      "steps": {
+        "applyVerification": {
+          "title": "Apply for Verification",
+          "description": "Submit your organization documents and undergo our verification process.",
+          "details": "Legal registration and mission validation required"
+        },
+        "completeProfile": {
+          "title": "Complete Organization Profile",
+          "description": "Build a comprehensive profile showcasing your mission and impact.",
+          "details": "Detailed profile helps donors and volunteers understand your work"
+        },
+        "launchCampaigns": {
+          "title": "Launch Funding Campaigns",
+          "description": "Create fundraising campaigns with Facebook Live integration and detailed project descriptions.",
+          "details": "Campaign builder with live streaming features and progress tracking"
+        },
+        "createVolunteerPrograms": {
+          "title": "Create Volunteer Programs",
+          "description": "Set up volunteer programs, invite matched volunteers, and link programs to your campaigns.",
+          "details": "Smart matching system and volunteer program management tools"
+        }
+      }
+    },
+    "features": {
+      "bankLevelSecurity": {
+        "title": "Bank-Level Security",
+        "description": "Advanced encryption and secure payment processing protect every transaction.",
+        "highlight": "Secure & Trusted"
+      },
+      "multilingualPlatform": {
+        "title": "Multilingual Platform",
+        "description": "Available in Arabic, French, and English to serve all communities.",
+        "highlight": "3 Languages"
+      },
+      "completeTransparency": {
+        "title": "Complete Transparency",
+        "description": "Track donations in real-time with detailed reports and impact updates.",
+        "highlight": "Full Transparency"
+      },
+      "verifiedOrganizations": {
+        "title": "Verified Organizations",
+        "description": "Only verified nonprofits and community organizations can create campaigns.",
+        "highlight": "Verified Only"
+      }
+    },
+    "orgVerification": {
+      "title": "Are you a registered organization?",
+      "description": "Only verified nonprofit organizations and community groups can create fundraising campaigns on SADA9A. This ensures donor trust and campaign legitimacy.",
+      "applyButton": "Apply for Verification"
+    },
+    "cta": {
+      "title": "Ready to Get Started?",
+      "subtitle": "Join SADA9A and be part of a community dedicated to positive change in Mauritania.",
+      "startDonating": "Start Donating",
+      "becomeVolunteer": "Become a Volunteer",
+      "freeToJoin": "✨ Free to join • Secure platform • Verified organizations only"
+    }
+  },
+  "organizations": {
+    "title": "Organizations",
+    "subtitle": "Discover and connect with verified organizations making a difference in their communities through transparent charitable work.",
+    "totalOrganizations": "Total Organizations",
+    "verifiedOrganizations": "Verified Organizations",
+    "searchPlaceholder": "Search organizations by name, location, or cause...",
+    "allOrganizations": "All Organizations",
+    "verifiedOnly": "Verified Only",
+    "pendingOnly": "Pending Only",
+    "showingResults": "Showing {{count}} organizations",
+    "showingAllResults": "Showing all {{count}} organizations",
+    "showingFilteredResults": "Showing {{filtered}} of {{total}} organizations",
+    "noOrganizationsFound": "No Organizations Found",
+    "noSearchResults": "No Search Results",
+    "tryDifferentSearch": "Try adjusting your search terms or browse all organizations.",
+    "noOrganizationsSubtext": "There are currently no organizations to display. Please check back later.",
+    "errorLoadingOrganizations": "Error Loading Organizations",
+    "verified": "Verified",
+    "pending": "Pending",
+    "viewDetails": "View Details",
+    "viewCampaigns": "View Campaigns",
+    "website": "Website",
+    "noCoverImage": "No Cover Image",
+    "noDescription": "No description available",
+    "backToOrganizations": "Back to Organizations",
+    "backToList": "Back to List",
+    "organizationProfile": "Organization Profile",
+    "profileSubtext": "Detailed information about this organization",
+    "aboutOrganization": "About Organization",
+    "contactInformation": "Contact Information",
+    "organizationStats": "Organization Statistics",
+    "campaigns": "Campaigns",
+    "campaignsSubtext": "Active campaigns by this organization",
+    "activeCampaigns": "Active Campaigns",
+    "noCampaigns": "No Active Campaigns",
+    "noCampaignsDescription": "This organization doesn't have any active campaigns at the moment.",
+    "organizationNotFound": "Organization Not Found",
+    "errorLoadingOrganization": "Error Loading Organization",
+    "organizationName": "Organization Name",
+    "address": "Address"
+  },
+  "common": {
+    "tryAgain": "Try Again",
+    "clearSearch": "Clear Search",
+    "loadMore": "Load More"
+  },
+  "organization": {
+    "layout": {
+      "logoutError": "An unexpected error occurred during logout",
+      "companyName": "Fundraising Platform"
+    },
+    "navigation": {
+      "dashboard": "Dashboard",
       "campaigns": "Campaigns",
-      "campaignsSubtext": "Active campaigns by this organization",
+      "analytics": "Analytics",
+      "volunteers": "Volunteers",
+      "settings": "Settings"
+    },
+    "sidebar": {
+      "organization": "Organization",
+      "dashboard": "Dashboard",
+      "user": "User",
+      "administrator": "Administrator",
+      "signingOut": "Signing out...",
+      "signOut": "Sign out",
+      "profile": "Profile",
+      "expandSidebar": "Expand sidebar",
+      "collapseSidebar": "Collapse sidebar"
+    },
+    "navbar": {
+      "subtitle": "Manage your fundraising activities",
+      "help": "Help",
+      "notifications": "Notifications",
+      "userMenu": "User menu"
+    },
+    "footer": {
+      "copyright": "© {{year}} {{companyName}}. All rights reserved.",
+      "help": "Help",
+      "privacy": "Privacy",
+      "terms": "Terms"
+    },
+    "dashboard": {
+      "welcomeBack": "Welcome back, {{name}}",
+      "organization": "Organization",
+      "overviewSubtitle": "Here's an overview of your fundraising performance",
+      "refreshing": "Refreshing...",
+      "refreshData": "Refresh Data",
+      "verified": "Verified",
+      "pendingVerification": "Pending Verification",
+      "campaignSystemNotConfigured": "Campaign system not configured",
+      "failedToLoadData": "Failed to load dashboard data",
+      "failedToRefreshData": "Failed to refresh dashboard data",
+      "campaignDataUnavailable": "Campaign Data Unavailable",
+      "campaignDataDescription": "Campaign statistics are currently unavailable. Payment and profile data are still accessible.",
+      "totalCampaigns": "Total Campaigns",
+      "totalRaised": "Total Raised",
+      "totalDonors": "Total Donors",
+      "successRate": "Success Rate",
+      "notAvailable": "N/A",
+      "recentActivity": "Recent Activity",
+      "noRecentActivity": "No Recent Activity",
+      "activityDescription": "Activity will appear here once you start receiving donations and managing campaigns.",
+      "campaignSystemRequired": "Campaign system needs to be configured to track activity.",
+      "campaignStatusOverview": "Campaign Status Overview",
+      "campaignSystemConfigRequired": "The campaign system needs to be properly configured to display statistics.",
       "activeCampaigns": "Active Campaigns",
-      "noCampaigns": "No Active Campaigns",
-      "noCampaignsDescription": "This organization doesn't have any active campaigns at the moment.",
-      "organizationNotFound": "Organization Not Found",
-      "errorLoadingOrganization": "Error Loading Organization",
-      "organizationName": "Organization Name",
-      "address": "Address"
+      "pendingReview": "Pending Review",
+      "completed": "Completed",
+      "avgGoalAchievement": "Avg. Goal Achievement",
+      "paymentMethods": "Payment Methods",
+      "manualPayments": "Manual Payments",
+      "nextpayPayments": "NextPay Payments",
+      "totalMethods": "Total Methods",
+      "completeSetup": "Complete Your Setup",
+      "addOrgName": "Add your organization name",
+      "addOrgDescription": "Add your organization description",
+      "completeProfile": "Complete Profile"
+    },
+    "campaigns": {
+      "myCampaigns": "My Campaigns",
+      "manageAndTrack": "Manage and track your fundraising campaigns",
+      "createCampaign": "Create Campaign",
+      "create": "Create",
+      "failedToLoad": "Failed to load campaigns",
+      "searchPlaceholder": "Search campaigns...",
+      "sort": {
+        "newestFirst": "Newest First",
+        "nameAZ": "Name A-Z",
+        "highestRaised": "Highest Raised",
+        "highestTarget": "Highest Target"
+      },
+      "showingCount": "Showing {{showing}} of {{total}} campaigns",
+      "noCampaignsYet": "No campaigns yet",
+      "noMatchingCampaigns": "No campaigns match your filters",
+      "createFirstDescription": "Create your first campaign to start raising funds for your cause.",
+      "adjustFiltersDescription": "Try adjusting your search or filter criteria.",
+      "createFirstCampaign": "Create Your First Campaign",
+      "noImage": "No image",
+      "untitledCampaign": "Untitled Campaign",
+      "noDescription": "No description available",
+      "progress": "Progress",
+      "raised": "${{amount}} raised",
+      "goal": "Goal: ${{amount}}",
+      "donors": "{{count}} donors",
+      "view": "View",
+      "share": "Share"
+    },
+    "createCampaign": {
+      "title": "Create New Campaign",
+      "subtitle": "Set up your fundraising campaign to start collecting donations",
+      "successMessage": "Campaign created successfully!",
+      "redirectingMessage": "Redirecting to campaigns list...",
+      "errorTitle": "Error creating campaign",
+      "facebookConnectionError": "Failed to connect Facebook account. Please try again.",
+      "campaignDetails": "Campaign Details",
+      "fundingGoal": "Funding Goal",
+      "campaignImages": "Campaign Images",
+      "facebookLiveIntegration": "Facebook Live Integration (Optional)",
+      "fields": {
+        "campaignName": "Campaign Name",
+        "category": "Category",
+        "description": "Campaign Description",
+        "targetAmount": "Target Amount"
+      },
+      "placeholders": {
+        "campaignName": "Enter a compelling campaign title",
+        "selectCategory": "Select a category",
+        "description": "Tell your story. Explain what you're raising money for and why it matters..."
+      },
+      "validation": {
+        "categoryRequired": "Please select a category for your campaign",
+        "imageRequired": "Please upload at least one image for your campaign",
+        "validImageRequired": "Please select valid image files"
+      },
+      "createError": "Failed to create campaign",
+      "noCategoriesAvailable": "No categories available. Please contact support.",
+      "selectedCategoryId": "Selected category ID: {{id}}",
+      "characterCount": "{{count}}/{{max}} characters",
+      "goalPreview": "Goal: {{amount}}",
+      "uploadImages": "Upload Images (Required - At least 1 image)",
+      "clickToUpload": "Click to upload images (Required)",
+      "imagesSelected": "{{count}} image(s) selected",
+      "supportedFormats": "Supported formats: JPG, PNG, GIF (Max 5MB each) - At least 1 image required",
+      "selectedImages": "Selected Images ({{count}})",
+      "facebookConnected": "Facebook account connected. Your live stream will be integrated with this campaign.",
+      "cancel": "Cancel",
+      "createCampaign": "Create Campaign",
+      "creatingCampaign": "Creating Campaign..."
+    },
+    "facebookLive": {
+      "facebookLiveUrl": "Facebook Live URL",
+      "urlPlaceholder": "https://facebook.com/your-page/live/123456789",
+      "invalidUrlMessage": "Please enter a valid Facebook Live URL",
+      "validUrlMessage": "Valid Facebook Live URL format",
+      "supportedFormats": "Supported Facebook Live URL formats:",
+      "howToGetUrl": "How to get your Facebook Live URL:",
+      "step1": "Start a live stream on your Facebook page",
+      "step2": "Copy the URL from your browser or the \"Share\" button",
+      "step3": "Paste the URL here to connect it to your campaign",
+      "learnMore": "Learn how to go live on Facebook"
+    },
+    "campaignDetail": {
+      "title": "Campaign Details",
+      "subtitle": "View and manage your fundraising campaign",
+      "campaignIdMissing": "Campaign ID is missing from URL",
+      "campaignIdRequired": "Campaign ID is required",
+      "failedToLoad": "Failed to load campaign details",
+      "errorLoadingCampaign": "Error Loading Campaign",
+      "tryAgain": "Try Again",
+      "backToCampaigns": "Back to Campaigns",
+      "campaignNotFound": "Campaign Not Found",
+      "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
+      "preview": "Preview",
+      "editCampaign": "Edit Campaign",
+      "uncategorized": "Uncategorized",
+      "featured": "Featured",
+      "createdDate": "Created {{date}} • {{days}} days active",
+      "raised": "{{amount}} raised",
+      "percentOfTarget": "{{percent}}% of {{target}}",
+      "percentFunded": "{{percent}}% funded",
+      "donorsCount": "{{count}} donors",
+      "campaignStory": "Campaign Story",
+      "noDescription": "No description provided yet.",
+      "facebookLive": "Facebook Live",
+      "liveStreamAvailable": "Live Stream Available",
+      "currentlyLive": "Currently Live",
+      "streamAvailable": "Stream Available",
+      "viewersCount": "{{count}} viewers",
+      "watchLiveStream": "Watch Live Stream",
+      "created": "Created",
+      "target": "Target",
+      "donors": "Donors",
+      "performanceSummary": "Performance Summary",
+      "totalRaised": "Total Raised",
+      "progress": "Progress",
+      "daysActive": "Days Active",
+      "quickActions": "Quick Actions",
+      "updateDetails": "Update details, images, and story",
+      "viewAnalytics": "View Analytics",
+      "seeMetrics": "See detailed performance metrics",
+      "viewSupporters": "View Supporters",
+      "seeContributors": "See who has contributed",
+      "campaignSettings": "Campaign Settings",
+      "managePreferences": "Manage campaign preferences",
+      "campaignInformation": "Campaign Information",
+      "category": "Category",
+      "lastUpdated": "Last Updated",
+      "status": "Status",
+      "active": "Active",
+      "liveStream": "Live Stream",
+      "liveNow": "Live Now",
+      "available": "Available"
+    },
+    "campaignEdit": {
+      "title": "Edit Campaign",
+      "subtitle": "Make changes to your fundraising campaign",
+      "campaignIdMissing": "Campaign ID is missing",
+      "failedToLoad": "Failed to load campaign",
+      "errorLoading": "Error Loading Campaign",
+      "backToCampaigns": "Back to Campaigns",
+      "unsavedChanges": "You have unsaved changes",
+      "unsavedChangesConfirm": "You have unsaved changes. Are you sure you want to leave?",
+      "preview": "Preview",
+      "cancel": "Cancel",
+      "saveChanges": "Save Changes",
+      "saving": "Saving...",
+      "saveFailed": "Failed to save changes",
+      "requiredFieldsNote": "* Required fields",
+      "currentFiles": "Current Files",
+      "addFiles": "Add New Files",
+      "fileUploadPrompt": "Drag and drop files here, or click to select",
+      "chooseFiles": "Choose Files",
+      "newFilesToUpload": "New Files to Upload:",
+      "view": "View",
+      "restore": "Restore",
+      "delete": "Delete",
+      "image": "Image",
+      "characters": "characters",
+      "targetDisplay": "Target: {amount}",
+      "fields": {
+        "name": "Campaign Name",
+        "target": "Target Amount",
+        "category": "Category",
+        "description": "Campaign Story",
+        "facebookLiveUrl": "Facebook Live URL"
+      },
+      "placeholders": {
+        "name": "Enter a compelling campaign name",
+        "description": "Tell your story... Why is this campaign important? What will the funds be used for?",
+        "facebookLiveUrl": "https://facebook.com/..."
+      },
+      "selectCategory": "Select a category",
+      "errors": {
+        "nameRequired": "Campaign name is required",
+        "descriptionRequired": "Campaign description is required",
+        "targetInvalid": "Target amount must be greater than 0",
+        "categoryRequired": "Please select a category",
+        "urlInvalid": "Please enter a valid URL"
+      }
+    },
+    "analytics": {
+      "title": "Analytics Dashboard",
+      "subtitle": "Comprehensive insights into your fundraising performance",
+      "errorLoading": "Error loading analytics data",
+      "tryAgain": "Try Again",
+      "filters": "Filters",
+      "refresh": "Refresh",
+      "updatingAnalytics": "Updating analytics...",
+      "timePeriod": "Time Period",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "periods": {
+        "last7Days": "Last 7 Days",
+        "last30Days": "Last 30 Days",
+        "last90Days": "Last 90 Days",
+        "lastYear": "Last Year",
+        "customRange": "Custom Range"
+      },
+      "totalRaised": "Total Raised",
+      "vsPrevious": "{{percent}}% vs previous",
+      "donations": "Donations",
+      "avgDonation": "Avg: {{amount}}",
+      "uniqueDonors": "Unique Donors",
+      "thisPeriod": "This period",
+      "activeCampaigns": "Active Campaigns",
+      "totalCampaigns": "Total campaigns",
+      "donationTrends": "Donation Trends ({{period}})",
+      "donationsCount": "{{count}} donations",
+      "topCampaignPerformance": "Top Campaign Performance",
+      "amountRaised": "Amount Raised",
+      "targetAmount": "Target Amount",
+      "campaignLabel": "Campaign: {{name}}",
+      "noCampaignData": "No Campaign Data",
+      "createCampaignsToSeeMetrics": "Create campaigns to see performance metrics",
+      "topDonors": "Top Donors",
+      "donationCount": "{{count}} donations",
+      "noDonorsInPeriod": "No donors in this period"
+    },
+    "orgProfile": {
+      "header": {
+        "title": "Organization Settings",
+        "subtitle": "Manage your organization's profile, payment methods, and verification status."
+      },
+      "completion": {
+        "title": "Complete Your Profile",
+        "subtitle": "Complete your organization profile to start receiving donations and build trust with donors.",
+        "progress": "Progress",
+        "progressCount": "{{completed}} of {{total}} completed",
+        "basicInfo": "Basic Information",
+        "documents": "Organization Documents",
+        "paymentMethods": "Payment Methods",
+        "verification": "Verification"
+      },
+      "tabs": {
+        "profile": "Profile Information",
+        "payments": "Payment Methods",
+        "verification": "Verification"
+      },
+      "error": {
+        "title": "Error Loading Profile",
+        "retry": "Retry"
+      },
+      "verification": {
+        "title": "Verification Status",
+        "verified": {
+          "message": "Your organization is verified!",
+          "badge": "Verified Organization"
+        },
+        "pending": {
+          "message": "Your organization is pending verification. Make sure you have:",
+          "requestButton": "Request Verification",
+          "completeRequirements": "Complete the requirements above to request verification"
+        },
+        "requirements": {
+          "basicInfo": "Complete basic information",
+          "documents": "Uploaded organization documents",
+          "paymentMethod": "Added at least one payment method"
+        }
+      },
+      "stats": {
+        "manualPayments": "Manual Payments",
+        "nextpayMethods": "NextPay Methods",
+        "verifiedStatus": "Verified Status",
+        "memberSince": "Member Since"
+      }
     },
     "common": {
-      "tryAgain": "Try Again",
-      "clearSearch": "Clear Search",
-      "loadMore": "Load More"
+      "yes": "Yes",
+      "no": "No"
+    },
+    "organizationProfileForm": {
+      "title": "Organization Profile",
+      "subtitle": "Manage your organization's information, images, and verification documents",
+      "verified": "Verified",
+      "pendingVerification": "Pending Verification",
+      "paymentMethods": "Payment Method",
+      "paymentMethodsPlural": "Payment Methods",
+      "noPaymentMethods": "No Payment Methods",
+      "profileUpdatedSuccess": "Organization profile updated successfully!",
+      "noProfileFound": "No organization profile found.",
+      "visualAssets": "Visual Assets",
+      "visualAssetsDescription": "Upload images that represent your organization",
+      "coverImage": "Cover Image",
+      "coverImageDescription": "A wide banner image that appears at the top of your organization profile. This creates the first impression for potential donors.",
+      "coverImageSpecs": "Recommended: 1200x400px • Accepted: JPEG, PNG, WebP • Max: 5MB",
+      "profileImage": "Profile Image",
+      "profileImageDescription": "A circular logo or image that represents your organization. This appears alongside your organization name across the platform.",
+      "profileImageSpecs": "Recommended: 400x400px • Accepted: JPEG, PNG, WebP • Max: 5MB",
+      "organizationInformation": "Organization Information",
+      "organizationInformationDescription": "Basic details about your organization",
+      "paymentMethodsSummary": "Payment Methods Summary",
+      "manualPayments": "Manual Payment",
+      "manualPaymentsPlural": "Manual Payments",
+      "nextpayPayments": "NextPay Payment",
+      "nextpayPaymentsPlural": "NextPay Payments",
+      "totalActive": "Total Active",
+      "addPaymentMethodsWarning": "Add payment methods to start receiving donations",
+      "organizationName": "Organization Name",
+      "phoneNumber": "Phone Number",
+      "website": "Website",
+      "description": "Description",
+      "address": "Address",
+      "organizationDocument": "Organization Document",
+      "currentDocumentUploaded": "Current document uploaded",
+      "viewDocument": "View Document",
+      "uploadPdfDocument": "Upload new PDF document (max 10MB)",
+      "uploadOfficialDocuments": "Upload official organization documents (registration, license, etc.)",
+      "saving": "Saving...",
+      "saveProfile": "Save Profile",
+      "organizationPreview": "Organization Preview",
+      "organizationPreviewDescription": "See how your organization will appear to donors",
+      "noCoverImage": "No cover image",
+      "pending": "Pending",
+      "addressLabel": "Address:",
+      "paymentMethodsAvailable": "Payment Methods Available",
+      "previewDescription": "This is how your organization will appear to potential donors",
+      "addProfileImage": "• Add profile image",
+      "addCoverImage": "• Add cover image",
+      "addPaymentMethods": "• Add payment methods",
+      "organizationNamePlaceholder": "Enter your organization name",
+      "phoneNumberPlaceholder": "Enter phone number",
+      "websitePlaceholder": "https://www.yourorganization.com",
+      "descriptionPlaceholder": "Describe your organization's mission and goals",
+      "addressPlaceholder": "Enter your organization's complete address",
+      "organizationNamePreview": "Organization Name",
+      "organizationDescriptionPreview": "Organization description will appear here...",
+      "profileImageUpdatedSuccess": "Profile image updated successfully!",
+      "coverImageUpdatedSuccess": "Cover image updated successfully!",
+      "profileImageDeletedSuccess": "Profile image deleted successfully!",
+      "coverImageDeletedSuccess": "Cover image deleted successfully!",
+      "uploadPdfOnly": "Please upload a PDF document only",
+      "fileSizeLimit": "File size must be less than 10MB",
+      "profileImageUploadFailed": "Failed to upload profile image",
+      "coverImageUploadFailed": "Failed to upload cover image",
+      "profileImageDeleteFailed": "Failed to delete profile image",
+      "coverImageDeleteFailed": "Failed to delete cover image",
+      "profileUpdateFailed": "Failed to update organization profile",
+      "profileIdNotFound": "Profile ID not found"
+    },
+    "paymentMethods": {
+      "title": "Payment Methods",
+      "description": "Manage your organization's payment methods for receiving donations",
+      "addManual": "Add Manual Payment",
+      "addNextPay": "Add NextPay",
+      "noManual": "No Manual Payments",
+      "noManualDescription": "Add manual payment methods where donors send money and provide proof",
+      "noNextPay": "No NextPay Payments",
+      "noNextPayDescription": "Add NextPay payment methods for automatic instant payments",
+      "maxReached": "Maximum of {maxPayments} payment methods allowed (across all types)",
+      "active": "Active",
+      "inactive": "Inactive",
+      "wallet": "Wallet",
+      "accountName": "Account Name",
+      "addedOn": "Added on",
+      "deactivate": "Deactivate",
+      "activate": "Activate",
+      "edit": "Edit",
+      "delete": "Delete",
+      "inactiveWarning": "This payment method is inactive and won't receive donations.",
+      "phoneNumber": "Phone Number",
+      "commercialNumber": "Commercial Number",
+      "selectWallet": "Select a wallet provider",
+      "phonePlaceholder": "Enter phone number",
+      "phoneHelp": "The phone number donors will send money to",
+      "commercialPlaceholder": "Enter commercial number",
+      "commercialHelp": "Your commercial account number",
+      "accountNamePlaceholder": "Enter account holder name",
+      "cancel": "Cancel",
+      "save": "Save",
+      "update": "Update",
+      "add": "Add",
+      "deleteConfirm": "Are you sure you want to delete this payment method?",
+      "verified": "Verified",
+      "manualPayment": "Manual Payment",
+      "nextPayPayment": "NextPay Payment",
+      "phoneNumberRequired": "Phone number is required for manual payments.",
+      "commercialNumberRequired": "Commercial number is required for NextPay payments.",
+      "manualPayments": "Manual Payments",
+      "nextPay": "NextPay",
+      "saving": "Saving...",
+      "loadError": "Failed to load payment data"
+    },
+    "volunteerRequests": {
+      "title": "Volunteer Requests",
+      "subtitle": "Create and manage volunteer opportunities for your campaigns",
+      "createRequest": "Create Request",
+      "create": "Create",
+      "failedToLoad": "Failed to load volunteer requests",
+      "searchPlaceholder": "Search volunteer requests...",
+      "filters": {
+        "allStatus": "All Status",
+        "open": "Open",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled",
+        "allPriority": "All Priority",
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "sort": {
+        "newestFirst": "Newest First",
+        "titleAZ": "Title A-Z",
+        "eventDate": "Event Date",
+        "mostVolunteersNeeded": "Most Volunteers Needed",
+        "mostAccepted": "Most Accepted"
+      },
+      "showingCount": "Showing {{showing}} of {{total}} requests",
+      "noRequestsYet": "No volunteer requests yet",
+      "noMatchingRequests": "No requests match your filters",
+      "createFirstDescription": "Create your first volunteer request to start finding volunteers.",
+      "adjustFiltersDescription": "Try adjusting your search or filter criteria.",
+      "createFirstRequest": "Create Your First Request",
+      "untitledRequest": "Untitled Request",
+      "noDescription": "No description available",
+      "hours": "{{count}} hours",
+      "locationSpecified": "Location specified",
+      "plusLocations": "+{{count}}",
+      "volunteers": "Volunteers",
+      "accepted": "{{count}} accepted",
+      "pending": "{{count}} pending",
+      "skills": "Skills",
+      "moreSkills": "+{{count}} more",
+      "campaign": "Campaign",
+      "invited": "{{count}} invited",
+      "view": "View",
+      "find": "Find",
+      "quickSummary": "Quick Summary",
+      "status": {
+        "open": "Open",
+        "in_progress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "priority": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "summary": {
+        "openRequests": "Open Requests",
+        "volunteersFound": "Volunteers Found",
+        "pendingResponses": "Pending Responses",
+        "totalInvitations": "Total Invitations"
+      }
+    },
+    "volunteerRequest": {
+      "title": "Create Volunteer Request",
+      "description": "Find volunteers for your campaign or initiative",
+      "basicInfo": "Basic Information",
+      "titleLabel": "Title *",
+      "titlePlaceholder": "e.g., Beach Cleanup Volunteers Needed",
+      "campaignLabel": "Campaign (Optional)",
+      "descriptionLabel": "Description *",
+      "descriptionPlaceholder": "Describe the volunteer opportunity...",
+      "priorityLabel": "Priority Level",
+      "priorityOptions": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "eventDetails": "Event Details",
+      "startDateLabel": "Event Start Date & Time *",
+      "endDateLabel": "Event End Date & Time (Optional)",
+      "durationLabel": "Duration (Hours) *",
+      "durationPlaceholder": "e.g., 4",
+      "volunteersLabel": "Volunteers Needed *",
+      "volunteersPlaceholder": "e.g., 25",
+      "requiredCriteria": "Required Criteria",
+      "requiredDescription": "Volunteers must meet ALL of these requirements to be considered",
+      "requiredSkillsLabel": "Required Skills (comma-separated)",
+      "requiredSkillsPlaceholder": "e.g., teamwork, physical fitness, leadership",
+      "requiredLanguagesLabel": "Required Languages (comma-separated)",
+      "requiredLanguagesPlaceholder": "e.g., English, Spanish",
+      "minAgeLabel": "Minimum Age",
+      "minAgePlaceholder": "e.g., 18",
+      "maxAgeLabel": "Maximum Age",
+      "maxAgePlaceholder": "e.g., 65",
+      "requiredLocationsLabel": "Required Locations",
+      "addLocation": "Add Location",
+      "preferredCriteria": "Preferred Criteria",
+      "preferredDescription": "Nice to have - volunteers with these will be ranked higher",
+      "preferredSkillsLabel": "Preferred Skills (comma-separated)",
+      "preferredSkillsPlaceholder": "e.g., environmental awareness, communication",
+      "preferredLanguagesLabel": "Preferred Languages (comma-separated)",
+      "preferredLanguagesPlaceholder": "e.g., French, Arabic",
+      "preferredInterestsLabel": "Preferred Interests (comma-separated)",
+      "preferredInterestsPlaceholder": "e.g., environment, education, community service",
+      "preferredLocationsLabel": "Preferred Locations",
+      "additionalInfo": "Additional Information",
+      "specialRequirementsLabel": "Special Requirements or Notes",
+      "specialRequirementsPlaceholder": "Any additional requirements, what to bring, meeting location, etc...",
+      "cancel": "Cancel",
+      "createRequest": "Create Request",
+      "creating": "Creating...",
+      "locationModal": {
+        "title": "Add {type} Location",
+        "cityLabel": "City *",
+        "cityPlaceholder": "e.g., Miami",
+        "stateLabel": "State/Province *",
+        "statePlaceholder": "e.g., FL",
+        "countryLabel": "Country *",
+        "countryPlaceholder": "e.g., USA",
+        "addLocation": "Add Location"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "descriptionRequired": "Description is required",
+        "dateRequired": "Event date is required",
+        "dateFuture": "Event date must be in the future",
+        "endDateAfter": "Event end date must be after event start date",
+        "durationPositive": "Duration must be greater than 0",
+        "volunteersPositive": "Number of volunteers must be greater than 0",
+        "ageRange": "Minimum age cannot be greater than maximum age",
+        "locationFields": "Please fill in all location fields (City, State, Country)"
+      },
+      "success": {
+        "title": "Request Created!",
+        "message": "Redirecting to your volunteer requests..."
+      }
+    },
+    "editVolunteerRequest": {
+      "title": "Edit Volunteer Request",
+      "subtitle": "Update your volunteer opportunity details",
+      "requestUpdated": "Request Updated!",
+      "redirecting": "Redirecting to request details...",
+      "basicInformation": "Basic Information",
+      "titleLabel": "Title",
+      "titlePlaceholder": "e.g., Beach Cleanup Volunteers Needed",
+      "campaignLabel": "Campaign (Optional)",
+      "selectCampaign": "Select a campaign",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Describe the volunteer opportunity, what volunteers will do, and why it's important...",
+      "priorityLevel": "Priority Level",
+      "status": "Status",
+      "eventDetails": "Event Details",
+      "eventStartDate": "Event Start Date & Time",
+      "eventEndDate": "Event End Date & Time (Optional)",
+      "duration": "Duration (Hours)",
+      "volunteersNeeded": "Volunteers Needed",
+      "requiredCriteria": "Required Criteria",
+      "requiredCriteriaDescription": "Volunteers must meet ALL of these requirements to be considered",
+      "requiredSkills": "Required Skills (comma-separated)",
+      "requiredSkillsPlaceholder": "e.g., teamwork, physical fitness, leadership",
+      "requiredLanguages": "Required Languages (comma-separated)",
+      "requiredLanguagesPlaceholder": "e.g., English, Spanish",
+      "minimumAge": "Minimum Age",
+      "maximumAge": "Maximum Age",
+      "requiredLocations": "Required Locations",
+      "addLocation": "Add Location",
+      "preferredCriteria": "Preferred Criteria",
+      "preferredCriteriaDescription": "Nice to have - volunteers with these will be ranked higher",
+      "preferredSkills": "Preferred Skills (comma-separated)",
+      "preferredSkillsPlaceholder": "e.g., environmental awareness, communication",
+      "preferredLanguages": "Preferred Languages (comma-separated)",
+      "preferredLanguagesPlaceholder": "e.g., French, Arabic",
+      "preferredInterests": "Preferred Interests (comma-separated)",
+      "preferredInterestsPlaceholder": "e.g., environment, education, community service",
+      "preferredLocations": "Preferred Locations",
+      "additionalInformation": "Additional Information",
+      "specialRequirements": "Special Requirements or Notes",
+      "specialRequirementsPlaceholder": "Any additional requirements, what to bring, meeting location, etc...",
+      "cancel": "Cancel",
+      "updating": "Updating...",
+      "updateRequest": "Update Request",
+      "addRequiredLocation": "Add Required Location",
+      "addPreferredLocation": "Add Preferred Location",
+      "city": "City",
+      "cityPlaceholder": "e.g., Miami",
+      "state": "State/Province",
+      "statePlaceholder": "e.g., FL",
+      "country": "Country",
+      "countryPlaceholder": "e.g., USA",
+      "locationFieldsRequired": "Please fill in all location fields (City, State, Country)",
+      "priority": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "statusOptions": {
+        "open": "Open",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "descriptionRequired": "Description is required",
+        "eventDateRequired": "Event date is required",
+        "durationInvalid": "Duration must be greater than 0",
+        "volunteersInvalid": "Number of volunteers must be greater than 0",
+        "ageRangeInvalid": "Minimum age cannot be greater than maximum age",
+        "eventDatePast": "Event date must be in the future",
+        "eventEndDateInvalid": "Event end date must be after event start date"
+      }
+    },
+
+
+    "volunteerRequestDetail": {
+      "findVolunteers": "Find Volunteers",
+      "priorityLabel" :"Priority Level",
+      "find": "Find",
+      "description": "Description",
+      "eventDetails": "Event Details",
+      "startDate": "Start Date",
+      "endDate": "End Date",
+      "duration": "Duration",
+      "hours": "hours",
+      "volunteersNeeded": "Volunteers Needed",
+      "requirementsPreferences": "Requirements & Preferences",
+      "requiredMustHave": "Required (Must Have)",
+      "preferredNiceToHave": "Preferred (Nice to Have)",
+      "skills": "Skills",
+      "languages": "Languages",
+      "locations": "Locations",
+      "interests": "Interests",
+      "ageRange": "Age Range",
+      "years": "years",
+      "upTo": "Up to",
+      "specialRequirements": "Special Requirements",
+      "recentInvitations": "Recent Invitations",
+      "viewAll": "View All",
+      "match": "match",
+      "progress": "Progress",
+      "volunteersFound": "Volunteers Found",
+      "accepted": "Accepted",
+      "pending": "Pending",
+      "totalInvitationsSent": "Total Invitations Sent",
+      "campaign": "Campaign",
+      "relatedCampaign": "Related Campaign",
+      "quickActions": "Quick Actions",
+      "findMoreVolunteers": "Find More Volunteers",
+      "editRequest": "Edit Request",
+      "deleteRequest": "Delete Request",
+      "information": "Information",
+      "created": "Created:",
+      "lastUpdated": "Last Updated:",
+      "organization": "Organization:",
+      "deleteModal": {
+        "title": "Delete Request",
+        "subtitle": "This action cannot be undone",
+        "message": "Are you sure you want to delete this volunteer request? All associated invitations will also be removed.",
+        "cancel": "Cancel",
+        "deleting": "Deleting...",
+        "delete": "Delete Request"
+      },
+      "priority": {
+        "low": "Low",
+        "medium": "Medium",
+        "high": "High",
+        "urgent": "Urgent"
+      },
+      "status": {
+        "open": "Open",
+        "inProgress": "In Progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      },
+      "invitationStatus": {
+        "accepted": "Accepted",
+        "pending": "Pending",
+        "declined": "Declined",
+        "cancelled": "Cancelled"
+      }
+    },
+        "volunteerMatching": {
+        "title": "Find Volunteers",
+        "volunteersNeeded": "Volunteers Needed:",
+        "alreadyFound": "Already Found:",
+        "stillNeed": "Still Need:",
+        "volunteersSelected": "volunteers selected",
+        "volunteerSelected": "volunteer selected",
+        "clear": "Clear",
+        "sendInvitations": "Send Invitations",
+        "minimumMatchScore": "Minimum Match Score",
+        "allMatches": "All Matches (0%+)",
+        "goodMatches": "Good Matches (40%+)",
+        "greatMatches": "Great Matches (60%+)",
+        "perfectMatches": "Perfect Matches (80%+)",
+        "selectAll": "Select All",
+        "noMatchingVolunteers": "No matching volunteers found",
+        "noMatchingVolunteersDesc": "Try lowering the minimum match score or adjusting your request requirements.",
+        "match": "match",
+        "age": "Age:",
+        "skills": "Skills",
+        "languages": "Languages",
+        "interests": "Interests",
+        "matchDetails": "Match Details",
+        "requiredSkills": "Required skills:",
+        "requiredLanguages": "Required languages:",
+        "locationMatch": "Location match",
+        "ageRequirementMet": "Age requirement met",
+        "preferredSkills": "Preferred skills:",
+        "preferredLanguages": "Preferred languages:",
+        "invitationModal": {
+            "title": "Send Invitations",
+            "description": "You're about to send invitations to",
+            "volunteers": "volunteers.",
+            "personalMessage": "Personal Message (Optional)",
+            "messagePlaceholder": "Add a personal message to make your invitation more appealing...",
+            "charactersLimit": "characters",
+            "cancel": "Cancel",
+            "sending": "Sending...",
+            "send": "Send Invitations"
+        },
+        "validationErrors": {
+            "selectVolunteer": "Please select at least one volunteer"
+        },
+        "successMessage": "Successfully sent invitations to {{count}} volunteers!"
     }
-
-
-    
-
-    
+  }
 }

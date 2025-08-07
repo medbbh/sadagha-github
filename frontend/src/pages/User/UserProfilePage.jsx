@@ -298,14 +298,14 @@ const UserProfilePage = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-          <div className={`flex items-center gap-6 ${isRTL ? '' : ''}`}>
+          <div className={`flex items-center gap-6 `}>
             <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
               <span className="text-white text-2xl font-bold">
                 {userData.firstName?.[0] || ''}{userData.lastName?.[0] || ''}
               </span>
             </div>
             <div className="flex-1">
-              <div className={`flex items-center gap-3 mb-2 ${isRTL ? '' : ''}`}>
+              <div className={`flex items-center gap-3 mb-2 `}>
                 <h1 className="text-3xl font-bold text-gray-900">
                   {userData.firstName} {userData.lastName}
                 </h1>

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { 
   ArrowLeft, 
+  ArrowRight,
   Save, 
   X, 
   Upload, 
@@ -20,6 +22,8 @@ import { fetchCampaignById, updateCampaign } from '../../api/endpoints/CampaignA
 import { fetchCategories } from '../../api/endpoints/CategoryAPI';
 
 export default function CampaignEdit() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const { campaignId } = useParams();
   const navigate = useNavigate();
   
@@ -41,21 +45,18 @@ export default function CampaignEdit() {
   });
   
   const [newFiles, setNewFiles] = useState([]);
-  
-  // Form validation
-  const [fieldErrors, setFieldErrors] = useState({});
-
   const [filesToDelete, setFilesToDelete] = useState([]);
-
+  const [fieldErrors, setFieldErrors] = useState({});
 
   useEffect(() => {
     if (campaignId) {
       loadCampaign();
       loadCategories();
+    } else {
+      setError(t('organization.campaignEdit.campaignIdMissing'));
     }
-  }, [campaignId]);
+  }, [campaignId, t]);
 
-  // Track unsaved changes
   useEffect(() => {
     if (campaign) {
       const hasChanges = 
@@ -69,7 +70,7 @@ export default function CampaignEdit() {
       
       setUnsavedChanges(hasChanges);
     }
-  }, [formData, newFiles, filesToDelete, campaign]);
+  }, [formData, newFiles, filesToDelete, campaign, t]);
 
   const loadCampaign = async () => {
     try {
@@ -79,11 +80,6 @@ export default function CampaignEdit() {
       const data = await fetchCampaignById(campaignId);
       setCampaign(data);
       
-      // Debug: Log the campaign data and files
-      console.log('Campaign data:', data);
-      console.log('Campaign files:', data.files);
-      
-      // Initialize form data
       setFormData({
         name: data.name || '',
         description: data.description || '',
@@ -94,7 +90,7 @@ export default function CampaignEdit() {
       
     } catch (err) {
       console.error('Load campaign error:', err);
-      setError(err.message || 'Failed to load campaign');
+      setError(err.message || t('organization.campaignEdit.failedToLoad'));
     } finally {
       setLoading(false);
     }
@@ -119,7 +115,6 @@ export default function CampaignEdit() {
       [field]: value
     }));
     
-    // Clear field error when user starts typing
     if (fieldErrors[field]) {
       setFieldErrors(prev => ({
         ...prev,
@@ -137,32 +132,17 @@ export default function CampaignEdit() {
     setNewFiles(prev => prev.filter((_, i) => i !== index));
   };
 
-
   const handleExistingFileDelete = (fileId) => {
-    console.log('Deleting file ID:', fileId);
-    // Find the file object to get its URL
     const fileToDelete = campaign.files.find(f => f.id === fileId);
     if (fileToDelete) {
-      console.log('Found file to delete:', fileToDelete);
-      setFilesToDelete(prev => {
-        const newArray = [...prev, fileToDelete.url]; // Store URL, not ID
-        console.log('New filesToDelete array:', newArray);
-        return newArray;
-      });
+      setFilesToDelete(prev => [...prev, fileToDelete.url]);
     }
   };
 
   const handleExistingFileRestore = (fileId) => {
-    console.log('Restoring file ID:', fileId);
-    // Find the file object to get its URL
     const fileToRestore = campaign.files.find(f => f.id === fileId);
     if (fileToRestore) {
-      console.log('Found file to restore:', fileToRestore);
-      setFilesToDelete(prev => {
-        const newArray = prev.filter(url => url !== fileToRestore.url); // Remove URL
-        console.log('New filesToDelete array after restore:', newArray);
-        return newArray;
-      });
+      setFilesToDelete(prev => prev.filter(url => url !== fileToRestore.url));
     }
   };
 
@@ -170,23 +150,23 @@ export default function CampaignEdit() {
     const errors = {};
     
     if (!formData.name.trim()) {
-      errors.name = 'Campaign name is required';
+      errors.name = t('organization.campaignEdit.errors.nameRequired');
     }
     
     if (!formData.description.trim()) {
-      errors.description = 'Campaign description is required';
+      errors.description = t('organization.campaignEdit.errors.descriptionRequired');
     }
     
     if (!formData.target || parseFloat(formData.target) <= 0) {
-      errors.target = 'Target amount must be greater than 0';
+      errors.target = t('organization.campaignEdit.errors.targetInvalid');
     }
     
     if (!formData.category) {
-      errors.category = 'Please select a category';
+      errors.category = t('organization.campaignEdit.errors.categoryRequired');
     }
     
     if (formData.facebook_live_url && !isValidUrl(formData.facebook_live_url)) {
-      errors.facebook_live_url = 'Please enter a valid URL';
+      errors.facebook_live_url = t('organization.campaignEdit.errors.urlInvalid');
     }
     
     setFieldErrors(errors);
@@ -221,12 +201,10 @@ export default function CampaignEdit() {
         payload.append('facebook_live_url', formData.facebook_live_url);
       }
 
-      // Add new files
       newFiles.forEach((file, index) => {
         payload.append(`file_${index}`, file);
       });
 
-      // Add files to delete - send as separate form fields
       if (filesToDelete.length > 0) {
         filesToDelete.forEach(fileUrl => {
           payload.append('files_to_delete', fileUrl);
@@ -238,12 +216,11 @@ export default function CampaignEdit() {
         data: payload
       });
 
-      // Navigate back to campaign detail
       navigate(`/organization/campaigns/${campaignId}`);
       
     } catch (err) {
       console.error('Save error:', err);
-      setSaveError(err.message || 'Failed to save changes');
+      setSaveError(err.message || t('organization.campaignEdit.saveFailed'));
     } finally {
       setSaving(false);
     }
@@ -251,7 +228,7 @@ export default function CampaignEdit() {
 
   const handleCancel = () => {
     if (unsavedChanges) {
-      if (window.confirm('You have unsaved changes. Are you sure you want to leave?')) {
+      if (window.confirm(t('organization.campaignEdit.unsavedChangesConfirm'))) {
         navigate(`/organization/campaigns/${campaignId}`);
       }
     } else {
@@ -260,12 +237,12 @@ export default function CampaignEdit() {
   };
 
   const formatCurrency = (amount) => {
-    return `${parseFloat(amount).toLocaleString()} MRU`;
+    return `${parseFloat(amount).toLocaleString()} ${t('campaignEdit.currency')}`;
   };
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className={`max-w-4xl mx-auto p-6 ${isRTL ? 'rtl' : 'ltr'}`}>
         <div className="animate-pulse space-y-6">
           <div className="h-16 bg-gray-200 rounded-lg"></div>
           <div className="h-96 bg-gray-200 rounded-xl"></div>
@@ -276,16 +253,18 @@ export default function CampaignEdit() {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
+      <div className={`max-w-4xl mx-auto p-6 ${isRTL ? 'rtl' : 'ltr'}`}>
+        <div className={`bg-red-50 border border-red-200 rounded-xl p-6 text-center ${isRTL ? 'rtl' : 'ltr'}`}>
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-red-800 mb-2">Error Loading Campaign</h2>
+          <h2 className="text-xl font-semibold text-red-800 mb-2">
+            {t('organization.campaignEdit.errorLoading')}
+          </h2>
           <p className="text-red-600 mb-4">{error}</p>
           <button
             onClick={() => navigate('/organization/campaigns')}
             className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
           >
-            Back to Campaigns
+            {t('organization.campaignEdit.backToCampaigns')}
           </button>
         </div>
       </div>
@@ -293,68 +272,72 @@ export default function CampaignEdit() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className={`max-w-4xl mx-auto p-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header */}
       <div className="bg-white rounded-lg border border-slate-200 p-6 mb-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
+          <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
             <button
               onClick={handleCancel}
               className="p-2 text-slate-400 hover:text-slate-600 rounded-lg hover:bg-slate-100 transition-colors"
             >
-              <ArrowLeft className="w-5 h-5" />
+              {isRTL ? <ArrowRight className="w-5 h-5" /> : <ArrowLeft className="w-5 h-5" />}
             </button>
-            <div>
-              <h1 className="text-2xl font-semibold text-slate-900">Edit Campaign</h1>
-              <p className="text-slate-600 mt-1">Make changes to your fundraising campaign</p>
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h1 className="text-2xl font-semibold text-slate-900">
+                {t('organization.campaignEdit.title')}
+              </h1>
+              <p className="text-slate-600 mt-1">
+                {t('organization.campaignEdit.subtitle')}
+              </p>
             </div>
           </div>
           
-          <div className="flex items-center space-x-3">
+          <div className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
             <button
               onClick={() => window.open(`/campaign/${campaignId}`, '_blank')}
-              className="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center"
+              className={`px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center`}
             >
-              <Eye className="w-4 h-4 mr-2" />
-              Preview
+              <Eye className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
+              {t('organization.campaignEdit.preview')}
             </button>
             
             <button
               onClick={handleCancel}
               disabled={saving}
-              className="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center"
+              className={`px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center`}
             >
-              <X className="w-4 h-4 mr-2" />
-              Cancel
+              <X className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
+              {t('organization.campaignEdit.cancel')}
             </button>
             
             <button
               onClick={handleSave}
               disabled={saving || !unsavedChanges}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed`}
             >
-              <Save className="w-4 h-4 mr-2" />
-              {saving ? 'Saving...' : 'Save Changes'}
+              <Save className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
+              {saving ? t('organization.campaignEdit.saving') : t('organization.campaignEdit.saveChanges')}
             </button>
           </div>
         </div>
         
         {/* Unsaved changes indicator */}
         {unsavedChanges && (
-          <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center">
-            <Info className="w-5 h-5 text-yellow-600 mr-2" />
-            <span className="text-yellow-800 text-sm">You have unsaved changes</span>
+          <div className={`mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg flex items-center ${isRTL ? 'campaignEdit.' : ''}`}>
+            <Info className={`w-5 h-5 text-yellow-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            <span className="text-yellow-800 text-sm">
+              {t('organization.campaignEdit.unsavedChanges')}
+            </span>
           </div>
         )}
       </div>
 
       {/* Save Error Alert */}
       {saveError && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-          <div className="flex items-center">
-            <AlertCircle className="w-5 h-5 text-red-500 mr-3" />
-            <span className="text-red-800">{saveError}</span>
-          </div>
+        <div className={`bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-center ${isRTL ? 'campaignEdit.' : ''}`}>
+          <AlertCircle className={`w-5 h-5 text-red-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+          <span className="text-red-800">{saveError}</span>
         </div>
       )}
 
@@ -363,9 +346,9 @@ export default function CampaignEdit() {
         <div className="p-6 space-y-8">
           {/* Campaign Name */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <FileText className="w-4 h-4 mr-2" />
-              Campaign Name *
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <FileText className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.fields.name')} *
             </label>
             <input
               type="text"
@@ -374,18 +357,21 @@ export default function CampaignEdit() {
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 fieldErrors.name ? 'border-red-300 focus:ring-red-500' : 'border-slate-300'
               }`}
-              placeholder="Enter a compelling campaign name"
+              placeholder={t('organization.campaignEdit.placeholders.name')}
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
             {fieldErrors.name && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.name}</p>
+              <p className={`mt-1 text-sm text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {fieldErrors.name}
+              </p>
             )}
           </div>
 
           {/* Target Amount */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <DollarSign className="w-4 h-4 mr-2" />
-              Target Amount (MRU) *
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <DollarSign className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.fields.target')} *
             </label>
             <input
               type="number"
@@ -397,22 +383,25 @@ export default function CampaignEdit() {
               placeholder="0.00"
               min="0"
               step="0.01"
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
             {fieldErrors.target && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.target}</p>
+              <p className={`mt-1 text-sm text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {fieldErrors.target}
+              </p>
             )}
             {formData.target && (
-              <p className="mt-1 text-sm text-slate-600">
-                Target: {formatCurrency(formData.target)}
+              <p className={`mt-1 text-sm text-slate-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('organization.campaignEdit.targetDisplay', { amount: formatCurrency(formData.target) })}
               </p>
             )}
           </div>
 
           {/* Category */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <Tag className="w-4 h-4 mr-2" />
-              Category *
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <Tag className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.fields.category')} *
             </label>
             <select
               value={formData.category}
@@ -420,22 +409,25 @@ export default function CampaignEdit() {
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 fieldErrors.category ? 'border-red-300 focus:ring-red-500' : 'border-slate-300'
               }`}
+              dir={isRTL ? 'rtl' : 'ltr'}
             >
-              <option value="">Select a category</option>
+              <option value="">{t('organization.campaignEdit.selectCategory')}</option>
               {Array.isArray(categories) && categories.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
             {fieldErrors.category && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.category}</p>
+              <p className={`mt-1 text-sm text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {fieldErrors.category}
+              </p>
             )}
           </div>
 
           {/* Campaign Description */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <FileText className="w-4 h-4 mr-2" />
-              Campaign Story *
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <FileText className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.fields.description')} *
             </label>
             <textarea
               value={formData.description}
@@ -443,22 +435,25 @@ export default function CampaignEdit() {
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-32 ${
                 fieldErrors.description ? 'border-red-300 focus:ring-red-500' : 'border-slate-300'
               }`}
-              placeholder="Tell your story... Why is this campaign important? What will the funds be used for?"
+              placeholder={t('organization.campaignEdit.placeholders.description')}
               rows="6"
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
             {fieldErrors.description && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.description}</p>
+              <p className={`mt-1 text-sm text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {fieldErrors.description}
+              </p>
             )}
-            <p className="mt-1 text-sm text-slate-500">
-              {formData.description.length} characters
+            <p className={`mt-1 text-sm text-slate-500 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {formData.description.length} {t('organization.campaignEdit.characters')}
             </p>
           </div>
 
           {/* Facebook Live URL */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <Globe className="w-4 h-4 mr-2" />
-              Facebook Live URL (Optional)
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <Globe className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.fields.facebookLiveUrl')}
             </label>
             <input
               type="url"
@@ -467,26 +462,26 @@ export default function CampaignEdit() {
               className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 fieldErrors.facebook_live_url ? 'border-red-300 focus:ring-red-500' : 'border-slate-300'
               }`}
-              placeholder="https://facebook.com/..."
+              placeholder={t('organization.campaignEdit.placeholders.facebookLiveUrl')}
+              dir={isRTL ? 'rtl' : 'ltr'}
             />
             {fieldErrors.facebook_live_url && (
-              <p className="mt-1 text-sm text-red-600">{fieldErrors.facebook_live_url}</p>
+              <p className={`mt-1 text-sm text-red-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+                {fieldErrors.facebook_live_url}
+              </p>
             )}
           </div>
 
           {/* Current Files */}
           {campaign?.files && campaign.files.length > 0 && (
             <div>
-              <label className="flex items-center text-sm font-medium text-slate-700 mb-4">
-                <Image className="w-4 h-4 mr-2" />
-                Current Files
+              <label className={`flex items-center text-sm font-medium text-slate-700 mb-4 ${isRTL ? 'campaignEdit.' : ''}`}>
+                <Image className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.campaignEdit.currentFiles')}
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {campaign.files.map((file, index) => {
-                  // Check if this file's URL is marked for deletion
                   const isMarkedForDeletion = filesToDelete.includes(file.url);
-                  console.log(`File ${file.id} (${file.url}) marked for deletion:`, isMarkedForDeletion);
-                  console.log(`filesToDelete array:`, filesToDelete);
                   
                   return (
                     <div 
@@ -497,63 +492,60 @@ export default function CampaignEdit() {
                           : 'border-slate-200'
                       }`}
                     >
-                    {/* Simple Image Container - No Overlays */}
-                    <div className="h-32 bg-gray-100">
-                      <img
-                        src={file.url}
-                        alt={file.name || `Image ${index + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    
-                    {/* File Info and Actions - Below Image */}
-                    <div className="p-2">
-                      <p className="text-xs text-slate-600 truncate font-medium mb-2">{file.name}</p>
+                      <div className="h-32 bg-gray-100">
+                        <img
+                          src={file.url}
+                          alt={file.name || `${t('organization.campaignEdit.image')} ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                       
-                      {/* Action Buttons */}
-                      <div className="flex items-center justify-between">
-                        <button
-                          onClick={() => window.open(file.url, '_blank')}
-                          className="text-xs text-blue-500 hover:underline"
-                        >
-                          View
-                        </button>
+                      <div className="p-2">
+                        <p className="text-xs text-slate-600 truncate font-medium mb-2">{file.name}</p>
                         
-                        {isMarkedForDeletion ? (
+                        <div className="flex items-center justify-between">
                           <button
-                            onClick={() => handleExistingFileRestore(file.id)}
-                            className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                            onClick={() => window.open(file.url, '_blank')}
+                            className="text-xs text-blue-500 hover:underline"
                           >
-                            Restore
+                            {t('organization.campaignEdit.view')}
                           </button>
-                        ) : (
-                          <button
-                            onClick={() => handleExistingFileDelete(file.id)}
-                            className="text-xs px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 flex items-center"
-                          >
-                            <Trash2 className="w-3 h-3 mr-1" />
-                            Delete
-                          </button>
-                        )}
+                          
+                          {isMarkedForDeletion ? (
+                            <button
+                              onClick={() => handleExistingFileRestore(file.id)}
+                              className="text-xs px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+                            >
+                              {t('organization.campaignEdit.restore')}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleExistingFileDelete(file.id)}
+                              className={`text-xs px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 flex items-center ${isRTL ? 'campaignEdit.' : ''}`}
+                            >
+                              <Trash2 className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                              {t('organization.campaignEdit.delete')}
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )}
-                )}
+                  );
+                })}
               </div>
             </div>
           )}
 
           {/* Add New Files */}
           <div>
-            <label className="flex items-center text-sm font-medium text-slate-700 mb-2">
-              <Upload className="w-4 h-4 mr-2" />
-              Add New Files
+            <label className={`flex items-center text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'campaignEdit.' : ''}`}>
+              <Upload className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('organization.campaignEdit.addFiles')}
             </label>
             <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center">
               <Upload className="w-12 h-12 text-slate-400 mx-auto mb-4" />
               <p className="text-slate-600 mb-4">
-                Drag and drop files here, or click to select
+                {t('organization.campaignEdit.fileUploadPrompt')}
               </p>
               <input
                 type="file"
@@ -565,25 +557,27 @@ export default function CampaignEdit() {
               />
               <label
                 htmlFor="file-upload"
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer inline-flex items-center"
+                className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors cursor-pointer inline-flex items-center ${isRTL ? 'campaignEdit.' : ''}`}
               >
-                <Upload className="w-4 h-4 mr-2" />
-                Choose Files
+                <Upload className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.campaignEdit.chooseFiles')}
               </label>
             </div>
             
             {/* New Files Preview */}
             {newFiles.length > 0 && (
               <div className="mt-4">
-                <h4 className="text-sm font-medium text-slate-700 mb-2">New Files to Upload:</h4>
+                <h4 className={`text-sm font-medium text-slate-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+                  {t('organization.campaignEdit.newFilesToUpload')}
+                </h4>
                 <div className="space-y-2">
                   {newFiles.map((file, index) => (
-                    <div key={index} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
-                      <div className="flex items-center">
-                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <div key={index} className={`flex items-center justify-between p-3 bg-slate-50 rounded-lg ${isRTL ? 'campaignEdit.' : ''}`}>
+                      <div className={`flex items-center ${isRTL ? 'campaignEdit.' : ''}`}>
+                        <div className={`w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center ${isRTL ? 'ml-3' : 'mr-3'}`}>
                           <Image className="w-5 h-5 text-blue-600" />
                         </div>
-                        <div>
+                        <div className={isRTL ? 'text-right' : 'text-left'}>
                           <p className="text-sm font-medium text-slate-900">{file.name}</p>
                           <p className="text-xs text-slate-500">
                             {(file.size / 1024 / 1024).toFixed(2)} MB
@@ -607,24 +601,25 @@ export default function CampaignEdit() {
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-200">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-slate-600">
-              * Required fields
+            <p className={`text-sm text-slate-600 ${isRTL ? 'text-right' : 'text-left'}`}>
+              {t('organization.campaignEdit.requiredFieldsNote')}
             </p>
-            <div className="flex items-center space-x-3">
+            <div className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
               <button
                 onClick={handleCancel}
                 disabled={saving}
-                className="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors"
+                className={`px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center ${isRTL ? 'campaignEdit.' : ''}`}
               >
-                Cancel
+                <X className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.campaignEdit.cancel')}
               </button>
               <button
                 onClick={handleSave}
                 disabled={saving || !unsavedChanges}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                className={`px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed ${isRTL ? 'campaignEdit.' : ''}`}
               >
-                <Save className="w-4 h-4 mr-2" />
-                {saving ? 'Saving...' : 'Save Changes'}
+                <Save className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {saving ? t('organization.campaignEdit.saving') : t('organization.campaignEdit.saveChanges')}
               </button>
             </div>
           </div>

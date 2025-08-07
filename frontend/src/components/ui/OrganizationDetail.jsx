@@ -96,7 +96,7 @@ export default function OrganizationDetail() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate('/organizations')}
-            className={`flex items-center text-gray-600 hover:text-gray-900 transition-colors ${isRTL ? '' : ''}`}
+            className={`flex items-center text-gray-600 hover:text-gray-900 transition-colors `}
           >
             <ChevronLeft className={`h-5 w-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
             <span className="font-medium">{t('organizations.backToOrganizations')}</span>
@@ -135,7 +135,7 @@ export default function OrganizationDetail() {
           {/* Organization Info Overlay */}
           <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className={`flex items-end pb-6 pt-16 ${isRTL ? '' : ''}`}>
+              <div className={`flex items-end pb-6 pt-16 `}>
                 {/* Profile Image */}
                 <div className="flex-shrink-0">
                   <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-white bg-white overflow-hidden shadow-lg">
@@ -155,7 +155,7 @@ export default function OrganizationDetail() {
                 
                 {/* Organization Details */}
                 <div className={`flex-1 ${isRTL ? 'mr-6' : 'ml-6'} text-white`}>
-                  <div className={`flex items-center justify-between ${isRTL ? '' : ''}`}>
+                  <div className={`flex items-center justify-between `}>
                     <div>
                       <h1 className="text-2xl sm:text-3xl font-bold mb-2">
                         {organization.org_name}
@@ -205,12 +205,12 @@ export default function OrganizationDetail() {
                   {t('organizations.contactInformation')}
                 </h3>
                 
-                <div className={`flex items-center text-gray-600 mb-3 ${isRTL ? '' : ''}`}>
+                <div className={`flex items-center text-gray-600 mb-3 `}>
                   <Phone className={`w-5 h-5 text-gray-400 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                   <span>{organization.phone_number}</span>
                 </div>
                 
-                <div className={`flex items-center text-gray-600 mb-3 ${isRTL ? '' : ''}`}>
+                <div className={`flex items-center text-gray-600 mb-3 `}>
                   <Globe className={`w-5 h-5 text-gray-400 ${isRTL ? 'ml-3' : 'mr-3'}`} />
                   <a 
                     href={organization.website} 
@@ -222,7 +222,7 @@ export default function OrganizationDetail() {
                   </a>
                 </div>
                 
-                <div className={`flex items-start text-gray-600 ${isRTL ? '' : ''}`}>
+                <div className={`flex items-start text-gray-600 `}>
                   <MapPin className={`w-5 h-5 text-gray-400 mt-0.5 ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} />
                   <span className="leading-relaxed">{organization.address}</span>
                 </div>

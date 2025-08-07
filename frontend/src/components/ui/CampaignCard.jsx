@@ -104,7 +104,7 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
     if (viewMode === 'list') {
       return (
         <div key={campaign.id} className={`bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-300 ${className}`}>
-          <div className={`flex flex-col md:flex-row h-full ${isRTL ? '' : ''}`}>
+          <div className={`flex flex-col md:flex-row h-full `}>
             {/* Image Section */}
             <div className="relative w-full md:w-72 lg:w-80 md:h-auto flex-shrink-0 overflow-hidden">
               <img 

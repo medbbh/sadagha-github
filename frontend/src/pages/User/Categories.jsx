@@ -148,7 +148,7 @@ export default function Categories() {
           
           {/* Warmer Stats Cards */}
           <div className="flex justify-center">
-            <div className={`flex items-center gap-6 ${isRTL ? '' : ''}`}>
+            <div className={`flex items-center gap-6 `}>
               <div className="bg-white rounded-xl border border-blue-100 px-6 py-4 shadow-sm">
                 <div className="text-center">
                   <span className="block text-2xl font-bold text-blue-600">{formatNumber(categories.length)}</span>
@@ -199,7 +199,7 @@ export default function Categories() {
         ) : (
           <>
             {/* Results Header */}
-            <div className={`flex items-center justify-between mb-8 ${isRTL ? '' : ''}`}>
+            <div className={`flex items-center justify-between mb-8 `}>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
                   {searchQuery ? t('categories.searchResults', { count: filteredCategories.length }) : t('categories.allCategories')}
@@ -212,7 +212,7 @@ export default function Categories() {
               {/* fix arrow */}
               <Link 
                 to="/explore"
-                className={`hidden md:flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors ${isRTL ? '' : ''}`}
+                className={`hidden md:flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors `}
               >
                 {t('categories.viewAllCampaigns')}
               <ArrowRight className={`w-4 h-4 ${isRTL ? 'me-1 rotate-180' : 'ms-1'}`} />
@@ -243,7 +243,7 @@ export default function Categories() {
                     className={`group ${bgVariation} rounded-xl border border-gray-100 p-6 hover:shadow-lg hover:border-blue-200 hover:-translate-y-1 transition-all duration-200 block`}
                   >
                     {/* Icon and Count with subtle background */}
-                    <div className={`flex items-center justify-between mb-4 ${isRTL ? '' : ''}`}>
+                    <div className={`flex items-center justify-between mb-4 `}>
                       <div className="flex items-center justify-center w-12 h-12 bg-white rounded-lg shadow-sm">
                         <span className="text-2xl">{categoryIcon}</span>
                       </div>
@@ -263,7 +263,7 @@ export default function Categories() {
                     </p>
 
                     {/* Action with enhanced styling */}
-                    <div className={`flex items-center justify-between ${isRTL ? '' : ''}`}>
+                    <div className={`flex items-center justify-between `}>
                       <span className="text-sm font-medium text-blue-600 group-hover:text-blue-700 bg-blue-50 group-hover:bg-blue-100 px-3 py-1 rounded-full transition-colors">
                         {t('categories.explore')}
                       </span>
@@ -294,7 +294,7 @@ export default function Categories() {
                   <p className="text-gray-600 mb-8 max-w-2xl mx-auto text-lg">
                     {t('categories.cta.description')}
                   </p>
-                  <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRTL ? '' : ''}`}>
+                  <div className={`flex flex-col sm:flex-row gap-4 justify-center `}>
                     <Link
                       to="/explore"
                       className={`inline-flex items-center px-8 py-4 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}

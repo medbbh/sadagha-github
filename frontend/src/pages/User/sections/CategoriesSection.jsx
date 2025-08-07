@@ -107,14 +107,14 @@ export function CategoriesSection() {
   return (
     <section ref={categoryRef} className="py-16 bg-gradient-to-b from-white to-blue-50">
       <div className="max-w-7xl mx-auto px-6">
-        <div className={`flex justify-between items-end mb-10 ${isRTL ? '' : ''}`}>
+        <div className={`flex justify-between items-end mb-10 `}>
           <div className={isRTL ? 'text-right' : 'text-left'}>
             <h2 className="text-3xl font-bold text-blue-600">{t('categories_section.title')}</h2>
             <p className="text-gray-600 mt-2">{t('categories_section.subtitle')}</p>
           </div>
           <a 
             href="/categories" 
-            className={`text-blue-600 font-medium flex items-center hover:underline ${isRTL ? '' : ''}`}
+            className={`text-blue-600 font-medium flex items-center hover:underline `}
           >
             {t('categories_section.viewAll')} 
             <ChevronRight className={`h-4 w-4 ${isRTL ? 'mr-1 rotate-180' : 'ml-1'}`} />

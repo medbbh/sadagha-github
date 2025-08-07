@@ -1,5 +1,5 @@
-// components/FacebookLiveInput.jsx
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Video, AlertCircle, CheckCircle, ExternalLink } from 'lucide-react';
 
 export default function FacebookLiveInput({ 
@@ -7,8 +7,10 @@ export default function FacebookLiveInput({
   onChange, 
   campaignId, 
   showOAuth = false,
-  required = false 
+  required = false,
+  isRTL = false 
 }) {
+  const { t } = useTranslation();
   const [isValidating, setIsValidating] = useState(false);
   const [validationResult, setValidationResult] = useState(null);
 
@@ -29,11 +31,14 @@ export default function FacebookLiveInput({
     if (!isValidFormat) {
       return {
         valid: false,
-        message: 'Please enter a valid Facebook Live URL'
+        message: t('organization.facebookLive.invalidUrlMessage')
       };
     }
 
-    return { valid: true, message: 'Valid Facebook Live URL format' };
+    return { 
+      valid: true, 
+      message: t('organization.facebookLive.validUrlMessage')
+    };
   };
 
   const handleUrlChange = async (e) => {
@@ -71,7 +76,7 @@ export default function FacebookLiveInput({
   const getValidationMessage = () => {
     if (validationResult?.message) {
       return (
-        <p className={`text-xs mt-1 ${
+        <p className={`text-xs mt-1 ${isRTL ? 'text-right' : 'text-left'} ${
           validationResult.valid ? 'text-green-600' : 'text-red-600'
         }`}>
           {validationResult.message}
@@ -85,12 +90,12 @@ export default function FacebookLiveInput({
     <div className="space-y-4">
       {/* Facebook Live URL Input */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Facebook Live URL {required && '*'}
+        <label className={`block text-sm font-medium text-gray-700 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+          {t('organization.facebookLive.facebookLiveUrl')} {required && '*'}
         </label>
         
         <div className="relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+          <div className={`absolute ${isRTL ? 'right-3' : 'left-3'} top-1/2 transform -translate-y-1/2`}>
             <Video className="w-4 h-4 text-gray-400" />
           </div>
           
@@ -98,8 +103,8 @@ export default function FacebookLiveInput({
             type="url"
             value={value || ''}
             onChange={handleUrlChange}
-            placeholder="https://facebook.com/your-page/live/123456789"
-            className={`w-full pl-10 pr-10 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
+            placeholder={t('organization.facebookLive.urlPlaceholder')}
+            className={`w-full ${isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'} py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors ${
               validationResult === null 
                 ? 'border-gray-300 focus:ring-blue-500 focus:border-blue-500'
                 : validationResult.valid
@@ -109,16 +114,16 @@ export default function FacebookLiveInput({
             required={required}
           />
           
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <div className={`absolute ${isRTL ? 'left-3' : 'right-3'} top-1/2 transform -translate-y-1/2`}>
             {getValidationIcon()}
           </div>
         </div>
         
         {getValidationMessage()}
         
-        <div className="text-xs text-gray-500 mt-1">
-          <p>Supported Facebook Live URL formats:</p>
-          <ul className="list-disc list-inside mt-1 space-y-1">
+        <div className={`text-xs text-gray-500 mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+          <p>{t('organization.facebookLive.supportedFormats')}</p>
+          <ul className={`list-disc mt-1 space-y-1 ${isRTL ? 'list-inside text-right' : 'list-inside text-left'}`}>
             <li>facebook.com/page/live/123456789</li>
             <li>facebook.com/page/videos/123456789</li>
             <li>facebook.com/watch/?v=123456789</li>
@@ -129,11 +134,13 @@ export default function FacebookLiveInput({
 
       {/* Help Section */}
       <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
-        <h4 className="text-sm font-medium text-blue-900 mb-2">How to get your Facebook Live URL:</h4>
-        <ol className="text-xs text-blue-700 space-y-1 list-decimal list-inside">
-          <li>Start a live stream on your Facebook page</li>
-          <li>Copy the URL from your browser or the "Share" button</li>
-          <li>Paste the URL here to connect it to your campaign</li>
+        <h4 className={`text-sm font-medium text-blue-900 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+          {t('organization.facebookLive.howToGetUrl')}
+        </h4>
+        <ol className={`text-xs text-blue-700 space-y-1 ${isRTL ? 'list-decimal list-inside text-right' : 'list-decimal list-inside text-left'}`}>
+          <li>{t('organization.facebookLive.step1')}</li>
+          <li>{t('organization.facebookLive.step2')}</li>
+          <li>{t('organization.facebookLive.step3')}</li>
         </ol>
         
         <div className="mt-3">
@@ -141,10 +148,10 @@ export default function FacebookLiveInput({
             href="https://www.facebook.com/help/167417030499767"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center text-xs text-blue-600 hover:text-blue-800"
+            className={`inline-flex items-center text-xs text-blue-600 hover:text-blue-800 `}
           >
-            <ExternalLink className="w-3 h-3 mr-1" />
-            Learn how to go live on Facebook
+            <ExternalLink className={`w-3 h-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+            {t('organization.facebookLive.learnMore')}
           </a>
         </div>
       </div>

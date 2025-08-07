@@ -121,7 +121,7 @@ export default function OrganizationsList() {
       {/* Content */}
       <div className="p-5">
         {/* Profile Image and Name */}
-        <div className={`flex items-center mb-3 ${isRTL ? '' : ''}`}>
+        <div className={`flex items-center mb-3 `}>
           <div className="w-18 h-18 z-20 rounded-full overflow-hidden border-3 border-white -mt-8 shadow-sm bg-white flex-shrink-0">
             {org.profile_image_url ? (
               <img
@@ -150,13 +150,13 @@ export default function OrganizationsList() {
         {/* Contact Info */}
         <div className="space-y-2 mb-4">
           {org.address && (
-            <div className={`flex items-center text-xs text-gray-500 ${isRTL ? '' : ''}`}>
+            <div className={`flex items-center text-xs text-gray-500 `}>
               <MapPin className={`w-3 h-3 ${isRTL ? 'ml-1.5' : 'mr-1.5'} flex-shrink-0`} />
               <span className="truncate">{org.address}</span>
             </div>
           )}
           {org.phone_number && (
-            <div className={`flex items-center text-xs text-gray-500 ${isRTL ? '' : ''}`}>
+            <div className={`flex items-center text-xs text-gray-500 `}>
               <Phone className={`w-3 h-3 ${isRTL ? 'ml-1.5' : 'mr-1.5'} flex-shrink-0`} />
               <span>{org.phone_number}</span>
             </div>
@@ -194,7 +194,7 @@ export default function OrganizationsList() {
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className={`flex items-start justify-between ${isRTL ? '' : ''}`}>
+          <div className={`flex items-start justify-between `}>
             <div className="flex-1">
               <div className="flex items-center mb-2">
                 <h3 className="text-xl font-semibold text-gray-900">
@@ -212,7 +212,7 @@ export default function OrganizationsList() {
               </p>
               
               {/* Contact Details */}
-              <div className={`flex flex-wrap gap-4 text-sm text-gray-500 ${isRTL ? '' : ''}`}>
+              <div className={`flex flex-wrap gap-4 text-sm text-gray-500 `}>
                 {org.address && (
                   <div className="flex items-center">
                     <MapPin className={`w-4 h-4 ${isRTL ? 'ml-1.5' : 'mr-1.5'}`} />
@@ -296,7 +296,7 @@ export default function OrganizationsList() {
               </div>
 
               {/* View Toggle */}
-              <div className={`flex items-center ${isRTL ? '' : ''}`}>
+              <div className={`flex items-center `}>
                 {/* View Mode Toggle */}
                 <div className="flex items-center bg-gray-50 rounded-xl p-1">
                   <button
