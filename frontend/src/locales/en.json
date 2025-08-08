@@ -1578,11 +1578,9 @@
         "eventEndDateInvalid": "Event end date must be after event start date"
       }
     },
-
-
     "volunteerRequestDetail": {
       "findVolunteers": "Find Volunteers",
-      "priorityLabel" :"Priority Level",
+      "priorityLabel": "Priority Level",
       "find": "Find",
       "description": "Description",
       "eventDetails": "Event Details",
@@ -1647,50 +1645,192 @@
         "cancelled": "Cancelled"
       }
     },
-        "volunteerMatching": {
-        "title": "Find Volunteers",
-        "volunteersNeeded": "Volunteers Needed:",
-        "alreadyFound": "Already Found:",
-        "stillNeed": "Still Need:",
-        "volunteersSelected": "volunteers selected",
-        "volunteerSelected": "volunteer selected",
-        "clear": "Clear",
-        "sendInvitations": "Send Invitations",
-        "minimumMatchScore": "Minimum Match Score",
-        "allMatches": "All Matches (0%+)",
-        "goodMatches": "Good Matches (40%+)",
-        "greatMatches": "Great Matches (60%+)",
-        "perfectMatches": "Perfect Matches (80%+)",
-        "selectAll": "Select All",
-        "noMatchingVolunteers": "No matching volunteers found",
-        "noMatchingVolunteersDesc": "Try lowering the minimum match score or adjusting your request requirements.",
-        "match": "match",
-        "age": "Age:",
+    "volunteerMatching": {
+      "title": "Find Volunteers",
+      "volunteersNeeded": "Volunteers Needed:",
+      "alreadyFound": "Already Found:",
+      "stillNeed": "Still Need:",
+      "volunteersSelected": "volunteers selected",
+      "volunteerSelected": "volunteer selected",
+      "clear": "Clear",
+      "sendInvitations": "Send Invitations",
+      "minimumMatchScore": "Minimum Match Score",
+      "allMatches": "All Matches (0%+)",
+      "goodMatches": "Good Matches (40%+)",
+      "greatMatches": "Great Matches (60%+)",
+      "perfectMatches": "Perfect Matches (80%+)",
+      "selectAll": "Select All",
+      "noMatchingVolunteers": "No matching volunteers found",
+      "noMatchingVolunteersDesc": "Try lowering the minimum match score or adjusting your request requirements.",
+      "match": "match",
+      "age": "Age:",
+      "skills": "Skills",
+      "languages": "Languages",
+      "interests": "Interests",
+      "matchDetails": "Match Details",
+      "requiredSkills": "Required skills:",
+      "requiredLanguages": "Required languages:",
+      "locationMatch": "Location match",
+      "ageRequirementMet": "Age requirement met",
+      "preferredSkills": "Preferred skills:",
+      "preferredLanguages": "Preferred languages:",
+      "invitationModal": {
+        "title": "Send Invitations",
+        "description": "You're about to send invitations to",
+        "volunteers": "volunteers.",
+        "personalMessage": "Personal Message (Optional)",
+        "messagePlaceholder": "Add a personal message to make your invitation more appealing...",
+        "charactersLimit": "characters",
+        "cancel": "Cancel",
+        "sending": "Sending...",
+        "send": "Send Invitations"
+      },
+      "validationErrors": {
+        "selectVolunteer": "Please select at least one volunteer"
+      },
+      "successMessage": "Successfully sent invitations to {{count}} volunteers!"
+    },
+    "invitedUsers": {
+      "title": "Invited Users",
+      "refresh": "Refresh",
+      "exportBtn": "Export",
+      "inviteMore": "Invite More",
+      "searchPlaceholder": "Search by name or email...",
+      "selected": "selected",
+      "filters": {
+        "title": "Filters",
+        "allStatuses": "All Statuses",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired",
+        "matchScore": "Match Score",
+        "location": "Location",
         "skills": "Skills",
         "languages": "Languages",
+        "dateRange": "Date Range",
+        "from": "From",
+        "to": "To",
+        "applyFilters": "Apply Filters",
+        "clearFilters": "Clear Filters",
+        "showingResults": "Showing {{count}} of {{total}} invitations"
+      },
+      "sort": {
+        "latestFirst": "Latest First",
+        "oldestFirst": "Oldest First",
+        "highestMatch": "Highest Match",
+        "lowestMatch": "Lowest Match",
+        "nameAZ": "Name A-Z",
+        "nameZA": "Name Z-A"
+      },
+      "bulkActions": {
+        "resend": "Resend",
+        "cancel": "Cancel",
+        "delete": "Delete"
+      },
+      "stats": {
+        "total": "Total Invited",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined"
+      },
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "noInvitations": {
+        "title": "No Invitations Found",
+        "filtered": "No invitations match your current filters. Try adjusting your search or filter criteria.",
+        "empty": "No invitations have been sent for this request yet. Start by finding and inviting volunteers."
+      },
+      "selectAll": "Select All",
+      "match": "match",
+      "invited": "Invited",
+      "responded": "Responded",
+      "viewProfile": "View Profile",
+      "actions": {
+        "resendInvitation": "Resend Invitation",
+        "cancelInvitation": "Cancel Invitation",
+        "viewDetails": "View Details",
+        "sendMessage": "Send Message"
+      },
+      "bulkActionMessages": {
+        "resendSuccess": "Invitations resent successfully",
+        "resendError": "Failed to resend invitations",
+        "cancelSuccess": "Invitations cancelled successfully",
+        "cancelError": "Failed to cancel invitations"
+      },
+      "confirmations": {
+        "resendTitle": "Resend Invitation",
+        "resendMessage": "Are you sure you want to resend this invitation?",
+        "cancelTitle": "Cancel Invitation",
+        "cancelMessage": "Are you sure you want to cancel this invitation? This action cannot be undone.",
+        "bulkResendTitle": "Resend Multiple Invitations",
+        "bulkResendMessage": "Are you sure you want to resend {{count}} invitations?",
+        "bulkCancelTitle": "Cancel Multiple Invitations",
+        "bulkCancelMessage": "Are you sure you want to cancel {{count}} invitations? This action cannot be undone.",
+        "confirm": "Confirm",
+        "cancel": "Cancel"
+      },
+      "timeline": {
+        "invited": "Invited",
+        "viewed": "Viewed invitation",
+        "responded": "Responded",
+        "expired": "Invitation expired",
+        "reminded": "Reminder sent"
+      },
+      "volunteerInfo": {
+        "skills": "Skills",
+        "languages": "Languages",
+        "location": "Location",
+        "experience": "Experience",
+        "availability": "Availability",
         "interests": "Interests",
-        "matchDetails": "Match Details",
-        "requiredSkills": "Required skills:",
-        "requiredLanguages": "Required languages:",
-        "locationMatch": "Location match",
-        "ageRequirementMet": "Age requirement met",
-        "preferredSkills": "Preferred skills:",
-        "preferredLanguages": "Preferred languages:",
-        "invitationModal": {
-            "title": "Send Invitations",
-            "description": "You're about to send invitations to",
-            "volunteers": "volunteers.",
-            "personalMessage": "Personal Message (Optional)",
-            "messagePlaceholder": "Add a personal message to make your invitation more appealing...",
-            "charactersLimit": "characters",
-            "cancel": "Cancel",
-            "sending": "Sending...",
-            "send": "Send Invitations"
-        },
-        "validationErrors": {
-            "selectVolunteer": "Please select at least one volunteer"
-        },
-        "successMessage": "Successfully sent invitations to {{count}} volunteers!"
+        "age": "Age",
+        "joinedDate": "Joined",
+        "completedProjects": "Completed Projects",
+        "rating": "Rating"
+      },
+      
+      "exportOptions": {
+        "csv": "Export as CSV",
+        "pdf": "Export as PDF",
+        "excel": "Export as Excel"
+      },
+      "export": {
+          "volunteerName": "Volunteer Name",
+          "status": "Status", 
+          "matchScore": "Match Score",
+          "invitedDate": "Invited Date",
+          "responseDate": "Response Date",
+          "phoneNumber": "Phone Number",
+          "email": "Email",
+          "location": "Location",
+          "skills": "Skills",
+          "languages": "Languages",
+          "notProvided": "Not Provided",
+          "notApplicable": "N/A",
+          "notResponded": "Not Responded",
+          "none": "None",
+          "filename": "invited_volunteers",
+          "success": "CSV file exported successfully",
+          "error": "Failed to export CSV file"
+      },
+      "tabs": {
+        "all": "All",
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "declined": "Declined",
+        "expired": "Expired"
+      },
+      "reminders": {
+        "sendReminder": "Send Reminder",
+        "reminderSent": "Reminder sent successfully",
+        "reminderError": "Failed to send reminder",
+        "lastReminder": "Last reminder sent"
+      }
     }
   }
 }

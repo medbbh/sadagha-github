@@ -53,6 +53,7 @@ export default function VolunteerRequestDetail() {
           volunteerRequestApi.fetchVolunteerRequestById(requestId),
           volunteerRequestApi.fetchRequestInvitations(requestId)
         ]);
+        
 
         if (requestData.status === 'fulfilled') {
           setRequest(requestData.value);

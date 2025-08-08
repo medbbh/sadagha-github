@@ -58,7 +58,7 @@ export const AuthProvider = ({ children }) => {
       const backendRole = response.data.user?.role;
       const supabaseRole = user?.user_metadata?.role;
 
-      console.log('🔄 Role sync check:', { backendRole, supabaseRole });
+      // console.log('🔄 Role sync check:', { backendRole, supabaseRole });
 
       // If roles don't match, update Supabase metadata
       if (backendRole && backendRole !== supabaseRole) {
@@ -110,7 +110,6 @@ export const AuthProvider = ({ children }) => {
         }
 
         if (session?.user && mounted) {
-          console.log('📋 User metadata:', session.user.user_metadata);
           setUser(session.user);
         } else if (mounted) {
           setUser(null);

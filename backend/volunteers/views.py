@@ -1,13 +1,18 @@
 # volunteers/views.py
 from rest_framework import viewsets, status, permissions
-from rest_framework.decorators import action
+from rest_framework.decorators import action, api_view
 from rest_framework.response import Response
 from .models import VolunteerProfile, VolunteerRequest, VolunteerInvitation, VolunteerNotification
 from django.db.models import Count, Q
-from .serializers import VolunteerProfileSerializer, VolunteerRequestSerializer, VolunteerInvitationSerializer, VolunteerNotificationSerializer, BulkInviteSerializer
+from .serializers import VolunteerProfileSerializer, VolunteerRequestSerializer, VolunteerInvitationSerializer, VolunteerNotificationSerializer, BulkInviteSerializer \
+    , ExportInvitedVolunteersSerializer
 from .services import VolunteerMatchingService, VolunteerInvitationService, VolunteerNotificationService
 import requests
-
+from django.http import HttpResponse
+import csv
+from datetime import datetime
+from django.http import HttpResponse, JsonResponse
+from django.utils.text import slugify
 
 class VolunteerProfileViewSet(viewsets.ModelViewSet):
     """ViewSet for volunteer profiles"""
@@ -455,3 +460,70 @@ class VolunteerNotificationViewSet(viewsets.ReadOnlyModelViewSet):
             'message': f'All {updated_count} notifications marked as read',
             'updated_count': updated_count
         })
+
+
+# a view to export volunteers who have accepted invitations to a CSV file
+
+
+
+def export_volunteer_invitations(request, request_id):
+    """Export only accepted volunteer invitations to CSV with clean rows"""
+    if request.method == 'GET':
+        try:
+            volunteer_request = VolunteerRequest.objects.get(id=request_id)
+        except VolunteerRequest.DoesNotExist:
+            return HttpResponse('Volunteer request not found', status=404)
+
+        invitations = VolunteerInvitation.objects.filter(
+            request=volunteer_request,
+            status='accepted'
+        ).select_related('volunteer__user')
+
+        if not invitations.exists():
+            return HttpResponse('No accepted volunteers found for this request', status=404)
+
+        serializer = ExportInvitedVolunteersSerializer(invitations, many=True)
+
+        # CSV Header with UTF-8 BOM
+        csv_data = "\ufeff"
+        csv_data += (
+            "Volunteer Name,Email,Phone,Age,Profession,Location,Skills,"
+            "Languages,Interests,Match Score,Status,Invited At,Responded At,"
+            "Organization Message,Volunteer Response\n"
+        )
+
+        for invitation in serializer.data:
+            # Format fields
+            def escape(field):
+                if not field:
+                    return ""
+                field = str(field).replace('"', '""')
+                return f'"{field}"' if any(c in field for c in [',', '\n', '"']) else field
+
+            csv_data += ",".join([
+                escape(invitation.get('volunteer_name')),
+                escape(invitation.get('volunteer_email')),
+                escape(invitation.get('volunteer_phone')),
+                str(invitation.get('volunteer_age') or ''),
+                escape(invitation.get('volunteer_profession')),
+                escape(invitation.get('volunteer_location')),
+                escape(", ".join(invitation.get('volunteer_skills', []))),
+                escape(", ".join(invitation.get('volunteer_languages', []))),
+                escape(", ".join(invitation.get('volunteer_interests', []))),
+                str(invitation.get('match_score') or ''),
+                invitation.get('status') or '',
+                invitation.get('invited_at', '')[:19],
+                (invitation.get('responded_at') or '')[:19],
+                escape(invitation.get('message')),
+                escape(invitation.get('response_message')),
+            ]) + "\n"
+
+        # Clean file name: program_title_YYYY-MM-DD.csv
+        program_title = volunteer_request.title or "volunteer_export"
+        safe_title = slugify(program_title)
+        date_str = datetime.now().strftime('%Y-%m-%d')
+        filename = f"{safe_title}_{date_str}.csv"
+
+        response = HttpResponse(csv_data, content_type='text/csv; charset=utf-8')
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        return response

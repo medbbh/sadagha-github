@@ -118,10 +118,10 @@ def register_user(request):
 def check_user_exists(request):
     """
     Check if user exists in Django database
-    """
-    print("=== CHECK USER EXISTS DEBUG ===")
-    print(f"Request user: {request.user}")
-    print(f"Has supabase_payload: {hasattr(request.user, 'supabase_payload')}")
+    # """
+    # print("=== CHECK USER EXISTS DEBUG ===")
+    # print(f"Request user: {request.user}")
+    # print(f"Has supabase_payload: {hasattr(request.user, 'supabase_payload')}")
     
     # Extract email from the authenticated payload
     if hasattr(request.user, 'supabase_payload'):

@@ -200,6 +200,7 @@ class VolunteerInvitationSerializer(serializers.ModelSerializer):
     organization_name = serializers.SerializerMethodField()
     
     volunteer_name = serializers.CharField(source='volunteer.user.get_full_name', read_only=True)
+    volunteer_tel = serializers.CharField(source='volunteer.phone', read_only=True)
     event_date = serializers.DateTimeField(source='request.event_date', read_only=True)
     event_end_date = serializers.DateTimeField(source='request.event_end_date', read_only=True)
     duration_hours = serializers.IntegerField(source='request.duration_hours', read_only=True)
@@ -214,7 +215,7 @@ class VolunteerInvitationSerializer(serializers.ModelSerializer):
             'id', 'request', 'volunteer', 'status', 'match_score',
             'message', 'response_message', 'invited_at', 'responded_at', 'expires_at',
             # Read-only computed fields
-            'request_title', 'request_description', 'organization_name', 'volunteer_name',
+            'request_title', 'request_description', 'organization_name', 'volunteer_name','volunteer_tel',
             'event_date', 'event_end_date', 'duration_hours',
             # Campaign fields
             'campaign_id', 'campaign_title'
@@ -271,7 +272,6 @@ class BulkInviteSerializer(serializers.Serializer):
         
         return value
 
-
 class VolunteerNotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = VolunteerNotification
@@ -280,3 +280,90 @@ class VolunteerNotificationSerializer(serializers.ModelSerializer):
             'invitation', 'request', 'is_read', 'created_at'
         ]
         read_only_fields = ['id', 'created_at']
+
+
+# a serializer for exporting invited volunteers that has accepted invitations
+class ExportInvitedVolunteersSerializer(serializers.ModelSerializer):
+    # Volunteer basic info
+    volunteer_name = serializers.CharField(source='volunteer.user.get_full_name', read_only=True)
+    volunteer_email = serializers.EmailField(source='volunteer.user.email', read_only=True)
+    volunteer_phone = serializers.CharField(source='volunteer.phone', read_only=True)
+    volunteer_age = serializers.IntegerField(source='volunteer.age', read_only=True)
+    volunteer_profession = serializers.CharField(source='volunteer.profession', read_only=True)
+    
+    # Volunteer location (from JSON data)
+    volunteer_location = serializers.SerializerMethodField()
+    volunteer_skills = serializers.SerializerMethodField()
+    volunteer_languages = serializers.SerializerMethodField()
+    volunteer_interests = serializers.SerializerMethodField()
+    
+    # Request/Program info
+    request_id = serializers.IntegerField(source='request.id', read_only=True)
+    request_title = serializers.CharField(source='request.title', read_only=True)
+    request_description = serializers.CharField(source='request.description', read_only=True)
+    organization_name = serializers.CharField(source='request.organization.get_full_name', read_only=True)
+    
+    # Campaign info (if exists)
+    campaign_name = serializers.CharField(source='request.campaign.name', read_only=True, allow_null=True)
+    campaign_description = serializers.CharField(source='request.campaign.description', read_only=True, allow_null=True)
+    
+    # Event details
+    event_date = serializers.DateTimeField(source='request.event_date', read_only=True)
+    event_end_date = serializers.DateTimeField(source='request.event_end_date', read_only=True, allow_null=True)
+    duration_hours = serializers.IntegerField(source='request.duration_hours', read_only=True)
+    
+    # Invitation details
+    match_score = serializers.FloatField(read_only=True)
+    status = serializers.CharField(read_only=True)
+    invited_at = serializers.DateTimeField(read_only=True)
+    responded_at = serializers.DateTimeField(read_only=True, allow_null=True)
+    message = serializers.CharField(read_only=True)
+    response_message = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = VolunteerInvitation
+        fields = [
+            'id', 'request_id', 'request_title', 'request_description', 'organization_name',
+            'campaign_name', 'campaign_description', 'event_date', 'event_end_date', 'duration_hours',
+            'volunteer_name', 'volunteer_email', 'volunteer_phone', 'volunteer_age', 'volunteer_profession',
+            'volunteer_location', 'volunteer_skills', 'volunteer_languages', 'volunteer_interests',
+            'match_score', 'status', 'invited_at', 'responded_at', 'message', 'response_message'
+        ]
+
+    def get_volunteer_location(self, obj):
+        """Get volunteer locations from JSON data"""
+        try:
+            locations_data = obj.volunteer.get_available_locations_data()
+            if locations_data:
+                if isinstance(locations_data, list):
+                    # Extract names from location objects
+                    names = []
+                    for loc in locations_data:
+                        if isinstance(loc, dict) and 'name' in loc:
+                            names.append(loc['name'])
+                        elif isinstance(loc, str):
+                            names.append(loc)
+                        else:
+                            names.append(str(loc))
+                    return ', '.join(names)
+                elif isinstance(locations_data, dict):
+                    # Single location object
+                    return locations_data.get('name', str(locations_data))
+                else:
+                    return str(locations_data)
+            return ""
+        except Exception as e:
+            print(f"Error parsing location data: {e}")
+            return ""
+
+    def get_volunteer_skills(self, obj):
+        """Get volunteer skills as list"""
+        return obj.volunteer.get_skills_list()
+
+    def get_volunteer_languages(self, obj):
+        """Get volunteer languages as list"""
+        return obj.volunteer.get_languages_list()
+
+    def get_volunteer_interests(self, obj):
+        """Get volunteer interests as list"""
+        return obj.volunteer.get_interests_list()

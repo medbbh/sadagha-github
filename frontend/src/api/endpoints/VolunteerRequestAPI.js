@@ -385,6 +385,46 @@ export const createNotificationWebSocket = (onMessage, onError, onClose) => {
   }
 };
 
+// function for the exporting volunteer invitations to CSV
+export const exportVolunteerInvitationsToCSV = async (requestId) => {
+  try {
+    const response = await api.get(`/volunteers/invitations/${requestId}/export/`, {
+      responseType: 'blob', // Tell Axios we expect a binary file (CSV)
+    });
+
+    // Step 1: Inspect the content
+    const blob = response;
+
+    // Optional but helpful: log content before creating blob
+    const text = await blob.text();
+    console.log("📄 CSV content preview:\n", text.slice(0, 300));
+
+    // Step 2: Create CSV blob from plain text
+    const csvBlob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
+
+    // Step 3: Create a download link
+    const timestamp = new Date().toISOString().split('T')[0];
+    const filename = `accepted_volunteers_${requestId}_${timestamp}.csv`;
+
+    const url = window.URL.createObjectURL(csvBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+
+    // Step 4: Cleanup
+    link.remove();
+    window.URL.revokeObjectURL(url);
+
+    return { success: true };
+  } catch (error) {
+    console.error("❌ CSV Export Error:", error);
+    throw error;
+  }
+};
+
+
 // ===== UTILITY FUNCTIONS =====
 
 // Format volunteer request status
@@ -518,6 +558,9 @@ export default {
   fetchUnreadNotificationCount: withErrorHandling(fetchUnreadNotificationCount),
   markNotificationsAsRead: withErrorHandling(markNotificationsAsRead),
   markAllNotificationsAsRead: withErrorHandling(markAllNotificationsAsRead),
+  
+  // Exporting invitations to CSV
+  exportVolunteerInvitationsToCSV: withErrorHandling(exportVolunteerInvitationsToCSV),
   
   // WebSocket
   createNotificationWebSocket,

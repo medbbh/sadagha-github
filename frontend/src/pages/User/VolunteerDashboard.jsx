@@ -1,4 +1,3 @@
-// VolunteerDashboard.jsx - Updated to work with your existing system
 import React, { useState, useEffect } from 'react';
 import { 
   Bell,

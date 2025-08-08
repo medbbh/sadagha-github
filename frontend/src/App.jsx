@@ -47,6 +47,7 @@ import { useEffect } from 'react';
 import HowItWorksPage from './pages/User/HowItWorksPage';
 import OrganizationsList from './components/ui/OrganizationsList';
 import OrganizationDetail from './components/ui/OrganizationDetail';
+import InvitedVolunteers from './pages/Orginazation/InvitedVolunteers';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -204,6 +205,8 @@ function App() {
         <Route path="/organization/volunteers/requests/create" element={<CreateVolunteerRequest />} />
         <Route path="/organization/volunteers/requests/:requestId/edit" element={<EditVolunteerRequest />} />
         <Route path="/organization/volunteers/requests/:requestId" element={<VolunteerRequestDetail />} />
+        <Route path="/organization/volunteers/requests/:requestId/invitations" element={<InvitedVolunteers />} />
+
         <Route path="/organization/volunteers/requests/:requestId/matches" element={<VolunteerMatching />} />     
       </Route>
 
