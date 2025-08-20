@@ -281,8 +281,10 @@ class CampaignSerializer(serializers.ModelSerializer):
 
 
 class DonationSerializer(serializers.ModelSerializer):
+    """Serializer for donation display/listing"""
     donor_display_name = serializers.ReadOnlyField()
     campaign_name = serializers.CharField(source='campaign.name', read_only=True)
+    organization_name = serializers.CharField(source='campaign.organization.name', read_only=True)
 
     class Meta:
         model = Donation
@@ -290,14 +292,12 @@ class DonationSerializer(serializers.ModelSerializer):
             'id',
             'campaign',
             'campaign_name',
+            'organization_name',
             'donor',
             'donor_display_name',
-            'donor_email',
             'donor_name',
             'amount',
-            'currency',
             'status',
-            'payment_method',
             'message',
             'is_anonymous',
             'created_at',
@@ -307,7 +307,6 @@ class DonationSerializer(serializers.ModelSerializer):
             'id',
             'donor',
             'status',
-            'payment_method',
             'created_at',
             'completed_at'
         ]
@@ -315,8 +314,55 @@ class DonationSerializer(serializers.ModelSerializer):
 
 class DonationCreateSerializer(serializers.Serializer):
     """Serializer for creating donation payment sessions"""
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2, min_value=1)
-    donor_email = serializers.EmailField(required=False, allow_blank=True)
-    donor_name = serializers.CharField(max_length=255, required=False, allow_blank=True)
-    message = serializers.CharField(required=False, allow_blank=True)
-    is_anonymous = serializers.BooleanField(default=False)
+    amount = serializers.DecimalField(
+        max_digits=10, 
+        decimal_places=2, 
+        min_value=1,
+        error_messages={
+            'min_value': 'Amount must be at least 1 MRU',
+            'invalid': 'Please enter a valid amount'
+        }
+    )
+
+    donor_name = serializers.CharField(
+        max_length=255, 
+        required=False, 
+        allow_blank=True,
+        help_text="Donor's name (optional)"
+    )
+    message = serializers.CharField(
+        required=False, 
+        allow_blank=True,
+        max_length=1000,
+        help_text="Optional message to the campaign (max 1000 characters)"
+    )
+    is_anonymous = serializers.BooleanField(
+        default=False,
+        help_text="Make this donation anonymous"
+    )
+
+    def validate_amount(self, value):
+        """Additional amount validation"""
+        if 10 < value > 1000000:  # 1 million MRU limit
+            raise serializers.ValidationError("Amount cannot exceed 1,000,000 MRU")
+        return value
+
+    def validate(self, data):
+        """Cross-field validation"""
+        # If not anonymous, require either email or name
+        if not data.get('is_anonymous', False):
+            if not data.get('donor_name'):
+                raise serializers.ValidationError(
+                    "Please provide either your email or name, or make the donation anonymous"
+                )
+        return data
+
+
+class DonationStatsSerializer(serializers.Serializer):
+    """Serializer for donation statistics"""
+    total_amount = serializers.DecimalField(max_digits=15, decimal_places=2)
+    total_donations = serializers.IntegerField()
+    completed_donations = serializers.IntegerField()
+    pending_donations = serializers.IntegerField()
+    average_donation = serializers.DecimalField(max_digits=10, decimal_places=2)
+    currency = serializers.CharField(default='MRU')

@@ -1,8 +1,7 @@
 # campaign/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import CampaignViewSet, FileViewSet, CategoryViewSet, donation_webhook, payment_health_check, \
-    facebook_oauth_url, facebook_oauth_callback, user_facebook_live_videos, campaign_live_status, update_live_status    
+from .views import CampaignViewSet, FileViewSet, CategoryViewSet, facebook_oauth_url, facebook_oauth_callback, user_facebook_live_videos, campaign_live_status, update_live_status    
 
 from django.views.decorators.csrf import csrf_exempt
 
@@ -13,9 +12,6 @@ router.register(r'', CampaignViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('donation-webhook/', donation_webhook, name='donation-webhook'),
-
-    path('payment/health/', payment_health_check, name='payment-health'),
 
     path('facebook/oauth-url/', facebook_oauth_url, name='facebook-oauth-url'),
     path('facebook/oauth-callback/', facebook_oauth_callback, name='facebook-oauth-callback'),

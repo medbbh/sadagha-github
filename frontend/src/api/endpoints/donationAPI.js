@@ -1,4 +1,3 @@
-// api/endpoints/donationAPI.js - Updated with user donation functions
 import api from '../axiosConfig'; // Your axios instance
 
 export const DonationService = {
@@ -21,12 +20,23 @@ export const DonationService = {
       
     } catch (error) {
       console.error('DonationService: Error occurred:', error);
+      console.error('Request failed:', error.response?.status, error.response?.headers);
+
       
       // Your axios error interceptor transforms errors
       throw new Error(error.message || 'API call failed');
     }
   },
-
+  syncDonationStatus: async (sessionId) => {
+    try {
+      const data = await api.post('/campaigns/sync_donation_status/', {
+        session_id: sessionId
+      });
+      return { data, status: 200 };
+    } catch (error) {
+      throw new Error(error.message || 'Status sync failed');
+    }
+  },
   // Get payment status
   getPaymentStatus: async (sessionId) => {
     try {

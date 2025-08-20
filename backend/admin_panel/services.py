@@ -4,11 +4,11 @@ from django.utils import timezone
 from datetime import timedelta
 from accounts.models import User
 from campaign.models import Donation, Campaign, Category
-from organizations.models import OrganizationProfile, ManualPayment, NextPayPayment
+from organizations.models import OrganizationProfile
 from volunteers.models import VolunteerProfile, VolunteerInvitation
 from .models import AdminAction
 import logging
-from organizations.models import OrganizationProfile, WalletProvider
+from organizations.models import OrganizationProfile
 
 logger = logging.getLogger(__name__)
 
@@ -1448,14 +1448,7 @@ class FinancialManagementService:
                 'total_attempts': total_attempts,
                 'completed': completed
             }
-        
-        # Wallet provider analysis (if available)
-        wallet_providers = WalletProvider.objects.annotate(
-            manual_payment_count=Count('manualpayment'),
-            nextpay_payment_count=Count('nextpaypayment')
-        ).filter(
-            Q(manual_payment_count__gt=0) | Q(nextpay_payment_count__gt=0)
-        )
+    
         
         # Processing time analysis
         processing_times = Donation.objects.filter(
@@ -1478,13 +1471,6 @@ class FinancialManagementService:
                 'success_rate': payment_success_rates.get(item['payment_method'] or 'Unknown', {}).get('success_rate', 0)
             } for item in payment_methods],
             
-            'wallet_providers': [{
-                'name': provider.name,
-                'is_active': provider.is_active,
-                'manual_accounts': provider.manual_payment_count,
-                'nextpay_accounts': provider.nextpay_payment_count,
-                'total_accounts': provider.manual_payment_count + provider.nextpay_payment_count
-            } for provider in wallet_providers],
             
             'processing_performance': {
                 'average_processing_time_seconds': round(avg_processing_time, 2),

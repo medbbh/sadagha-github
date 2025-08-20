@@ -33,6 +33,40 @@ export default function CampaignDetail() {
     }
   };
 
+  const handleDonationSuccess = async (donationData) => {
+  // If it's a successful donation that needs refresh
+  if (donationData.shouldRefreshCampaign) {
+    try {
+      // Fetch fresh campaign data
+      const response = await fetchCampaignById(campaignId);
+      
+      // Update your campaign state with fresh data
+      setCampaign(response); // or however you manage campaign state
+      
+      // Optionally show success message
+      console.log('Campaign data refreshed after donation');
+    } catch (error) {
+      console.error('Error refreshing campaign data:', error);
+      // Fallback: optimistically update the values
+      setCampaign(prev => ({
+        ...prev,
+        current_amount: prev.current_amount + donationData.donationAmount,
+        number_of_donors: prev.number_of_donors + 1
+      }));
+    }
+  }
+  
+};
+
+const refreshCampaignData = async () => {
+  try {
+    const response = await fetchCampaignById(campaignId);
+    setCampaign(response);
+  } catch (error) {
+    console.error('Error refreshing campaign:', error);
+  }
+};
+
   useEffect(() => {
     if (campaignId) {
       loadCampaign(campaignId);
@@ -231,6 +265,8 @@ export default function CampaignDetail() {
               progress={progress}
               paymentNumbers={campaign.organization?.payment_numbers}
               formatPaymentNumber={formatPaymentNumber}
+              onDonationSuccess={handleDonationSuccess}
+              refreshCampaign={refreshCampaignData}
             />
           </div>
           

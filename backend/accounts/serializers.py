@@ -11,7 +11,7 @@ from django.db.models import Sum, Count
 class UserUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email', 'phone_number']
+        fields = ['first_name', 'last_name', 'email', 'phone_number', 'supabase_id']
         
     def validate_email(self, value):
         """Ensure email is unique"""
@@ -74,6 +74,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'phone_number',
+            'supabase_id',
             'volunteer_profile', 
             'statistics'
         ]

@@ -41,18 +41,19 @@ def register_user(request):
     """
     Register a new user after Supabase OAuth
     """
-    print("=== REGISTER USER DEBUG ===")
-    print(f"Request user: {request.user}")
-    print(f"Has supabase_payload: {hasattr(request.user, 'supabase_payload')}")
+    # print("=== REGISTER USER DEBUG ===")
+    # print(f"Request user: {request.user}")
+    # print(f"Has supabase_payload: {hasattr(request.user, 'supabase_payload')}")
     
-    # Extract email from the authenticated payload
+    # Extract email and id from the authenticated payload
     if hasattr(request.user, 'supabase_payload'):
         payload = request.user.supabase_payload
         email = payload.get("email")
-        print(f"Email from payload: {email}")
+        supabase_id = payload.get("sub")
+        # print(f"Email from payload: {email}")
     else:
         # Fallback to manual JWT decoding
-        print("Fallback to manual JWT decoding")
+        # print("Fallback to manual JWT decoding")
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
             return Response({"error": "Authorization token required"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -66,7 +67,9 @@ def register_user(request):
                 options={"verify_aud": False}
             )
             email = payload.get("email")
-            print(f"Email from manual decode: {email}")
+            supabase_id = payload.get("sub")
+            # print(f"Email from manual decode: {email}")
+            # print(f"Supabase ID from manual decode: {supabase_id}")
         except Exception as e:
             print(f"Manual decode error: {e}")
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -75,7 +78,7 @@ def register_user(request):
         return Response({"error": "Email not found in token"}, status=status.HTTP_400_BAD_REQUEST)
     
     role = request.data.get('role', 'user')
-    print(f"Role: {role}")
+    # print(f"Role: {role}")
     
     # Validate role
     if role not in ['user', 'organization']:
@@ -83,7 +86,7 @@ def register_user(request):
     
     # Check if user already exists
     if User.objects.filter(username=email).exists():
-        print("User already exists")
+        # print("User already exists")
         return Response({"error": "User already registered"}, status=status.HTTP_400_BAD_REQUEST)
     
     # Create the user
@@ -94,10 +97,12 @@ def register_user(request):
             email=email,
             role=role,
             first_name=full_name.split()[0] if full_name else "",
-            last_name=" ".join(full_name.split()[1:]) if len(full_name.split()) > 1 else ""
+            last_name=" ".join(full_name.split()[1:]) if len(full_name.split()) > 1 else "",
+            # store the id from Supabase
+            supabase_id=supabase_id
         )
         
-        print(f"User created successfully: {user.email} with role {user.role}")
+        # print(f"User created successfully: {user.email} with role {user.role}")
         
         return Response({
             "status": "User registered successfully",
@@ -109,7 +114,7 @@ def register_user(request):
         }, status=status.HTTP_201_CREATED)
         
     except Exception as e:
-        print(f"User creation error: {e}")
+        # print(f"User creation error: {e}")
         return Response({"error": f"Failed to create user: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(['POST'])
@@ -127,10 +132,11 @@ def check_user_exists(request):
     if hasattr(request.user, 'supabase_payload'):
         payload = request.user.supabase_payload
         email = payload.get("email")
-        print(f"Email from payload: {email}")
+        # print(f"Email from payload: {email}")
+        # print(f"Supabase ID from payload: {payload.get('id')}")
     else:
         # Fallback to manual JWT decoding
-        print("Fallback to manual JWT decoding")
+        # print("Fallback to manual JWT decoding")
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
             return Response({"error": "Authorization token required"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -144,16 +150,17 @@ def check_user_exists(request):
                 options={"verify_aud": False}
             )
             email = payload.get("email")
-            print(f"Email from manual decode: {email}")
+            # print(f"Email from manual decode: {email}")
+            # print(f"Supabase ID from manual decode: {payload.get('id')}")
         except Exception as e:
-            print(f"Manual decode error: {e}")
+            # print(f"Manual decode error: {e}")
             return Response({"error": "Invalid token"}, status=status.HTTP_401_UNAUTHORIZED)
 
     if not email:
         return Response({"error": "Email not found in token"}, status=status.HTTP_400_BAD_REQUEST)
     
     user_exists = User.objects.filter(username=email).exists()
-    print(f"User exists in Django: {user_exists}")
+    # print(f"User exists in Django: {user_exists}")
     
     # If user exists, also return their info
     user_data = None
@@ -165,7 +172,7 @@ def check_user_exists(request):
             "role": user.role,
             "username": user.username
         }
-        print(f"User data: {user_data}")
+        # print(f"User data: {user_data}")
     
     return Response({
         "exists": user_exists,

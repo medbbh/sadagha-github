@@ -1,12 +1,11 @@
 from rest_framework import serializers
 from accounts.models import User
 from campaign.models import Donation, Campaign, Category
-from organizations.models import OrganizationProfile, ManualPayment, NextPayPayment
+from organizations.models import OrganizationProfile
 from volunteers.models import VolunteerProfile
 from django.contrib.auth.hashers import make_password
 from django.db import models
 from django.db.models import Count, Q, Sum, Avg
-from campaign.models import DonationWebhookLog
 from django.utils import timezone
 from datetime import timedelta
 
@@ -325,17 +324,6 @@ class OrganizationVerificationSerializer(serializers.Serializer):
     notes = serializers.CharField(required=False, allow_blank=True, max_length=1000)
     reason = serializers.CharField(required=False, allow_blank=True, max_length=1000)
 
-class PaymentMethodSerializer(serializers.ModelSerializer):
-    """Serializer for payment methods"""
-    wallet_provider_name = serializers.CharField(source='wallet_provider.name', read_only=True)
-    method_type = serializers.SerializerMethodField()
-    
-    class Meta:
-        model = ManualPayment  # Base model, will work for both types
-        fields = ['id', 'wallet_provider_name', 'method_type', 'is_active', 'created_at']
-    
-    def get_method_type(self, obj):
-        return 'NextPay' if hasattr(obj, 'commercial_number') else 'Manual'
 
 class AdminCampaignSerializer(serializers.ModelSerializer):
     """Base serializer for campaign management in admin panel"""
@@ -740,20 +728,7 @@ class AdminDonationDetailSerializer(AdminDonationSerializer):
                 'timestamp': obj.completed_at,
                 'status': 'completed'
             })
-        
-        # Add webhook events if available
-        webhook_logs = DonationWebhookLog.objects.filter(
-            session_id=obj.payment_session_id
-        ).order_by('created_at')
-        
-        for log in webhook_logs:
-            timeline.append({
-                'event': f'Webhook Received - {log.payload.get("status", "unknown")}',
-                'timestamp': log.created_at,
-                'status': 'webhook',
-                'processed': log.processed,
-                'error': log.error_message
-            })
+
         
         return sorted(timeline, key=lambda x: x['timestamp'])
 

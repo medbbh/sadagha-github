@@ -9,6 +9,9 @@ class User(AbstractUser):
     )
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='user')
     phone_number = models.CharField(max_length=8, blank=True, null=True)
+    # user id from Supabase
+    supabase_id = models.CharField(max_length=100)
+    
     is_platform_admin = models.BooleanField(default=False)
 
 

@@ -233,22 +233,6 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
     }
   };
 
-  // Calculate payment methods summary
-  const getPaymentMethodsSummary = () => {
-    if (!orgProfile) return null;
-    
-    const manualCount = orgProfile.manual_payments?.filter(p => p.is_active).length || 0;
-    const nextpayCount = orgProfile.nextpay_payments?.filter(p => p.is_active).length || 0;
-    const totalActive = manualCount + nextpayCount;
-    
-    return {
-      manualCount,
-      nextpayCount,
-      totalActive,
-      hasPaymentMethods: totalActive > 0
-    };
-  };
-
   if (parentLoading || (loading && !orgProfile)) {
     return <Loading />;
   }
@@ -266,71 +250,10 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
     );
   }
 
-  const paymentSummary = getPaymentMethodsSummary();
-
   return (
     <div className={`space-y-6 ${isRTL ? 'text-right' : 'text-left'}`} dir={isRTL ? 'rtl' : 'ltr'}>
       {/* Page Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-        <div className={`flex items-center justify-between `}>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{t('organization.organizationProfileForm.title')}</h1>
-            <p className="text-sm text-gray-600 mt-1">
-              {t('organization.organizationProfileForm.subtitle')}
-            </p>
-          </div>
-          {orgProfile && (
-            <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
-              {/* Verification Status */}
-              <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
-                {orgProfile.is_verified ? (
-                  <div className={`flex items-center text-green-600 `}>
-                    <CheckCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                    <span className="text-sm font-medium">{t('organization.organizationProfileForm.verified')}</span>
-                  </div>
-                ) : (
-                  <div className={`flex items-center text-yellow-600 `}>
-                    <XCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                    <span className="text-sm font-medium">{t('organization.organizationProfileForm.pendingVerification')}</span>
-                  </div>
-                )}
-              </div>
-              
-              {/* Payment Methods Status */}
-              {paymentSummary && (
-                <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
-                  {paymentSummary.hasPaymentMethods ? (
-                    <div className={`flex items-center text-green-600 `}>
-                      <CreditCard className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                      <span className="text-sm font-medium">
-                        {paymentSummary.totalActive} {paymentSummary.totalActive !== 1 ? t('organization.organizationProfileForm.paymentMethodsPlural') : t('organization.organizationProfileForm.paymentMethods')}
-                      </span>
-                    </div>
-                  ) : (
-                    <div className={`flex items-center text-orange-600 `}>
-                      <AlertCircle className={`w-5 h-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
-                      <span className="text-sm font-medium">{t('organization.organizationProfileForm.noPaymentMethods')}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-        
-        {/* Global Error/Success Messages */}
-        {error && (
-          <div className="mt-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded text-sm">
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div className="mt-4 p-3 bg-green-100 border border-green-200 text-green-700 rounded text-sm">
-            {typeof success === 'string' ? success : t('organization.organizationProfileForm.profileUpdatedSuccess')}
-          </div>
-        )}
-      </div>
+      
 
       {/* Visual Assets Section */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
@@ -397,42 +320,6 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
             {t('organization.organizationProfileForm.organizationInformationDescription')}
           </p>
         </div>
-
-        {/* Payment Methods Summary */}
-        {paymentSummary && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <h3 className={`text-sm font-medium text-blue-900 mb-2 flex items-center `}>
-              <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('organization.organizationProfileForm.paymentMethodsSummary')}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-              <div className={`flex items-center `}>
-                <Phone className={`w-4 h-4 text-blue-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                <span className="text-blue-700">
-                  <strong>{paymentSummary.manualCount}</strong> {paymentSummary.manualCount !== 1 ? t('organization.organizationProfileForm.manualPaymentsPlural') : t('organization.organizationProfileForm.manualPayments')}
-                </span>
-              </div>
-              <div className={`flex items-center `}>
-                <Building2 className={`w-4 h-4 text-purple-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                <span className="text-blue-700">
-                  <strong>{paymentSummary.nextpayCount}</strong> {paymentSummary.nextpayCount !== 1 ? t('organization.organizationProfileForm.nextpayPaymentsPlural') : t('organization.organizationProfileForm.nextpayPayments')}
-                </span>
-              </div>
-              <div className={`flex items-center `}>
-                <CreditCard className={`w-4 h-4 text-green-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                <span className="text-blue-700">
-                  <strong>{paymentSummary.totalActive}</strong> {t('organization.organizationProfileForm.totalActive')}
-                </span>
-              </div>
-            </div>
-            {!paymentSummary.hasPaymentMethods && (
-              <div className="mt-3 p-2 bg-orange-100 border border-orange-200 rounded text-sm text-orange-800">
-                <AlertCircle className={`w-4 h-4 inline ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                {t('organization.organizationProfileForm.addPaymentMethodsWarning')}
-              </div>
-            )}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -689,17 +576,6 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               </div>
             )}
             
-            {/* Payment Methods Preview */}
-            {paymentSummary && paymentSummary.hasPaymentMethods && (
-              <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-                <div className={`flex items-center text-green-700 `}>
-                  <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-                  <span className="text-sm font-medium">
-                    {paymentSummary.totalActive} {t('organization.organizationProfileForm.paymentMethodsAvailable')} {paymentSummary.totalActive !== 1 ? t('organization.organizationProfileForm.paymentMethodsPlural') : t('organization.organizationProfileForm.paymentMethods')}
-                  </span>
-                </div>
-              </div>
-            )}
           </div>
         </div>
         
@@ -713,9 +589,6 @@ export default function OrganizationProfileForm({ orgProfile = null, onSave = nu
               )}
               {!orgProfile?.cover_image_url && (
                 <span className="text-orange-600">{t('organization.organizationProfileForm.addCoverImage')}</span>
-              )}
-              {!paymentSummary?.hasPaymentMethods && (
-                <span className="text-red-600">{t('organization.organizationProfileForm.addPaymentMethods')}</span>
               )}
             </div>
           </div>

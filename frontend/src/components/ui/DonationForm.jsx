@@ -6,13 +6,14 @@ import DonationService from '../../api/endpoints/donationAPI';
 import { useNavigate } from 'react-router-dom';
 import CelebrationAnimation from './CelebrationOverlay';
 
-export default function DonationForm({ 
-  campaignId: propCampaignId, 
-  currentAmount, 
-  targetAmount, 
-  donorsCount, 
+export default function DonationForm({
+  campaignId: propCampaignId,
+  currentAmount,
+  targetAmount,
+  donorsCount,
   progress,
-  onDonationSuccess 
+  onDonationSuccess,
+  refreshCampaign
 }) {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
@@ -32,6 +33,7 @@ export default function DonationForm({
   const [showCelebration, setShowCelebration] = useState(false);
   const [paymentUrl, setPaymentUrl] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
+  const [pollingMessage, setPollingMessage] = useState('');
 
   // Validation
   const validateForm = () => {
@@ -41,9 +43,7 @@ export default function DonationForm({
     if (donationAmount < 1) {
       return t('donationForm.validationMinAmount');
     }
-    if (donorEmail && !/\S+@\S+\.\S+/.test(donorEmail)) {
-      return t('donationForm.validationEmail');
-    }
+
     return null;
   };
 
@@ -60,16 +60,15 @@ export default function DonationForm({
 
     // For testing purposes, show celebration immediately
     // Remove this setTimeout and uncomment the actual payment logic when ready
-    setTimeout(() => {
-      setIsLoading(false);
-      setShowCelebration(true);
-    }, 1000);
+    // setTimeout(() => {
+    //   setIsLoading(false);
+    //   setShowCelebration(true);
+    // }, 1000);
 
-    /* 
+
     // UNCOMMENT THIS WHEN PAYMENT IS READY
     const donationData = {
       amount: parseFloat(donationAmount),
-      donor_email: donorEmail || 'anonymous@sada9a.com',
       donor_name: donorName || '',
       message: message || '',
       is_anonymous: isAnonymous
@@ -79,42 +78,45 @@ export default function DonationForm({
 
     try {
       const response = await DonationService.createDonation(campaignId, donationData);
-      
+
       console.log('Full response object:', response);
-      
+
       const data = response.data;
       console.log('Donation response data:', data);
 
       if (data && data.success) {
         console.log('Donation session created successfully');
-        
-        if (!data.widget_url || !data.session_id) {
+
+        if (!data.payment_url || !data.session_id) {
           throw new Error('Invalid payment session data received');
         }
-        
-        setPaymentUrl(data.widget_url);
-        
+
+        setPaymentUrl(data.payment_url);
+
         const donationInfo = {
           donation_id: data.donation_id,
           session_id: data.session_id,
           amount: donationAmount
         };
-        
-        const popupWorked = tryOpenPopup(data.widget_url, data.session_id, donationInfo);
+
+        const popupWorked = tryOpenPopup(data.payment_url, data.session_id, donationInfo);
         if (!popupWorked) {
           setShowPaymentOptions(true);
         }
+
+        // Start polling for payment status
+        pollPaymentStatus(data.session_id, data.donation_id);
       } else {
         const errorMessage = data?.error || 'Failed to create donation session';
         console.error('Donation creation failed:', errorMessage);
         setError(errorMessage);
       }
-      
+
     } catch (err) {
       console.error('Donation error:', err);
-      
+
       let errorMessage = 'An unexpected error occurred';
-      
+
       if (err.message) {
         errorMessage = err.message;
       } else if (err.status) {
@@ -135,18 +137,59 @@ export default function DonationForm({
             errorMessage = `Server error (${err.status}). Please try again.`;
         }
       }
-      
+
       setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
-    */
+
+  };
+
+  const pollPaymentStatus = async (sessionId, donationId) => {
+    const maxAttempts = 30; // Poll for 5 minutes
+    let attempts = 0;
+
+    setPollingMessage('Checking payment status...');
+
+    const poll = async () => {
+      try {
+        const response = await DonationService.syncDonationStatus(sessionId);
+        const data = response.data;
+
+        console.log(`Polling attempt ${attempts + 1}: Status = ${data.status}`);
+
+        if (data.status === 'completed') {
+          setPollingMessage('');
+          setShowCelebration(true);
+          console.log('Payment completed successfully!');
+          return;
+        } else if (data.status === 'failed' || data.status === 'cancelled') {
+          setPollingMessage('');
+          setError('Payment was not completed');
+          return;
+        }
+
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(poll, 10000); // Poll every 10 seconds
+        } else {
+          setPollingMessage('');
+          setError('Payment status check timed out. Please contact support if payment was completed.');
+        }
+      } catch (error) {
+        console.error('Error polling payment status:', error);
+        setPollingMessage('');
+        setError('Could not check payment status');
+      }
+    };
+
+    poll();
   };
 
   const tryOpenPopup = (paymentUrl, sessionId, donationInfo) => {
     try {
       console.log('Attempting to open payment popup:', paymentUrl);
-      
+
       const popup = window.open(
         paymentUrl,
         'nextremitly-payment',
@@ -160,7 +203,7 @@ export default function DonationForm({
 
       setupPopupHandlers(popup, sessionId, donationInfo);
       return true;
-      
+
     } catch (error) {
       console.log('Error opening popup:', error);
       return false;
@@ -174,7 +217,7 @@ export default function DonationForm({
       if (popup.closed) {
         clearInterval(checkClosed);
         console.log('Payment popup closed');
-        
+
         if (!isPaymentCompleted) {
           setTimeout(() => {
             checkPaymentStatusAndRedirect(sessionId, donationInfo);
@@ -185,36 +228,36 @@ export default function DonationForm({
 
     const messageHandler = (event) => {
       console.log('Received message from popup:', event.data);
-      
+
       const allowedOrigins = [
-        'http://localhost:5173', 
+        'https://next-remitly-frontend.vercel.app',
         'https://nextremitly.com',
         window.location.origin
       ];
-      
+
       if (!allowedOrigins.includes(event.origin)) {
         console.warn('Unauthorized message origin:', event.origin);
         return;
       }
-      
+
       if (event.data.type === 'payment-completed' || event.data.type === 'payment-success') {
         isPaymentCompleted = true;
-        
+
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
-        
+
         console.log('Payment completed via message - popup closed, redirecting main tab');
-        
+
         handlePaymentSuccess(donationInfo);
-        
+
       } else if (event.data.type === 'payment-failed') {
         popup.close();
         clearInterval(checkClosed);
         window.removeEventListener('message', messageHandler);
         setError('Payment failed. Please try again.');
         setShowPaymentOptions(false);
-        
+
       } else if (event.data.type === 'payment-cancelled') {
         popup.close();
         clearInterval(checkClosed);
@@ -239,12 +282,12 @@ export default function DonationForm({
   const checkPaymentStatusAndRedirect = async (sessionId, donationInfo) => {
     try {
       console.log('Checking payment status for session:', sessionId);
-      
+
       const response = await fetch(`/api/campaigns/payment_status/?session_id=${sessionId}`);
       if (response.ok) {
         const statusData = await response.json();
         console.log('Payment status:', statusData);
-        
+
         if (statusData.status === 'completed' || statusData.status === 'success') {
           handlePaymentSuccess(donationInfo);
         } else if (statusData.status === 'failed') {
@@ -267,27 +310,29 @@ export default function DonationForm({
 
   const handlePaymentSuccess = (donationInfo) => {
     console.log('Payment successful, showing celebration...');
-    
+
     setError(null);
     setIsLoading(false);
     setShowPaymentOptions(false);
-    
-    // Show celebration
     setShowCelebration(true);
-    
+
+    if (refreshCampaign) {
+      refreshCampaign();
+    }
+    // Update parent component with new donation
     onDonationSuccess?.({
       donation_id: donationInfo.donation_id,
       amount: donationAmount,
       donor_name: isAnonymous ? 'Anonymous' : donorName,
-      message: isAnonymous ? null : message
-    });
-    
+      message: isAnonymous ? null : message,
+       });
+
     resetForm();
   };
 
   const handleCelebrationClose = () => {
     setShowCelebration(false);
-    
+
     // Redirect after celebration closes
     // setTimeout(() => {
     //   redirectToSuccessPage({
@@ -310,12 +355,12 @@ export default function DonationForm({
       });
       return;
     }
-    
-    const successUrl = `/campaign/${campaignId}/donation/success?` + 
+
+    const successUrl = `/campaign/${campaignId}/donation/success?` +
       `donation_id=${donationInfo.donation_id}&` +
       `amount=${donationAmount}&` +
       `donor_name=${encodeURIComponent(isAnonymous ? 'Anonymous' : donorName || 'Anonymous')}`;
-    
+
     window.location.href = successUrl;
   };
 
@@ -323,9 +368,9 @@ export default function DonationForm({
     if (paymentUrl) {
       const newTab = window.open(paymentUrl, '_blank');
       setShowPaymentOptions(false);
-      
+
       setShowSuccessMessage(true);
-      
+
       setTimeout(() => {
         setShowSuccessMessage(false);
         redirectToSuccessPage({
@@ -370,6 +415,7 @@ export default function DonationForm({
     );
   }
 
+
   const quickAmounts = [10, 25, 50, 100, 250, 500];
 
   return (
@@ -383,6 +429,7 @@ export default function DonationForm({
         intensity="medium"
       />
 
+
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
           <Heart className={`w-6 h-6 text-red-500 ${isRTL ? 'ms-2' : 'me-2'}`} />
@@ -390,7 +437,7 @@ export default function DonationForm({
         </h2>
         <p className="text-gray-600">{t('donationForm.makeDifference')}</p>
       </div>
-      
+
       {/* Success Message */}
       {showSuccessMessage && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
@@ -403,36 +450,7 @@ export default function DonationForm({
       )}
 
       {/* Payment Options */}
-      {showPaymentOptions && (
-        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-          <div className="flex items-center mb-3">
-            <AlertCircle className={`w-5 h-5 text-blue-600 ${isRTL ? 'ms-2' : 'me-2'}`} />
-            <p className="text-blue-800 font-medium">{t('donationForm.choosePaymentMethod')}</p>
-          </div>
-          <p className="text-blue-700 text-sm mb-4">
-            {t('donationForm.browserBlockedPopup')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              onClick={retryPopup}
-              className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
-            >
-              <CreditCard className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
-              {t('donationForm.tryPopupAgain')}
-            </button>
-            <button
-              onClick={openInNewTab}
-              className="flex-1 bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors flex items-center justify-center"
-            >
-              <ExternalLink className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
-              {t('donationForm.openInNewTab')}
-            </button>
-          </div>
-          <p className="text-xs text-blue-600 mt-2">
-            {t('donationForm.enablePopupsTip')}
-          </p>
-        </div>
-      )}
+
 
       {/* Progress Summary */}
       <div className="mb-6 bg-gray-50 border border-gray-200 p-5 rounded-xl">
@@ -448,14 +466,14 @@ export default function DonationForm({
             <p className="text-sm text-gray-600">{t('donationForm.funded')}</p>
           </div>
         </div>
-        
+
         <div className="w-full bg-gray-200 rounded-full h-4 mb-3 overflow-hidden">
-          <div 
-            className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm" 
+          <div
+            className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm"
             style={{ width: `${Math.min(progress || 0, 100)}%` }}
           />
         </div>
-        
+
         <div className="flex justify-between text-sm text-gray-700">
           <span className="flex items-center">
             <User className={`w-4 h-4 ${isRTL ? 'ms-1' : 'me-1'}`} />
@@ -464,6 +482,14 @@ export default function DonationForm({
           <span>{(targetAmount || 0) - (currentAmount || 0)} MRU {t('donationForm.toGo')}</span>
         </div>
       </div>
+
+      {/* Polling Message */}
+      {pollingMessage && (
+        <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+          <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 ${isRTL ? 'ms-2' : 'me-2'}`}></div>
+          <p className="text-sm text-blue-700">{pollingMessage}</p>
+        </div>
+      )}
 
       {/* Error Display */}
       {error && (
@@ -476,58 +502,57 @@ export default function DonationForm({
       {/* Donation Amount Selection */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('donationForm.chooseDonationAmount')}</h3>
-        
+
         <div className="grid grid-cols-3 gap-3 mb-4">
           {quickAmounts.map((amount) => (
             <button
               key={amount}
               onClick={() => setDonationAmount(amount)}
-              className={`py-3 px-2 rounded-lg border-2 transition-all duration-200 font-medium text-sm ${
-                donationAmount === amount 
-                  ? 'border-blue-500 bg-blue-50 text-blue-700 transform scale-105 shadow-md' 
-                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm'
-              }`}
+              className={`py-3 px-2 rounded-lg border-2 transition-all duration-200 font-medium text-sm ${donationAmount === amount
+                ? 'border-blue-500 bg-blue-50 text-blue-700 transform scale-105 shadow-md'
+                : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm'
+                }`}
             >
               {amount} MRU
             </button>
           ))}
         </div>
-        
-<div>
-  <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
-    {t('donationForm.customAmount')}
-  </label>
-  <div className="relative">
-    {/* Dollar Sign Icon */}
-    <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
-      <DollarSign className="h-5 w-5 text-gray-400" />
-    </div>
-    
-    {/* Input Field */}
-    <input
-      type="number"
-      id="customAmount"
-      value={donationAmount}
-      onChange={(e) => setDonationAmount(Number(e.target.value))}
-      className={`block w-full ${isRTL ? 'pr-10 pl-16' : 'pl-10 pr-16'} py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
-      placeholder={t('donationForm.enterAmount')}
-      min="1"
-      step="0.01"
-      dir={isRTL ? 'rtl' : 'ltr'}
-    />
-    
-    {/* Currency Code */}
-    <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
-      <span className="text-gray-500 text-sm font-medium">MRU</span>
-    </div>
-  </div>
-</div>
+
+        <div>
+          <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
+            {t('donationForm.customAmount')}
+          </label>
+          <div className="relative">
+            {/* Dollar Sign Icon */}
+            <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
+              <DollarSign className="h-5 w-5 text-gray-400" />
+            </div>
+
+            {/* Input Field */}
+            <input
+              type="number"
+              id="customAmount"
+              value={donationAmount}
+              onChange={(e) => setDonationAmount(Number(e.target.value))}
+              className={`block w-full ${isRTL ? 'pr-10 pl-16' : 'pl-10 pr-16'} py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
+              placeholder={t('donationForm.enterAmount')}
+              min="1"
+              step="0.01"
+              dir={isRTL ? 'rtl' : 'ltr'}
+            />
+
+            {/* Currency Code */}
+            <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+              <span className="text-gray-500 text-sm font-medium">MRU</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Donor Information */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('donationForm.donorInformation')}</h3>
-        
+
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -548,7 +573,7 @@ export default function DonationForm({
               </div>
             </div>
           </div>
-          
+
           <div>
             <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
               {t('donationForm.messageOfSupport')}
@@ -566,7 +591,7 @@ export default function DonationForm({
               />
             </div>
           </div>
-          
+
           <div className="flex items-center">
             <input
               type="checkbox"
@@ -583,7 +608,7 @@ export default function DonationForm({
       </div>
 
       {/* Donation Button */}
-      <button 
+      <button
         onClick={handleDonate}
         disabled={isLoading || donationAmount < 1 || !campaignId}
         className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center text-lg"
@@ -627,7 +652,7 @@ export default function DonationForm({
           </div>
         </div>
         <p className="text-xs text-gray-500 mt-2">
-          {t('donationForm.poweredBy')} <span className="font-semibold text-blue-600">Nextremitly</span> - 
+          {t('donationForm.poweredBy')} <span className="font-semibold text-blue-600">Nextremitly</span> -
           {t('donationForm.supportingBanks')}
         </p>
       </div>

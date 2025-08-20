@@ -974,7 +974,21 @@
       "completeSetup": "Complete Your Setup",
       "addOrgName": "Add your organization name",
       "addOrgDescription": "Add your organization description",
-      "completeProfile": "Complete Profile"
+      "completeProfile": "Complete Profile",
+      "paymentSetupRequired": "Payment Setup Required",
+      "setupNextRemitlyDescription": "Configure your NextRemitly API key to start receiving donations directly to your account.",
+      "setupPayments": "Setup Payments",
+      "paymentStatus": "Payment Status",
+      "nextRemitlyConnected": "NextRemitly Connected",
+      "readyToReceiveDonations": "Ready to receive donations",
+      "paymentNotConfigured": "Payment Not Configured",
+      "nextRemitlySetupDescription": "Connect your NextRemitly account to enable secure payment processing.",
+      "nextRemitlySteps": "1. Sign up with NextRemitly 2. Get your API key 3. Enter it here",
+      "setupNextRemitly": "Setup NextRemitly",
+      "visitNextRemitly": "Visit NextRemitly",
+      "managePayments": "Manage Payments",
+      "setupPaymentMethod": "Setup payment method",
+      "paymentMethod": "NextRemitly" 
     },
     "campaigns": {
       "myCampaigns": "My Campaigns",
@@ -1238,15 +1252,17 @@
         }
       },
       "stats": {
-        "manualPayments": "Manual Payments",
-        "nextpayMethods": "NextPay Methods",
-        "verifiedStatus": "Verified Status",
-        "memberSince": "Member Since"
+          "nextRemitlyConfigured": "NextRemitly Setup",
+          "paymentStatus": "Payment Status",
+          "verifiedStatus": "Verification Status",
+          "memberSince": "Member Since"
       }
     },
     "common": {
-      "yes": "Yes",
-      "no": "No"
+        "active": "Actif",
+        "inactive": "Inactive",
+        "yes": "Yes",
+        "no": "No"
     },
     "organizationProfileForm": {
       "title": "Organization Profile",
@@ -1317,49 +1333,115 @@
       "profileUpdateFailed": "Failed to update organization profile",
       "profileIdNotFound": "Profile ID not found"
     },
-    "paymentMethods": {
-      "title": "Payment Methods",
-      "description": "Manage your organization's payment methods for receiving donations",
-      "addManual": "Add Manual Payment",
-      "addNextPay": "Add NextPay",
-      "noManual": "No Manual Payments",
-      "noManualDescription": "Add manual payment methods where donors send money and provide proof",
-      "noNextPay": "No NextPay Payments",
-      "noNextPayDescription": "Add NextPay payment methods for automatic instant payments",
-      "maxReached": "Maximum of {maxPayments} payment methods allowed (across all types)",
-      "active": "Active",
-      "inactive": "Inactive",
-      "wallet": "Wallet",
-      "accountName": "Account Name",
-      "addedOn": "Added on",
-      "deactivate": "Deactivate",
-      "activate": "Activate",
-      "edit": "Edit",
-      "delete": "Delete",
-      "inactiveWarning": "This payment method is inactive and won't receive donations.",
-      "phoneNumber": "Phone Number",
-      "commercialNumber": "Commercial Number",
-      "selectWallet": "Select a wallet provider",
-      "phonePlaceholder": "Enter phone number",
-      "phoneHelp": "The phone number donors will send money to",
-      "commercialPlaceholder": "Enter commercial number",
-      "commercialHelp": "Your commercial account number",
-      "accountNamePlaceholder": "Enter account holder name",
-      "cancel": "Cancel",
-      "save": "Save",
-      "update": "Update",
-      "add": "Add",
-      "deleteConfirm": "Are you sure you want to delete this payment method?",
-      "verified": "Verified",
-      "manualPayment": "Manual Payment",
-      "nextPayPayment": "NextPay Payment",
-      "phoneNumberRequired": "Phone number is required for manual payments.",
-      "commercialNumberRequired": "Commercial number is required for NextPay payments.",
-      "manualPayments": "Manual Payments",
-      "nextPay": "NextPay",
-      "saving": "Saving...",
-      "loadError": "Failed to load payment data"
-    },
+      "payments": {
+        "paymentMethods": "Payment Methods",
+        "manageYourPaymentIntegration": "Manage your payment integration and settings",
+        "refresh": "Refresh",
+        "loadError": "Failed to load payment status",
+        "connectionTestSuccess": "Connection test successful!",
+        "connectionTestFailed": "Connection test failed",
+        "setupSuccessful": "Payment setup completed successfully!",
+        
+        "setupInstructions": "Setup NextRemitly Integration",
+        "followStepsBelow": "Follow these steps to connect your NextRemitly account",
+        
+        "step1Title": "Create NextRemitly Account",
+        "step1Description": "Sign up for a NextRemitly business account if you don't have one already.",
+        "signupNextRemitly": "Sign up with NextRemitly",
+        
+        "step2Title": "Complete Account Verification",
+        "step2Description": "Verify your business details and complete the account setup process.",
+        
+        "step3Title": "Generate API Key",
+        "step3Description": "In your NextRemitly dashboard, navigate to API settings and generate a new API key.",
+        
+        "step4Title": "Configure Integration",
+        "step4Description": "Copy your API key and paste it below to complete the integration.",
+        
+        "securityNote": "Security & Privacy",
+        "securityDescription": "Your API key is encrypted and stored securely. We never share your payment information.",
+        
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "back": "Back",
+        
+        "updateApiKey": "Update API Key",
+        "enterApiKey": "Enter Your API Key",
+        "pasteApiKeyBelow": "Paste your NextRemitly API key below to complete the setup",
+        
+        "nextRemitlyApiKey": "NextRemitly API Key",
+        "apiKeyPlaceholder": "Enter your NextRemitly API key...",
+        "apiKeyHelp": "You can find this in your NextRemitly dashboard under API settings",
+        "apiKeyRequired": "API key is required",
+        "invalidApiKeyFormat": "Invalid API key format",
+        
+        "currentApiKey": "Current API Key",
+        "replaceApiKeyWarning": "Entering a new API key will replace the current one.",
+        
+        "testConnection": "Test Connection",
+        "testing": "Testing...",
+        "saving": "Saving...",
+        "saveKey": "Save API Key",
+        "updateKey": "Update API Key",
+        "disablePayments": "Disable Payments",
+        
+        "setupComplete": "Setup Complete!",
+        "readyToReceive": "Your organization is now ready to receive donations through NextRemitly.",
+        
+        "connectionVerified": "Connection verified successfully",
+        "paymentsEnabled": "Payments are now enabled",
+        "campaignsCanReceive": "Your campaigns can now receive donations",
+        
+        "connectionDetails": "Connection Details",
+        "status": "Status",
+        "canReceivePayments": "Can Receive Payments",
+        "yes": "Yes",
+        "no": "No",
+        
+        "manageSettings": "Manage Settings",
+        "finish": "Finish",
+        
+        "setupFailed": "Setup failed. Please check your API key and try again.",
+        "disableFailed": "Failed to disable payments",
+        
+        "nextRemitlyDescription": "Secure payment processing for your campaigns",
+        "connected": "Connected",
+        "configured": "Configured",
+        "notConfigured": "Not Configured",
+        "active": "Active",
+        "disabled": "Disabled",
+        "setupRequired": "Setup Required",
+        
+        "apiKey": "API Key",
+        "configuredButDisabled": "API key is configured but payments are disabled.",
+        "setupRequiredDescription": "Connect your NextRemitly account to start receiving donations.",
+        
+        "quickSetup": "Quick Setup",
+        "setupStepsHint": "1. Sign up with NextRemitly 2. Get API key 3. Configure here",
+        
+        "manage": "Manage",
+        "setup": "Setup",
+        
+        "howItWorks": "How NextRemitly Integration Works",
+        "directPayments": "Donations go directly to your NextRemitly account",
+        "secureTransactions": "Bank-grade security for all transactions",
+        "realTimeNotifications": "Real-time payment notifications and updates",
+        "easyManagement": "Easy management through your NextRemitly dashboard",
+        
+        "benefit1Title": "Direct Payments",
+        "benefit1Description": "Receive donations directly to your account without intermediaries",
+        
+        "benefit2Title": "Secure & Trusted",
+        "benefit2Description": "Bank-level security with full transaction encryption",
+        
+        "benefit3Title": "Real-time Updates",
+        "benefit3Description": "Instant notifications when donations are received",
+        
+        "donationsWillGoDirectly": "All donations will be processed through your NextRemitly account.",
+        "visitNextRemitly": "Visit NextRemitly",
+      "setupPayments": "Setup Payments",
+      "readyToReceiveDonations":"Ready to receive donations"
+      },
     "volunteerRequests": {
       "title": "Volunteer Requests",
       "subtitle": "Create and manage volunteer opportunities for your campaigns",

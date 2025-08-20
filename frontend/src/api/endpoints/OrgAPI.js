@@ -1,10 +1,9 @@
-// api/organizationDashboardApi.js - Updated for Simple Payment System
 import api from '../axiosConfig';
 
 // Organization Profile Management
 export const fetchOrgProfile = async () => {
   try {
-    const response = await api.get('/org/organization-profile/');
+    const response = await api.get('org/organization-profile/');
     return response;
   } catch (error) {
     console.error('Failed to fetch organization profile:', error);
@@ -18,7 +17,7 @@ export const fetchOrgProfile = async () => {
 
 export const updateOrgProfile = async (profileId, formData) => {
   try {
-    const response = await api.put(`/org/organization-profile/${profileId}/`, formData, {
+    const response = await api.put(`org/organization-profile/${profileId}/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -34,193 +33,66 @@ export const updateOrgProfile = async (profileId, formData) => {
   }
 };
 
-// Get organization payment methods summary
+// NextRemitly Payment Configuration
 export const fetchPaymentMethods = async (orgId) => {
   try {
-    const response = await api.get(`/org/organization-profile/${orgId}/payment_methods/`);
+    const response = await api.get(`org/organization-profile/${orgId}/payment_methods/`);
     return response;
   } catch (error) {
-    console.error('Failed to fetch payment methods:', error);
+    console.error('Failed to fetch payment configuration:', error);
     throw {
-      message: error.message || 'Failed to fetch payment methods',
+      message: error.message || 'Failed to fetch payment configuration',
       details: error.details,
       ...error
     };
   }
 };
 
-// Manual Payment Management
-export const fetchManualPayments = async () => {
+export const setupNextRemitly = async (orgId, apiKey) => {
   try {
-    const response = await api.get('/org/manual-payments/');
+    const response = await api.post(`org/organization-profile/${orgId}/setup_nextremitly/`, {
+      nextremitly_api_key: apiKey
+    });
     return response;
   } catch (error) {
-    console.error('Failed to fetch manual payments:', error);
+    console.error('Failed to setup NextRemitly:', error);
     throw {
-      message: error.message || 'Failed to fetch manual payments',
+      message: error.message || 'Failed to setup NextRemitly payments',
       details: error.details,
       ...error
     };
   }
 };
 
-export const createManualPayment = async (paymentData) => {
+export const testPaymentConnection = async (orgId) => {
   try {
-    const response = await api.post('/org/manual-payments/', paymentData);
+    const response = await api.post(`org/organization-profile/${orgId}/test_payment_connection/`);
     return response;
   } catch (error) {
-    console.error('Failed to create manual payment:', error);
+    console.error('Failed to test payment connection:', error);
     throw {
-      message: error.message || 'Failed to create manual payment',
+      message: error.message || 'Failed to test payment connection',
       details: error.details,
       ...error
     };
   }
 };
 
-export const updateManualPayment = async (paymentId, paymentData) => {
+export const disablePayments = async (orgId) => {
   try {
-    const response = await api.patch(`/org/manual-payments/${paymentId}/`, paymentData);
+    const response = await api.post(`org/organization-profile/${orgId}/disable_payments/`);
     return response;
   } catch (error) {
-    console.error('Failed to update manual payment:', error);
+    console.error('Failed to disable payments:', error);
     throw {
-      message: error.message || 'Failed to update manual payment',
+      message: error.message || 'Failed to disable payments',
       details: error.details,
       ...error
     };
   }
 };
 
-export const deleteManualPayment = async (paymentId) => {
-  try {
-    const response = await api.delete(`/org/manual-payments/${paymentId}/`);
-    return response;
-  } catch (error) {
-    console.error('Failed to delete manual payment:', error);
-    throw {
-      message: error.message || 'Failed to delete manual payment',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const toggleManualPaymentActive = async (paymentId) => {
-  try {
-    const response = await api.post(`/org/manual-payments/${paymentId}/toggle_active/`);
-    return response;
-  } catch (error) {
-    console.error('Failed to toggle manual payment status:', error);
-    throw {
-      message: error.message || 'Failed to toggle manual payment status',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-// NextPay Payment Management
-export const fetchNextPayPayments = async () => {
-  try {
-    const response = await api.get('/org/nextpay-payments/');
-    return response;
-  } catch (error) {
-    console.error('Failed to fetch NextPay payments:', error);
-    throw {
-      message: error.message || 'Failed to fetch NextPay payments',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const createNextPayPayment = async (paymentData) => {
-  try {
-    const response = await api.post('/org/nextpay-payments/', paymentData);
-    return response;
-  } catch (error) {
-    console.error('Failed to create NextPay payment:', error);
-    throw {
-      message: error.message || 'Failed to create NextPay payment',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const updateNextPayPayment = async (paymentId, paymentData) => {
-  try {
-    const response = await api.patch(`/org/nextpay-payments/${paymentId}/`, paymentData);
-    return response;
-  } catch (error) {
-    console.error('Failed to update NextPay payment:', error);
-    throw {
-      message: error.message || 'Failed to update NextPay payment',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const deleteNextPayPayment = async (paymentId) => {
-  try {
-    const response = await api.delete(`/org/nextpay-payments/${paymentId}/`);
-    return response;
-  } catch (error) {
-    console.error('Failed to delete NextPay payment:', error);
-    throw {
-      message: error.message || 'Failed to delete NextPay payment',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const toggleNextPayPaymentActive = async (paymentId) => {
-  try {
-    const response = await api.post(`/org/nextpay-payments/${paymentId}/toggle_active/`);
-    return response;
-  } catch (error) {
-    console.error('Failed to toggle NextPay payment status:', error);
-    throw {
-      message: error.message || 'Failed to toggle NextPay payment status',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-export const verifyNextPayPayment = async (paymentId) => {
-  try {
-    const response = await api.post(`/org/nextpay-payments/${paymentId}/verify/`);
-    return response;
-  } catch (error) {
-    console.error('Failed to verify NextPay payment:', error);
-    throw {
-      message: error.message || 'Failed to verify NextPay payment',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-// Wallet Provider Management
-export const fetchWalletProviders = async () => {
-  try {
-    const response = await api.get('/org/wallet-providers/');
-    return response;
-  } catch (error) {
-    console.error('Failed to fetch wallet providers:', error);
-    throw {
-      message: error.message || 'Failed to fetch wallet providers',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-// UPDATED: Dashboard Statistics - Correct endpoint URL
+// Dashboard Statistics
 export const fetchOrgStatistics = async (period = '30d') => {
   try {
     const response = await api.get('/org/dashboard/statistics/', {
@@ -238,7 +110,6 @@ export const fetchOrgStatistics = async (period = '30d') => {
   }
 };
 
-// UPDATED: Dashboard Payment Summary - Correct endpoint URL
 export const fetchPaymentSummary = async () => {
   try {
     const response = await api.get('/org/dashboard/payment_summary/');
@@ -254,7 +125,6 @@ export const fetchPaymentSummary = async () => {
   }
 };
 
-// UPDATED: Dashboard Overview Data - Correct endpoint URL
 export const fetchDashboardOverview = async () => {
   try {
     const response = await api.get('/org/dashboard/overview/');
@@ -270,42 +140,17 @@ export const fetchDashboardOverview = async () => {
   }
 };
 
-// Analytics Data (keeping for future campaign integration)
-export const fetchOrgAnalytics = async (campaignId = null, startDate = null, endDate = null) => {
+// Analytics Data
+export const fetchOrgAnalytics = async (period = '30d') => {
   try {
-    const params = {};
-    if (campaignId) params.campaign_id = campaignId;
-    if (startDate) params.start_date = startDate;
-    if (endDate) params.end_date = endDate;
-
-    const response = await api.get('/org/analytics/', { params });
+    const response = await api.get('/org/analytics/overview/', {
+      params: { period }
+    });
     return response;
   } catch (error) {
     console.error('Failed to fetch organization analytics:', error);
     throw {
       message: error.message || 'Failed to fetch organization analytics',
-      details: error.details,
-      ...error
-    };
-  }
-};
-
-// Organization Profile Document Management
-export const uploadOrgDocument = async (profileId, documentFile) => {
-  try {
-    const formData = new FormData();
-    formData.append('document', documentFile);
-
-    const response = await api.patch(`/org/organization-profile/${profileId}/`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    return response;
-  } catch (error) {
-    console.error('Failed to upload organization document:', error);
-    throw {
-      message: error.message || 'Failed to upload organization document',
       details: error.details,
       ...error
     };
@@ -318,7 +163,7 @@ export const uploadProfileImage = async (profileId, imageFile) => {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    const response = await api.post(`/org/organization-profile/${profileId}/upload_profile_image/`, formData, {
+    const response = await api.post(`org/organization-profile/${profileId}/upload_profile_image/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -339,7 +184,7 @@ export const uploadCoverImage = async (profileId, imageFile) => {
     const formData = new FormData();
     formData.append('image', imageFile);
 
-    const response = await api.post(`/org/organization-profile/${profileId}/upload_cover_image/`, formData, {
+    const response = await api.post(`org/organization-profile/${profileId}/upload_cover_image/`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -357,7 +202,7 @@ export const uploadCoverImage = async (profileId, imageFile) => {
 
 export const deleteProfileImage = async (profileId) => {
   try {
-    const response = await api.delete(`/org/organization-profile/${profileId}/delete_profile_image/`);
+    const response = await api.delete(`org/organization-profile/${profileId}/delete_profile_image/`);
     return response;
   } catch (error) {
     console.error('Failed to delete profile image:', error);
@@ -371,7 +216,7 @@ export const deleteProfileImage = async (profileId) => {
 
 export const deleteCoverImage = async (profileId) => {
   try {
-    const response = await api.delete(`/org/organization-profile/${profileId}/delete_cover_image/`);
+    const response = await api.delete(`org/organization-profile/${profileId}/delete_cover_image/`);
     return response;
   } catch (error) {
     console.error('Failed to delete cover image:', error);
@@ -383,89 +228,32 @@ export const deleteCoverImage = async (profileId) => {
   }
 };
 
-// Verification Management
-export const requestVerification = async (profileId) => {
+// Organization Document Management
+export const uploadOrgDocument = async (profileId, documentFile) => {
   try {
-    const response = await api.post(`/org/organization-profile/${profileId}/verify/`);
+    const formData = new FormData();
+    formData.append('document', documentFile);
+
+    const response = await api.patch(`org/organization-profile/${profileId}/`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response;
   } catch (error) {
-    console.error('Failed to request verification:', error);
+    console.error('Failed to upload organization document:', error);
     throw {
-      message: error.message || 'Failed to request verification',
+      message: error.message || 'Failed to upload organization document',
       details: error.details,
       ...error
     };
   }
 };
 
-
-// Helper Functions
-export const downloadExportedFile = (data, filename, type = 'text/csv') => {
-  try {
-    const blob = new Blob([data], { type });
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Failed to download file:', error);
-    throw new Error('Failed to download file');
-  }
-};
-
-export const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  }).format(amount || 0);
-};
-
-export const formatNumber = (num) => {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return num?.toString() || '0';
-};
-
-export const calculatePercentage = (current, target) => {
-  if (!target || target === 0) return 0;
-  return Math.min((current / target) * 100, 100);
-};
-
-export const formatDateForAPI = (date) => {
-  if (!date) return null;
-  return date instanceof Date ? date.toISOString().split('T')[0] : date;
-};
-
-// Payment Validation Helper Functions
-export const validatePhoneNumber = (phoneNumber) => {
-  if (!phoneNumber) return false;
-  const cleaned = phoneNumber.toString().replace(/\s/g, '');
-  return /^\d{8,12}$/.test(cleaned); // 8-12 digits
-};
-
-export const validateCommercialNumber = (commercialNumber) => {
-  if (!commercialNumber) return false;
-  const cleaned = commercialNumber.toString().replace(/\s/g, '');
-  return /^\d{6,20}$/.test(cleaned); // 6-20 digits
-};
-
-export const formatPhoneNumber = (phoneNumber) => {
-  if (!phoneNumber) return '';
-  const cleaned = phoneNumber.toString().replace(/\s/g, '');
-  if (cleaned.length === 8) {
-    return cleaned.replace(/(\d{4})(\d{4})/g, '$1 $2');
-  }
-  return phoneNumber;
-};
-
-
+// Public Organization Access
 export const fetchOrganizations = async (params = {}) => {
   try {
-    const response = await api.get('/org/public-organizations/', { params });
+    const response = await api.get('/org/public/organizations/', { params });
     return response;
   } catch (error) {
     console.error('Failed to fetch organizations:', error);
@@ -475,7 +263,7 @@ export const fetchOrganizations = async (params = {}) => {
 
 export const fetchOrganizationById = async (id) => {
   try {
-    const response = await api.get(`/org/public-organizations/${id}/`);
+    const response = await api.get(`/org/public/organizations/${id}/`);
     return response;
   } catch (error) {
     console.error('Failed to fetch organization:', error);
@@ -485,32 +273,29 @@ export const fetchOrganizationById = async (id) => {
 
 export const fetchOrganizationCampaigns = async (orgId) => {
   try {
-    const response = await api.get(`/org/public-organizations/${orgId}/`);
+    const response = await api.get(`/org/public/organizations/${orgId}/`);
     return response.campaigns || [];
   } catch (error) {
     console.error('Failed to fetch organization campaigns:', error);
     throw error;
   }
 };
-// UPDATED: Combined Dashboard Data Fetch - Using correct endpoints
+
+// Combined Dashboard Data Fetch
 export const fetchFullDashboardData = async (period = '30d') => {
   try {
     const [
       profileData, 
       statisticsData, 
       overviewData, 
-      paymentSummary, 
-      manualPayments,
-      nextpayPayments,
-      walletProviders
+      paymentSummary,
+      analyticsData
     ] = await Promise.allSettled([
       fetchOrgProfile(),
       fetchOrgStatistics(period),
       fetchDashboardOverview(),
       fetchPaymentSummary(),
-      fetchManualPayments(),
-      fetchNextPayPayments(),
-      fetchWalletProviders()
+      fetchOrgAnalytics(period)
     ]);
 
     // Process results, handling any failures gracefully
@@ -519,15 +304,13 @@ export const fetchFullDashboardData = async (period = '30d') => {
       statistics: statisticsData.status === 'fulfilled' ? statisticsData.value : null,
       overview: overviewData.status === 'fulfilled' ? overviewData.value : null,
       paymentSummary: paymentSummary.status === 'fulfilled' ? paymentSummary.value : null,
-      manualPayments: manualPayments.status === 'fulfilled' ? manualPayments.value : null,
-      nextpayPayments: nextpayPayments.status === 'fulfilled' ? nextpayPayments.value : null,
-      walletProviders: walletProviders.status === 'fulfilled' ? walletProviders.value : null,
+      analytics: analyticsData.status === 'fulfilled' ? analyticsData.value : null,
       errors: []
     };
 
     // Collect any errors
-    const promises = [profileData, statisticsData, overviewData, paymentSummary, manualPayments, nextpayPayments, walletProviders];
-    const names = ['profile', 'statistics', 'overview', 'paymentSummary', 'manualPayments', 'nextpayPayments', 'walletProviders'];
+    const promises = [profileData, statisticsData, overviewData, paymentSummary, analyticsData];
+    const names = ['profile', 'statistics', 'overview', 'paymentSummary', 'analytics'];
     
     promises.forEach((promise, index) => {
       if (promise.status === 'rejected') {
@@ -549,68 +332,99 @@ export const fetchFullDashboardData = async (period = '30d') => {
   }
 };
 
-// Payment Management Operations Helper
+// Payment Management Operations
 export const paymentOperations = {
-  // Manual Payment Operations
-  manual: {
-    async create(paymentData) {
-      if (!validatePhoneNumber(paymentData.phone_number)) {
-        throw new Error('Invalid phone number format (8-12 digits required)');
+  // NextRemitly Operations
+  nextremitly: {
+    async setup(orgId, apiKey) {
+      if (!apiKey || apiKey.trim().length < 10) {
+        throw new Error('API key must be at least 10 characters long');
       }
       
-      if (!paymentData.wallet_provider_id) {
-        throw new Error('Wallet provider must be selected');
-      }
-      
-      return await createManualPayment(paymentData);
+      return await setupNextRemitly(orgId, apiKey.trim());
     },
 
-    async update(paymentId, paymentData) {
-      if (paymentData.phone_number && !validatePhoneNumber(paymentData.phone_number)) {
-        throw new Error('Invalid phone number format (8-12 digits required)');
-      }
-      
-      return await updateManualPayment(paymentId, paymentData);
+    async test(orgId) {
+      return await testPaymentConnection(orgId);
     },
 
-    async getActive() {
-      const response = await fetchManualPayments();
-      return response.data.filter(payment => payment.is_active);
-    }
-  },
-
-  // NextPay Payment Operations
-  nextpay: {
-    async create(paymentData) {
-      if (!validateCommercialNumber(paymentData.commercial_number)) {
-        throw new Error('Invalid commercial number format (6-20 digits required)');
-      }
-      
-      if (!paymentData.wallet_provider_id) {
-        throw new Error('Wallet provider must be selected');
-      }
-      
-      return await createNextPayPayment(paymentData);
+    async disable(orgId) {
+      return await disablePayments(orgId);
     },
 
-    async update(paymentId, paymentData) {
-      if (paymentData.commercial_number && !validateCommercialNumber(paymentData.commercial_number)) {
-        throw new Error('Invalid commercial number format (6-20 digits required)');
-      }
-      
-      return await updateNextPayPayment(paymentId, paymentData);
-    },
-
-    async getActive() {
-      const response = await fetchNextPayPayments();
-      return response.data.filter(payment => payment.is_active);
-    },
-
-    async getVerified() {
-      const response = await fetchNextPayPayments();
-      return response.data.filter(payment => payment.verified_at && payment.is_active);
+    async getStatus(orgId) {
+      return await fetchPaymentMethods(orgId);
     }
   }
+};
+
+// Helper Functions
+export const downloadExportedFile = (data, filename, type = 'text/csv') => {
+  try {
+    const blob = new Blob([data], { type });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error('Failed to download file:', error);
+    throw new Error('Failed to download file');
+  }
+};
+
+export const formatCurrency = (amount, currency = 'MRU') => {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2
+  }).format(amount || 0);
+};
+
+export const formatNumber = (num) => {
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+  return num?.toString() || '0';
+};
+
+export const calculatePercentage = (current, target) => {
+  if (!target || target === 0) return 0;
+  return Math.min((current / target) * 100, 100);
+};
+
+export const formatDateForAPI = (date) => {
+  if (!date) return null;
+  return date instanceof Date ? date.toISOString().split('T')[0] : date;
+};
+
+// NextRemitly API Key Validation
+export const validateNextRemitlyApiKey = (apiKey) => {
+  if (!apiKey || typeof apiKey !== 'string') return false;
+  
+  // Basic validation - adjust based on NextRemitly's actual key format
+  const cleaned = apiKey.trim();
+  
+  // Check minimum length
+  if (cleaned.length < 10) return false;
+  
+  // Check if it looks like a valid API key (alphanumeric with possible special chars)
+  const apiKeyPattern = /^[A-Za-z0-9_\-\.]+$/;
+  return apiKeyPattern.test(cleaned);
+};
+
+export const formatApiKeyDisplay = (apiKey) => {
+  if (!apiKey) return '';
+  
+  // Show only first 4 and last 4 characters
+  if (apiKey.length <= 8) return apiKey;
+  
+  const start = apiKey.substring(0, 4);
+  const end = apiKey.substring(apiKey.length - 4);
+  return `${start}${'*'.repeat(Math.max(4, apiKey.length - 8))}${end}`;
 };
 
 // Error Handling Wrapper
@@ -643,33 +457,20 @@ export default {
   // Profile Management
   fetchOrgProfile: withErrorHandling(fetchOrgProfile),
   updateOrgProfile: withErrorHandling(updateOrgProfile),
+  
+  // NextRemitly Payment Management
   fetchPaymentMethods: withErrorHandling(fetchPaymentMethods),
+  setupNextRemitly: withErrorHandling(setupNextRemitly),
+  testPaymentConnection: withErrorHandling(testPaymentConnection),
+  disablePayments: withErrorHandling(disablePayments),
   
   // Image Management
   uploadProfileImage: withErrorHandling(uploadProfileImage),
   uploadCoverImage: withErrorHandling(uploadCoverImage),
   deleteProfileImage: withErrorHandling(deleteProfileImage),
   deleteCoverImage: withErrorHandling(deleteCoverImage),
-
-  // Manual Payment Management
-  fetchManualPayments: withErrorHandling(fetchManualPayments),
-  createManualPayment: withErrorHandling(createManualPayment),
-  updateManualPayment: withErrorHandling(updateManualPayment),
-  deleteManualPayment: withErrorHandling(deleteManualPayment),
-  toggleManualPaymentActive: withErrorHandling(toggleManualPaymentActive),
   
-  // NextPay Payment Management
-  fetchNextPayPayments: withErrorHandling(fetchNextPayPayments),
-  createNextPayPayment: withErrorHandling(createNextPayPayment),
-  updateNextPayPayment: withErrorHandling(updateNextPayPayment),
-  deleteNextPayPayment: withErrorHandling(deleteNextPayPayment),
-  toggleNextPayPaymentActive: withErrorHandling(toggleNextPayPaymentActive),
-  verifyNextPayPayment: withErrorHandling(verifyNextPayPayment),
-  
-  // Wallet Providers
-  fetchWalletProviders: withErrorHandling(fetchWalletProviders),
-  
-  // Dashboard Data - UPDATED ENDPOINTS
+  // Dashboard Data
   fetchOrgStatistics: withErrorHandling(fetchOrgStatistics),
   fetchPaymentSummary: withErrorHandling(fetchPaymentSummary),
   fetchDashboardOverview: withErrorHandling(fetchDashboardOverview),
@@ -681,8 +482,10 @@ export default {
   // Document Management
   uploadOrgDocument: withErrorHandling(uploadOrgDocument),
   
-  // Verification
-  requestVerification: withErrorHandling(requestVerification),
+  // Public Organization Access
+  fetchOrganizations: withErrorHandling(fetchOrganizations),
+  fetchOrganizationById: withErrorHandling(fetchOrganizationById),
+  fetchOrganizationCampaigns: withErrorHandling(fetchOrganizationCampaigns),
   
   // Utilities
   downloadExportedFile,
@@ -690,13 +493,9 @@ export default {
   formatNumber,
   calculatePercentage,
   formatDateForAPI,
-  formatPhoneNumber,
-  validatePhoneNumber,
-  validateCommercialNumber,
+  validateNextRemitlyApiKey,
+  formatApiKeyDisplay,
   
-  // Organization Fetching
-  fetchOrganizations: withErrorHandling(fetchOrganizations),
-  fetchOrganizationById: withErrorHandling(fetchOrganizationById),
   // Payment Operations
   paymentOperations
 };

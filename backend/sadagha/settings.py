@@ -68,9 +68,8 @@ MIDDLEWARE = [
 ]
 
 
-
-PAYMENT_MICROSERVICE_URL = os.getenv('PAYMENT_MICROSERVICE_URL', 'http://localhost:8001')
-PAYMENT_MICROSERVICE_TIMEOUT = int(os.getenv('PAYMENT_MICROSERVICE_TIMEOUT', '30'))
+NEXTREMITLY_BASE_URL = os.getenv('NEXTREMITLY_BASE_URL')
+NEXTREMITLY_FRONTEND_URL = os.getenv('NEXTREMITLY_FRONTEND_URL')
 
 # Your frontend URLs
 FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
@@ -83,7 +82,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://192.168.134.1:5174",
     "http://172.20.144.1:5174",
     "http://172.20.10.3:5174",  # Sada9a frontend
-    "http://localhost:8000",  # Nextremitly backend
+    "https://medbbh.pythonanywhere.com",  # Nextremitly backend
     "http://localhost:8001",  # Nextremitly microservice
 ]
 

@@ -166,7 +166,7 @@ const Analytics = () => {
 
   if (!analyticsData) return null;
 
-  const { overview, campaign_performance, donation_trends, top_donors, campaign_health } = analyticsData;
+  const { overview, campaign_performance, donation_trends, top_donors } = analyticsData;
 
   return (
     <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
@@ -276,7 +276,7 @@ const Analytics = () => {
               </div>
               <div className={`${isRTL ? 'mr-3 text-right' : 'ml-3 text-left'}`}>
                 <p className="text-sm text-gray-600">{t('organization.analytics.totalRaised')}</p>
-                <p className="text-xl font-semibold text-gray-900">{formatCurrency(overview.period_raised)}</p>
+                <p className="text-xl font-semibold text-gray-900">{formatCurrency(overview.total_raised)}</p>
                 <div className={`flex items-center mt-1 ${isRTL ? ' justify-end' : ''}`}>
                   {overview.growth_rate >= 0 ? (
                     <ArrowUp className={`h-3 w-3 text-green-500 ${isRTL ? 'ml-1' : 'mr-1'}`} />
@@ -392,7 +392,7 @@ const Analytics = () => {
                       left: 20,
                       bottom: 60,
                     }}
-                    layout={isRTL ? 'horizontal' : 'vertical'}
+                    // layout={isRTL ? 'horizontal' : 'vertical'}
                   >
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 

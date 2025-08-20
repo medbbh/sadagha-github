@@ -82,7 +82,7 @@ class SupabaseRegistrationAuthentication(authentication.BaseAuthentication):
             print(f"Registration auth - Invalid token: {e}")
             return None  # Invalid token but don't raise exception
         except Exception as e:
-            print(f"Registration authentication error: {str(e)}")
+            # print(f"Registration authentication error: {str(e)}")
             return None
 
 

@@ -46,6 +46,7 @@ export default function OrganizationDashboard() {
         
         try {
           statisticsData = await orgDashboardApi.fetchOrgStatistics('30d');
+          console.log('Statistics data fetched successfully:', statisticsData);
         } catch (statErr) {
           console.warn('Statistics data unavailable:', statErr);
           if (statErr.status === 503) {
@@ -55,12 +56,14 @@ export default function OrganizationDashboard() {
         
         try {
           paymentSummaryData = await orgDashboardApi.fetchPaymentSummary();
+          console.log('Payment summary fetched successfully:', paymentSummaryData);
         } catch (payErr) {
           console.warn('Payment summary unavailable:', payErr);
         }
         
         try {
           overviewData = await orgDashboardApi.fetchDashboardOverview();
+          console.log('Overview data fetched successfully:', overviewData);
         } catch (overErr) {
           console.warn('Overview data unavailable:', overErr);
         }
@@ -141,15 +144,15 @@ export default function OrganizationDashboard() {
 
   // Helper function to safely get data
   const getProfileData = () => {
-    return dashboardData?.profile?.data || dashboardData?.profile || {};
+    return dashboardData?.profile || dashboardData?.profile || {};
   };
 
   const getStatisticsData = () => {
-    return dashboardData?.statistics?.data || dashboardData?.statistics || {};
+    return dashboardData?.statistics || dashboardData?.statistics || {};
   };
 
   const getPaymentSummaryData = () => {
-    return dashboardData?.paymentSummary?.data || dashboardData?.paymentSummary || {};
+    return dashboardData?.paymentSummary || dashboardData?.paymentSummary || {};
   };
 
   const profileData = getProfileData();
@@ -358,34 +361,6 @@ export default function OrganizationDashboard() {
         )}
       </div>
 
-      {/* Payment Methods Status */}
-      {dashboardData?.paymentSummary && (
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
-          <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('organization.dashboard.paymentMethods')}
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-blue-50 rounded-lg">
-              <div className="text-2xl font-semibold text-blue-900 mb-1">
-                {paymentSummaryData.summary?.manual_count || 0}
-              </div>
-              <p className="text-sm text-blue-700">{t('organization.dashboard.manualPayments')}</p>
-            </div>
-            <div className="text-center p-4 bg-green-50 rounded-lg">
-              <div className="text-2xl font-semibold text-green-900 mb-1">
-                {paymentSummaryData.summary?.nextpay_count || 0}
-              </div>
-              <p className="text-sm text-green-700">{t('organization.dashboard.nextpayPayments')}</p>
-            </div>
-            <div className="text-center p-4 bg-purple-50 rounded-lg">
-              <div className="text-2xl font-semibold text-purple-900 mb-1">
-                {paymentSummaryData.summary?.total_count || 0}
-              </div>
-              <p className="text-sm text-purple-700">{t('organization.dashboard.totalMethods')}</p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Setup Progress (if profile is incomplete) */}
       {(!profileData.org_name || !profileData.description) && (

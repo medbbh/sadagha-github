@@ -1,695 +1,351 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Edit2, Trash2, ToggleLeft, ToggleRight, Power, PowerOff, Phone, Building2, CreditCard, Smartphone } from 'lucide-react';
+import { 
+  CreditCard, 
+  CheckCircle, 
+  AlertCircle, 
+  Settings, 
+  ExternalLink,
+  RefreshCw,
+  Shield,
+  Key,
+  Power,
+  PowerOff
+} from 'lucide-react';
 import Loading from '../common/Loading';
 import organizationApi from '../../api/endpoints/OrgAPI';
+import PaymentSetupModal from './PaymentSetupModal';
 
-const ManualPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
-  const { t } = useTranslation();
-  const [isToggling, setIsToggling] = useState(false);
+const NextRemitlyStatusCard = ({ status, onManage, onTest, testing }) => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
 
-  const handleToggleActive = async () => {
-    setIsToggling(true);
-    try {
-      await onToggleActive(payment.id, 'manual');
-    } finally {
-      setIsToggling(false);
-    }
-  };
+  const isConfigured = status.nextremitly_configured && status.payment_enabled;
 
   return (
-    <div className={`rounded-lg border-2 p-5 transition-all duration-200 ${
-      payment.is_active 
+    <div className={`rounded-lg border-2 p-6 transition-all duration-200 ${
+      isConfigured 
         ? 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-200 shadow-sm' 
-        : 'bg-gray-50 border-gray-200 opacity-75'
+        : 'bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200'
     }`}>
       <div className="flex items-start justify-between">
         <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="flex items-center">
-              <Phone className="w-5 h-5 text-blue-600 me-2" />
-              <span className="text-lg font-semibold text-gray-900">
-                {payment.phone_number}
-              </span>
+          <div className={`flex items-center space-x-3 mb-4 ${isRTL ? 'space-x-reverse' : ''}`}>
+            <div className={`p-2 rounded-lg ${isConfigured ? 'bg-green-100' : 'bg-amber-100'}`}>
+              <CreditCard className={`w-6 h-6 ${isConfigured ? 'text-green-600' : 'text-amber-600'}`} />
             </div>
-            
-            <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              payment.is_active 
-                ? 'bg-green-100 text-green-800 border border-green-200' 
-                : 'bg-gray-100 text-gray-600 border border-gray-200'
-            }`}>
-              {payment.is_active ? (
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h3 className="text-xl font-semibold text-gray-900">NextRemitly</h3>
+              <p className="text-sm text-gray-600">{t('organization.payments.nextRemitlyDescription')}</p>
+            </div>
+          </div>
+          
+          <div className={`space-y-3 ${isRTL ? 'text-right' : 'text-left'}`}>
+            {/* Status Indicator */}
+            <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
+              {isConfigured ? (
                 <>
-                  <Power className="w-3 h-3 me-1" />
-                  {t('organization.paymentMethods.active')}
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <span className="font-medium text-green-700">{t('organization.payments.connected')}</span>
+                  <div className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                    <Power className="w-3 h-3 me-1" />
+                    {t('organization.payments.active')}
+                  </div>
+                </>
+              ) : status.configured ? (
+                <>
+                  <AlertCircle className="w-5 h-5 text-amber-600" />
+                  <span className="font-medium text-amber-700">{t('organization.payments.configured')}</span>
+                  <div className="inline-flex items-center px-2 py-1 bg-amber-100 text-amber-800 rounded-full text-xs font-medium">
+                    <PowerOff className="w-3 h-3 me-1" />
+                    {t('organization.payments.disabled')}
+                  </div>
                 </>
               ) : (
                 <>
-                  <PowerOff className="w-3 h-3 me-1" />
-                  {t('organization.paymentMethods.inactive')}
+                  <AlertCircle className="w-5 h-5 text-amber-600" />
+                  <span className="font-medium text-amber-700">{t('organization.payments.notConfigured')}</span>
+                  <div className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs font-medium">
+                    {t('organization.payments.setupRequired')}
+                  </div>
                 </>
               )}
             </div>
-          </div>
-          
-          <div className="space-y-1 mb-3">
-            <div className="text-sm text-gray-700">
-              <span className="font-semibold">{t('organization.paymentMethods.wallet')}:</span>{' '}
-              <span className="text-gray-600">{payment.wallet_provider_name}</span>
-            </div>
-            {payment.account_name && (
-              <div className="text-sm text-gray-700">
-                <span className="font-semibold">{t('organization.paymentMethods.accountName')}:</span>{' '}
-                <span className="text-gray-600">{payment.account_name}</span>
+
+            {/* API Key Display */}
+            {status.api_key_set && (
+              <div className={`flex items-center space-x-2 text-sm text-gray-600 ${isRTL ? 'space-x-reverse' : ''}`}>
+                <Key className="w-4 h-4" />
+                <span>{t('organization.payments.apiKey')}: {organizationApi.formatApiKeyDisplay('api_key_configured')}</span>
               </div>
             )}
-          </div>
-          
-          <div className="text-xs text-gray-500">
-            {t('organization.paymentMethods.addedOn')} {new Date(payment.created_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
-          </div>
-        </div>
-        
-        <div className="flex items-center space-x-2 ms-6">
-          <button
-            onClick={handleToggleActive}
-            disabled={isToggling}
-            className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              payment.is_active
-                ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
-                : 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
-          >
-            {isToggling ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current me-2"></div>
-            ) : payment.is_active ? (
-              <ToggleRight className="w-4 h-4 me-1" />
-            ) : (
-              <ToggleLeft className="w-4 h-4 me-1" />
-            )}
-            {payment.is_active ? t('organization.paymentMethods.deactivate') : t('organization.paymentMethods.activate')}
-          </button>
-          
-          <button
-            onClick={() => onEdit(payment, 'manual')}
-            className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 border border-blue-200 transition-colors"
-          >
-            <Edit2 className="w-4 h-4 me-1" />
-            {t('organization.paymentMethods.edit')}
-          </button>
-          
-          <button
-            onClick={() => onDelete(payment.id, 'manual')}
-            className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 border border-red-200 transition-colors"
-          >
-            <Trash2 className="w-4 h-4 me-1" />
-            {t('organization.paymentMethods.delete')}
-          </button>
-        </div>
-      </div>
-      
-      {!payment.is_active && (
-        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div className="flex items-center">
-            <PowerOff className="w-4 h-4 text-yellow-600 me-2" />
-            <span className="text-sm text-yellow-800">
-              {t('organization.paymentMethods.inactiveWarning')}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
 
-const NextPayPaymentCard = ({ payment, onEdit, onDelete, onToggleActive }) => {
-  const { t } = useTranslation();
-  const [isToggling, setIsToggling] = useState(false);
-
-  const handleToggleActive = async () => {
-    setIsToggling(true);
-    try {
-      await onToggleActive(payment.id, 'nextpay');
-    } finally {
-      setIsToggling(false);
-    }
-  };
-
-  return (
-    <div className={`rounded-lg border-2 p-5 transition-all duration-200 ${
-      payment.is_active 
-        ? 'bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200 shadow-sm' 
-        : 'bg-gray-50 border-gray-200 opacity-75'
-    }`}>
-      <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center space-x-3 mb-3">
-            <div className="flex items-center">
-              <Building2 className="w-5 h-5 text-purple-600 me-2" />
-              <span className="text-lg font-semibold text-gray-900">
-                {payment.commercial_number}
-              </span>
-            </div>
-            
-            <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-              payment.is_active 
-                ? 'bg-purple-100 text-purple-800 border border-purple-200' 
-                : 'bg-gray-100 text-gray-600 border border-gray-200'
-            }`}>
-              {payment.is_active ? (
-                <>
-                  <Power className="w-3 h-3 me-1" />
-                  {t('organization.paymentMethods.active')}
-                </>
+            {/* Description based on status */}
+            <div className="text-sm text-gray-600">
+              {isConfigured ? (
+                <div className="space-y-1">
+                  <p className="text-green-700">{t('organization.payments.readyToReceiveDonations')}</p>
+                  <p>{t('organization.payments.donationsWillGoDirectly')}</p>
+                </div>
+              ) : status.configured ? (
+                <p className="text-amber-700">{t('organization.payments.configuredButDisabled')}</p>
               ) : (
-                <>
-                  <PowerOff className="w-3 h-3 me-1" />
-                  {t('organization.paymentMethods.inactive')}
-                </>
+                <p className="text-amber-700">{t('organization.payments.setupRequiredDescription')}</p>
               )}
             </div>
 
-            {payment.verified_at && (
-              <div className="inline-flex items-center px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                {t('organization.paymentMethods.verified')}
+            {/* Setup Steps Hint */}
+            {!status.configured && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 mt-3">
+                <h4 className="font-medium text-blue-900 text-sm mb-1">{t('organization.payments.quickSetup')}</h4>
+                <p className="text-xs text-blue-700">{t('organization.payments.setupStepsHint')}</p>
               </div>
             )}
-          </div>
-          
-          <div className="space-y-1 mb-3">
-            <div className="text-sm text-gray-700">
-              <span className="font-semibold">{t('organization.paymentMethods.wallet')}:</span>{' '}
-              <span className="text-gray-600">{payment.wallet_provider_name}</span>
-            </div>
-            {payment.account_name && (
-              <div className="text-sm text-gray-700">
-                <span className="font-semibold">{t('organization.paymentMethods.accountName')}:</span>{' '}
-                <span className="text-gray-600">{payment.account_name}</span>
-              </div>
-            )}
-            {payment.verified_at && (
-              <div className="text-sm text-gray-700">
-                <span className="font-semibold">{t('organization.paymentMethods.verified')}:</span>{' '}
-                <span className="text-gray-600">
-                  {new Date(payment.verified_at).toLocaleDateString()}
-                </span>
-              </div>
-            )}
-          </div>
-          
-          <div className="text-xs text-gray-500">
-            {t('organization.paymentMethods.addedOn')} {new Date(payment.created_at).toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'short',
-              day: 'numeric'
-            })}
           </div>
         </div>
         
-        <div className="flex items-center space-x-2 ms-6">
+        {/* Action Buttons */}
+        <div className={`flex flex-col space-y-2 ml-6 ${isRTL ? 'mr-6 ml-0' : ''}`}>
           <button
-            onClick={handleToggleActive}
-            disabled={isToggling}
-            className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-              payment.is_active
-                ? 'bg-red-100 text-red-700 hover:bg-red-200 border border-red-200'
-                : 'bg-green-100 text-green-700 hover:bg-green-200 border border-green-200'
-            } disabled:opacity-50 disabled:cursor-not-allowed`}
+            onClick={onManage}
+            className={`inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+              isConfigured
+                ? 'bg-blue-100 text-blue-700 hover:bg-blue-200 border border-blue-200'
+                : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
           >
-            {isToggling ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-current me-2"></div>
-            ) : payment.is_active ? (
-              <ToggleRight className="w-4 h-4 me-1" />
+            {isConfigured ? (
+              <>
+                <Settings className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.payments.manage')}
+              </>
             ) : (
-              <ToggleLeft className="w-4 h-4 me-1" />
+              <>
+                <CreditCard className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {t('organization.payments.setup')}
+              </>
             )}
-            {payment.is_active ? t('paymentMethods.deactivate') : t('paymentMethods.activate')}
           </button>
           
-          <button
-            onClick={() => onEdit(payment, 'nextpay')}
-            className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-blue-700 bg-blue-100 hover:bg-blue-200 border border-blue-200 transition-colors"
-          >
-            <Edit2 className="w-4 h-4 me-1" />
-            {t('organization.paymentMethods.edit')}
-          </button>
-          
-          <button
-            onClick={() => onDelete(payment.id, 'nextpay')}
-            className="inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium text-red-700 bg-red-100 hover:bg-red-200 border border-red-200 transition-colors"
-          >
-            <Trash2 className="w-4 h-4 me-1" />
-            {t('organization.paymentMethods.delete')}
-          </button>
-        </div>
-      </div>
-      
-      {!payment.is_active && (
-        <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-          <div className="flex items-center">
-            <PowerOff className="w-4 h-4 text-yellow-600 me-2" />
-            <span className="text-sm text-yellow-800">
-              {t('organization.paymentMethods.inactiveWarning')}
-            </span>
-          </div>
-        </div>
-      )}
-    </div>
-  );
-};
-
-const PaymentMethodForm = ({ isOpen, onClose, onSave, editingPayment, walletProviders, paymentType }) => {
-  const { t } = useTranslation();
-  const [formData, setFormData] = useState({
-    wallet_provider_id: '',
-    phone_number: '',
-    commercial_number: '',
-    account_name: '',
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (editingPayment) {
-      setFormData({
-        wallet_provider_id: editingPayment.wallet_provider?.id || '',
-        phone_number: editingPayment.phone_number || '',
-        commercial_number: editingPayment.commercial_number || '',
-        account_name: editingPayment.account_name || '',
-      });
-    } else {
-      setFormData({
-        wallet_provider_id: '',
-        phone_number: '',
-        commercial_number: '',
-        account_name: '',
-      });
-    }
-    setError(null);
-  }, [editingPayment, isOpen, paymentType]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      if (!formData.wallet_provider_id) {
-        throw new Error(t('paymentMethods.selectWallet'));
-      }
-
-      if (paymentType === 'manual' && !formData.phone_number) {
-        throw new Error(t('paymentMethods.phoneNumberRequired'));
-      }
-
-      if (paymentType === 'nextpay' && !formData.commercial_number) {
-        throw new Error(t('paymentMethods.commercialNumberRequired'));
-      }
-
-      await onSave(formData, paymentType);
-      onClose();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (!isOpen) return null;
-
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-md w-full p-6">
-        <h3 className="text-lg font-semibold mb-4">
-          {editingPayment ? t('paymentMethods.edit') : t('paymentMethods.add')} {paymentType === 'manual' ? t('paymentMethods.manualPayment') : t('paymentMethods.nextPayPayment')}
-        </h3>
-        
-        {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded text-sm">
-            {error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('organization.paymentMethods.wallet')} *
-            </label>
-            <select
-              value={formData.wallet_provider_id}
-              onChange={(e) => setFormData(prev => ({ ...prev, wallet_provider_id: e.target.value }))}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+          {isConfigured && (
+            <button
+              onClick={onTest}
+              disabled={testing}
+              className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-green-700 bg-green-100 hover:bg-green-200 border border-green-200 transition-colors disabled:opacity-50"
             >
-              <option value="">{t('organization.paymentMethods.selectWallet')}</option>
-              {walletProviders.map(wallet => (
-                <option key={wallet.id} value={wallet.id}>
-                  {wallet.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {paymentType === 'manual' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('organization.paymentMethods.phoneNumber')} *
-              </label>
-              <input
-                type="tel"
-                value={formData.phone_number}
-                onChange={(e) => setFormData(prev => ({ ...prev, phone_number: e.target.value }))}
-                placeholder={t('organization.paymentMethods.phonePlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <p className="text-xs text-gray-500 mt-1">{t('organization.paymentMethods.phoneHelp')}</p>
-            </div>
+              <RefreshCw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} ${testing ? 'animate-spin' : ''}`} />
+              {testing ? t('organization.payments.testing') : t('organization.payments.testConnection')}
+            </button>
           )}
 
-          {paymentType === 'nextpay' && (
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('organization.paymentMethods.commercialNumber')} *
-              </label>
-              <input
-                type="text"
-                value={formData.commercial_number}
-                onChange={(e) => setFormData(prev => ({ ...prev, commercial_number: e.target.value }))}
-                placeholder={t('organization.paymentMethods.commercialPlaceholder')}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              <p className="text-xs text-gray-500 mt-1">{t('organization.paymentMethods.commercialHelp')}</p>
-            </div>
-          )}
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('organization.paymentMethods.accountName')}
-            </label>
-            <input
-              type="text"
-              value={formData.account_name}
-              onChange={(e) => setFormData(prev => ({ ...prev, account_name: e.target.value }))}
-              placeholder={t('organization.paymentMethods.accountNamePlaceholder')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
-            >
-              {t('organization.paymentMethods.cancel')}
-            </button>
-            <button
-              type="submit"
-              disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-blue-400 flex items-center"
-            >
-              {loading && (
-                <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-white me-2"></div>
-              )}
-              {loading ? t('paymentMethods.saving') : (editingPayment ? t('paymentMethods.update') : t('paymentMethods.add'))}
-            </button>
-          </div>
-        </form>
+          <a
+            href="https://nextremitly.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors"
+          >
+            <ExternalLink className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+            {t('organization.payments.visitNextRemitly')}
+          </a>
+        </div>
       </div>
     </div>
   );
 };
 
-export default function PaymentMethodsManagement({ paymentMethods, onUpdate }) {
-  const { t } = useTranslation();
-  const [manualPayments, setManualPayments] = useState([]);
-  const [nextpayPayments, setNextpayPayments] = useState([]);
-  const [walletProviders, setWalletProviders] = useState([]);
+export default function PaymentMethodsManagement({ onUpdate }) {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
+  const [paymentStatus, setPaymentStatus] = useState({});
+  const [organizationId, setOrganizationId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [testing, setTesting] = useState(false);
   const [error, setError] = useState(null);
-  const [showForm, setShowForm] = useState(false);
-  const [editingPayment, setEditingPayment] = useState(null);
-  const [formPaymentType, setFormPaymentType] = useState('manual');
-  const [activeTab, setActiveTab] = useState('manual');
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
 
   useEffect(() => {
-    loadData();
+    loadPaymentStatus();
   }, []);
 
-  useEffect(() => {
-    if (paymentMethods) {
-      setManualPayments(paymentMethods.manual_payments || []);
-      setNextpayPayments(paymentMethods.nextpay_payments || []);
-    }
-  }, [paymentMethods]);
-
-  const loadData = async () => {
+  const loadPaymentStatus = async () => {
     try {
       setLoading(true);
       setError(null);
       
-      const [manualResponse, nextpayResponse, walletsResponse] = await Promise.all([
-        organizationApi.fetchManualPayments().catch(() => ({ data: [] })),
-        organizationApi.fetchNextPayPayments().catch(() => ({ data: [] })),
-        organizationApi.fetchWalletProviders().catch(() => [])
-      ]);
-
-      setManualPayments(manualResponse || []);
-      setNextpayPayments(nextpayResponse || []);
-      setWalletProviders(walletsResponse || []);
+      // Get organization profile first
+      const profileResponse = await organizationApi.fetchOrgProfile();
+      const profile = profileResponse?.data || profileResponse;
+      setOrganizationId(profile.id);
+      
+      // Get payment status
+      const statusResponse = await organizationApi.fetchPaymentMethods(profile.id);
+      console.log('Payment status response:', statusResponse);
+      setPaymentStatus(statusResponse || {});
+      
     } catch (err) {
-      console.error('Error loading payment data:', err);
-      setError(err.message || t('paymentMethods.loadError'));
+      console.error('Error loading payment status:', err);
+      setError(err.message || t('organization.payments.loadError'));
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddPayment = (paymentType) => {
-    setEditingPayment(null);
-    setFormPaymentType(paymentType);
-    setShowForm(true);
-  };
+  const handleTestConnection = async () => {
+    if (!organizationId) return;
+    
+    setTesting(true);
+    setError(null);
+    setSuccessMessage('');
 
-  const handleEditPayment = (payment, paymentType) => {
-    setEditingPayment(payment);
-    setFormPaymentType(paymentType);
-    setShowForm(true);
-  };
-
-  const handleSavePayment = async (formData, paymentType) => {
     try {
-      if (paymentType === 'manual') {
-        if (editingPayment) {
-          await organizationApi.updateManualPayment(editingPayment.id, formData);
-        } else {
-          await organizationApi.createManualPayment(formData);
-        }
-      } else if (paymentType === 'nextpay') {
-        if (editingPayment) {
-          await organizationApi.updateNextPayPayment(editingPayment.id, formData);
-        } else {
-          await organizationApi.createNextPayPayment(formData);
-        }
+      const response = await organizationApi.testPaymentConnection(organizationId);
+      
+      if (response.data?.valid) {
+        setSuccessMessage(t('organization.payments.connectionTestSuccess'));
+        // Refresh status
+        await loadPaymentStatus();
+      } else {
+        setError(response.data?.message || t('organization.payments.connectionTestFailed'));
       }
-      await loadData();
-      onUpdate?.();
     } catch (err) {
-      console.error('Error saving payment:', err);
-      throw err;
+      console.error('Connection test error:', err);
+      setError(err.message || t('organization.payments.connectionTestFailed'));
+    } finally {
+      setTesting(false);
     }
   };
 
-  const handleDeletePayment = async (paymentId, paymentType) => {
-    if (window.confirm(t('paymentMethods.deleteConfirm'))) {
-      try {
-        if (paymentType === 'manual') {
-          await organizationApi.deleteManualPayment(paymentId);
-        } else if (paymentType === 'nextpay') {
-          await organizationApi.deleteNextPayPayment(paymentId);
-        }
-        await loadData();
-        onUpdate?.();
-      } catch (err) {
-        setError(err.message);
-      }
-    }
+  const handleSetupSuccess = () => {
+    setShowSetupModal(false);
+    setSuccessMessage(t('organization.payments.setupSuccessful'));
+    loadPaymentStatus(); // Refresh status
+    onUpdate?.(); // Notify parent component
   };
 
-  const handleToggleActive = async (paymentId, paymentType) => {
-    try {
-      if (paymentType === 'manual') {
-        await organizationApi.toggleManualPaymentActive(paymentId);
-      } else if (paymentType === 'nextpay') {
-        await organizationApi.toggleNextPayPaymentActive(paymentId);
-      }
-      await loadData();
-      onUpdate?.();
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  if (loading) return <Loading />;
-
-  const totalPayments = manualPayments.length + nextpayPayments.length;
-  const maxPayments = 5;
+  if (loading) {
+    return (
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-      <div className="flex items-center justify-between mb-6">
+      {/* Header */}
+      <div className={`flex items-center justify-between mb-6 ${isRTL ? 'text-right' : 'text-left'}`}>
         <div>
-          <h2 className="text-xl font-bold text-gray-900">{t('organization.paymentMethods.title')}</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('organization.payments.paymentMethods')}</h2>
           <p className="text-sm text-gray-600 mt-1">
-            {t('organization.paymentMethods.description')}
+            {t('organization.payments.manageYourPaymentIntegration')}
           </p>
         </div>
         
-        {totalPayments < maxPayments && (
-          <div className="flex space-x-2">
+        <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse' : ''}`}>
+          <button
+            onClick={loadPaymentStatus}
+            disabled={loading}
+            className="inline-flex items-center px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+          >
+            <RefreshCw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} ${loading ? 'animate-spin' : ''}`} />
+            {t('organization.payments.refresh')}
+          </button>
+        </div>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg">
+          <div className={`flex items-center ${isRTL ? 'space-x-reverse' : 'space-x-2'}`}>
+            <AlertCircle className="w-5 h-5" />
+            <span>{error}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Success Message */}
+      {successMessage && (
+        <div className="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+          <div className={`flex items-center justify-between ${isRTL ? 'space-x-reverse' : 'space-x-2'}`}>
+            <div className={`flex items-center ${isRTL ? 'space-x-reverse' : 'space-x-2'}`}>
+              <CheckCircle className="w-5 h-5" />
+              <span>{successMessage}</span>
+            </div>
             <button
-              onClick={() => handleAddPayment('manual')}
-              className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              onClick={() => setSuccessMessage('')}
+              className="text-green-500 hover:text-green-700 text-xl"
             >
-              <Phone className="w-4 h-4 me-2" />
-              {t('organization.paymentMethods.addManual')}
-            </button>
-            <button
-              onClick={() => handleAddPayment('nextpay')}
-              className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-            >
-              <Building2 className="w-4 h-4 me-2" />
-              {t('organization.paymentMethods.addNextPay')}
+              ×
             </button>
           </div>
-        )}
-      </div>
-
-      {error && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-200 text-red-700 rounded">
-          {error}
         </div>
       )}
 
-      <div className="flex space-x-2 mb-6 border-b border-gray-200">
-        <button
-          onClick={() => setActiveTab('manual')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'manual'
-              ? 'border-blue-500 text-blue-600'
-              : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          <Phone className="w-4 h-4 inline me-2" />
-          {t('organization.paymentMethods.manualPayments')} ({manualPayments.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('nextpay')}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'nextpay'
-              ? 'border-purple-500 text-purple-600'
-              : 'border-transparent text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          <Building2 className="w-4 h-4 inline me-2" />
-          {t('organization.paymentMethods.nextPay')} ({nextpayPayments.length})
-        </button>
-      </div>
-
-      {activeTab === 'manual' && (
-        <div>
-          {manualPayments.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
-                <Phone className="w-16 h-16 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                {t('organization.paymentMethods.noManual')}
-              </h3>
-              <p className="text-gray-600 mb-4">
-                {t('organization.paymentMethods.noManualDescription')}
-              </p>
-              <button
-                onClick={() => handleAddPayment('manual')}
-                className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-              >
-                <Plus className="w-4 h-4 me-2" />
-                {t('organization.paymentMethods.addManual')}
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {manualPayments.map(payment => (
-                <ManualPaymentCard
-                  key={payment.id}
-                  payment={payment}
-                  onEdit={handleEditPayment}
-                  onDelete={handleDeletePayment}
-                  onToggleActive={handleToggleActive}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'nextpay' && (
-        <div>
-          {nextpayPayments.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-400 mb-4">
-                <Building2 className="w-16 h-16 mx-auto" />
-              </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">
-                {t('organization.paymentMethods.noNextPay')}
-              </h3>
-              <p className="text-gray-600 mb-4">
-                {t('organization.paymentMethods.noNextPayDescription')}
-              </p>
-              <button
-                onClick={() => handleAddPayment('nextpay')}
-                className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-              >
-                <Plus className="w-4 h-4 me-2" />
-                {t('organization.paymentMethods.addNextPay')}
-              </button>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {nextpayPayments.map(payment => (
-                <NextPayPaymentCard
-                  key={payment.id}
-                  payment={payment}
-                  onEdit={handleEditPayment}
-                  onDelete={handleDeletePayment}
-                  onToggleActive={handleToggleActive}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {totalPayments >= maxPayments && (
-        <div className="mt-4 text-center py-4 text-sm text-gray-500">
-          {t('organization.paymentMethods.maxReached', { maxPayments })}
-        </div>
-      )}
-
-      <PaymentMethodForm
-        isOpen={showForm}
-        onClose={() => setShowForm(false)}
-        onSave={handleSavePayment}
-        editingPayment={editingPayment}
-        walletProviders={walletProviders}
-        paymentType={formPaymentType}
+      {/* NextRemitly Status Card */}
+      <NextRemitlyStatusCard
+        status={paymentStatus}
+        onManage={() => setShowSetupModal(true)}
+        onTest={handleTestConnection}
+        testing={testing}
       />
+
+      {/* Information Section */}
+      <div className="mt-6 space-y-4">
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className={`flex items-start space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
+            <Shield className={`w-5 h-5 text-blue-600 mt-0.5`} />
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <h4 className="font-medium text-blue-900">{t('organization.payments.howItWorks')}</h4>
+              <ul className="text-sm text-blue-700 mt-2 space-y-1">
+                <li>• {t('organization.payments.directPayments')}</li>
+                <li>• {t('organization.payments.secureTransactions')}</li>
+                <li>• {t('organization.payments.realTimeNotifications')}</li>
+                <li>• {t('organization.payments.easyManagement')}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        {/* Benefits Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="bg-gray-50 rounded-lg p-4 text-center">
+            <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <CheckCircle className="w-6 h-6 text-green-600" />
+            </div>
+            <h4 className="font-medium text-gray-900 mb-1">{t('organization.payments.benefit1Title')}</h4>
+            <p className="text-sm text-gray-600">{t('organization.payments.benefit1Description')}</p>
+          </div>
+          
+          <div className="bg-gray-50 rounded-lg p-4 text-center">
+            <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <Shield className="w-6 h-6 text-blue-600" />
+            </div>
+            <h4 className="font-medium text-gray-900 mb-1">{t('organization.payments.benefit2Title')}</h4>
+            <p className="text-sm text-gray-600">{t('organization.payments.benefit2Description')}</p>
+          </div>
+          
+          <div className="bg-gray-50 rounded-lg p-4 text-center">
+            <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <RefreshCw className="w-6 h-6 text-purple-600" />
+            </div>
+            <h4 className="font-medium text-gray-900 mb-1">{t('organization.payments.benefit3Title')}</h4>
+            <p className="text-sm text-gray-600">{t('organization.payments.benefit3Description')}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Payment Setup Modal */}
+      {showSetupModal && (
+        <PaymentSetupModal
+          isOpen={showSetupModal}
+          onClose={() => setShowSetupModal(false)}
+          onSuccess={handleSetupSuccess}
+          organizationId={organizationId}
+          currentStatus={paymentStatus}
+        />
+      )}
     </div>
   );
 }

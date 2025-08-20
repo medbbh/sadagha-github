@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.utils import timezone
+from organizations.models import OrganizationProfile
 
 User = get_user_model()
 
@@ -19,6 +21,8 @@ class Campaign(models.Model):
     name= models.CharField(max_length=255)
     description= models.TextField()
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='campaigns')
+    organization = models.ForeignKey(OrganizationProfile, on_delete=models.CASCADE, related_name='campaigns', null=True, blank=True)
+
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="campaigns")
     target = models.DecimalField(max_digits=10, decimal_places=2)
     current_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
@@ -71,20 +75,15 @@ class Donation(models.Model):
     ]
     
     campaign = models.ForeignKey(Campaign, on_delete=models.CASCADE, related_name='donations')
-    donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='donations')
-    donor_email = models.EmailField(blank=True, null=True)
+    donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='donations')
     donor_name = models.CharField(max_length=255, blank=True, null=True)
     
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    currency = models.CharField(max_length=3, default='MRU')
     
     # Payment session tracking
     payment_session_id = models.UUIDField(null=True, blank=True)
-    payment_transaction_id = models.UUIDField(null=True, blank=True)
-    external_transaction_id = models.CharField(max_length=255, blank=True, null=True)
     
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
-    payment_method = models.CharField(max_length=100, blank=True, null=True)
     
     # Timestamps
     created_at = models.DateTimeField(auto_now_add=True)
@@ -95,14 +94,14 @@ class Donation(models.Model):
     message = models.TextField(blank=True, null=True, help_text="Optional message from donor")
     is_anonymous = models.BooleanField(default=False)
     
-    # Metadata from payment gateway
-    payment_metadata = models.JSONField(default=dict, blank=True)
-    
     class Meta:
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['campaign', 'status']),
             models.Index(fields=['payment_session_id']),
+            models.Index(fields=['status', 'created_at']),
+            models.Index(fields=['donor', 'created_at']),
+
             models.Index(fields=['created_at']),
         ]
     
@@ -117,17 +116,16 @@ class Donation(models.Model):
         if self.donor:
             return self.donor.first_name if hasattr(self.donor, 'first_name') else str(self.donor)
         return self.donor_name or "Anonymous"
-
-
-class DonationWebhookLog(models.Model):
-    """Log webhook calls from payment gateway"""
-    donation = models.ForeignKey(Donation, on_delete=models.CASCADE, null=True, blank=True)
-    session_id = models.UUIDField()
-    payload = models.JSONField()
-    status_code = models.IntegerField(null=True)
-    processed = models.BooleanField(default=False)
-    error_message = models.TextField(blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     
-    class Meta:
-        ordering = ['-created_at']
+    def mark_completed(self):
+        """Mark donation as completed and update timestamp"""
+        self.status = 'completed'
+        self.completed_at = timezone.now()
+        self.save()
+    
+    def mark_failed(self, reason=None):
+        """Mark donation as failed"""
+        self.status = 'failed'
+        if reason:
+            self.payment_metadata['failure_reason'] = reason
+        self.save()

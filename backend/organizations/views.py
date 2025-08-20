@@ -1,4 +1,4 @@
-# organizations/views.py - Simple Payment System
+# organizations/views.py - Updated Payment System
 
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -6,20 +6,16 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from .models import OrganizationProfile, WalletProvider, ManualPayment, NextPayPayment
+from .models import OrganizationProfile
 from campaign.models import Campaign, Donation
 from .utils.supabase_storage import upload_organization_image, delete_organization_image
 
 from .serializers import (
     OrganizationProfileSerializer, 
-    WalletProviderSerializer,
-    ManualPaymentSerializer, 
-    NextPayPaymentSerializer,
-    PaymentMethodsSummarySerializer,
     PublicOrganizationProfileSerializer,
 )
-from campaign.serializers import CampaignSerializer
-
+from campaign.serializers import CampaignSerializer, DonationSerializer
+from campaign.services.payment_service import PaymentServiceManager
 
 from rest_framework import serializers
 from django.db import models
@@ -36,6 +32,7 @@ from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
 
+
 class OrganizationProfileViewSet(viewsets.ModelViewSet):
     queryset = OrganizationProfile.objects.all()
     serializer_class = OrganizationProfileSerializer
@@ -44,10 +41,7 @@ class OrganizationProfileViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """Filter based on user role"""
-        base_queryset = self.queryset.prefetch_related(
-            'manual_payments__wallet_provider',
-            'nextpay_payments__wallet_provider'
-        )
+        base_queryset = self.queryset
         
         if self.request.user.role == 'organization':
             return base_queryset.filter(owner=self.request.user)        
@@ -183,222 +177,105 @@ class OrganizationProfileViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'])
     def payment_methods(self, request, pk=None):
-        """Get all payment methods for this organization"""
+        """Get payment configuration for this organization"""
         organization = self.get_object()
+
+        # Add debugging
+        print(f"Organization payment_enabled: {organization.payment_enabled}")
+        print(f"Organization nextremitly_api_key exists: {bool(organization.nextremitly_api_key)}")
+        print(f"Organization is_verified: {organization.is_verified}")
+        print(f"can_receive_payments result: {organization.can_receive_payments()}")
+
+        # Check if NextRemitly payment is configured
+        payment_configured = organization.can_receive_payments() 
         
-        # Get active payment methods
-        manual_payments = organization.manual_payments.filter(is_active=True)
-        nextpay_payments = organization.nextpay_payments.filter(is_active=True)
-        
-        summary_data = {
-            'manual_payments_count': manual_payments.count(),
-            'nextpay_payments_count': nextpay_payments.count(),
-            'total_payment_methods': manual_payments.count() + nextpay_payments.count(),
-            'has_manual_payments': manual_payments.exists(),
-            'has_nextpay_payments': nextpay_payments.exists(),
-            'payment_ready': manual_payments.exists() or nextpay_payments.exists(),
-            'manual_payments': ManualPaymentSerializer(manual_payments, many=True).data,
-            'nextpay_payments': NextPayPaymentSerializer(nextpay_payments, many=True).data,
+        payment_data = {
+            'nextremitly_configured': bool(organization.nextremitly_api_key),
+            'payment_enabled': organization.payment_enabled,
+            'can_receive_payments': payment_configured,
+            'setup_required': not payment_configured,
+            'api_key_set': bool(organization.nextremitly_api_key),
+            'status': 'ready' if payment_configured else 'setup_required'
         }
         
-        return Response(summary_data)
+        return Response(payment_data)
 
-class WalletProviderViewSet(viewsets.ReadOnlyModelViewSet):
-    """Read-only endpoint for available wallet providers"""
-    queryset = WalletProvider.objects.filter(is_active=True)
-    serializer_class = WalletProviderSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class = None
-
-class ManualPaymentViewSet(viewsets.ModelViewSet):
-    serializer_class = ManualPaymentSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class = None
-    
-    def get_queryset(self):
-        """Filter manual payments based on user role"""
-        base_queryset = ManualPayment.objects.select_related('organization', 'wallet_provider')
+    @action(detail=True, methods=['post'])
+    def setup_nextremitly(self, request, pk=None):
+        """Setup NextRemitly payments for organization"""
+        organization = self.get_object()
         
-        if self.request.user.role == 'organization':
-            return base_queryset.filter(organization__owner=self.request.user)
-        elif self.request.user.role == 'admin':
-            return base_queryset
-        return base_queryset.none()
-    
-    def create(self, request, *args, **kwargs):
-        """Create manual payment for organization"""
-        # Get or create organization profile
-        if request.user.role == 'organization':
-            org_profile, created = OrganizationProfile.objects.get_or_create(
-                owner=request.user,
-                defaults={'org_name': f"{request.user.first_name or request.user.username}'s Organization"}
-            )
+        # Check permissions (organization owner)
+        if organization.owner != request.user:
+            return Response({
+                'error': 'Permission denied. Only organization owner can setup payments.'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        api_key = request.data.get('nextremitly_api_key')
+        if not api_key:
+            return Response({
+                'error': 'nextremitly_api_key is required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        # Validate API key by testing connection
+        organization.nextremitly_api_key = api_key
+        validation = PaymentServiceManager.validate_organization_api_key(organization)
+        
+        if validation['valid']:
+            organization.payment_enabled = True
+            organization.save()
+            
+            return Response({
+                'success': True,
+                'message': 'NextRemitly payment integration setup successfully',
+                'can_receive_payments': organization.can_receive_payments(),
+                'status': 'ready'
+            })
         else:
-            return Response(
-                {"error": "Only organization users can create manual payments"}, 
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        # Check if this wallet already has a manual payment for this org
-        wallet_provider_id = request.data.get('wallet_provider_id')
-        phone_number = request.data.get('phone_number')
-        
-        if ManualPayment.objects.filter(
-            organization=org_profile,
-            wallet_provider_id=wallet_provider_id,
-            phone_number=phone_number
-        ).exists():
-            return Response(
-                {"error": "Manual payment with this wallet and phone number already exists"}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(organization=org_profile)
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    def perform_update(self, serializer):
-        """Ensure users can only update their own manual payments"""
-        manual_payment = self.get_object()
-        
-        if (self.request.user.role == 'organization' and 
-            manual_payment.organization.owner != self.request.user):
-            raise PermissionError("You can only update your own organization's manual payments")
-        
-        serializer.save()
-    
-    def perform_destroy(self, instance):
-        """Ensure users can only delete their own manual payments"""
-        if (self.request.user.role == 'organization' and 
-            instance.organization.owner != self.request.user):
-            raise PermissionError("You can only delete your own organization's manual payments")
-        
-        instance.delete()
+            # Don't save invalid API key
+            organization.nextremitly_api_key = ''
+            return Response({
+                'error': f"Invalid API key: {validation['error']}"
+            }, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=True, methods=['post'])
-    def toggle_active(self, request, pk=None):
-        """Toggle active status of manual payment"""
-        manual_payment = self.get_object()
+    def test_payment_connection(self, request, pk=None):
+        """Test NextRemitly connection for organization"""
+        organization = self.get_object()
         
-        # Check permissions
-        if (request.user.role == 'organization' and 
-            manual_payment.organization.owner != request.user):
-            return Response(
-                {"error": "You can only manage your own organization's manual payments"}, 
-                status=status.HTTP_403_FORBIDDEN
-            )
+        if not organization.nextremitly_api_key:
+            return Response({
+                'valid': False,
+                'message': 'No API key configured',
+                'can_receive_payments': False
+            })
         
-        manual_payment.is_active = not manual_payment.is_active
-        manual_payment.save()
+        validation = PaymentServiceManager.validate_organization_api_key(organization)
         
-        serializer = self.get_serializer(manual_payment)
-        return Response(serializer.data)
-
-class NextPayPaymentViewSet(viewsets.ModelViewSet):
-    serializer_class = NextPayPaymentSerializer
-    permission_classes = [IsAuthenticated]
-    pagination_class = None
-    
-    def get_queryset(self):
-        """Filter NextPay payments based on user role"""
-        base_queryset = NextPayPayment.objects.select_related('organization', 'wallet_provider')
-        
-        if self.request.user.role == 'organization':
-            return base_queryset.filter(organization__owner=self.request.user)
-        elif self.request.user.role == 'admin':
-            return base_queryset
-        return base_queryset.none()
-    
-    def create(self, request, *args, **kwargs):
-        """Create NextPay payment for organization"""
-        # Get or create organization profile
-        if request.user.role == 'organization':
-            org_profile, created = OrganizationProfile.objects.get_or_create(
-                owner=request.user,
-                defaults={'org_name': f"{request.user.first_name or request.user.username}'s Organization"}
-            )
-        else:
-            return Response(
-                {"error": "Only organization users can create NextPay payments"}, 
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        # Check if this wallet+commercial number already exists for this org
-        wallet_provider_id = request.data.get('wallet_provider_id')
-        commercial_number = request.data.get('commercial_number')
-        
-        if NextPayPayment.objects.filter(
-            organization=org_profile,
-            wallet_provider_id=wallet_provider_id,
-            commercial_number=commercial_number
-        ).exists():
-            return Response(
-                {"error": "NextPay payment with this wallet and commercial number already exists"}, 
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save(organization=org_profile)
-        
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-    
-    def perform_update(self, serializer):
-        """Ensure users can only update their own NextPay payments"""
-        nextpay_payment = self.get_object()
-        
-        if (self.request.user.role == 'organization' and 
-            nextpay_payment.organization.owner != self.request.user):
-            raise PermissionError("You can only update your own organization's NextPay payments")
-        
-        serializer.save()
-    
-    def perform_destroy(self, instance):
-        """Ensure users can only delete their own NextPay payments"""
-        if (self.request.user.role == 'organization' and 
-            instance.organization.owner != self.request.user):
-            raise PermissionError("You can only delete your own organization's NextPay payments")
-        
-        instance.delete()
-
-    @action(detail=True, methods=['post'])
-    def toggle_active(self, request, pk=None):
-        """Toggle active status of NextPay payment"""
-        nextpay_payment = self.get_object()
-        
-        # Check permissions
-        if (request.user.role == 'organization' and 
-            nextpay_payment.organization.owner != request.user):
-            return Response(
-                {"error": "You can only manage your own organization's NextPay payments"}, 
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        nextpay_payment.is_active = not nextpay_payment.is_active
-        nextpay_payment.save()
-        
-        serializer = self.get_serializer(nextpay_payment)
-        return Response(serializer.data)
-
-    @action(detail=True, methods=['post'])
-    def verify(self, request, pk=None):
-        """Mark NextPay payment as verified (admin only)"""
-        if request.user.role != 'admin':
-            return Response(
-                {'error': 'Only admins can verify NextPay payments'}, 
-                status=status.HTTP_403_FORBIDDEN
-            )
-        
-        nextpay_payment = self.get_object()
-        nextpay_payment.verified_at = timezone.now()
-        nextpay_payment.save()
-        
-        serializer = self.get_serializer(nextpay_payment)
         return Response({
-            'message': 'NextPay payment verified successfully',
-            'payment': serializer.data
+            'valid': validation['valid'],
+            'message': validation.get('message', validation.get('error')),
+            'can_receive_payments': organization.can_receive_payments()
+        })
+
+    @action(detail=True, methods=['post'])
+    def disable_payments(self, request, pk=None):
+        """Disable payment processing for organization"""
+        organization = self.get_object()
+        
+        # Check permissions
+        if organization.owner != request.user:
+            return Response({
+                'error': 'Permission denied'
+            }, status=status.HTTP_403_FORBIDDEN)
+        
+        organization.payment_enabled = False
+        organization.save()
+        
+        return Response({
+            'success': True,
+            'message': 'Payment processing disabled',
+            'can_receive_payments': organization.can_receive_payments()
         })
 
 
@@ -513,7 +390,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
         trend_data = self._fill_missing_dates(trend_donations, start_date, end_date, period)
 
         # Top donors
-        top_donors = period_donations.values('donor_name', 'donor_email').annotate(
+        top_donors = period_donations.values('donor_name', 'donor_id').annotate(
             total_donated=Sum('amount'),
             donation_count=Count('id')
         ).order_by('-total_donated')[:5]
@@ -525,11 +402,15 @@ class AnalyticsViewSet(viewsets.ViewSet):
             'new': campaigns.filter(created_at__gte=start_date).count()
         }
 
-        # Payment method breakdown for pie chart
-        payment_methods = period_donations.values('payment_method').annotate(
-            count=Count('id'),
-            total_amount=Sum('amount')
-        ).order_by('-total_amount')
+        # Payment method breakdown (simplified for NextRemitly only)
+        payment_methods = [
+            {
+                'name': 'NextRemitly',
+                'count': period_donations.count(),
+                'total_amount': float(period_raised),
+                'color': '#4F46E5'
+            }
+        ]
 
         # Monthly comparison (for growth indicators)
         prev_start = start_date - (end_date - start_date)
@@ -552,7 +433,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 'period_raised': float(period_raised),
                 'period_donations': period_donations.count(),
                 'avg_donation': float(avg_donation),
-                'unique_donors': period_donations.values('donor_email').distinct().count(),
+                'unique_donors': period_donations.values('donor_id').distinct().count(),
                 'growth_rate': growth_rate,
                 'prev_period_raised': float(prev_raised)
             },
@@ -582,14 +463,7 @@ class AnalyticsViewSet(viewsets.ViewSet):
                 {'name': 'Completed', 'value': campaign_status['completed'], 'color': '#10B981'},
                 {'name': 'New This Period', 'value': campaign_status['new'], 'color': '#F59E0B'}
             ],
-            'payment_methods': [
-                {
-                    'name': p['payment_method'] or 'Unknown',
-                    'value': p['count'],
-                    'amount': float(p['total_amount'] or 0),
-                    'color': self._get_color_for_index(i)
-                } for i, p in enumerate(payment_methods)
-            ]
+            'payment_methods': payment_methods
         }
 
     def _fill_missing_dates(self, trend_data, start_date, end_date, period):
@@ -643,97 +517,9 @@ class AnalyticsViewSet(viewsets.ViewSet):
         
         return filled_data
 
-    def _calculate_campaign_health(self, campaigns, all_donations, start_date, end_date):
-        """Calculate health metrics for each campaign"""
-        from datetime import datetime, timedelta
-        from django.utils import timezone
-        
-        campaign_health = []
-        now = timezone.now()
-        
-        for campaign in campaigns:
-            # Get donations for this campaign
-            campaign_donations = all_donations.filter(campaign=campaign)
-            
-            # Days since last donation
-            last_donation = campaign_donations.order_by('-created_at').first()
-            if last_donation:
-                days_since_last = (now - last_donation.created_at).days
-            else:
-                days_since_last = (now - campaign.created_at).days
-            
-            # Weekly trend (this week vs last week)
-            week_start = now - timedelta(days=7)
-            this_week_donations = campaign_donations.filter(created_at__gte=week_start).count()
-            last_week_start = week_start - timedelta(days=7)
-            last_week_donations = campaign_donations.filter(
-                created_at__gte=last_week_start, 
-                created_at__lt=week_start
-            ).count()
-            
-            # Determine trend
-            if this_week_donations > last_week_donations:
-                weekly_trend = 'increasing'
-            elif this_week_donations < last_week_donations:
-                weekly_trend = 'decreasing'
-            else:
-                weekly_trend = 'stable'
-            
-            # Momentum based on recent activity
-            if days_since_last <= 3:
-                momentum = 'hot'
-            elif days_since_last <= 7:
-                momentum = 'warm'
-            else:
-                momentum = 'cold'
-            
-            # Completion rate
-            completion_rate = round((campaign.current_amount / campaign.target * 100), 1) if campaign.target > 0 else 0
-            
-            # Donor engagement (unique donors in last 30 days)
-            recent_donors = campaign_donations.filter(
-                created_at__gte=now - timedelta(days=30)
-            ).values('donor_email').distinct().count()
-            
-            if recent_donors >= 5:
-                donor_engagement = 'high'
-            elif recent_donors >= 2:
-                donor_engagement = 'medium'
-            else:
-                donor_engagement = 'low'
-            
-            campaign_health.append({
-                'campaign_id': campaign.id,
-                'name': campaign.name,
-                'days_since_last_donation': days_since_last,
-                'momentum': momentum,
-                'weekly_trend': weekly_trend,
-                'completion_rate': completion_rate,
-                'donor_engagement': donor_engagement,
-                'total_donors': campaign_donations.values('donor_email').distinct().count(),
-                'this_week_donations': this_week_donations,
-                'last_week_donations': last_week_donations
-            })
-        
-        # Sort by priority (cold campaigns with low completion first)
-        campaign_health.sort(key=lambda x: (
-            x['momentum'] == 'cold',  # Cold campaigns first
-            -x['completion_rate'],    # Lower completion rate first
-            x['days_since_last_donation']  # More days since last donation first
-        ), reverse=True)
-        
-        return campaign_health
-
-    def _get_color_for_index(self, index):
-        """Get color for chart elements"""
-        colors = ['#4F46E5', '#7C3AED', '#EC4899', '#EF4444', '#F59E0B', '#10B981', '#06B6D4']
-        return colors[index % len(colors)]
-
 
 class OrganizationDashboardViewSet(viewsets.ModelViewSet):
-    """
-    Dashboard viewset with statistics and analytics for organizations
-    """
+    """Dashboard viewset with statistics and analytics for organizations"""
     queryset = OrganizationProfile.objects.all()
     serializer_class = OrganizationProfileSerializer
     permission_classes = [IsAuthenticated]
@@ -788,11 +574,7 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
             else:  # 1y
                 start_date = end_date - timedelta(days=365)
 
-            # Payment methods stats
-            manual_payments = profile.manual_payments.filter(is_active=True)
-            nextpay_payments = profile.nextpay_payments.filter(is_active=True)
-            
-            # Initialize campaign stats with defaults
+            # Initialize campaign stats
             campaign_stats = {
                 'total_campaigns': 0,
                 'total_raised': 0,
@@ -801,29 +583,12 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 'recent_raised': 0,
                 'success_rate': 0,
                 'active_campaigns': 0,
-                'pending_campaigns': 0,
                 'completed_campaigns': 0,
                 'avg_goal_achievement': 0
             }
             
-            # Try to get real campaign stats
+            # Get campaign statistics
             try:
-                # Check if Campaign model exists and is properly imported
-                from campaign.models import Campaign
-                
-                # Verify the Campaign model has the expected fields
-                campaign_fields = [field.name for field in Campaign._meta.get_fields()]
-                print(f"Available Campaign fields: {campaign_fields}")  # Debug log
-                
-                # Check required fields exist
-                required_fields = ['owner', 'current_amount', 'target', 'number_of_donors', 'created_at']
-                missing_fields = [field for field in required_fields if field not in campaign_fields]
-                
-                if missing_fields:
-                    print(f"Missing required Campaign fields: {missing_fields}")
-                    raise AttributeError(f"Campaign model missing fields: {missing_fields}")
-                
-                # Get campaigns for this organization
                 org_campaigns = Campaign.objects.filter(owner=profile.owner)
                 
                 # Basic stats
@@ -831,9 +596,13 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 campaign_stats['total_raised'] = float(org_campaigns.aggregate(
                     total=models.Sum('current_amount')
                 )['total'] or 0)
-                campaign_stats['total_donors'] = org_campaigns.aggregate(
-                    total=models.Sum('number_of_donors')
-                )['total'] or 0
+                
+                # Get total donors from donations
+                total_donors = Donation.objects.filter(
+                    campaign__owner=profile.owner,
+                    status='completed'
+                ).values('donor_id').distinct().count()
+                campaign_stats['total_donors'] = total_donors
                 
                 # Recent campaigns in period
                 recent_campaigns = org_campaigns.filter(created_at__gte=start_date)
@@ -848,34 +617,12 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                         current_amount__gte=models.F('target')
                     ).count()
                     campaign_stats['success_rate'] = round((completed_campaigns / campaign_stats['total_campaigns'] * 100), 1)
+                    campaign_stats['completed_campaigns'] = completed_campaigns
 
-                # Campaign status breakdown - ONLY if status field exists
-                if 'status' in campaign_fields:
-                    campaign_stats['active_campaigns'] = org_campaigns.filter(status='active').count()
-                    campaign_stats['pending_campaigns'] = org_campaigns.filter(status='pending').count()
-                    campaign_stats['completed_campaigns'] = org_campaigns.filter(status='completed').count()
-                else:
-                    print("Campaign model doesn't have 'status' field - using alternative logic")
-                    # Alternative logic without status field
-                    # You can add your own logic here based on available fields
-                    # For example, using dates or other criteria
-                    
-                    # Example: Consider campaigns as "active" if they haven't reached target and are recent
-                    if 'target' in campaign_fields and 'current_amount' in campaign_fields:
-                        campaign_stats['active_campaigns'] = org_campaigns.filter(
-                            current_amount__lt=models.F('target'),
-                            created_at__gte=start_date
-                        ).count()
-                        
-                        campaign_stats['completed_campaigns'] = org_campaigns.filter(
-                            current_amount__gte=models.F('target')
-                        ).count()
-                        
-                        # Pending could be very recent campaigns with no donations yet
-                        campaign_stats['pending_campaigns'] = org_campaigns.filter(
-                            current_amount=0,
-                            created_at__gte=start_date
-                        ).count()
+                # Active campaigns (haven't reached target)
+                campaign_stats['active_campaigns'] = org_campaigns.filter(
+                    current_amount__lt=models.F('target')
+                ).count()
 
                 # Average goal achievement
                 campaigns_with_targets = org_campaigns.filter(target__gt=0)
@@ -891,73 +638,28 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                     )['avg'] or 0
                     campaign_stats['avg_goal_achievement'] = round(avg_achievement, 1)
 
-                print(f"Campaign stats calculated successfully: {campaign_stats}")  # Debug log
-
-            except ImportError as e:
-                print(f"Campaign model import error: {e}")
-                # Return response indicating campaign module is not available
-                return Response(
-                    {
-                        'error': 'Campaign module not available',
-                        'details': f'Campaign model could not be imported: {str(e)}',
-                        'payment_methods': {
-                            'manual_count': manual_payments.count(),
-                            'nextpay_count': nextpay_payments.count(),
-                            'total_methods': manual_payments.count() + nextpay_payments.count(),
-                            'manual_enabled': manual_payments.exists(),
-                            'nextpay_enabled': nextpay_payments.exists(),
-                            'payment_ready': manual_payments.exists() or nextpay_payments.exists()
-                        }
-                    },
-                    status=status.HTTP_503_SERVICE_UNAVAILABLE
-                )
-                
-            except AttributeError as e:
-                print(f"Campaign model attribute error: {e}")
-                return Response(
-                    {
-                        'error': 'Campaign model configuration error',
-                        'details': f'Campaign model fields mismatch: {str(e)}',
-                        'payment_methods': {
-                            'manual_count': manual_payments.count(),
-                            'nextpay_count': nextpay_payments.count(),
-                            'total_methods': manual_payments.count() + nextpay_payments.count(),
-                            'manual_enabled': manual_payments.exists(),
-                            'nextpay_enabled': nextpay_payments.exists(),
-                            'payment_ready': manual_payments.exists() or nextpay_payments.exists()
-                        }
-                    },
-                    status=status.HTTP_503_SERVICE_UNAVAILABLE
-                )
-                
             except Exception as e:
-                print(f"Campaign data processing error: {e}")
-                # Log the error but continue with default values
-                pass
+                print(f"Campaign stats error: {e}")
+
+            # Payment status
+            payment_status = {
+                'nextremitly_configured': bool(profile.nextremitly_api_key),
+                'payment_enabled': profile.payment_enabled,
+                'can_receive_payments': profile.can_receive_payments(),
+                'payment_ready': profile.can_receive_payments()
+            }
 
             # Prepare final response
             statistics_data = {
                 **campaign_stats,
                 'period': period,
-                
-                # Payment methods summary
-                'payment_methods': {
-                    'manual_count': manual_payments.count(),
-                    'nextpay_count': nextpay_payments.count(),
-                    'total_methods': manual_payments.count() + nextpay_payments.count(),
-                    'manual_enabled': manual_payments.exists(),
-                    'nextpay_enabled': nextpay_payments.exists(),
-                    'payment_ready': manual_payments.exists() or nextpay_payments.exists()
-                },
-                
-                # Quick setup status
+                'payment_status': payment_status,
                 'setup_status': {
                     'profile_complete': bool(profile.org_name and profile.description),
-                    'payment_configured': manual_payments.exists() or nextpay_payments.exists(),
+                    'payment_configured': profile.can_receive_payments(),
                     'verified': profile.is_verified,
                     'ready_for_campaigns': bool(
-                        profile.org_name and 
-                        (manual_payments.exists() or nextpay_payments.exists())
+                        profile.org_name and profile.can_receive_payments()
                     )
                 }
             }
@@ -965,9 +667,9 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
             return Response(statistics_data)
 
         except Exception as e:
-            print(f"Statistics endpoint error: {e}")  # Debug log
+            print(f"Statistics endpoint error: {e}")
             import traceback
-            traceback.print_exc()  # Print full traceback for debugging
+            traceback.print_exc()
             
             return Response(
                 {
@@ -980,7 +682,7 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'])
     def payment_summary(self, request):
-        """Get detailed payment methods summary for dashboard"""
+        """Get payment configuration summary for dashboard"""
         try:
             if request.user.role != 'organization':
                 return Response(
@@ -993,52 +695,44 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 defaults={'org_name': f"{request.user.first_name or request.user.username}'s Organization"}
             )
             
-            # Get all payment methods
-            manual_payments = profile.manual_payments.filter(is_active=True)
-            nextpay_payments = profile.nextpay_payments.filter(is_active=True)
-            
-            # Available wallets not yet configured
-            configured_manual_wallets = set(manual_payments.values_list('wallet_provider_id', flat=True))
-            configured_nextpay_wallets = set(nextpay_payments.values_list('wallet_provider_id', flat=True))
-            
-            available_wallets = WalletProvider.objects.filter(is_active=True)
-            
+            # Check NextRemitly configuration
             recommendations = []
             
-            # Suggest unconfigured wallets
-            for wallet in available_wallets:
-                if wallet.id not in configured_manual_wallets and wallet.id not in configured_nextpay_wallets:
+            if not profile.can_receive_payments():
+                if not profile.nextremitly_api_key:
                     recommendations.append({
-                        'type': 'suggestion',
-                        'title': f'Add {wallet.name} Payment',
-                        'message': f'Consider adding {wallet.name} to reach more donors',
-                        'action': 'add_payment_method',
-                        'wallet_id': wallet.id,
-                        'wallet_name': wallet.name
+                        'type': 'warning',
+                        'title': 'Setup NextRemitly Payment',
+                        'message': 'Configure your NextRemitly API key to start receiving donations',
+                        'action': 'setup_nextremitly'
                     })
-            
-            # Check if no payment methods configured
-            if not manual_payments.exists() and not nextpay_payments.exists():
-                recommendations.insert(0, {
-                    'type': 'warning',
-                    'title': 'No Payment Methods',
-                    'message': 'Add at least one payment method to start receiving donations',
-                    'action': 'add_payment_method'
+                elif not profile.payment_enabled:
+                    recommendations.append({
+                        'type': 'info',
+                        'title': 'Enable Payments',
+                        'message': 'Your NextRemitly is configured but payments are disabled',
+                        'action': 'enable_payments'
+                    })
+            else:
+                recommendations.append({
+                    'type': 'success',
+                    'title': 'Payment Ready',
+                    'message': 'Your organization can now receive donations via NextRemitly',
+                    'action': 'none'
                 })
 
             payment_summary = {
-                'manual_payments': ManualPaymentSerializer(manual_payments, many=True).data,
-                'nextpay_payments': NextPayPaymentSerializer(nextpay_payments, many=True).data,
-                'summary': {
-                    'manual_count': manual_payments.count(),
-                    'nextpay_count': nextpay_payments.count(),
-                    'total_count': manual_payments.count() + nextpay_payments.count(),
-                    'has_manual': manual_payments.exists(),
-                    'has_nextpay': nextpay_payments.exists(),
-                    'payment_ready': manual_payments.exists() or nextpay_payments.exists()
+                'nextremitly': {
+                    'configured': bool(profile.nextremitly_api_key),
+                    'enabled': profile.payment_enabled,
+                    'status': 'ready' if profile.can_receive_payments() else 'setup_required'
                 },
-                'recommendations': recommendations[:5],  # Limit to 5 recommendations
-                'available_wallets': WalletProviderSerializer(available_wallets, many=True).data
+                'summary': {
+                    'can_receive_payments': profile.can_receive_payments(),
+                    'payment_methods_count': 1 if profile.can_receive_payments() else 0,
+                    'setup_complete': profile.can_receive_payments()
+                },
+                'recommendations': recommendations
             }
             
             return Response(payment_summary)
@@ -1082,7 +776,7 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                     } for c in recent_campaigns
                 ]
 
-            except (ImportError, AttributeError) as e:
+            except Exception as e:
                 return Response(
                     {
                         'error': 'Campaign data unavailable', 
@@ -1092,23 +786,22 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                     status=status.HTTP_503_SERVICE_UNAVAILABLE
                 )
 
-            # Payment methods quick summary
-            manual_count = profile.manual_payments.filter(is_active=True).count()
-            nextpay_count = profile.nextpay_payments.filter(is_active=True).count()
+            # Payment summary
+            payment_configured = profile.can_receive_payments()
 
             overview_data = {
                 'organization': OrganizationProfileSerializer(profile).data,
                 'recent_campaigns': campaign_data,
                 'payment_summary': {
-                    'manual_count': manual_count,
-                    'nextpay_count': nextpay_count,
-                    'total_count': manual_count + nextpay_count,
-                    'payment_ready': manual_count > 0 or nextpay_count > 0
+                    'nextremitly_configured': bool(profile.nextremitly_api_key),
+                    'payment_enabled': profile.payment_enabled,
+                    'can_receive_payments': payment_configured,
+                    'setup_required': not payment_configured
                 },
                 'quick_stats': {
                     'profile_complete': bool(profile.org_name and profile.description),
                     'verified': profile.is_verified,
-                    'can_create_campaigns': manual_count > 0 or nextpay_count > 0
+                    'can_create_campaigns': payment_configured
                 }
             }
 
@@ -1119,7 +812,6 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 {'error': 'Failed to fetch dashboard overview', 'details': str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-        
 
 
 class PublicOrganizationViewSet(viewsets.ReadOnlyModelViewSet):
@@ -1143,5 +835,9 @@ class PublicOrganizationViewSet(viewsets.ReadOnlyModelViewSet):
         
         return Response({
             'organization': serializer.data,
-            'campaigns': campaign_data
+            'campaigns': campaign_data,
+            'payment_info': {
+                'can_receive_donations': organization.can_receive_payments(),
+                'payment_method': 'NextRemitly' if organization.can_receive_payments() else None
+            }
         })

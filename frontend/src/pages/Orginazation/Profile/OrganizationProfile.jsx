@@ -25,8 +25,8 @@ const ProfileCompletionBanner = ({ orgProfile, paymentMethods }) => {
   const { t } = useTranslation();
   
   const getCompletionItems = () => {
-    const hasPaymentMethods = (paymentMethods?.manual_payments?.length > 0) || 
-                             (paymentMethods?.nextpay_payments?.length > 0);
+    // Updated: check NextRemitly instead of old payment methods
+    const hasPaymentMethods = paymentMethods?.can_receive_payments || false;
     
     const items = [
       {
@@ -115,9 +115,12 @@ export default function OrganizationProfile() {
   const [error, setError] = useState(null);
   const [orgProfile, setOrgProfile] = useState(null);
   const [paymentMethods, setPaymentMethods] = useState({
-    manual_payments: [],
-    nextpay_payments: [],
-    summary: {}
+    // Updated: NextRemitly payment status instead of manual/nextpay
+    nextremitly_configured: false,
+    payment_enabled: false,
+    can_receive_payments: false,
+    api_key_set: false,
+    status: 'setup_required'
   });
 
   useEffect(() => {
@@ -133,46 +136,27 @@ export default function OrganizationProfile() {
       const profileResponse = await organizationApi.fetchOrgProfile();
       setOrgProfile(profileResponse);
 
-      // Then get payment methods if we have a profile
+      // Then get NextRemitly payment status if we have a profile
       if (profileResponse?.id) {
         try {
-          const [manualPayments, nextpayPayments] = await Promise.all([
-            organizationApi.fetchManualPayments().catch(err => {
-              console.warn('Failed to fetch manual payments:', err);
-              return { data: [] };
-            }),
-            organizationApi.fetchNextPayPayments().catch(err => {
-              console.warn('Failed to fetch NextPay payments:', err);
-              return { data: [] };
-            })
-          ]);
-
-          setPaymentMethods({
-            manual_payments: manualPayments || [],
-            nextpay_payments: nextpayPayments || [],
-            summary: {
-              total_count: (manualPayments.length || 0) + (nextpayPayments.length || 0),
-              manual_count: manualPayments.length || 0,
-              nextpay_count: nextpayPayments.length || 0,
-              has_manual: (manualPayments.length || 0) > 0,
-              has_nextpay: (nextpayPayments.length || 0) > 0,
-              payment_ready: (manualPayments.length || 0) > 0 || (nextpayPayments.length || 0) > 0
-            }
+          // Updated: use NextRemitly payment status API
+          const paymentStatus = await organizationApi.fetchPaymentMethods(profileResponse.id);
+          setPaymentMethods(paymentStatus || {
+            nextremitly_configured: false,
+            payment_enabled: false,
+            can_receive_payments: false,
+            api_key_set: false,
+            status: 'setup_required'
           });
         } catch (paymentErr) {
-          console.warn('Failed to fetch payment methods:', paymentErr);
+          console.warn('Failed to fetch payment status:', paymentErr);
           // Set empty payment methods on error
           setPaymentMethods({
-            manual_payments: [],
-            nextpay_payments: [],
-            summary: {
-              total_count: 0,
-              manual_count: 0,
-              nextpay_count: 0,
-              has_manual: false,
-              has_nextpay: false,
-              payment_ready: false
-            }
+            nextremitly_configured: false,
+            payment_enabled: false,
+            can_receive_payments: false,
+            api_key_set: false,
+            status: 'setup_required'
           });
         }
       }
@@ -181,9 +165,11 @@ export default function OrganizationProfile() {
       console.error('Error loading profile data:', err);
       // Set fallback values
       setPaymentMethods({
-        manual_payments: [],
-        nextpay_payments: [],
-        summary: {}
+        nextremitly_configured: false,
+        payment_enabled: false,
+        can_receive_payments: false,
+        api_key_set: false,
+        status: 'setup_required'
       });
     } finally {
       setLoading(false);
@@ -195,7 +181,7 @@ export default function OrganizationProfile() {
   };
 
   const handlePaymentMethodsUpdate = () => {
-    // Reload payment methods when they change
+    // Reload NextRemitly payment status when it changes
     loadPaymentMethods();
   };
 
@@ -203,22 +189,14 @@ export default function OrganizationProfile() {
     if (!orgProfile?.id) return;
     
     try {
-      const [manualPayments, nextpayPayments] = await Promise.all([
-        organizationApi.fetchManualPayments().catch(() => ({ data: [] })),
-        organizationApi.fetchNextPayPayments().catch(() => ({ data: [] }))
-      ]);
-
-      setPaymentMethods({
-        manual_payments: manualPayments || [],
-        nextpay_payments: nextpayPayments || [],
-        summary: {
-          total_count: (manualPayments.length || 0) + (nextpayPayments.length || 0),
-          manual_count: manualPayments.length || 0,
-          nextpay_count: nextpayPayments.length || 0,
-          has_manual: (manualPayments.length || 0) > 0,
-          has_nextpay: (nextpayPayments.length || 0) > 0,
-          payment_ready: (manualPayments.length || 0) > 0 || (nextpayPayments.length || 0) > 0
-        }
+      // Updated: use NextRemitly payment status API
+      const paymentStatus = await organizationApi.fetchPaymentMethods(orgProfile.id);
+      setPaymentMethods(paymentStatus || {
+        nextremitly_configured: false,
+        payment_enabled: false,
+        can_receive_payments: false,
+        api_key_set: false,
+        status: 'setup_required'
       });
     } catch (err) {
       console.error('Error reloading payment methods:', err);
@@ -290,6 +268,8 @@ export default function OrganizationProfile() {
         </TabButton>
       </div>
 
+      
+
       {/* Tab Content */}
       <div className="space-y-6">
         {activeTab === 'profile' && (
@@ -302,7 +282,6 @@ export default function OrganizationProfile() {
 
         {activeTab === 'payments' && (
           <PaymentMethodsManagement
-            paymentMethods={paymentMethods}
             onUpdate={handlePaymentMethodsUpdate}
           />
         )}
@@ -343,13 +322,13 @@ export default function OrganizationProfile() {
                     </li>
                     <li className="flex items-center">
                       <div className={`w-2 h-2 rounded-full mr-3 ${
-                        paymentMethods?.summary?.payment_ready ? 'bg-green-500' : 'bg-gray-300'
+                        paymentMethods?.can_receive_payments ? 'bg-green-500' : 'bg-gray-300'
                       }`}></div>
                       {t('organization.orgProfile.verification.requirements.paymentMethod')}
                     </li>
                   </ul>
                   
-                  {orgProfile?.document_url && paymentMethods?.summary?.payment_ready ? (
+                  {orgProfile?.document_url && paymentMethods?.can_receive_payments ? (
                     <button 
                       onClick={() => organizationApi.requestVerification(orgProfile.id)}
                       className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -373,18 +352,18 @@ export default function OrganizationProfile() {
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-900">
-              {paymentMethods?.summary?.manual_count || 0}
+              {paymentMethods?.nextremitly_configured ? 1 : 0}
             </div>
-            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.manualPayments')}</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.nextRemitlyConfigured')}</div>
           </div>
         </div>
         
         <div className="bg-white rounded-lg border border-gray-200 p-4">
           <div className="text-center">
             <div className="text-2xl font-bold text-gray-900">
-              {paymentMethods?.summary?.nextpay_count || 0}
+              {paymentMethods?.can_receive_payments ? 'Ready' : 'Setup Required'}
             </div>
-            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.nextpayMethods')}</div>
+            <div className="text-sm text-gray-600">{t('organization.orgProfile.stats.paymentStatus')}</div>
           </div>
         </div>
         
