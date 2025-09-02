@@ -48,6 +48,7 @@ import HowItWorksPage from './pages/User/HowItWorksPage';
 import OrganizationsList from './components/ui/OrganizationsList';
 import OrganizationDetail from './components/ui/OrganizationDetail';
 import InvitedVolunteers from './pages/Orginazation/InvitedVolunteers';
+import PublicLayout from './pages/User/PublicLayout';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -160,25 +161,27 @@ function App() {
       </Route>
       
       {/* USER routes */}
+
+      <Route element={<PublicLayout />}>
+        <Route path="/feed" element={<Home />} />
+        <Route path="/explore" element={<ExploreCampaigns />} />
+        <Route path="/campaign/:campaignId" element={<CampaignDetail />} />
+        <Route path="/how-it-works" element={<HowItWorksPage />} />
+        <Route path="/categories" element={<Categories />} />
+        <Route path="/organizations" element={<OrganizationsList />} />
+        <Route path="/organizations/:id" element={<OrganizationDetail />} />
+      </Route>
+
       <Route element={
         <ProtectedRoute allowedRoles={['user']}>
           <Layout />
         </ProtectedRoute>
       }>
-        <Route path="/feed" element={<Home />} />
-        <Route path="/explore" element={<ExploreCampaigns />} />
-        <Route path="/campaign/:campaignId" element={<CampaignDetail />} />
-        <Route path="/categories" element={<Categories />} />
         <Route path="/campaign/:campaignId/donate/:donationAmount" element={<DonationPaymentPage />} />
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
-        <Route path="/how-it-works" element={<HowItWorksPage />} />
 
-        <Route path="/organizations" element={<OrganizationsList />} />
-        <Route path="/organizations/:id" element={<OrganizationDetail />} />
-
-        
-
+    
         {/* <Route path="/volunteer" element={<VolunteerDashboard />} /> */}
         <Route path="/volunteer/invitations" element={<VolunteerInvitations />} />
 

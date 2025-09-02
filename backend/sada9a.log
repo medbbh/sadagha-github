@@ -785,3 +785,50 @@ INFO 2025-08-20 12:31:59,200 payment_service 8844 20176 Creating payment session
 INFO 2025-08-20 12:31:59,921 payment_service 8844 20176 NextRemitly response status: 201
 INFO 2025-08-20 12:31:59,921 payment_service 8844 20176 Payment session creation successful: 6293006a-d0d4-480b-b1d4-dbfd75720dae
 INFO 2025-08-20 12:32:00,121 views 8844 20176 Payment session created successfully: 6293006a-d0d4-480b-b1d4-dbfd75720dae
+INFO 2025-08-20 13:04:11,806 views 20420 18792 === CREATE DONATION REQUEST ===
+INFO 2025-08-20 13:04:11,807 views 20420 18792 Campaign ID: 4
+INFO 2025-08-20 13:04:11,808 views 20420 18792 Content-Type: application/json
+INFO 2025-08-20 13:04:11,808 views 20420 18792 Request method: POST
+INFO 2025-08-20 13:04:11,808 views 20420 18792 Raw body: b'{"amount":2500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-08-20 13:04:11,809 views 20420 18792 Parsed data: {'amount': 2500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-08-20 13:04:11,809 views 20420 18792 Headers: {'Content-Length': '64', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU1OTQ3ODY3LCJpYXQiOjE3NTU2ODg2NjcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1NTY4ODY2N31dLCJzZXNzaW9uX2lkIjoiZmFmMWQzMzctNGEzNC00YzA0LWE1MWQtOTMxNGUzY2IyNmNjIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.dUEANs-rBaHQvKkKDnscmu5SO6JL6MmNeOxlk7odKGs', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-08-20 13:04:12,056 views 20420 18792 Campaign found: I am growing an agriculture bussiness (Org: Thimar)
+INFO 2025-08-20 13:04:12,058 views 20420 18792 Validated data: {'amount': Decimal('2500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-08-20 13:04:12,247 views 20420 18792 Created donation record: 47
+INFO 2025-08-20 13:04:13,421 payment_service 20420 18792 Creating payment session for campaign 4, amount: 2500.0 MRU
+INFO 2025-08-20 13:04:15,156 payment_service 20420 18792 NextRemitly response status: 201
+INFO 2025-08-20 13:04:15,158 payment_service 20420 18792 Payment session creation successful: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:04:15,464 views 20420 18792 Payment session created successfully: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:04:16,764 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:04:17,996 views 20420 18792 Synced donation 47: processing -> authenticated
+INFO 2025-08-20 13:04:29,493 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:04:30,914 views 20420 18792 Synced donation 47: authenticated -> otp_sent
+INFO 2025-08-20 13:04:42,600 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:04:55,602 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:05:08,506 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:05:21,719 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:05:34,209 payment_service 20420 18792 Getting payment status for session: 557cca94-e8f3-43bb-ac60-e2e68d6ecf07
+INFO 2025-08-20 13:05:35,715 views 20420 18792 Synced donation 47: otp_sent -> completed
+INFO 2025-08-20 13:33:57,331 views 20420 22028 === CREATE DONATION REQUEST ===
+INFO 2025-08-20 13:33:57,331 views 20420 22028 Campaign ID: 4
+INFO 2025-08-20 13:33:57,332 views 20420 22028 Content-Type: application/json
+INFO 2025-08-20 13:33:57,332 views 20420 22028 Request method: POST
+INFO 2025-08-20 13:33:57,333 views 20420 22028 Raw body: b'{"amount":25000,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-08-20 13:33:57,334 views 20420 22028 Parsed data: {'amount': 25000, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-08-20 13:33:57,334 views 20420 22028 Headers: {'Content-Length': '65', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU1OTQ3ODY3LCJpYXQiOjE3NTU2ODg2NjcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1NTY4ODY2N31dLCJzZXNzaW9uX2lkIjoiZmFmMWQzMzctNGEzNC00YzA0LWE1MWQtOTMxNGUzY2IyNmNjIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.dUEANs-rBaHQvKkKDnscmu5SO6JL6MmNeOxlk7odKGs', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Not;A=Brand";v="99", "Google Chrome";v="139", "Chromium";v="139"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-08-20 13:33:57,608 views 20420 22028 Campaign found: I am growing an agriculture bussiness (Org: Thimar)
+INFO 2025-08-20 13:33:57,609 views 20420 22028 Validated data: {'amount': Decimal('25000.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-08-20 13:33:57,804 views 20420 22028 Created donation record: 48
+INFO 2025-08-20 13:33:58,594 payment_service 20420 22028 Creating payment session for campaign 4, amount: 25000.0 MRU
+INFO 2025-08-20 13:33:59,975 payment_service 20420 22028 NextRemitly response status: 201
+INFO 2025-08-20 13:33:59,977 payment_service 20420 22028 Payment session creation successful: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:00,175 views 20420 22028 Payment session created successfully: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:01,499 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:02,531 views 20420 22028 Synced donation 48: processing -> pending
+INFO 2025-08-20 13:34:14,105 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:15,641 views 20420 22028 Synced donation 48: pending -> otp_sent
+INFO 2025-08-20 13:34:27,544 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:40,523 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:34:53,644 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:35:06,123 payment_service 20420 22028 Getting payment status for session: 3b0bf9af-b8ca-48c5-882e-e89fcbf91a8f
+INFO 2025-08-20 13:35:07,453 views 20420 22028 Synced donation 48: otp_sent -> completed

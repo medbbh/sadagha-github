@@ -253,7 +253,7 @@ export const uploadOrgDocument = async (profileId, documentFile) => {
 // Public Organization Access
 export const fetchOrganizations = async (params = {}) => {
   try {
-    const response = await api.get('/org/public/organizations/', { params });
+    const response = await api.get('/org/public-organizations', { params });
     return response;
   } catch (error) {
     console.error('Failed to fetch organizations:', error);
@@ -263,7 +263,7 @@ export const fetchOrganizations = async (params = {}) => {
 
 export const fetchOrganizationById = async (id) => {
   try {
-    const response = await api.get(`/org/public/organizations/${id}/`);
+    const response = await api.get(`/org/public-organizations/${id}/`);
     return response;
   } catch (error) {
     console.error('Failed to fetch organization:', error);
@@ -273,7 +273,7 @@ export const fetchOrganizationById = async (id) => {
 
 export const fetchOrganizationCampaigns = async (orgId) => {
   try {
-    const response = await api.get(`/org/public/organizations/${orgId}/`);
+    const response = await api.get(`/org/public-organizations/${orgId}/`);
     return response.campaigns || [];
   } catch (error) {
     console.error('Failed to fetch organization campaigns:', error);

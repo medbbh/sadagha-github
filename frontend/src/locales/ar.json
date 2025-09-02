@@ -104,7 +104,16 @@
     "featured": "احتياجات عاجلة",
     "featuredTitle": "إحداث الفرق من خلال الصدقة",
     "featuredSubtitle": "اكتشف كيف تغير تبرعاتك حياة أفراد مجتمعنا",
-    "imageAlt": "الخير والدعم المجتمعي"
+    "imageAlt": "الخير والدعم المجتمعي",
+    "urgentNeeds": "احتياجات عاجلة",
+    "helpNow": "ساعد الآن",
+    "livesAtStake": "أشخاص تمت مساعدتهم",
+    "criticalCampaigns": "حملات حرجة تحتاج إلى دعم فوري",
+        "urgentNeed": "احتياج عاجل",
+    "raised": "تم جمعه",
+    "donors": "متبرعين",
+    "goal": "الهدف",
+    "noUrgentCampaigns": "لا توجد حملات عاجلة متاحة"
   },
   "categories_section": {
     "title": "استكشاف فئات الحملات",

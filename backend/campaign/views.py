@@ -3,7 +3,7 @@ from .models import Campaign, Category, Donation, File
 from .serializers import CampaignSerializer, CategorySerializer, FileSerializer, DonationSerializer, DonationCreateSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from django.db.models import Count, Case, When, Sum, Count, Q
+from django.db.models import Count, Case, When, Sum, Count, Q, F, FloatField, Value
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 from django.http import JsonResponse, HttpResponse
@@ -243,6 +243,91 @@ class CampaignViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(featured=True)
         
         return queryset
+    
+    @action(detail=False, methods=['get'])
+    def urgent(self, request):
+        """Get 5 most urgent campaigns based on multiple factors"""
+        
+        now = timezone.now()
+        
+        # Calculate urgency score using existing fields
+        urgent_campaigns = self.get_queryset().annotate(
+            # Calculate funding ratio (0-1)
+            funding_ratio=Case(
+                When(target__gt=0, then=F('current_amount') / F('target')),
+                default=Value(0),
+                output_field=FloatField()
+            ),
+            
+            # Calculate urgency score based on conditions
+            urgency_score=Case(
+                # Funding gap score (40% weight)
+                When(funding_ratio__lt=0.20, then=Value(0.4)),  # 1.0 * 0.4
+                When(funding_ratio__lt=0.50, then=Value(0.32)), # 0.8 * 0.4
+                default=Value(0.12),  # 0.3 * 0.4
+                output_field=FloatField()
+            ) + Case(
+                # Time pressure score (30% weight) - older campaigns more urgent
+                When(created_at__lt=now - timedelta(days=30), then=Value(0.27)), # 0.9 * 0.3
+                When(created_at__lt=now - timedelta(days=14), then=Value(0.21)), # 0.7 * 0.3
+                default=Value(0.12),  # 0.4 * 0.3
+                output_field=FloatField()
+            ) + Case(
+                # Activity momentum score (20% weight) - stagnant campaigns more urgent
+                When(updated_at__lt=now - timedelta(days=7), then=Value(0.18)),  # 0.9 * 0.2
+                When(updated_at__lt=now - timedelta(days=3), then=Value(0.12)),  # 0.6 * 0.2
+                default=Value(0.04),  # 0.2 * 0.2
+                output_field=FloatField()
+            ) + Case(
+                # Donor engagement score (10% weight)
+                When(number_of_donors__lt=5, then=Value(0.10)),   # 1.0 * 0.1
+                When(number_of_donors__lt=20, then=Value(0.06)),  # 0.6 * 0.1
+                default=Value(0.03),  # 0.3 * 0.1
+                output_field=FloatField()
+            )
+        ).filter(
+            # Only active campaigns (not fully funded)
+            current_amount__lt=F('target'),
+            # Exclude very new campaigns (less than 2 days old)
+            created_at__lt=now - timedelta(days=2)
+        ).order_by(
+            '-urgency_score', '-created_at'
+        )[:5]  # Get top 5 most urgent
+        
+        # Serialize the campaigns
+        serializer = self.get_serializer(urgent_campaigns, many=True)
+        
+        # Add urgency metadata to each campaign
+        campaigns_with_urgency = []
+        for campaign_data, campaign_obj in zip(serializer.data, urgent_campaigns):
+            # Calculate days manually for response
+            days_created = (now - campaign_obj.created_at).days if campaign_obj.created_at else 0
+            days_updated = (now - campaign_obj.updated_at).days if campaign_obj.updated_at else 0
+            
+            campaign_data['urgency_score'] = round(campaign_obj.urgency_score, 2)
+            campaign_data['funding_percentage'] = round(
+                (float(campaign_obj.current_amount) / float(campaign_obj.target)) * 100, 1
+            ) if campaign_obj.target > 0 else 0
+            campaign_data['days_since_created'] = days_created
+            campaign_data['days_since_update'] = days_updated
+            campaign_data['urgency_level'] = (
+                'critical' if campaign_obj.urgency_score >= 0.8 else
+                'high' if campaign_obj.urgency_score >= 0.6 else
+                'medium'
+            )
+            campaigns_with_urgency.append(campaign_data)
+        
+        return Response({
+            'urgent_campaigns': campaigns_with_urgency,
+            'total_count': len(campaigns_with_urgency),
+            'last_updated': now,
+            'criteria': {
+                'funding_gap': 'Campaigns with less than 50% funding get higher urgency',
+                'time_pressure': 'Older campaigns (14+ days) get higher urgency',  
+                'activity': 'Campaigns without recent updates (3+ days) get higher urgency',
+                'engagement': 'Campaigns with fewer donors (<20) get higher urgency'
+            }
+        })
     
     def perform_create(self, serializer):
         return serializer.save()

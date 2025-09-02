@@ -104,7 +104,16 @@
     "featured": "À la Une",
     "featuredTitle": "Changer des Vies Grâce au Financement Participatif",
     "featuredSubtitle": "Découvrez les histoires d'impact de notre communauté",
-    "imageAlt": "Succès du Financement Participatif"
+    "imageAlt": "Succès du Financement Participatif",
+    "urgentNeeds": "Besoins Urgents",
+    "helpNow": "Aidez Maintenant",
+    "livesAtStake": "personnes aidées",
+    "criticalCampaigns": "Des campagnes critiques ont besoin d'un soutien immédiat",
+        "urgentNeed": "BESOIN URGENT",
+    "raised": "collecté",
+    "donors": "donateurs",
+    "goal": "Objectif",
+    "noUrgentCampaigns": "Aucune campagne urgente disponible"
   },
   "categories_section": {
     "title": "Explorer les Catégories de Campagnes",
@@ -1252,17 +1261,17 @@
         }
       },
       "stats": {
-          "nextRemitlyConfigured": "Configuration NextRemitly",
-          "paymentStatus": "Statut des Paiements",
-          "verifiedStatus": "Statut Vérifié",
-          "memberSince": "Membre depuis"
+        "nextRemitlyConfigured": "Configuration NextRemitly",
+        "paymentStatus": "Statut des Paiements",
+        "verifiedStatus": "Statut Vérifié",
+        "memberSince": "Membre depuis"
       }
     },
     "common": {
-        "active": "Actif",
-        "inactive": "Inactif",
-        "yes": "Oui",
-        "no": "Non"
+      "active": "Actif",
+      "inactive": "Inactif",
+      "yes": "Oui",
+      "no": "Non"
     },
     "organizationProfileForm": {
       "title": "Profil de l'Organisation",

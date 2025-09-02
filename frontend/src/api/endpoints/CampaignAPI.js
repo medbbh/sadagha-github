@@ -80,6 +80,20 @@ export const fetchCampaigns = async (params = {}) => {
   }
 };
 
+export const getUrgentCampaigns = async () => {
+  try {
+    const response = await api.get('/campaigns/urgent/');
+    return response;
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || 'Failed to fetch urgent campaigns';
+    throw {
+      message: errorMessage,
+      details: error.response?.data?.errors,
+      ...error
+    };
+  }
+};
+
 export const fetchCampaignById = async (id) => {
   try {
     const response = await api.get(`/campaigns/${id}/`);

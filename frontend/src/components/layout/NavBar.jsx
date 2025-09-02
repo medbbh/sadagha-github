@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Search, Menu, X, User, Heart, ChevronRight, Plus, HandHeart  } from 'lucide-react';
+import { Search, Menu, X, User, Heart, ChevronRight, Plus, HandHeart } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 import { supabase } from '../../supabaseClient';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
@@ -51,7 +51,7 @@ export default function NavBar() {
         setHasVolunteerProfile(false);
       }
     };
-    checkVolunteerProfile();
+    if (user) checkVolunteerProfile();
   }, []);
 
   // Listen for favorites changes across the app
@@ -68,7 +68,7 @@ export default function NavBar() {
 
     // Listen for custom events from other components
     window.addEventListener('favoritesChanged', handleFavoritesChange);
-    
+
     // Also refresh on location change (when navigating between pages)
     handleFavoritesChange();
 
@@ -80,7 +80,7 @@ export default function NavBar() {
   // Refresh just the favorites count (lightweight)
   const refreshFavoritesCount = useCallback(async () => {
     if (!user) return;
-    
+
     try {
       const favoriteIds = await getFavoriteCampaigns();
       setTotalFavorites(favoriteIds?.length || 0);
@@ -103,27 +103,27 @@ export default function NavBar() {
   const handleLogout = async () => {
     setError('');
     try {
-        const { error } = await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
 
-        localStorage.removeItem('supabase.auth.token');
-        localStorage.clear();
+      localStorage.removeItem('supabase.auth.token');
+      localStorage.clear();
 
-        if (error) {
+      if (error) {
         setError(error.message);
         console.error('Logout error:', error);
-        } else {
+      } else {
         authLogout();
         navigate('/login');
-        }
+      }
     } catch (err) {
-        setError('An unexpected error occurred during logout');
-        console.error('Logout error:', err);
+      setError('An unexpected error occurred during logout');
+      console.error('Logout error:', err);
     }
   };
 
   const loadFavoriteCampaigns = useCallback(async (loadMore = false) => {
     if (!user) return;
-    
+
     // Prevent multiple simultaneous requests
     const currentTime = Date.now();
     if (currentTime - lastFetchRef.current < 500) return;
@@ -133,9 +133,9 @@ export default function NavBar() {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
     }
-    
+
     abortControllerRef.current = new AbortController();
-    
+
     if (!loadMore) {
       setLoadingFavorites(true);
       setDisplayedCount(0);
@@ -145,23 +145,23 @@ export default function NavBar() {
 
     try {
       const favoriteIds = await getFavoriteCampaigns();
-      
+
       // Check if request was aborted
       if (abortControllerRef.current.signal.aborted) return;
-      
+
       setTotalFavorites(favoriteIds?.length || 0);
-      
+
       if (favoriteIds && favoriteIds.length > 0) {
         const countToShow = loadMore ? displayedCount + 5 : 5;
         const idsToFetch = favoriteIds.slice(0, Math.min(countToShow, favoriteIds.length));
-        
+
         const response = await getCampaignsByIds(idsToFetch);
-        
+
         // Check if request was aborted
         if (abortControllerRef.current.signal.aborted) return;
-        
+
         const campaigns = response.campaigns || response;
-        
+
         setFavoriteCampaigns(campaigns || []);
         setDisplayedCount(idsToFetch.length);
       } else {
@@ -183,9 +183,9 @@ export default function NavBar() {
 
   const handleFavoritesClick = useCallback(async () => {
     if (isToggling) return; // Prevent double-clicks
-    
+
     setIsToggling(true);
-    
+
     try {
       if (!showFavorites) {
         // Opening drawer - load favorites
@@ -238,7 +238,7 @@ export default function NavBar() {
     if (isNaN(numValue)) {
       return 'MRU 0';
     }
-    return new Intl.NumberFormat('en-US', { 
+    return new Intl.NumberFormat('en-US', {
       minimumFractionDigits: 0,
       maximumFractionDigits: 0
     }).format(numValue) + ' MRU';
@@ -254,46 +254,51 @@ export default function NavBar() {
 
   return (
     <>
-      <nav className={`fixed w-full z-50 ${scrolled ? 'bg-white shadow-sm py-3' : 'bg-white/90 py-4'} backdrop-blur-sm transition-all duration-300`}>
+      {/* <nav className={`fixed w-full z-50 ${scrolled ? 'bg-white shadow-sm py-3' : 'bg-white/90 py-4'} backdrop-blur-sm transition-all duration-300`}> */}
+      <nav className={`fixed w-full z-50 ${scrolled
+        ? 'bg-gradient-to-br from-white/80 via-gray-50/70 to-white/80 shadow-xl py-2'
+        : 'bg-gradient-to-br from-white/60 via-gray-50/50 to-white/60 py-1'
+        } backdrop-blur-xl border-b border-white/30 transition-all duration-300`}>
+
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-between">
             {/* Left Side */}
             <div className="hidden md:flex items-center space-x-6">
               {/* Browse Dropdown */}
               <div className="relative">
-                <button 
+                <button
                   onClick={() => setBrowseOpen(!browseOpen)}
                   className="flex items-center space-x-1 text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
                 >
                   <span>{t('navbar.browse')}</span>
-                  <svg 
-                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`} 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                
+
                 {browseOpen && (
                   <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
                     <Link
-                      to="/explore" 
+                      to="/explore"
                       className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => setBrowseOpen(false)}
                     >
                       {t('navbar.explore')}
                     </Link>
                     <Link
-                      to="/categories" 
+                      to="/categories"
                       className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => setBrowseOpen(false)}
                     >
                       {t('navbar.categories')}
                     </Link>
                     <Link
-                      to="/organizations" 
+                      to="/organizations"
                       className="block px-4 py-2 text-sm text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => setBrowseOpen(false)}
                     >
@@ -303,17 +308,23 @@ export default function NavBar() {
                 )}
               </div>
 
-              <Link 
-                to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
-                className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
-              >
-                <HandHeart className="w-4 h-4" />
-                <span>{t('navbar.volunteer')}</span>
-                <NotificationBadge />
-              </Link>
+              {/* Volunteer Link */}
+              {
+                user && (
+                  <Link
+                    to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"}
+                    className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200 relative flex items-center space-x-1"
+                  >
+                    <HandHeart className="w-4 h-4" />
+                    <span>{t('navbar.volunteer')}</span>
+                    <NotificationBadge />
+                  </Link>
+                )
+              }
 
-              <Link 
-                to="/how-it-works" 
+
+              <Link
+                to="/how-it-works"
                 className="text-[#3366CC] text-md font-medium hover:opacity-70 transition-opacity duration-200"
               >
                 {t('navbar.howItWorks')}
@@ -323,12 +334,16 @@ export default function NavBar() {
 
             {/* Center - Logo */}
             <div className="flex-1 flex justify-center">
-              <a 
+              {/* <a 
                 href="/" 
                 className="text-lg font-medium text-[#3366CC] hover:opacity-80 transition-opacity duration-200"
               >
                 {t('navbar.logo')}
-              </a>
+              </a> */}
+              <Link to="/feed">
+                <img src="/logo.png" alt="Logo" className="h-20 w-20" />
+
+              </Link>
             </div>
 
             {/* Right Side */}
@@ -337,7 +352,7 @@ export default function NavBar() {
                 <input
                   type="text"
                   placeholder={t('navbar.search')}
-                  className="pl-8 pr-4 py-1.5 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] focus:border-transparent text-sm w-40"
+                  className="ps-8 pe-4 py-1.5 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] focus:border-transparent text-sm w-40"
                 />
                 <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60" />
               </div>
@@ -346,8 +361,8 @@ export default function NavBar() {
 
               {user ? (
                 <>
-                  <a 
-                    href="/profile" 
+                  <a
+                    href="/profile"
                     className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
                   >
                     <div className="h-6 w-6 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
@@ -368,8 +383,8 @@ export default function NavBar() {
                   </button>
                 </>
               ) : (
-                <a 
-                  href="/login" 
+                <a
+                  href="/login"
                   className="px-4 py-1.5 rounded-md text-sm text-white bg-[#4CAF50] border border-[#4CAF50] font-medium hover:bg-[#43A047] transition-colors duration-200"
                 >
                   {t('navbar.login')}
@@ -379,8 +394,8 @@ export default function NavBar() {
 
             {/* Mobile menu button - Right aligned */}
             <div className="md:hidden">
-              <button 
-                onClick={() => setIsOpen(!isOpen)} 
+              <button
+                onClick={() => setIsOpen(!isOpen)}
                 className="p-2 rounded-md text-[#3366CC] focus:outline-none hover:bg-[#3366CC]/5 transition-colors duration-200"
               >
                 {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -395,31 +410,31 @@ export default function NavBar() {
                 <input
                   type="text"
                   placeholder={t('navbar.search')}
-                  className="w-full pl-8 pr-4 py-2 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] text-sm"
+                  className="w-full ps-8 pe-4 py-2 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] text-sm"
                 />
                 <Search className="absolute left-3 top-2.5 h-3.5 w-3.5 text-[#3366CC]/60" />
               </div>
-              
+
               <div className="border-t border-gray-200 pt-2">
-                <button 
+                <button
                   onClick={() => setBrowseOpen(!browseOpen)}
                   className="flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                 >
                   <span>{t('navbar.browse')}</span>
-                  <svg 
-                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`} 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className={`w-4 h-4 transition-transform ${browseOpen ? 'rotate-180' : ''}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-                
+
                 {browseOpen && (
-                  <div className="pl-4 space-y-1">
+                  <div className="ps-4 space-y-1">
                     <Link
-                      to="/explore" 
+                      to="/explore"
                       className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => {
                         setBrowseOpen(false);
@@ -429,7 +444,7 @@ export default function NavBar() {
                       {t('navbar.explore')}
                     </Link>
                     <Link
-                      to="/categories" 
+                      to="/categories"
                       className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => {
                         setBrowseOpen(false);
@@ -439,7 +454,7 @@ export default function NavBar() {
                       {t('navbar.categories')}
                     </Link>
                     <Link
-                      to="/organizations" 
+                      to="/organizations"
                       className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                       onClick={() => {
                         setBrowseOpen(false);
@@ -452,18 +467,24 @@ export default function NavBar() {
                 )}
               </div>
 
-              <Link 
-                to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"} 
-                className="relative flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
-                onClick={() => setIsOpen(false)}
-              >
-                <HandHeart className="h-4 w-4" />
-                <span>{t('navbar.volunteer')}</span>
-                <NotificationBadge />
-              </Link>
+              {/* Volunteer Link */}
+              {
+                user && (
+                  <Link
+                    to={hasVolunteerProfile ? "/volunteer/invitations" : "/profile?tab=volunteer"}
+                    className="relative flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <HandHeart className="h-4 w-4" />
+                    <span>{t('navbar.volunteer')}</span>
+                    <NotificationBadge />
+                  </Link>
+                )
+              }
 
-              <Link 
-                to="/how-it-works" 
+
+              <Link
+                to="/how-it-works"
                 className="block px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                 onClick={() => setIsOpen(false)}
               >
@@ -474,9 +495,8 @@ export default function NavBar() {
                 <button
                   onClick={handleFavoritesClick}
                   disabled={isToggling}
-                  className={`flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200 ${
-                    isToggling ? 'opacity-50 cursor-not-allowed' : ''
-                  }`}
+                  className={`flex items-center justify-between w-full px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200 ${isToggling ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                 >
                   <div className="flex items-center space-x-2">
                     <Heart className="h-4 w-4" />
@@ -496,8 +516,8 @@ export default function NavBar() {
 
               {user ? (
                 <div className="border-t border-gray-200 pt-2">
-                  <Link 
-                    to="/profile" 
+                  <Link
+                    to="/profile"
                     className="flex items-center space-x-2 px-3 py-2 rounded text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5"
                     onClick={() => setIsOpen(false)}
                   >
@@ -521,8 +541,8 @@ export default function NavBar() {
                   </button>
                 </div>
               ) : (
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="block px-3 py-2 rounded text-sm font-medium text-white bg-[#4CAF50] border border-[#4CAF50] mt-2 text-center hover:bg-[#43A047]"
                   onClick={() => setIsOpen(false)}
                 >
@@ -532,7 +552,7 @@ export default function NavBar() {
             </div>
           </div>
         </div>
-        
+
         {/* Error display */}
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-2 text-sm">
@@ -544,11 +564,11 @@ export default function NavBar() {
       {/* Favorites Drawer */}
       <div className={`fixed inset-0 z-50 ${showFavorites ? 'visible' : 'invisible'}`}>
         {/* Backdrop */}
-        <div 
+        <div
           className={`absolute inset-0 bg-black transition-opacity duration-300 ${showFavorites ? 'opacity-50' : 'opacity-0'}`}
           onClick={() => setShowFavorites(false)}
         />
-        
+
         {/* Drawer */}
         <div className={`absolute right-0 top-0 h-full w-80 bg-white shadow-xl transform transition-transform duration-300 ease-out ${showFavorites ? 'translate-x-0' : 'translate-x-full'}`}>
           {/* Header */}
@@ -619,7 +639,7 @@ export default function NavBar() {
                               <span>{progress.toFixed(0)}% {t('navbar.funded')}</span>
                             </div>
                             <div className="w-full bg-gray-200 rounded-full h-1">
-                              <div 
+                              <div
                                 className="bg-[#3366CC] h-1 rounded-full transition-all"
                                 style={{ width: `${progress}%` }}
                               />
