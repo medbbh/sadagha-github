@@ -55,71 +55,70 @@ export default function LanguageSelector() {
   }, [isOpen]);
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        ref={buttonRef}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 rounded-lg text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200 min-w-0"
-        aria-expanded={isOpen}
-        aria-haspopup="listbox"
-      >
-        <Globe className="h-4 w-4 flex-shrink-0" />
-        {/* <span className="hidden sm:inline flex-shrink-0">{currentLanguage.flag}</span> */}
-        <span className="md:inline text-sm truncate">{currentLanguage.name}</span>
-        <ChevronDown className={`h-3 w-3 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-      </button>
+<div className="relative" ref={dropdownRef}>
+ <button
+   ref={buttonRef}
+   onClick={() => setIsOpen(!isOpen)}
+   className="flex items-center space-x-1 sm:space-x-2 rounded-lg text-sm font-medium text-[#3366CC] hover:bg-[#3366CC]/5 transition-colors duration-200 min-w-0 p-1 sm:p-2"
+   aria-expanded={isOpen}
+   aria-haspopup="listbox"
+ >
+   <Globe className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+   <span className="hidden xs:inline text-xs sm:text-sm truncate max-w-[60px] sm:max-w-none">{currentLanguage.name}</span>
+   <ChevronDown className={`h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+ </button>
 
-      {isOpen && (
-        <>
-          {/* Mobile/Small screens - Full width dropdown */}
-          <div className="sm:hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 mx-4">
-            {languages.map((language) => (
-              <button
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                className={`w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center space-x-3 transition-colors duration-200 ${
-                  i18n.language === language.code 
-                    ? 'bg-[#3366CC]/5 text-[#3366CC] font-medium' 
-                    : 'text-gray-700'
-                }`}
-                role="option"
-                aria-selected={i18n.language === language.code}
-              >
-                <span className="text-lg">{language.flag}</span>
-                <span>{language.name}</span>
-                {i18n.language === language.code && (
-                  <span className="ml-auto text-[#3366CC]">✓</span>
-                )}
-              </button>
-            ))}
-          </div>
+ {isOpen && (
+   <>
+     {/* Mobile/Small screens - Full width dropdown */}
+     <div className="sm:hidden fixed inset-x-4 top-auto mt-2 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-60 overflow-y-auto">
+       {languages.map((language) => (
+         <button
+           key={language.code}
+           onClick={() => handleLanguageChange(language.code)}
+           className={`w-full text-left px-4 py-3 text-sm hover:bg-gray-50 flex items-center space-x-3 transition-colors duration-200 ${
+             i18n.language === language.code 
+               ? 'bg-[#3366CC]/5 text-[#3366CC] font-medium' 
+               : 'text-gray-700'
+           }`}
+           role="option"
+           aria-selected={i18n.language === language.code}
+         >
+           <span className="text-lg flex-shrink-0">{language.flag}</span>
+           <span className="flex-1 truncate">{language.name}</span>
+           {i18n.language === language.code && (
+             <span className="text-[#3366CC] flex-shrink-0">✓</span>
+           )}
+         </button>
+       ))}
+     </div>
 
-          {/* Desktop/Tablet - Positioned dropdown */}
-          <div className={`hidden sm:block absolute top-full mt-2 w-44 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 ${
-            isRTL ? 'left-0' : 'right-0'
-          }`}>
-            {languages.map((language) => (
-              <button
-                key={language.code}
-                onClick={() => handleLanguageChange(language.code)}
-                className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center space-x-3 transition-colors duration-200 ${
-                  i18n.language === language.code 
-                    ? 'bg-[#3366CC]/5 text-[#3366CC] font-medium' 
-                    : 'text-gray-700'
-                }`}
-                role="option"
-                aria-selected={i18n.language === language.code}
-              >
-                <span className="text-base">{language.flag}</span>
-                <span className="flex-1">{language.name}</span>
-                {i18n.language === language.code && (
-                  <span className="text-[#3366CC] text-xs">✓</span>
-                )}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
+     {/* Desktop/Tablet - Positioned dropdown */}
+     <div className={`hidden sm:block absolute top-full mt-2 w-40 md:w-44 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 max-h-60 overflow-y-auto ${
+       isRTL ? 'left-0' : 'right-0'
+     }`}>
+       {languages.map((language) => (
+         <button
+           key={language.code}
+           onClick={() => handleLanguageChange(language.code)}
+           className={`w-full text-left px-3 md:px-4 py-2.5 text-sm hover:bg-gray-50 flex items-center space-x-2 md:space-x-3 transition-colors duration-200 ${
+             i18n.language === language.code 
+               ? 'bg-[#3366CC]/5 text-[#3366CC] font-medium' 
+               : 'text-gray-700'
+           }`}
+           role="option"
+           aria-selected={i18n.language === language.code}
+         >
+           <span className="text-sm md:text-base flex-shrink-0">{language.flag}</span>
+           <span className="flex-1 truncate">{language.name}</span>
+           {i18n.language === language.code && (
+             <span className="text-[#3366CC] text-xs flex-shrink-0">✓</span>
+           )}
+         </button>
+       ))}
+     </div>
+   </>
+ )}
+</div>
   );
 }

@@ -23,7 +23,8 @@ from django.utils.decorators import method_decorator
 from datetime import datetime, timedelta
 from accounts.authentication import SupabaseAuthentication
 from django.db import transaction
-
+from .utils.supabase_storage import delete_file
+from django.shortcuts import get_object_or_404
 
 
 logger = logging.getLogger(__name__)
@@ -344,6 +345,13 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 {'detail': 'You do not have permission to update this campaign.'}, 
                 status=403
             )
+        
+        # Check if campaign already has donations
+        if instance.current_amount > 0 or instance.number_of_donors > 0:
+            return Response(
+                {'detail': 'This campaign already has donations and cannot be updated.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
             
         serializer = self.get_serializer(
             instance, 
@@ -359,6 +367,36 @@ class CampaignViewSet(viewsets.ModelViewSet):
         return_serializer = self.get_serializer(updated_instance)
         return Response(return_serializer.data)
     
+
+
+    def destroy(self, request, *args, **kwargs):
+        """
+        Ensure that a user can only delete their own campaigns,
+        and campaigns with donations cannot be deleted.
+        Also deletes related files from Supabase storage.
+        """
+        instance = self.get_object()
+
+        # Check if user is owner
+        if instance.owner != request.user:
+            return Response(
+                {'detail': 'You do not have permission to delete this campaign.'},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # Check if campaign already has donations
+        if instance.current_amount > 0 or instance.number_of_donors > 0:
+            return Response(
+                {'detail': 'This campaign already has donations and cannot be deleted.'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            # Delete related files (will also remove them from Supabase via File.delete override)
+        instance.files.all().delete()
+
+        # Now delete the campaign
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
     def get_serializer_context(self):
         """
         Extra context provided to the serializer class.
@@ -367,7 +405,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
         context.update({'request': self.request})
         return context
     
-    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny])
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def create_donation(self, request, pk=None):
         """
         Create a donation payment session for a campaign
@@ -467,7 +505,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
+    @action(detail=False, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def sync_donation_status(self, request):
         """Manually trigger status sync for a specific donation"""
         session_id = request.data.get('session_id')
@@ -512,7 +550,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
             return Response({'error': 'Sync failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
-    @action(detail=False, methods=['post'], permission_classes=[permissions.AllowAny])
+    @action(detail=False, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def donation_webhook(self, request):
         """
         Handle webhooks from NextRemitly for donation status updates
@@ -650,7 +688,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 'error': 'Could not retrieve donation status'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    @action(detail=False, methods=['get'], permission_classes=[permissions.AllowAny])
+    @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def payment_status(self, request):
         """
         Check payment status
@@ -945,3 +983,24 @@ def donation_summary(request):
             'campaigns_supported': summary['campaigns_supported']
         }
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@authentication_classes([SupabaseAuthentication])
+@permission_classes([permissions.AllowAny])
+def campaign_donations(request, campaign_id):
+    """
+    Return all donations for a specific campaign.
+    """
+    # Ensure campaign exists
+    campaign = get_object_or_404(Campaign, id=campaign_id)
+
+    # Get donations related to this campaign
+    donations = Donation.objects.filter(campaign=campaign,status='completed').order_by('-created_at')
+
+    serializer = DonationSerializer(donations, many=True)
+
+    return Response(
+        {"donations": serializer.data},
+        status=status.HTTP_200_OK
+    )

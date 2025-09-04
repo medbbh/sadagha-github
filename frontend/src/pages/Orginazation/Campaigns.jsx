@@ -19,6 +19,7 @@ import Loading from '../../components/common/Loading';
 import { myCampaigns } from '../../api/endpoints/CampaignAPI';
 import orgDashboardApi from '../../api/endpoints/OrgAPI';
 import { useNavigate } from 'react-router-dom';
+import ShareButton from '../../components/ui/ShareButton';
 
 export default function CampaignsList() {
   const { t, i18n } = useTranslation();
@@ -288,12 +289,13 @@ export default function CampaignsList() {
                     <span>{t('organization.campaigns.view')}</span>
                   </button>
 
-                  <button 
-                    title={t('organization.campaigns.share')}
-                    className="bg-gray-100 text-gray-700 py-2 px-3 rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    <Share2 className="w-3 h-3 sm:w-4 sm:h-4" />
-                  </button>
+                  <ShareButton
+                    campaign={campaign}
+                    variant="button-only"
+                    showMetaTags={false}
+                    className="p-2 text-slate-500 hover:text-blue-500 transition-colors"
+                    isRTL={isRTL}
+                  />
                 </div>
               </div>
             </div>

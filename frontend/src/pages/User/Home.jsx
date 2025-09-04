@@ -5,6 +5,7 @@ import { CallToActionSection } from './sections/CallToActionSection';
 import { fetchCampaigns, featuredCampaigns } from '../../api/endpoints/CampaignAPI';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/common/Loading';
+import Footer from '../../components/Layout/Footer';
 
 export default function HomePage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -104,6 +105,8 @@ export default function HomePage() {
         loading={loading && !featuredData?.length} 
       />
       <CallToActionSection />
+
+      {/* <Footer /> */}
     </div>
   );
 }

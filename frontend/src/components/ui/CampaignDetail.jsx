@@ -2,11 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ChevronLeft, ChevronRight, Heart, Share2, Calendar, Users, Target, DollarSign, Clock, Phone, MapPin, Globe, Building, Copy, CheckCircle } from 'lucide-react';
-import { fetchCampaignById } from '../../api/endpoints/CampaignAPI';
+import { campaignDonations, fetchCampaignById } from '../../api/endpoints/CampaignAPI';
 import DonationForm from './DonationForm';
 import FacebookLiveEmbed from './FacebookLiveEmbed';
 import FacebookLiveEmbedSimple from './FacebookLiveEmbedSimple';
 import ShareButton from './ShareButton';
+import CampaignDonationsMessages from './CampaignDonationsMessages';
+import Loading from '../common/Loading';
+
+
+
 
 export default function CampaignDetail() {
   const { t, i18n } = useTranslation();
@@ -34,42 +39,43 @@ export default function CampaignDetail() {
   };
 
   const handleDonationSuccess = async (donationData) => {
-  // If it's a successful donation that needs refresh
-  if (donationData.shouldRefreshCampaign) {
-    try {
-      // Fetch fresh campaign data
-      const response = await fetchCampaignById(campaignId);
-      
-      // Update your campaign state with fresh data
-      setCampaign(response); // or however you manage campaign state
-      
-      // Optionally show success message
-      console.log('Campaign data refreshed after donation');
-    } catch (error) {
-      console.error('Error refreshing campaign data:', error);
-      // Fallback: optimistically update the values
-      setCampaign(prev => ({
-        ...prev,
-        current_amount: prev.current_amount + donationData.donationAmount,
-        number_of_donors: prev.number_of_donors + 1
-      }));
-    }
-  }
-  
-};
+    // If it's a successful donation that needs refresh
+    if (donationData.shouldRefreshCampaign) {
+      try {
+        // Fetch fresh campaign data
+        const response = await fetchCampaignById(campaignId);
 
-const refreshCampaignData = async () => {
-  try {
-    const response = await fetchCampaignById(campaignId);
-    setCampaign(response);
-  } catch (error) {
-    console.error('Error refreshing campaign:', error);
-  }
-};
+        // Update your campaign state with fresh data
+        setCampaign(response); // or however you manage campaign state
+
+        // Optionally show success message
+        console.log('Campaign data refreshed after donation');
+      } catch (error) {
+        console.error('Error refreshing campaign data:', error);
+        // Fallback: optimistically update the values
+        setCampaign(prev => ({
+          ...prev,
+          current_amount: prev.current_amount + donationData.donationAmount,
+          number_of_donors: prev.number_of_donors + 1
+        }));
+      }
+    }
+
+  };
+
+  const refreshCampaignData = async () => {
+    try {
+      const response = await fetchCampaignById(campaignId);
+      setCampaign(response);
+    } catch (error) {
+      console.error('Error refreshing campaign:', error);
+    }
+  };
 
   useEffect(() => {
     if (campaignId) {
       loadCampaign(campaignId);
+      // console.log('donation camapaigns',campaignDonations(campaignId))
     }
   }, [campaignId]);
 
@@ -88,15 +94,15 @@ const refreshCampaignData = async () => {
     return number.toString().replace(/(\d{4})(\d{4})/g, '$1 $2');
   };
 
-  if (loading) return <LoadingSpinner />;
-  
+  if (loading) return <Loading />;
+
   if (error) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="bg-red-50 border border-red-200 rounded-xl p-6 text-center">
           <h2 className="text-xl font-medium text-red-800">{t('campaignDetail.errorLoadingCampaign')}</h2>
           <p className="text-red-600 mt-2">{error}</p>
-          <button 
+          <button
             onClick={() => loadCampaign(campaignId)}
             className="mt-4 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
           >
@@ -106,7 +112,7 @@ const refreshCampaignData = async () => {
       </div>
     );
   }
-  
+
   if (!campaign) return <NotFoundMessage />;
 
   const progress = Math.min((parseFloat(campaign.current_amount) / parseFloat(campaign.target)) * 100, 100);
@@ -120,7 +126,7 @@ const refreshCampaignData = async () => {
           <div className="bg-white rounded-xl shadow-sm overflow-hidden">
             {/* Carousel */}
             <CampaignCarousel files={campaign.files} isRTL={isRTL} />
-            
+
             {/* Campaign Content */}
             <div className="p-6">
               <div className={`flex justify-between items-start mb-4 `}>
@@ -153,9 +159,9 @@ const refreshCampaignData = async () => {
                   </span>
                 </div>
                 <div className="w-full bg-gray-200 rounded-full h-2.5">
-                  <div 
-                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full" 
-                    style={{ 
+                  <div
+                    className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full"
+                    style={{
                       width: `${progress}%`,
                       transformOrigin: isRTL ? 'right' : 'left'
                     }}
@@ -216,14 +222,14 @@ const refreshCampaignData = async () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Facebook Live Embeds */}
             <FacebookLiveEmbed campaign={campaign} showDonationOverlay={true} />
 
             {campaign.facebook_live_url && (
               <div className="mb-6">
-                <FacebookLiveEmbedSimple 
-                  campaign={campaign} 
+                <FacebookLiveEmbedSimple
+                  campaign={campaign}
                   showDonationOverlay={true}
                   className="shadow-lg"
                 />
@@ -232,7 +238,7 @@ const refreshCampaignData = async () => {
           </div>
 
           {/* Social Share Button */}
-          <ShareButton 
+          <ShareButton
             campaign={campaign}
             variant="full"
             showPreview={true}
@@ -243,7 +249,7 @@ const refreshCampaignData = async () => {
 
           {/* Organization Information Card */}
           {campaign.organization && (
-            <OrganizationInfoCard 
+            <OrganizationInfoCard
               organization={campaign.organization}
               paymentNumbers={campaign.organization.payment_numbers}
               onCopyPaymentNumber={copyToClipboard}
@@ -255,33 +261,41 @@ const refreshCampaignData = async () => {
         </div>
 
         {/* Donation Card (1/3 width) */}
+        {/* Donation Card (1/3 width) */}
         <div className="lg:w-1/3">
-          <div className="bg-white rounded-xl shadow-sm overflow-hidden sticky top-6">
-            <DonationForm 
-              campaignId={campaign.id}
-              currentAmount={campaign.current_amount}
-              targetAmount={campaign.target}
-              donorsCount={campaign.number_of_donors}
-              progress={progress}
-              paymentNumbers={campaign.organization?.payment_numbers}
-              formatPaymentNumber={formatPaymentNumber}
-              onDonationSuccess={handleDonationSuccess}
-              refreshCampaign={refreshCampaignData}
-            />
-          </div>
-          
-          {/* Compact Share Button in Sidebar */}
-          <div className="mt-6">
-            <ShareButton 
-              campaign={campaign}
-              variant="compact"
-              showPreview={false}
-              showMetaTags={false}
-              className="shadow-sm"
-              platforms={['facebook', 'twitter', 'whatsapp']}
-            />
+          <div className="sticky top-28 space-y-6">
+            <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+              <DonationForm
+                campaignId={campaign.id}
+                currentAmount={campaign.current_amount}
+                targetAmount={campaign.target}
+                donorsCount={campaign.number_of_donors}
+                progress={progress}
+                paymentNumbers={campaign.organization?.payment_numbers}
+                formatPaymentNumber={formatPaymentNumber}
+                onDonationSuccess={handleDonationSuccess}
+                refreshCampaign={refreshCampaignData}
+              />
+            </div>
+            
+            <div>
+              <CampaignDonationsMessages campaignId={campaign.id} />
+            </div>
+
+            {/* Compact Share Button in Sidebar */}
+            <div>
+              <ShareButton
+                campaign={campaign}
+                variant="compact"
+                showPreview={false}
+                showMetaTags={false}
+                className="shadow-sm"
+                platforms={['facebook', 'twitter', 'whatsapp']}
+              />
+            </div>
           </div>
         </div>
+
       </div>
     </div>
   );
@@ -343,9 +357,9 @@ function OrganizationInfoCard({ organization, paymentNumbers, onCopyPaymentNumbe
               <Globe className="w-4 h-4 text-gray-400" />
               <div className={isRTL ? 'text-right' : 'text-left'}>
                 <p className="text-sm text-gray-500">{t('campaignDetail.website')}</p>
-                <a 
-                  href={organization.website} 
-                  target="_blank" 
+                <a
+                  href={organization.website}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="font-medium text-blue-600 hover:text-blue-700 transition-colors"
                 >
@@ -400,7 +414,7 @@ function CampaignCarousel({ files, isRTL }) {
         alt="Campaign visual"
         className="w-full h-full object-cover"
       />
-      
+
       {files.length > 1 && (
         <>
           <button
@@ -430,17 +444,10 @@ function CampaignCarousel({ files, isRTL }) {
   );
 }
 
-function LoadingSpinner() {
-  return (
-    <div className="flex justify-center items-center h-64">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-  );
-}
 
 function NotFoundMessage() {
   const { t } = useTranslation();
-  
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
       <div className="bg-gray-50 shadow-sm rounded-xl p-6 text-center">

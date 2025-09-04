@@ -348,6 +348,9 @@ export default function NavBar() {
 
             {/* Right Side */}
             <div className="hidden md:flex items-center space-x-4">
+              
+              <LanguageSelector />
+              
               <div className="relative hover:opacity-90 transition-opacity duration-200">
                 <input
                   type="text"
@@ -357,7 +360,6 @@ export default function NavBar() {
                 <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60" />
               </div>
 
-              <LanguageSelector />
 
               {user ? (
                 <>

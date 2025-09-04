@@ -196,6 +196,7 @@ export const updateCampaign = async ({ id, data }) => {
   }
 };
 
+
 export const featuredCampaigns = async () => {
   try {
     const response = await api.get('/campaigns/featured/');
@@ -261,3 +262,19 @@ export const toggleFeatured = async (id, featured = true) => {
     };
   }
 };
+
+
+export const campaignDonations = async(camapignId) => {
+  try {
+    const response = await api.get(`/campaigns/${camapignId}/donations-list/`)
+    return response;
+  } catch (error) {
+    const errorMessage = error.response?.data?.message || `Failed to list donations ${camapignId}`;
+    
+    throw {
+      message: errorMessage,
+      details: error.response?.data?.errors,
+      ...error
+    };
+  }
+}

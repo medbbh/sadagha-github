@@ -285,8 +285,18 @@
     "errorCampaignMissing": "Erreur : ID de campagne manquant",
     "validationMinAmount": "Veuillez entrer un montant de don valide (minimum 1 MRU)",
     "validationEmail": "Veuillez entrer une adresse email valide",
-    "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site."
+    "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site.",
+        "loginRequired": "Connexion Requise",
+    "loginDescription": "Veuillez vous connecter à votre compte pour faire un don et soutenir cette campagne.",
+    "loginButton": "Se Connecter pour Continuer",
+    "noAccount": "Vous n'avez pas de compte ?",
+    "signUp": "Inscrivez-vous ici"
   },
+    "campaignDonationsMessage": {
+    "title": "Liste des dons",
+    "noDonations": "Aucun don pour cette campagne pour l'instant.",
+    "anonymous": "Anonyme"
+    },
   "share": {
     "shareThisCampaign": "Partager cette campagne",
     "share": "Partager",
@@ -1095,6 +1105,14 @@
       "campaignNotFoundDescription": "La campagne que vous recherchez n'existe pas ou a été supprimée.",
       "preview": "Aperçu",
       "editCampaign": "Modifier la campagne",
+      "deleteCampaign": "Supprimer la campagne",
+      "confirmDeleteTitle": "Confirmer la suppression",
+      "confirmDelete": "Êtes-vous sûr de vouloir supprimer cette campagne ? Cette action est irréversible.",
+      "cancel": "Annuler",
+      "delete": "Supprimer",
+      "deleting": "Suppression en cours...",
+      "noEditDeleteBecauseDonations" : "Cette campagne a déjà des dons et ne peut pas être mise à jour ou supprimée.",
+      "failedToDelete":"Echec de la suppression",
       "uncategorized": "Sans catégorie",
       "featured": "En vedette",
       "createdDate": "Créée le {{date}} • {{days}} jours active",

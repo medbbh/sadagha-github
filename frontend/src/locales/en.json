@@ -285,7 +285,17 @@
     "errorCampaignMissing": "Error: Campaign ID is missing",
     "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
     "validationEmail": "Please enter a valid email address",
-    "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site."
+    "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site.",
+    "loginRequired": "Login Required",
+    "loginDescription": "Please log in to your account to make a donation and support this campaign.",
+    "loginButton": "Login to Continue",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign up here"
+  },
+  "campaignDonationsMessage": {
+    "title": "Donations List",
+    "noDonations": "No donations for this campaign yet.",
+    "anonymous": "Anonymous"
   },
   "share": {
     "shareThisCampaign": "Share This Campaign",
@@ -1095,6 +1105,14 @@
       "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
       "preview": "Preview",
       "editCampaign": "Edit Campaign",
+      "deleteCampaign": "Delete Campaign",
+      "confirmDeleteTitle": "Confirm Deletion",
+      "confirmDelete": "Are you sure you want to delete this campaign? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting...",
+          "noEditDeleteBecauseDonations": "This campaign already has donations and cannot be updated or deleted.",
+      "failedToDelete":"Failed to detele",
       "uncategorized": "Uncategorized",
       "featured": "Featured",
       "createdDate": "Created {{date}} • {{days}} days active",

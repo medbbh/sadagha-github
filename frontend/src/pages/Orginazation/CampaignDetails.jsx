@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
-  ArrowLeft, 
+import {
+  ArrowLeft,
   ArrowRight,
-  Edit3, 
-  DollarSign, 
+  Edit3,
+  DollarSign,
   Target,
   Users,
   Calendar,
@@ -13,25 +13,29 @@ import {
   Clock,
   BarChart3,
   Settings,
-  AlertCircle
+  AlertCircle,
+  Trash
 } from 'lucide-react';
 
-import { fetchCampaignById } from '../../api/endpoints/CampaignAPI';
+import { fetchCampaignById, deleteCampaign } from '../../api/endpoints/CampaignAPI';
 import { fetchCategoryById } from '../../api/endpoints/CategoryAPI';
 import orgDashboardApi from '../../api/endpoints/OrgAPI';
 import CampaignCarousel from '../../components/ui/CampaignCarousel';
 import ShareButton from '../../components/ui/ShareButton';
+import CampaignDeleteConfirmationModal from '../../components/ui/CamapaignDeleteConfirmationModal';
 
 export default function CampaignDetail() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const { campaignId } = useParams();
   const navigate = useNavigate();
-  
+
   const [campaign, setCampaign] = useState(null);
   const [campaignCategory, setCampaignCategory] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     if (campaignId) {
@@ -45,16 +49,16 @@ export default function CampaignDetail() {
     try {
       setLoading(true);
       setError(null);
-      
+
       console.log('Loading campaign with ID:', campaignId);
-      
+
       if (!campaignId) {
         throw new Error(t('organization.campaignDetail.campaignIdRequired'));
       }
-      
+
       const data = await fetchCampaignById(campaignId);
       setCampaign(data);
-      
+
       // Fetch category details if campaign has a category
       if (data.category) {
         try {
@@ -73,6 +77,20 @@ export default function CampaignDetail() {
       setError(err.message || t('organization.campaignDetail.failedToLoad'));
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      setDeleting(true);
+      await deleteCampaign(campaignId);
+      navigate("/organization/campaigns");
+    } catch (err) {
+      setDeleting(false);
+      console.error("Delete campaign error:", err);
+      setError(err.message || t("organization.campaignDetail.failedToDelete"));
+    } finally {
+      setDeleting(false);
     }
   };
 
@@ -156,8 +174,8 @@ export default function CampaignDetail() {
   return (
     <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
       {/* Header */}
-      <div className="bg-white rounded-lg border border-slate-200 p-6">
-        <div className="flex items-center justify-between">
+      <div className="bg-white rounded-lg border border-slate-200 p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
           <div className={`flex items-center space-x-4 ${isRTL ? 'space-x-reverse' : ''}`}>
             <button
               onClick={() => navigate('/organization/campaigns')}
@@ -166,32 +184,62 @@ export default function CampaignDetail() {
               {isRTL ? <ArrowRight className="w-5 h-5" /> : <ArrowLeft className="w-5 h-5" />}
             </button>
             <div className={isRTL ? 'text-right' : 'text-left'}>
-              <h1 className="text-2xl font-semibold text-slate-900">
+              <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">
                 {t('organization.campaignDetail.title')}
               </h1>
-              <p className="text-slate-600 mt-1">
+              <p className="text-slate-600 mt-1 text-sm sm:text-base">
                 {t('organization.campaignDetail.subtitle')}
               </p>
             </div>
           </div>
-          
-          <div className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
+
+          <div className={`flex flex-col sm:flex-row items-stretch sm:items-center space-y-2 sm:space-y-0 sm:space-x-3 ${isRTL ? 'sm:space-x-reverse' : ''}`}>
             <button
               onClick={() => window.open(`/campaign/${campaign.id}`, '_blank')}
-              className={`px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center `}
+              className={`px-3 sm:px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors flex items-center justify-center text-sm sm:text-base`}
             >
               <Eye className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
               {t('organization.campaignDetail.preview')}
             </button>
-            <button
-              onClick={() => navigate(`/organization/campaigns/${campaignId}/edit`)}
-              className={`px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center `}
-            >
-              <Edit3 className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
-              {t('organization.campaignDetail.editCampaign')}
-            </button>
+
+            {(campaign.current_amount == 0 && campaign.number_of_donors == 0) && (
+              <>
+                <button
+                  onClick={() => navigate(`/organization/campaigns/${campaignId}/edit`)}
+                  className={`px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center text-sm sm:text-base`}
+                >
+                  <Edit3 className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
+                  {t('organization.campaignDetail.editCampaign')}
+                </button>
+                <button
+                  onClick={() => setOpenDeleteModal(true)}
+                  className='px-3 sm:px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center text-sm sm:text-base'
+                >
+                  <Trash className={`w-4 h-4 ${isRTL ? 'ms-2' : 'me-2'}`} />
+                  {t("organization.campaignDetail.deleteCampaign")}
+                </button>
+              </>
+            )}
+
+
+            {/* Confirmation Modal */}
+            <CampaignDeleteConfirmationModal
+              open={openDeleteModal}
+              onClose={() => setOpenDeleteModal(false)}
+              onConfirm={handleDelete}
+              title={t("organization.campaignDetail.confirmDeleteTitle")}
+              description={t("organization.campaignDetail.confirmDelete")}
+              cancelText={t("organization.campaignDetail.cancel")}
+              confirmText={deleting ? t("organization.campaignDetail.deleting") : t("organization.campaignDetail.delete")}
+            />
           </div>
         </div>
+
+        {(campaign.current_amount > 0 && campaign.number_of_donors > 0) && (
+          <p className="text-sm text-gray-500 mt-2 text-end">
+            {t("organization.campaignDetail.noEditDeleteBecauseDonations")}
+          </p>
+        )}
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
@@ -199,11 +247,11 @@ export default function CampaignDetail() {
         <div className="lg:w-2/3">
           <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
             {/* Campaign Carousel */}
-            <CampaignCarousel 
-              files={campaign.files} 
+            <CampaignCarousel
+              files={campaign.files}
               isEditing={false}
             />
-            
+
             {/* Campaign Content */}
             <div className="p-6">
               <div className="flex justify-between items-start mb-4">
@@ -224,7 +272,7 @@ export default function CampaignDetail() {
                   </div>
                 </div>
                 <div className={`flex space-x-2 ${isRTL ? 'me-4' : 'ms-4'} ${isRTL ? 'space-x-reverse' : ''}`}>
-                  <ShareButton 
+                  <ShareButton
                     campaign={campaign}
                     variant="button-only"
                     showMetaTags={false}
@@ -241,14 +289,14 @@ export default function CampaignDetail() {
                     {t('organization.campaignDetail.raised', { amount: formatCurrency(campaign.current_amount) })}
                   </span>
                   <span className="text-slate-600">
-                    {t('organization.campaignDetail.percentOfTarget', { 
-                      percent: progress.toFixed(1), 
-                      target: formatCurrency(campaign.target) 
+                    {t('organization.campaignDetail.percentOfTarget', {
+                      percent: progress.toFixed(1),
+                      target: formatCurrency(campaign.target)
                     })}
                   </span>
                 </div>
                 <div className="w-full bg-slate-200 rounded-full h-3">
-                  <div 
+                  <div
                     className={`bg-blue-600 h-3 rounded-full transition-all duration-300 ${isRTL ? 'origin-right' : 'origin-left'}`}
                     style={{ width: `${progress}%` }}
                   />
@@ -289,11 +337,11 @@ export default function CampaignDetail() {
                           {t('organization.campaignDetail.liveStreamAvailable')}
                         </p>
                         <p className="text-sm text-blue-700">
-                          {campaign.live_status === 'live' 
+                          {campaign.live_status === 'live'
                             ? t('organization.campaignDetail.currentlyLive')
                             : t('organization.campaignDetail.streamAvailable')
                           }
-                          {campaign.live_viewer_count > 0 && 
+                          {campaign.live_viewer_count > 0 &&
                             ` • ${t('organization.campaignDetail.viewersCount', { count: campaign.live_viewer_count })}`
                           }
                         </p>
@@ -361,7 +409,7 @@ export default function CampaignDetail() {
             <h3 className={`text-lg font-semibold text-slate-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('organization.campaignDetail.performanceSummary')}
             </h3>
-            
+
             <div className="space-y-4">
               <div className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                 <div className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
@@ -414,7 +462,7 @@ export default function CampaignDetail() {
           </div>
 
           {/* Share Campaign */}
-          <ShareButton 
+          <ShareButton
             campaign={campaign}
             variant="compact"
             showPreview={false}
@@ -426,7 +474,7 @@ export default function CampaignDetail() {
             <h3 className={`text-lg font-semibold text-slate-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
               {t('organization.campaignDetail.campaignInformation')}
             </h3>
-            
+
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium text-slate-700 mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>
@@ -436,7 +484,7 @@ export default function CampaignDetail() {
                   {campaignCategory?.name || campaign.category?.name || t('organization.campaignDetail.uncategorized')}
                 </p>
               </div>
-              
+
               <div>
                 <label className={`block text-sm font-medium text-slate-700 mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('organization.campaignDetail.lastUpdated')}
@@ -445,7 +493,7 @@ export default function CampaignDetail() {
                   {formatDate(campaign.updated_at)}
                 </p>
               </div>
-              
+
               <div>
                 <label className={`block text-sm font-medium text-slate-700 mb-1 ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('organization.campaignDetail.status')}
@@ -469,11 +517,10 @@ export default function CampaignDetail() {
                     {t('organization.campaignDetail.liveStream')}
                   </label>
                   <div className={`flex items-center space-x-2 ${isRTL ? 'space-x-reverse justify-end' : ''}`}>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      campaign.is_live 
-                        ? 'bg-red-100 text-red-800' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
+                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${campaign.is_live
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-gray-100 text-gray-800'
+                      }`}>
                       {campaign.is_live ? t('organization.campaignDetail.liveNow') : t('organization.campaignDetail.available')}
                     </span>
                     {campaign.live_viewer_count > 0 && (

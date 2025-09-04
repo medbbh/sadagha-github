@@ -69,7 +69,7 @@ const RoleBasedRedirect = () => {
   
   if (!user) {
     console.log('No user, redirecting to login');
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/feed" replace />;
   }
   
   if (needsRegistration()) {
