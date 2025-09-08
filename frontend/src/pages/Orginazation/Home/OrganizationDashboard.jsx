@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../contexts/AuthContext';
-import { 
-  BarChart3, 
-  FileText, 
-  Users, 
-  DollarSign, 
+import {
+  BarChart3,
+  FileText,
+  Users,
+  DollarSign,
   CheckCircle,
   AlertCircle,
   Plus,
@@ -21,7 +21,7 @@ export default function OrganizationDashboard() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
   const { user } = useAuth();
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [campaignError, setCampaignError] = useState(null);
@@ -34,16 +34,16 @@ export default function OrganizationDashboard() {
       setLoading(true);
       setError(null);
       setCampaignError(null);
-      
+
       try {
         // Fetch essential data first (profile and payments)
         const profileData = await orgDashboardApi.fetchOrgProfile();
-        
+
         // Try to fetch dashboard statistics (might fail if Campaign model doesn't exist)
         let statisticsData = null;
         let paymentSummaryData = null;
         let overviewData = null;
-        
+
         try {
           statisticsData = await orgDashboardApi.fetchOrgStatistics('30d');
           console.log('Statistics data fetched successfully:', statisticsData);
@@ -53,28 +53,28 @@ export default function OrganizationDashboard() {
             setCampaignError(t('organization.dashboard.campaignSystemNotConfigured'));
           }
         }
-        
+
         try {
           paymentSummaryData = await orgDashboardApi.fetchPaymentSummary();
           console.log('Payment summary fetched successfully:', paymentSummaryData);
         } catch (payErr) {
           console.warn('Payment summary unavailable:', payErr);
         }
-        
+
         try {
           overviewData = await orgDashboardApi.fetchDashboardOverview();
           console.log('Overview data fetched successfully:', overviewData);
         } catch (overErr) {
           console.warn('Overview data unavailable:', overErr);
         }
-        
+
         setDashboardData({
           profile: profileData,
           statistics: statisticsData,
           paymentSummary: paymentSummaryData,
           overview: overviewData
         });
-        
+
       } catch (err) {
         console.error('Dashboard fetch error:', err);
         setError(err.message || t('organization.dashboard.failedToLoadData'));
@@ -90,15 +90,15 @@ export default function OrganizationDashboard() {
     setRefreshing(true);
     setError(null);
     setCampaignError(null);
-    
+
     try {
       // Same approach as initial fetch
       const profileData = await orgDashboardApi.fetchOrgProfile();
-      
+
       let statisticsData = null;
       let paymentSummaryData = null;
       let overviewData = null;
-      
+
       try {
         statisticsData = await orgDashboardApi.fetchOrgStatistics('30d');
       } catch (statErr) {
@@ -106,26 +106,26 @@ export default function OrganizationDashboard() {
           setCampaignError(t('organization.dashboard.campaignSystemNotConfigured'));
         }
       }
-      
+
       try {
         paymentSummaryData = await orgDashboardApi.fetchPaymentSummary();
       } catch (payErr) {
         console.warn('Payment summary unavailable:', payErr);
       }
-      
+
       try {
         overviewData = await orgDashboardApi.fetchDashboardOverview();
       } catch (overErr) {
         console.warn('Overview data unavailable:', overErr);
       }
-      
+
       setDashboardData({
         profile: profileData,
         statistics: statisticsData,
         paymentSummary: paymentSummaryData,
         overview: overviewData
       });
-      
+
     } catch (err) {
       console.error('Refresh error:', err);
       setError(err.message || t('organization.dashboard.failedToRefreshData'));
@@ -161,12 +161,18 @@ export default function OrganizationDashboard() {
 
   return (
     <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
+      <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 flex items-center">
+        <AlertTriangle className="w-5 h-5 mr-2 text-yellow-600" />
+        <p className="text-sm">
+          {t('organization.dashboard.verificationNotice')}
+        </p>
+      </div>
       {/* Welcome Section */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between `}>
           <div className={isRTL ? 'text-right' : 'text-left'}>
             <h1 className="text-2xl font-semibold text-gray-900">
-              {t('organization.dashboard.welcomeBack', { 
+              {t('organization.dashboard.welcomeBack', {
                 name: profileData.org_name || user?.first_name || t('organization.dashboard.organization')
               })}
             </h1>
@@ -174,7 +180,7 @@ export default function OrganizationDashboard() {
               {t('organization.dashboard.overviewSubtitle')}
             </p>
           </div>
-          
+
           <div className={`flex items-center space-x-3 mt-4 sm:mt-0 ${isRTL ? 'space-x-reverse' : ''}`}>
             <button
               onClick={handleRefresh}
@@ -184,7 +190,7 @@ export default function OrganizationDashboard() {
               <RefreshCw className={`w-4 h-4 ${isRTL ? 'ml-2' : 'mr-2'} ${refreshing ? 'animate-spin' : ''}`} />
               {refreshing ? t('organization.dashboard.refreshing') : t('organization.dashboard.refreshData')}
             </button>
-            
+
             {profileData.is_verified ? (
               <div className={`flex items-center text-green-700 bg-green-50 px-3 py-1 rounded-full border border-green-200 `}>
                 <CheckCircle className={`w-4 h-4 ${isRTL ? 'ml-1' : 'mr-1'}`} />
@@ -307,7 +313,7 @@ export default function OrganizationDashboard() {
             <Activity className={`w-5 h-5 ${isRTL ? 'ml-2' : 'mr-2'}`} />
             {t('organization.dashboard.recentActivity')}
           </h3>
-          
+
           <div className="text-center py-8 text-gray-500">
             <Activity className="w-12 h-12 mx-auto mb-3 text-gray-300" />
             <p className="text-lg font-medium mb-2">{t('organization.dashboard.noRecentActivity')}</p>
@@ -324,7 +330,7 @@ export default function OrganizationDashboard() {
         <h3 className={`text-lg font-semibold text-gray-900 mb-4 ${isRTL ? 'text-right' : 'text-left'}`}>
           {t('organization.dashboard.campaignStatusOverview')}
         </h3>
-        
+
         {campaignError ? (
           <div className="text-center py-8 text-gray-500">
             <AlertCircle className="w-12 h-12 mx-auto mb-3 text-gray-300" />

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { 
+import {
   X,
   ChevronLeft,
   ChevronRight,
@@ -10,7 +10,7 @@ import {
   User
 } from 'lucide-react';
 
-export default function OrgSidebar({ 
+export default function OrgSidebar({
   navigationItems = [],
   sidebarOpen,
   sidebarCollapsed,
@@ -20,13 +20,13 @@ export default function OrgSidebar({
   onLogout,
   loading = false,
   isRTL = false,
-  className = '' 
+  className = ''
 }) {
   const { t } = useTranslation();
-  
+
   const sidebarWidth = sidebarCollapsed ? 'w-24' : 'w-64';
   const sidebarPosition = isRTL ? 'right-0' : 'left-0';
-  const translateClass = isRTL 
+  const translateClass = isRTL
     ? (sidebarOpen ? 'translate-x-0' : 'translate-x-full')
     : (sidebarOpen ? 'translate-x-0' : '-translate-x-full');
 
@@ -46,7 +46,7 @@ export default function OrgSidebar({
               </div>
             </Link>
           )}
-          
+
           {sidebarCollapsed && (
             <Link to="/organization" className="flex items-center justify-center w-full">
               <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
@@ -54,7 +54,7 @@ export default function OrgSidebar({
               </div>
             </Link>
           )}
-          
+
           {/* Mobile close button */}
           {!sidebarCollapsed && (
             <button
@@ -71,22 +71,40 @@ export default function OrgSidebar({
           {navigationItems.map((item) => (
             <Link
               key={item.name}
-              to={item.href}
-              onClick={onCloseSidebar}
-              className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 ${
-                item.current
-                  ? `bg-slate-100 text-slate-900 border-${isRTL ? 'r' : 'l'}-3 border-slate-600`
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              } `}
-              title={sidebarCollapsed ? item.name : ''}
+              to={item.disabled ? "#" : item.href}   // fallback so it doesn't navigate
+              onClick={(e) => {
+                if (item.disabled) {
+                  e.preventDefault(); // block navigation
+                } else {
+                  onCloseSidebar();
+                }
+              }}
+              className={`group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-150 
+    ${item.disabled
+                  ? "text-slate-400 cursor-not-allowed bg-gray-50"
+                  : item.current
+                    ? `bg-slate-100 text-slate-900 border-${isRTL ? "r" : "l"}-3 border-slate-600`
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                }
+  `}
+              title={sidebarCollapsed ? item.name : ""}
             >
-              <item.icon className={`h-5 w-5 transition-colors ${
-                item.current ? 'text-slate-700' : 'text-slate-400 group-hover:text-slate-600'
-              } ${sidebarCollapsed ? '' : (isRTL ? 'ml-3' : 'mr-3')}`} />
+              <item.icon
+                className={`h-5 w-5 transition-colors 
+      ${item.disabled
+                    ? "text-slate-300"
+                    : item.current
+                      ? "text-slate-700"
+                      : "text-slate-400 group-hover:text-slate-600"
+                  }
+      ${sidebarCollapsed ? "" : isRTL ? "ml-3" : "mr-3"}
+    `}
+              />
               {!sidebarCollapsed && (
                 <span className="truncate">{item.name}</span>
               )}
             </Link>
+
           ))}
         </nav>
 
@@ -105,7 +123,7 @@ export default function OrgSidebar({
                   <p className="text-xs text-slate-500">{t('organization.sidebar.administrator')}</p>
                 </div>
               </Link>
-              
+
               <button
                 onClick={onLogout}
                 disabled={loading}
@@ -122,7 +140,7 @@ export default function OrgSidebar({
                   <User className="w-4 h-4 text-slate-600" />
                 </div>
               </Link>
-              
+
               <button
                 onClick={onLogout}
                 disabled={loading}
@@ -143,13 +161,11 @@ export default function OrgSidebar({
         title={sidebarCollapsed ? t('organization.sidebar.expandSidebar') : t('organization.sidebar.collapseSidebar')}
       >
         {isRTL ? (
-          <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${
-            sidebarCollapsed ? 'rotate-180' : ''
-          }`} />
+          <ChevronRight className={`w-4 h-4 transition-transform duration-200 ${sidebarCollapsed ? 'rotate-180' : ''
+            }`} />
         ) : (
-          <ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${
-            sidebarCollapsed ? 'rotate-180' : ''
-          }`} />
+          <ChevronLeft className={`w-4 h-4 transition-transform duration-200 ${sidebarCollapsed ? 'rotate-180' : ''
+            }`} />
         )}
       </button>
     </div>

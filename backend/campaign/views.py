@@ -25,6 +25,7 @@ from accounts.authentication import SupabaseAuthentication
 from django.db import transaction
 from .utils.supabase_storage import delete_file
 from django.shortcuts import get_object_or_404
+from rest_framework.exceptions import PermissionDenied
 
 
 logger = logging.getLogger(__name__)
@@ -331,7 +332,13 @@ class CampaignViewSet(viewsets.ModelViewSet):
         })
     
     def perform_create(self, serializer):
-        return serializer.save()
+        user = self.request.user
+    
+        # Ensure only verified orgs can create campaigns
+        if not getattr(user, "is_verified", False) or user.role != "organization":
+            raise PermissionDenied("Only verified organizations can create campaigns.")
+        
+        return serializer.save(owner=user)
     
     def update(self, request, *args, **kwargs):
         """

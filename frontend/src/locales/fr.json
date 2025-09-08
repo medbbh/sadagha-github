@@ -959,6 +959,7 @@
       "terms": "Conditions"
     },
     "dashboard": {
+      "verificationNotice":"Votre compte organisation n'est pas encore vérifié. Veuillez compléter la vérification pour accéder à toutes les fonctionnalités telles que la création de campagnes et de demandes de bénévolat.",
       "welcomeBack": "Bon retour, {{name}}",
       "organization": "Organisation",
       "overviewSubtitle": "Voici un aperçu de vos performances de collecte de fonds",

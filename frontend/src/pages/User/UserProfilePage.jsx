@@ -47,35 +47,7 @@ const UserProfilePage = () => {
     totalImpact: 150
   });
 
-  const [donationHistory, setDonationHistory] = useState([
-    {
-      id: 1,
-      campaignName: 'Help Local Food Bank',
-      amount: 500,
-      currency: 'MRU',
-      date: '2024-02-15',
-      status: 'completed',
-      receiptUrl: '#'
-    },
-    {
-      id: 2,
-      campaignName: 'Education for All',
-      amount: 250,
-      currency: 'MRU',
-      date: '2024-01-28',
-      status: 'completed',
-      receiptUrl: '#'
-    },
-    {
-      id: 3,
-      campaignName: 'Clean Water Initiative',
-      amount: 750,
-      currency: 'MRU',
-      date: '2024-01-10',
-      status: 'completed',
-      receiptUrl: '#'
-    }
-  ]);
+  const [donationHistory, setDonationHistory] = useState([]);
 
   const [settings, setSettings] = useState({
     emailNotifications: true,
@@ -311,9 +283,6 @@ const UserProfilePage = () => {
                 </h1>
               </div>
               <p className={`text-gray-600 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>@{userData.email}</p>
-              <p className={`text-sm text-gray-500 ${isRTL ? 'text-right' : 'text-left'}`}>
-                {t('profile.header.memberSince')} {profileData?.created_at ? formatDate(profileData.created_at) : t('profile.header.notAvailable')}
-              </p>
             </div>
             <div className={`text-${isRTL ? 'left' : 'right'}`}>
               <div className="grid grid-cols-2 gap-4 text-center">

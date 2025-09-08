@@ -959,6 +959,7 @@
       "terms": "Terms"
     },
     "dashboard": {
+      "verificationNotice":"Your organization account is not verified yet. Please complete verification to unlock all features such as creating campaigns and volunteer requests.",
       "welcomeBack": "Welcome back, {{name}}",
       "organization": "Organization",
       "overviewSubtitle": "Here's an overview of your fundraising performance",

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useTranslation } from 'react-i18next';
 import { 
@@ -14,6 +14,8 @@ import Loading from "../../components/common/Loading";
 import OrgNavbar from "../../components/layout/OrgNavbar";
 import OrgFooter from "../../components/layout/OrgFooter";
 import OrgSidebar from "../../components/layout/OrgSidebar";
+import orgDashboardApi from "../../api/endpoints/OrgAPI";
+
 
 export default function OrganizationLayout() {
   const { t, i18n } = useTranslation();
@@ -23,9 +25,27 @@ export default function OrganizationLayout() {
   const [error, setError] = useState('');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [orgData, setOrgData] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { logout: authLogout, user } = useAuth();
+
+
+  useEffect(() => {
+    const fetchOrgData = async () => {
+      try{
+        const profileData = await orgDashboardApi.fetchOrgProfile();
+        setOrgData(profileData);
+        console.log('Fetched organization data:', profileData);
+      }catch(error){
+        console.error('Error fetching organization data:', error);
+      }
+    }
+    fetchOrgData();
+  }, []) ;
+
+
+      
 
   const handleLogout = async () => {
     setLoading(true);
@@ -53,25 +73,31 @@ export default function OrganizationLayout() {
       name: t('organization.navigation.dashboard'),
       href: '/organization',
       icon: Home,
-      current: location.pathname === '/organization'
+      current: location.pathname === '/organization',
     },
     {
       name: t('organization.navigation.campaigns'),
       href: '/organization/campaigns',
       icon: FileText,
-      current: location.pathname.startsWith('/organization/campaigns')
+      current: location.pathname.startsWith('/organization/campaigns'),
+      disabled: !orgData?.is_verified
+      
     },
     {
       name: t('organization.navigation.analytics'),
       href: '/organization/analytics',
       icon: BarChart3,
-      current: location.pathname.startsWith('/organization/analytics')
+      current: location.pathname.startsWith('/organization/analytics'),
+      disabled: !orgData?.is_verified
+
     },
     {
       name: t('organization.navigation.volunteers'),
       href: '/organization/volunteers',
       icon: Users,
-      current: location.pathname.startsWith('/organization/volunteers')
+      current: location.pathname.startsWith('/organization/volunteers'),
+      disabled: !orgData?.is_verified
+
     },
   ];
 

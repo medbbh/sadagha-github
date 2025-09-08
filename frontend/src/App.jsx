@@ -49,6 +49,7 @@ import OrganizationsList from './components/ui/OrganizationsList';
 import OrganizationDetail from './components/ui/OrganizationDetail';
 import InvitedVolunteers from './pages/Orginazation/InvitedVolunteers';
 import PublicLayout from './pages/User/PublicLayout';
+import VerifiedProtectedRoute from './components/VerifiedProtectedRoute';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -196,22 +197,23 @@ function App() {
         </ProtectedRoute>
       }>
         <Route path="/organization" element={<OrganizationDashboard />} />
-        <Route path="/organization/campaigns" element={<CampaignsList />} />
-        <Route path="/organization/campaigns/create" element={<CreateCampaignForm />} />
-        <Route path="/organization/campaigns/:campaignId" element={<CampaignDetails />} />
-        <Route path="/organization/campaigns/:campaignId/edit" element={<CampaignEdit />} />
+        <Route path="/organization/campaigns" element={<VerifiedProtectedRoute><CampaignsList /></VerifiedProtectedRoute>} />
+        <Route path="/organization/campaigns/create" element={<VerifiedProtectedRoute><CreateCampaignForm /></VerifiedProtectedRoute>} />
+        <Route path="/organization/campaigns/:campaignId" element={<VerifiedProtectedRoute><CampaignDetails /></VerifiedProtectedRoute>} />
+        <Route path="/organization/campaigns/:campaignId/edit" element={<VerifiedProtectedRoute><CampaignEdit /></VerifiedProtectedRoute>} />
         <Route path="/organization/profile" element={<OrganizationProfile />} />
-        <Route path="/organization/analytics" element={<Analytics />} />
+        <Route path="/organization/analytics" element={<VerifiedProtectedRoute><Analytics /></VerifiedProtectedRoute>} />
 
-        <Route path="/organization/volunteers" element={<VolunteerRequestsList />} />
-        <Route path="/organization/volunteers/requests" element={<VolunteerRequestsList />} />
-        <Route path="/organization/volunteers/requests/create" element={<CreateVolunteerRequest />} />
-        <Route path="/organization/volunteers/requests/:requestId/edit" element={<EditVolunteerRequest />} />
-        <Route path="/organization/volunteers/requests/:requestId" element={<VolunteerRequestDetail />} />
-        <Route path="/organization/volunteers/requests/:requestId/invitations" element={<InvitedVolunteers />} />
+        <Route path="/organization/volunteers" element={<VerifiedProtectedRoute><VolunteerRequestsList /></VerifiedProtectedRoute>} />
+        <Route path="/organization/volunteers/requests" element={<VerifiedProtectedRoute><VolunteerRequestsList /></VerifiedProtectedRoute>} />
+        <Route path="/organization/volunteers/requests/create" element={<VerifiedProtectedRoute><CreateVolunteerRequest /></VerifiedProtectedRoute>} />
+        <Route path="/organization/volunteers/requests/:requestId/edit" element={<VerifiedProtectedRoute><EditVolunteerRequest /></VerifiedProtectedRoute>} />
+        <Route path="/organization/volunteers/requests/:requestId" element={<VerifiedProtectedRoute><VolunteerRequestDetail /></VerifiedProtectedRoute>} />
+        <Route path="/organization/volunteers/requests/:requestId/invitations" element={<VerifiedProtectedRoute><InvitedVolunteers /></VerifiedProtectedRoute>} />
 
-        <Route path="/organization/volunteers/requests/:requestId/matches" element={<VolunteerMatching />} />     
+        <Route path="/organization/volunteers/requests/:requestId/matches" element={<VerifiedProtectedRoute><VolunteerMatching /></VerifiedProtectedRoute>} />     
       </Route>
+
 
       <Route path="*" element={<NotFound />} />
     </Routes>
