@@ -129,6 +129,7 @@ export default function OrganizationLayout() {
         onLogout={handleLogout}
         loading={loading}
         isRTL={isRTL}
+        orgData={orgData}
       />
 
       {/* Main content wrapper */}

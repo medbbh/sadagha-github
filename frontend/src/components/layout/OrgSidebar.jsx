@@ -20,6 +20,7 @@ export default function OrgSidebar({
   onLogout,
   loading = false,
   isRTL = false,
+  orgData,
   className = ''
 }) {
   const { t } = useTranslation();
@@ -37,12 +38,12 @@ export default function OrgSidebar({
         <div className={`flex items-center ${isRTL ? 'justify-start' : 'justify-between'} h-16 px-3 border-b border-slate-100 flex-shrink-0 bg-slate-800`}>
           {!sidebarCollapsed && (
             <Link to="/organization" className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
-              <div className="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
-                <Building2 className="w-4 h-4 text-slate-700" />
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center">
+                <img src={orgData.profile_image_url} alt="Organization Logo" className="rounded-full mt-1" />
               </div>
               <div className="text-white">
-                <span className="font-medium text-base">{t('organization.sidebar.organization')}</span>
-                <p className="text-xs text-slate-300">{t('organization.sidebar.dashboard')}</p>
+
+                <span className="font-medium text-base">{orgData.org_name}</span>
               </div>
             </Link>
           )}

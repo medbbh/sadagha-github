@@ -161,12 +161,17 @@ export default function OrganizationDashboard() {
 
   return (
     <div className={`space-y-6 ${isRTL ? 'rtl' : 'ltr'}`}>
-      <div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 flex items-center">
-        <AlertTriangle className="w-5 h-5 mr-2 text-yellow-600" />
-        <p className="text-sm">
-          {t('organization.dashboard.verificationNotice')}
-        </p>
-      </div>
+      {
+        !profileData.is_verified &&
+
+        (<div className="mb-4 rounded-lg border border-yellow-300 bg-yellow-50 p-4 text-yellow-800 flex items-center">
+          <AlertTriangle className="w-5 h-5 mr-2 text-yellow-600" />
+          <p className="text-sm">
+            {t('organization.dashboard.verificationNotice')}
+          </p>
+        </div>)
+      }
+      
       {/* Welcome Section */}
       <div className="bg-white rounded-lg border border-gray-200 p-6">
         <div className={`flex flex-col sm:flex-row sm:items-center sm:justify-between `}>
