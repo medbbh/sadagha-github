@@ -14,7 +14,7 @@ const CampaignManagement = () => {
   const [showCampaignModal, setShowCampaignModal] = useState(false);
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [stats, setStats] = useState({});
-  const [activeTab, setActiveTab] = useState('all'); // all, featured, trending, suspicious
+  const [activeTab, setActiveTab] = useState('all'); // all, featured, trending
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -236,7 +236,6 @@ const CampaignManagement = () => {
               { id: 'all', name: 'All Campaigns', icon: Target },
               { id: 'featured', name: 'Featured', icon: Star },
               { id: 'trending', name: 'Trending', icon: TrendingUp },
-              { id: 'suspicious', name: 'Suspicious', icon: AlertTriangle }
             ].map((tab) => (
               <button
                 key={tab.id}

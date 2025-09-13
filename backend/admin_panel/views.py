@@ -286,8 +286,6 @@ class AdminOrganizationViewSet(viewsets.ModelViewSet):
         ).prefetch_related(
             'owner__campaigns',
             'owner__campaigns__donations',
-            'manual_payments',
-            'nextpay_payments'
         ).annotate(
             campaign_count=Count('owner__campaigns', distinct=True),
             total_raised=Sum('owner__campaigns__current_amount'),
@@ -297,8 +295,6 @@ class AdminOrganizationViewSet(viewsets.ModelViewSet):
                 filter=Q(owner__campaigns__donations__status='completed'),
                 distinct=True
             ),
-            manual_payment_count=Count('manual_payments', filter=Q(manual_payments__is_active=True)),
-            nextpay_payment_count=Count('nextpay_payments', filter=Q(nextpay_payments__is_active=True))
         )
     
     def get_serializer_class(self):
@@ -486,22 +482,6 @@ class AdminOrganizationViewSet(viewsets.ModelViewSet):
             'organization_name': organization.org_name,
             'revocation_reason': revocation_reason,
             'is_verified': organization.is_verified
-        })
-    
-    @action(detail=True, methods=['get'])
-    def payment_methods(self, request, pk=None):
-        """Get organization's payment methods"""
-        organization = self.get_object()
-        
-        manual_payments = organization.manual_payments.select_related('wallet_provider').all()
-        nextpay_payments = organization.nextpay_payments.select_related('wallet_provider').all()
-        
-        return Response({
-            'organization_id': organization.id,
-            'organization_name': organization.org_name,
-            'manual_payments': PaymentMethodSerializer(manual_payments, many=True).data,
-            'nextpay_payments': PaymentMethodSerializer(nextpay_payments, many=True).data,
-            'total_payment_methods': len(manual_payments) + len(nextpay_payments)
         })
     
     @action(detail=True, methods=['get'])
@@ -875,13 +855,11 @@ class AdminCampaignViewSet(viewsets.ModelViewSet):
                 donation_data.append({
                     'id': donation.id,
                     'amount': str(donation.amount),
-                    'currency': donation.currency,
                     'status': donation.status,
                     'donor_name': donation.donor_display_name,
                     'donor_email': donation.donor.email if donation.donor else donation.donor_email,
                     'is_anonymous': donation.is_anonymous,
                     'message': donation.message,
-                    'payment_method': donation.payment_method,
                     'created_at': donation.created_at,
                     'completed_at': donation.completed_at
                 })
@@ -1298,87 +1276,18 @@ class AdminFinancialViewSet(viewsets.ReadOnlyModelViewSet):
         return Response(analytics)
     
     @action(detail=False, methods=['get'])
-    def webhook_logs(self, request):
-        """Payment webhook logs for debugging"""
-        days = int(request.query_params.get('days', 7))
-        status_filter = request.query_params.get('status')  # 'processed', 'error'
-        
-        cutoff_date = timezone.now() - timedelta(days=days)
-        
-        webhook_logs = DonationWebhookLog.objects.filter(
-            created_at__gte=cutoff_date
-        ).select_related('donation').order_by('-created_at')
-        
-        if status_filter == 'processed':
-            webhook_logs = webhook_logs.filter(processed=True, error_message='')
-        elif status_filter == 'error':
-            webhook_logs = webhook_logs.filter(Q(processed=False) | ~Q(error_message=''))
-        
-        # Paginate
-        page = self.paginate_queryset(webhook_logs[:100])  # Limit to 100 for performance
-        
-        if page is not None:
-            webhook_data = []
-            for log in page:
-                webhook_data.append({
-                    'id': log.id,
-                    'session_id': str(log.session_id),
-                    'donation_id': log.donation.id if log.donation else None,
-                    'donation_amount': str(log.donation.amount) if log.donation else None,
-                    'processed': log.processed,
-                    'status_code': log.status_code,
-                    'error_message': log.error_message,
-                    'payload_status': log.payload.get('status') if log.payload else None,
-                    'created_at': log.created_at
-                })
-            return self.get_paginated_response(webhook_data)
-        
-        return Response({'webhook_logs': []})
-    
-    @action(detail=False, methods=['get'])
     def refund_analysis(self, request):
         """Analysis of refunds and cancellations"""
         days = int(request.query_params.get('days', 30))
         
         analysis = FinancialManagementService.analyze_refunds_and_cancellations(days=days)
         return Response(analysis)
-    
-    @action(detail=False, methods=['get'])
-    def currency_breakdown(self, request):
-        """Breakdown of donations by currency"""
-        days = int(request.query_params.get('days', 30))
-        
-        cutoff_date = timezone.now() - timedelta(days=days)
-        
-        currency_stats = Donation.objects.filter(
-            created_at__gte=cutoff_date,
-            status='completed'
-        ).values('currency').annotate(
-            count=Count('id'),
-            total_amount=Sum('amount'),
-            avg_amount=Avg('amount')
-        ).order_by('-total_amount')
-        
-        return Response({
-            'period_days': days,
-            'currency_breakdown': [{
-                'currency': stat['currency'],
-                'transaction_count': stat['count'],
-                'total_amount': str(stat['total_amount']),
-                'average_amount': str(round(stat['avg_amount'], 2)),
-                'percentage_of_total': 0  # Calculate if needed
-            } for stat in currency_stats]
-        })
+
     
     @action(detail=True, methods=['get'])
     def transaction_details(self, request, pk=None):
         """Detailed information about a specific transaction"""
         donation = self.get_object()
-        
-        # Get related webhook logs
-        webhook_logs = DonationWebhookLog.objects.filter(
-            session_id=donation.payment_session_id
-        ).order_by('-created_at')
         
         # Get donor's other donations
         donor_history = []
@@ -1398,14 +1307,6 @@ class AdminFinancialViewSet(viewsets.ReadOnlyModelViewSet):
         
         return Response({
             'donation': AdminDonationDetailSerializer(donation).data,
-            'webhook_logs': [{
-                'id': log.id,
-                'processed': log.processed,
-                'status_code': log.status_code,
-                'error_message': log.error_message,
-                'payload': log.payload,
-                'created_at': log.created_at
-            } for log in webhook_logs],
             'donor_history': donor_history,
             'risk_assessment': FraudDetectionService.assess_transaction_risk(donation)
         })

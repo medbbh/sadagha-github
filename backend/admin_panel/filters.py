@@ -150,14 +150,8 @@ class OrganizationFilter(django_filters.FilterSet):
     
     def filter_has_payment_methods(self, queryset, name, value):
         if value:
-            return queryset.filter(
-                Q(manual_payments__is_active=True) | 
-                Q(nextpay_payments__is_active=True)
-            ).distinct()
-        return queryset.exclude(
-            Q(manual_payments__is_active=True) | 
-            Q(nextpay_payments__is_active=True)
-        )
+            return queryset.filter(payment_methods__isnull=False).distinct()
+        return queryset.filter(payment_methods__isnull=True)
     
     def filter_verification_status(self, queryset, name, value):
         if value == 'verified':
@@ -243,7 +237,6 @@ class DonationFilter(django_filters.FilterSet):
     
     # Payment method filters
     payment_method = django_filters.CharFilter(lookup_expr='icontains')
-    currency = django_filters.CharFilter()
     
     # Donor filters
     is_anonymous = django_filters.BooleanFilter()
@@ -264,7 +257,7 @@ class DonationFilter(django_filters.FilterSet):
     
     class Meta:
         model = Donation
-        fields = ['status', 'currency', 'is_anonymous']
+        fields = ['status', 'is_anonymous']
     
     def filter_registered_donor(self, queryset, name, value):
         if value:

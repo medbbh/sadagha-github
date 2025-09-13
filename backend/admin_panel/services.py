@@ -448,12 +448,6 @@ class OrganizationManagementService:
         orgs_with_documents = OrganizationProfile.objects.exclude(document_url='').count()
         orgs_without_documents = OrganizationProfile.objects.filter(document_url='').count()
         
-        # Payment methods
-        orgs_with_payment_methods = OrganizationProfile.objects.filter(
-            Q(manual_payments__is_active=True) | 
-            Q(nextpay_payments__is_active=True)
-        ).distinct().count()
-        
         # Recent activity
         new_orgs_30d = OrganizationProfile.objects.filter(created_at__gte=thirty_days_ago).count()
         new_orgs_7d = OrganizationProfile.objects.filter(created_at__gte=seven_days_ago).count()
@@ -483,11 +477,6 @@ class OrganizationManagementService:
                 'with_documents': orgs_with_documents,
                 'without_documents': orgs_without_documents,
                 'document_submission_rate': (orgs_with_documents / total_orgs * 100) if total_orgs > 0 else 0
-            },
-            'payment_methods': {
-                'configured': orgs_with_payment_methods,
-                'not_configured': total_orgs - orgs_with_payment_methods,
-                'configuration_rate': (orgs_with_payment_methods / total_orgs * 100) if total_orgs > 0 else 0
             },
             'growth': {
                 'new_organizations_30d': new_orgs_30d,
@@ -985,12 +974,7 @@ class CampaignManagementService:
         success_rate = (campaign.current_amount / campaign.target * 100) if campaign.target > 0 else 0
         days_active = (now.date() - campaign.created_at.date()).days + 1
         donations_per_day = total_donations / days_active if days_active > 0 else 0
-        
-        # Payment method breakdown
-        payment_methods = donations.values('payment_method').annotate(
-            count=Count('id'),
-            total=Sum('amount')
-        ).order_by('-count')
+    
         
         return {
             'overview': {
@@ -1009,11 +993,7 @@ class CampaignManagementService:
                 'repeat_rate': round((repeat_donors / unique_donors * 100) if unique_donors > 0 else 0, 2)
             },
             'daily_breakdown': daily_data[:7],  # Last 7 days for response size
-            'payment_methods': [{
-                'method': pm['payment_method'] or 'Unknown',
-                'count': pm['count'],
-                'total': str(pm['total'])
-            } for pm in payment_methods],
+
             'files': {
                 'total_files': campaign.files.count(),
                 'file_list': [f.name for f in campaign.files.all()[:5]]  # First 5 files
@@ -1425,31 +1405,18 @@ class FinancialManagementService:
     
     @staticmethod
     def get_payment_analytics():
-        """Get payment method analytics"""
-        # Payment method breakdown
-        payment_methods = Donation.objects.filter(
-            status='completed'
-        ).values('payment_method').annotate(
-            count=Count('id'),
-            total_amount=Sum('amount'),
-            avg_amount=Avg('amount')
-        ).order_by('-total_amount')
-        
-        # Success rates by payment method
-        payment_success_rates = {}
-        for method_data in payment_methods:
-            method = method_data['payment_method']
-            total_attempts = Donation.objects.filter(payment_method=method).count()
-            completed = method_data['count']
-            success_rate = (completed / total_attempts * 100) if total_attempts > 0 else 0
-            
-            payment_success_rates[method or 'Unknown'] = {
-                'success_rate': round(success_rate, 2),
-                'total_attempts': total_attempts,
-                'completed': completed
-            }
-    
-        
+        """Get global donation analytics (no payment_method anymore)"""
+
+        # Completed donation stats
+        completed_donations = Donation.objects.filter(status='completed')
+        total_completed = completed_donations.count()
+        total_amount = completed_donations.aggregate(total=Sum('amount'))['total'] or 0
+        avg_amount = completed_donations.aggregate(avg=Avg('amount'))['avg'] or 0
+
+        # Overall attempts (any status)
+        total_attempts = Donation.objects.count()
+        success_rate = (total_completed / total_attempts * 100) if total_attempts > 0 else 0
+
         # Processing time analysis
         processing_times = Donation.objects.filter(
             status='completed',
@@ -1459,19 +1426,17 @@ class FinancialManagementService:
                 'processing_seconds': 'EXTRACT(EPOCH FROM (completed_at - created_at))'
             }
         ).values_list('processing_seconds', flat=True)[:1000]  # Sample for performance
-        
+
         avg_processing_time = sum(processing_times) / len(processing_times) if processing_times else 0
-        
+
         return {
-            'payment_methods': [{
-                'method': item['payment_method'] or 'Unknown',
-                'transaction_count': item['count'],
-                'total_amount': str(item['total_amount']),
-                'average_amount': str(round(item['avg_amount'], 2)),
-                'success_rate': payment_success_rates.get(item['payment_method'] or 'Unknown', {}).get('success_rate', 0)
-            } for item in payment_methods],
-            
-            
+            'donation_summary': {
+                'transaction_count': total_completed,
+                'total_amount': str(total_amount),
+                'average_amount': str(round(avg_amount, 2)),
+                'success_rate': round(success_rate, 2),
+                'total_attempts': total_attempts,
+            },
             'processing_performance': {
                 'average_processing_time_seconds': round(avg_processing_time, 2),
                 'sample_size': len(processing_times)

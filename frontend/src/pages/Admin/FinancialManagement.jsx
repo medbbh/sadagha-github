@@ -23,7 +23,6 @@ const FinancialManagement = () => {
     min_amount: '',
     max_amount: '',
     payment_method: '',
-    currency: '',
     is_anonymous: '',
     created_after: '',
     created_before: '',
@@ -96,6 +95,8 @@ const FinancialManagement = () => {
       setPaymentAnalytics(payment);
       setRevenueAnalytics(revenue);
       setDonationTrends(trends);
+
+      console.log('Revenue Analytics:', revenue);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -309,16 +310,6 @@ const FinancialManagement = () => {
                 value={filters.max_amount}
                 onChange={(e) => handleFilterChange('max_amount', e.target.value)}
               />
-              <select
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                value={filters.currency}
-                onChange={(e) => handleFilterChange('currency', e.target.value)}
-              >
-                <option value="">All Currencies</option>
-                <option value="MRU">MRU</option>
-                <option value="USD">USD</option>
-                <option value="EUR">EUR</option>
-              </select>
               <select
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 value={filters.is_anonymous}
@@ -578,7 +569,7 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Amount</label>
-                <p className="mt-1 text-sm text-gray-900">{transaction.amount} {transaction.currency}</p>
+                <p className="mt-1 text-sm text-gray-900">{transaction.amount} MRU</p>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Status</label>
@@ -789,7 +780,7 @@ const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="text-sm font-medium text-gray-900">
-                    {donation.amount} {donation.currency}
+                    {donation.amount} MRU
                   </div>
                 </td>
                 <td className="px-6 py-4">
@@ -951,7 +942,7 @@ const MonitoringTab = ({ donations, filters, onFilterChange, onViewDetails, stat
                     {new Date(donation.created_at).toLocaleTimeString()}
                   </td>
                   <td className="px-6 py-4 text-sm font-medium text-gray-900">
-                    {donation.amount} {donation.currency}
+                    {donation.amount} MRU
                   </td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -1179,33 +1170,8 @@ const AnalyticsTab = ({ paymentAnalytics, revenueAnalytics, donationTrends, load
         </div>
       )}
 
-      {/* Currency & Geographic Analytics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow border">
-          <h3 className="text-lg font-medium text-gray-900 mb-4">Currency Distribution</h3>
-          {donationTrends?.currency_breakdown ? (
-            <div className="space-y-3">
-              {donationTrends.currency_breakdown.map((currency, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center">
-                    <div className="w-4 h-4 rounded-full bg-blue-500 mr-3"></div>
-                    <span className="text-sm font-medium">{currency.currency}</span>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-sm font-medium">{currency.percentage}%</div>
-                    <div className="text-xs text-gray-500">{currency.amount} total</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-4">
-              <Globe className="mx-auto h-8 w-8 text-gray-400" />
-              <p className="text-sm text-gray-500 mt-2">No currency data available</p>
-            </div>
-          )}
-        </div>
-
+      {/* Category Analytics */}
+      <div className="grid grid-cols-1 md:grid-cols-1 gap-6">
         <div className="bg-white p-6 rounded-lg shadow border">
           <h3 className="text-lg font-medium text-gray-900 mb-4">Top Performing Categories</h3>
           {donationTrends?.top_categories ? (

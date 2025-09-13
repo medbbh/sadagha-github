@@ -157,12 +157,9 @@ class AdminOrganizationSerializer(serializers.ModelSerializer):
     total_raised = serializers.DecimalField(max_digits=12, decimal_places=2, read_only=True)
     total_donors = serializers.IntegerField(read_only=True)
     completed_donations = serializers.IntegerField(read_only=True)
-    manual_payment_count = serializers.IntegerField(read_only=True)
-    nextpay_payment_count = serializers.IntegerField(read_only=True)
     
     # Status indicators
     verification_status = serializers.SerializerMethodField()
-    payment_methods_configured = serializers.SerializerMethodField()
     account_health = serializers.SerializerMethodField()
     
     class Meta:
@@ -174,9 +171,9 @@ class AdminOrganizationSerializer(serializers.ModelSerializer):
             'owner_username', 'owner_email', 'owner_full_name',
             # Computed fields
             'campaign_count', 'total_raised', 'total_donors', 'completed_donations',
-            'manual_payment_count', 'nextpay_payment_count',
+           
             # Status indicators
-            'verification_status', 'payment_methods_configured', 'account_health'
+            'verification_status','account_health'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
     
@@ -191,9 +188,6 @@ class AdminOrganizationSerializer(serializers.ModelSerializer):
         else:
             return 'incomplete'
     
-    def get_payment_methods_configured(self, obj):
-        return obj.has_payment_methods_configured()
-    
     def get_account_health(self, obj):
         """Determine account health based on various factors"""
         score = 0
@@ -202,17 +196,13 @@ class AdminOrganizationSerializer(serializers.ModelSerializer):
         if obj.is_verified:
             score += 30
         elif obj.document_url:
-            score += 15
-        
-        # Payment methods
-        if obj.has_payment_methods_configured():
-            score += 20
+            score += 25
         
         # Profile completeness
         if obj.org_name:
             score += 10
         if obj.description:
-            score += 10
+            score += 20
         if obj.website:
             score += 5
         if obj.address:
@@ -236,13 +226,12 @@ class AdminOrganizationDetailSerializer(AdminOrganizationSerializer):
     """Detailed organization serializer with all related data"""
     
     recent_campaigns = serializers.SerializerMethodField()
-    payment_methods_detail = serializers.SerializerMethodField()
     financial_summary = serializers.SerializerMethodField()
     document_info = serializers.SerializerMethodField()
     
     class Meta(AdminOrganizationSerializer.Meta):
         fields = AdminOrganizationSerializer.Meta.fields + [
-            'recent_campaigns', 'payment_methods_detail', 'financial_summary', 'document_info'
+            'recent_campaigns', 'financial_summary', 'document_info'
         ]
     
     def get_recent_campaigns(self, obj):
@@ -258,28 +247,6 @@ class AdminOrganizationDetailSerializer(AdminOrganizationSerializer):
             'featured': campaign.featured
         } for campaign in recent_campaigns]
     
-    def get_payment_methods_detail(self, obj):
-        manual_payments = obj.manual_payments.filter(is_active=True).select_related('wallet_provider')
-        nextpay_payments = obj.nextpay_payments.filter(is_active=True).select_related('wallet_provider')
-        
-        return {
-            'manual_payments': [{
-                'id': mp.id,
-                'wallet_provider': mp.wallet_provider.name,
-                'phone_number': mp.phone_number,
-                'account_name': mp.account_name,
-                'created_at': mp.created_at
-            } for mp in manual_payments],
-            'nextpay_payments': [{
-                'id': np.id,
-                'wallet_provider': np.wallet_provider.name,
-                'commercial_number': np.commercial_number,
-                'account_name': np.account_name,
-                'verified_at': np.verified_at,
-                'created_at': np.created_at
-            } for np in nextpay_payments],
-            'total_methods': len(manual_payments) + len(nextpay_payments)
-        }
     
     def get_financial_summary(self, obj):
         from django.utils import timezone
@@ -539,7 +506,6 @@ class AdminDonationSerializer(serializers.ModelSerializer):
     
     # Donor information
     donor_username = serializers.CharField(source='donor.username', read_only=True)
-    donor_email_field = serializers.CharField(source='donor.email', read_only=True)
     donor_display = serializers.SerializerMethodField()
     
     # Campaign information
@@ -557,12 +523,12 @@ class AdminDonationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Donation
         fields = [
-            'id', 'amount', 'currency', 'status', 'payment_method',
+            'id', 'amount', 'status',
             'created_at', 'completed_at', 'is_anonymous', 'message',
             # Payment tracking
-            'payment_session_id', 'payment_transaction_id', 'external_transaction_id',
+            'payment_session_id',
             # Donor info
-            'donor_username', 'donor_email_field', 'donor_email', 'donor_name', 'donor_display',
+            'donor_username', 'donor_name', 'donor_display',
             # Campaign info
             'campaign_name', 'campaign_owner',
             # Computed fields
@@ -645,28 +611,16 @@ class AdminDonationSerializer(serializers.ModelSerializer):
 
 class AdminDonationDetailSerializer(AdminDonationSerializer):
     """Detailed donation serializer with all related data"""
-    
-    payment_metadata_info = serializers.SerializerMethodField()
     donor_details = serializers.SerializerMethodField()
     campaign_details = serializers.SerializerMethodField()
     transaction_timeline = serializers.SerializerMethodField()
     
     class Meta(AdminDonationSerializer.Meta):
         fields = AdminDonationSerializer.Meta.fields + [
-            'payment_metadata', 'payment_metadata_info', 'donor_details', 
+            'donor_details', 
             'campaign_details', 'transaction_timeline'
         ]
     
-    def get_payment_metadata_info(self, obj):
-        if obj.payment_metadata:
-            # Extract useful info from payment metadata
-            return {
-                'gateway_response': obj.payment_metadata.get('status'),
-                'payment_id': obj.payment_metadata.get('payment_id'),
-                'gateway_fees': obj.payment_metadata.get('fees'),
-                'payment_details': obj.payment_metadata.get('payment_details', {})
-            }
-        return None
     
     def get_donor_details(self, obj):
         if obj.donor:
@@ -679,7 +633,6 @@ class AdminDonationDetailSerializer(AdminDonationSerializer):
             return {
                 'donor_id': obj.donor.id,
                 'username': obj.donor.username,
-                'email': obj.donor.email,
                 'full_name': f"{obj.donor.first_name} {obj.donor.last_name}".strip(),
                 'role': obj.donor.role,
                 'is_active': obj.donor.is_active,
@@ -689,7 +642,6 @@ class AdminDonationDetailSerializer(AdminDonationSerializer):
                 'first_donation_date': other_donations.order_by('created_at').first().created_at if other_donations.exists() else None
             }
         return {
-            'donor_email': obj.donor_email,
             'donor_name': obj.donor_name,
             'is_guest_donor': True
         }
@@ -734,7 +686,6 @@ class AdminDonationDetailSerializer(AdminDonationSerializer):
 
 class PaymentAnalyticsSerializer(serializers.Serializer):
     """Serializer for payment analytics data"""
-    payment_method = serializers.CharField()
     transaction_count = serializers.IntegerField()
     total_amount = serializers.DecimalField(max_digits=12, decimal_places=2)
     average_amount = serializers.DecimalField(max_digits=10, decimal_places=2)

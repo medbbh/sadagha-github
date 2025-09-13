@@ -161,8 +161,9 @@ function App() {
       <Route path="/admin/categories" element={<CategoryManagement />} />
       </Route>
       
-      {/* USER routes */}
 
+      
+      {/* USER routes */}
       <Route element={<PublicLayout />}>
         <Route path="/feed" element={<Home />} />
         <Route path="/explore" element={<ExploreCampaigns />} />

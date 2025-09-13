@@ -14,7 +14,7 @@ const OrganizationManagement = () => {
   const [showOrgModal, setShowOrgModal] = useState(false);
   const [selectedOrg, setSelectedOrg] = useState(null);
   const [stats, setStats] = useState({});
-  const [activeTab, setActiveTab] = useState('all'); // all, verification, verified, suspicious
+  const [activeTab, setActiveTab] = useState('all'); // all, verification, verified
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -135,9 +135,8 @@ const OrganizationManagement = () => {
 
   const openOrgDetails = async (org) => {
     try {
-      const [orgDetails, paymentMethods, campaigns, analytics] = await Promise.all([
+      const [orgDetails, campaigns, analytics] = await Promise.all([
         organizationApi.getOrganization(org.id),
-        organizationApi.getPaymentMethods(org.id),
         organizationApi.getOrganizationCampaigns(org.id),
         organizationApi.getFinancialAnalytics(org.id)
       ]);
@@ -145,7 +144,6 @@ const OrganizationManagement = () => {
       setSelectedOrg({ 
         ...org, 
         details: orgDetails,
-        paymentMethods,
         campaigns: campaigns.campaigns || [],
         analytics
       });
@@ -238,7 +236,6 @@ const OrganizationManagement = () => {
               { id: 'all', name: 'All Organizations', icon: Building2 },
               { id: 'verification', name: 'Pending Verification', icon: Clock },
               { id: 'verified', name: 'Verified', icon: ShieldCheck },
-              { id: 'suspicious', name: 'Suspicious', icon: AlertTriangle }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -416,10 +413,6 @@ const OrganizationManagement = () => {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     <div>Raised: {org.total_raised || 0} MRU</div>
-                    <div className="flex items-center">
-                      <CreditCard className="h-3 w-3 mr-1" />
-                      {org.payment_methods_configured ? 'Configured' : 'Not Set'}
-                    </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {new Date(org.created_at).toLocaleDateString()}
@@ -543,6 +536,26 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
   const [actionReason, setActionReason] = useState('');
   const [showActionModal, setShowActionModal] = useState(null);
 
+
+    const getVerificationStatusColor = (status) => {
+    switch (status) {
+      case 'verified': return 'bg-green-100 text-green-800';
+      case 'pending_review': return 'bg-yellow-100 text-yellow-800';
+      case 'incomplete': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+    const getHealthColor = (health) => {
+    switch (health) {
+      case 'excellent': return 'bg-green-100 text-green-800';
+      case 'good': return 'bg-blue-100 text-blue-800';
+      case 'fair': return 'bg-yellow-100 text-yellow-800';
+      case 'poor': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
   const handleAction = async (action) => {
     try {
       switch (action) {
@@ -580,7 +593,6 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
                 { id: 'profile', name: 'Profile', icon: Building2 },
                 { id: 'financial', name: 'Financial', icon: DollarSign },
                 { id: 'campaigns', name: 'Campaigns', icon: Users },
-                { id: 'payment', name: 'Payment Methods', icon: CreditCard }
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -730,59 +742,6 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
                   </div>
                 ) : (
                   <p className="text-gray-500">No campaigns found</p>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'payment' && (
-              <div className="space-y-4">
-                {organization.paymentMethods ? (
-                  <div>
-                    <div className="mb-4">
-                      <h4 className="text-md font-medium text-gray-900 mb-2">Payment Methods Summary</h4>
-                      <p className="text-sm text-gray-600">
-                        Total Methods: {organization.paymentMethods.total_methods || 0}
-                      </p>
-                    </div>
-
-                    {organization.paymentMethods.manual_payments && organization.paymentMethods.manual_payments.length > 0 && (
-                      <div>
-                        <h5 className="text-sm font-medium text-gray-700 mb-2">Manual Payments</h5>
-                        <div className="space-y-2">
-                          {organization.paymentMethods.manual_payments.map((method) => (
-                            <div key={method.id} className="bg-gray-50 p-3 rounded">
-                              <p className="text-sm"><strong>Provider:</strong> {method.wallet_provider}</p>
-                              <p className="text-sm"><strong>Phone:</strong> {method.phone_number}</p>
-                              <p className="text-sm"><strong>Account:</strong> {method.account_name}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {organization.paymentMethods.nextpay_payments && organization.paymentMethods.nextpay_payments.length > 0 && (
-                      <div>
-                        <h5 className="text-sm font-medium text-gray-700 mb-2">NextPay Methods</h5>
-                        <div className="space-y-2">
-                          {organization.paymentMethods.nextpay_payments.map((method) => (
-                            <div key={method.id} className="bg-blue-50 p-3 rounded">
-                              <p className="text-sm"><strong>Provider:</strong> {method.wallet_provider}</p>
-                              <p className="text-sm"><strong>Commercial Number:</strong> {method.commercial_number}</p>
-                              <p className="text-sm"><strong>Account:</strong> {method.account_name}</p>
-                              <p className="text-sm"><strong>Verified:</strong> {method.verified_at ? 'Yes' : 'No'}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {(!organization.paymentMethods.manual_payments || organization.paymentMethods.manual_payments.length === 0) &&
-                     (!organization.paymentMethods.nextpay_payments || organization.paymentMethods.nextpay_payments.length === 0) && (
-                      <p className="text-gray-500">No payment methods configured</p>
-                    )}
-                  </div>
-                ) : (
-                  <p className="text-gray-500">Payment methods data not available</p>
                 )}
               </div>
             )}
