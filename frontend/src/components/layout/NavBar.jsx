@@ -368,8 +368,8 @@ export default function NavBar() {
                     className="flex items-center space-x-2 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200"
                   >
                     <div className="h-6 w-6 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
-                      {user.avatar ? (
-                        <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                      {user.user_metadata.avatar_url ? (
+                        <img src={user.user_metadata.avatar_url} alt="Profile" className="h-full w-full rounded-full object-cover" />
                       ) : (
                         <User className="h-3.5 w-3.5 text-[#3366CC]" />
                       )}
@@ -524,8 +524,8 @@ export default function NavBar() {
                     onClick={() => setIsOpen(false)}
                   >
                     <div className="h-5 w-5 rounded-full bg-[#3366CC]/10 flex items-center justify-center">
-                      {user.avatar ? (
-                        <img src={user.avatar} alt="Profile" className="h-full w-full rounded-full object-cover" />
+                      {user.user_metadata.avatar_url ? (
+                        <img src={user.user_metadata.avatar_url} alt="Profile" className="h-full w-full rounded-full object-cover" />
                       ) : (
                         <User className="h-3 w-3 text-[#3366CC]" />
                       )}

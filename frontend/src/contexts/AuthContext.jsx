@@ -162,7 +162,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      console.log('User data : ', user);
+      // console.log('User data : ', user);
     }
   }, [user]);
 

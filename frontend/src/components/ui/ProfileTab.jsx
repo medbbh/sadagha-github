@@ -110,7 +110,7 @@ const ProfileTab = ({ userData, setUserData, editMode, setEditMode, handleSavePr
       <div className="space-y-4">
         {/* Auth Method Info */}
         <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <h4 className="font-medium text-gray-900 mb-2">{t('profileTab.security.accountType')}</h4>
+          <h4 className="font-medium text-gray-900 mb-2">{t('profileTab.security.accountType')} </h4>
           <div className="flex items-center gap-2 text-sm text-gray-600">
             {authMethod?.isOAuthOnly ? (
               <>

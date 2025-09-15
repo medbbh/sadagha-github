@@ -49,6 +49,7 @@ const FinancialManagement = () => {
       fetchMonitoringData();
     } else if (activeTab === 'fraud') {
       fetchFraudData();
+      
     }
     fetchDashboardStats();
   }, [currentPage, filters, activeTab]);
@@ -78,6 +79,7 @@ const FinancialManagement = () => {
     try {
       const stats = await financialApi.getDashboardStats();
       setDashboardStats(stats);
+      console.log('Dashboard Stats:', stats);
     } catch (err) {
       console.error('Failed to fetch dashboard stats:', err);
     }
@@ -91,7 +93,6 @@ const FinancialManagement = () => {
         financialApi.getRevenueAnalytics(30),
         financialApi.getDonationTrends(30)
       ]);
-      console.log('Payment Analytics:', payment);
       setPaymentAnalytics(payment);
       setRevenueAnalytics(revenue);
       setDonationTrends(trends);
@@ -126,6 +127,7 @@ const FinancialManagement = () => {
     try {
       setLoading(true);
       const fraudResponse = await financialApi.getFraudDetection();
+      console.log('Fraud Data:', fraudResponse);
       setFraudData(fraudResponse);
       setDonations(fraudResponse.suspicious_transactions || []);
     } catch (err) {
@@ -201,9 +203,9 @@ const FinancialManagement = () => {
           <div className="flex items-center">
             <DollarSign className="h-8 w-8 text-green-500" />
             <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Total Revenue</p>
+              <p className="text-sm font-medium text-gray-500">Total Donations</p>
               <p className="text-2xl font-bold text-gray-900">
-                {dashboardStats.total_revenue || '0'} MRU
+                {dashboardStats.overview?.total_amount || '0'} MRU
               </p>
             </div>
           </div>
@@ -214,7 +216,7 @@ const FinancialManagement = () => {
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">Transactions Today</p>
               <p className="text-2xl font-bold text-gray-900">
-                {dashboardStats.transactions_today || '0'}
+                {dashboardStats.today?.donations || '0'}
               </p>
             </div>
           </div>
@@ -225,22 +227,12 @@ const FinancialManagement = () => {
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">Success Rate</p>
               <p className="text-2xl font-bold text-gray-900">
-                {dashboardStats.success_rate || '0'}%
+                {dashboardStats.overview?.success_rate || '0'}%
               </p>
             </div>
           </div>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border">
-          <div className="flex items-center">
-            <AlertTriangle className="h-8 w-8 text-orange-500" />
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Pending Review</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {dashboardStats.pending_review || '0'}
-              </p>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Tabs */}
@@ -249,7 +241,7 @@ const FinancialManagement = () => {
           <nav className="-mb-px flex space-x-8">
             {[
               { id: 'transactions', name: 'Transactions', icon: DollarSign },
-              { id: 'analytics', name: 'Analytics', icon: BarChart3 },
+              // { id: 'analytics', name: 'Analytics', icon: BarChart3 },
               { id: 'monitoring', name: 'Real-time Monitoring', icon: Activity },
               { id: 'fraud', name: 'Fraud Detection', icon: Shield }
             ].map((tab) => (
@@ -332,14 +324,14 @@ const FinancialManagement = () => {
         </div>
       )}
 
-      {activeTab === 'analytics' && (
+      {/* {activeTab === 'analytics' && (
         <AnalyticsTab 
           paymentAnalytics={paymentAnalytics}
           revenueAnalytics={revenueAnalytics}
           donationTrends={donationTrends}
           loading={loading}
         />
-      )}
+      )} */}
 
       {activeTab === 'monitoring' && (
         <MonitoringTab 

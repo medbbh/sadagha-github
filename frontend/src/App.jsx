@@ -50,6 +50,7 @@ import OrganizationDetail from './components/ui/OrganizationDetail';
 import InvitedVolunteers from './pages/Orginazation/InvitedVolunteers';
 import PublicLayout from './pages/User/PublicLayout';
 import VerifiedProtectedRoute from './components/VerifiedProtectedRoute';
+import AdminProfilePage from './pages/Admin/AdminProfilePage';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -159,6 +160,7 @@ function App() {
       <Route path="/admin/campaigns" element={<CampaignManagement />} />
       <Route path="/admin/financial" element={<FinancialManagement />} />
       <Route path="/admin/categories" element={<CategoryManagement />} />
+      <Route path="/admin/profile" element={<AdminProfilePage />} />
       </Route>
       
 

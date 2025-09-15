@@ -164,34 +164,7 @@ const CategoryManagement = () => {
             <Folder className="h-8 w-8 text-blue-500" />
             <div className="ml-3">
               <p className="text-sm font-medium text-gray-500">Total Categories</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total_categories || categories.length}</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border">
-          <div className="flex items-center">
-            <Target className="h-8 w-8 text-green-500" />
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Total Campaigns</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total_campaigns || 0}</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border">
-          <div className="flex items-center">
-            <Activity className="h-8 w-8 text-purple-500" />
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Active Campaigns</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.active_campaigns || 0}</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white p-4 rounded-lg shadow border">
-          <div className="flex items-center">
-            <DollarSign className="h-8 w-8 text-yellow-500" />
-            <div className="ml-3">
-              <p className="text-sm font-medium text-gray-500">Total Raised</p>
-              <p className="text-2xl font-bold text-gray-900">{stats.total_raised || '0'} MRU</p>
+              <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation, Link } from 'react-router-dom';
 import { 
   LayoutDashboard, Users, Building2, Target, DollarSign, Folder,
   LogOut, ChevronLeft, ChevronRight, Menu, X,
@@ -10,7 +10,7 @@ import { AuthContext } from '../../contexts/AuthContext'; // Adjust the path as 
 const AdminLayout = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useContext(AuthContext);
+  const { logout,user } = useContext(AuthContext);
 
   // Get current page from URL
   const getCurrentPage = () => {
@@ -42,13 +42,6 @@ const AdminLayout = () => {
   }, [location.pathname]);
 
   const menuItems = [
-    {
-      id: 'dashboard',
-      name: 'Dashboard',
-      icon: LayoutDashboard,
-      description: 'Overview & Analytics',
-      path: '/admin/dashboard'
-    },
     {
       id: 'users',
       name: 'User Management',
@@ -185,17 +178,22 @@ const AdminLayout = () => {
 
       {/* Bottom section */}
       <div className="p-4 border-t border-gray-200">
+
+
         {(!isCollapsed || isMobile) && (
           <div className="mb-4">
+            <Link to="/admin/profile" className="flex items-center p-2 rounded-lg hover:bg-gray-200 transition-colors duration-200">
             <div className="flex items-center">
               <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-gray-600">A</span>
+                {/* <span className="text-sm font-medium text-gray-600">{user.user_metadata.avatar_url}</span> */}
+                <img src={user.user_metadata.avatar_url} alt="User Avatar" className="h-8 w-8 rounded-full object-cover" />
               </div>
               <div className="ml-3">
-                <div className="text-sm font-medium text-gray-900">Admin User</div>
-                <div className="text-xs text-gray-500">admin@example.com</div>
+                <div className="text-sm font-medium text-gray-900">{user.user_metadata.name}</div>
+                <div className="text-xs text-gray-500">{user.user_metadata.email}</div>
               </div>
             </div>
+            </Link>
           </div>
         )}
 
@@ -258,15 +256,6 @@ const AdminLayout = () => {
                 <h1 className="text-xl font-semibold text-gray-900 capitalize">
                   {menuItems.find(item => item.id === activePage)?.name || 'Dashboard'}
                 </h1>
-              </div>
-            </div>
-
-            <div className="flex items-center space-x-4">
-              {/* User menu */}
-              <div className="flex items-center">
-                <div className="h-8 w-8 bg-gray-300 rounded-full flex items-center justify-center">
-                  <span className="text-sm font-medium text-gray-600">A</span>
-                </div>
               </div>
             </div>
           </div>
