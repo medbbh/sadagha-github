@@ -198,7 +198,7 @@ const ShareButton = ({
 
   // Full Variant (Default)
   return (
-    <div className={`bg-white rounded-xl border border-slate-200 p-6 ${className}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`hidden lg:block bg-white rounded-xl border border-slate-200 p-6 ${className}`} dir={isRTL ? 'rtl' : 'ltr'}>
       <h3 className="text-lg font-semibold text-slate-900 mb-4">{t('share.shareThisCampaign')}</h3>
       
       <div className="space-y-4">

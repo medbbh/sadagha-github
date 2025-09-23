@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { supabase } from '../../supabaseClient';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Mail, Lock, Chrome, User } from 'lucide-react';
+import { FcGoogle } from "react-icons/fc";
+import { SiFacebook } from "react-icons/si"; // Simple Icons
 
 const Signup = () => {
   const { t, i18n } = useTranslation();
@@ -66,16 +68,32 @@ const Signup = () => {
     }
   };
 
+  // signup with Facebook
+  const handleFacebookSignup = async () => {
+    setError('');
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: `${window.location.origin}/`
+      }
+    });
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-2 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo/Brand */}
         <div className="flex justify-center">
-          <div className="bg-blue-600 text-white p-3 rounded-full">
-            <span className="text-2xl font-bold">SADA9A</span>
+          <div className="p-3 rounded-full">
+           <img src="/logo.png" alt="Logo" className="h-40 w-40" />
           </div>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
           {t('auth.signup.createAccount')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -95,9 +113,18 @@ const Signup = () => {
           <button
             onClick={handleGoogleSignup}
             disabled={loading}
-            className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex justify-center items-center mb-3 px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Chrome className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            <FcGoogle className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            {t('auth.signup.continueWithGoogle')}
+          </button>
+
+          <button
+            onClick={handleFacebookSignup}
+            disabled={loading}
+            className="w-full flex justify-center items-center mt-3 px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <SiFacebook className={`h-5 w-5 text-blue-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
             {t('auth.signup.continueWithGoogle')}
           </button>
 
@@ -204,27 +231,6 @@ const Signup = () => {
                 </button>
               </div>
             </div>
-
-            <div className="flex items-center">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                required
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-              />
-              <label htmlFor="terms" className={`block text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
-                {t('auth.signup.agreeToTerms')}{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
-                  {t('auth.signup.termsOfService')}
-                </a>{' '}
-                {t('auth.signup.and')}{' '}
-                <a href="#" className="text-blue-600 hover:text-blue-500">
-                  {t('auth.signup.privacyPolicy')}
-                </a>
-              </label>
-            </div>
-
             <button
               type="submit"
               disabled={loading}

@@ -19,14 +19,6 @@ export default function UrgentCampaignCarousel({ urgentCampaigns }) {
     return () => clearInterval(timer);
   }, [urgentCampaigns?.length, isPaused]);
 
-  const formatAmount = (amount) => {
-    const numAmount = parseFloat(amount);
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumFractionDigits: 0
-    }).format(numAmount);
-  };
 
   const calculateProgress = (current, target) => {
     const currentAmount = parseFloat(current);
@@ -102,7 +94,7 @@ export default function UrgentCampaignCarousel({ urgentCampaigns }) {
               
               <div className={`flex justify-between text-xs text-gray-600 ${isRTL ? '' : ''}`}>
                 <span className="font-medium">
-                  {formatAmount(currentCampaign.current_amount)} {t("hero.raised")}
+                  {currentCampaign.current_amount} {t("hero.raised")}
                 </span>
                 <span>{progressPercentage.toFixed(0)}%</span>
               </div>
@@ -115,7 +107,7 @@ export default function UrgentCampaignCarousel({ urgentCampaigns }) {
                 {currentCampaign.number_of_donors} {t("hero.donors")}
               </div>
               <div className={isRTL ? 'text-left' : 'text-right'}>
-                {t("hero.goal")}: {formatAmount(currentCampaign.target)}
+                {t("hero.goal")}: {currentCampaign.target}
               </div>
             </div>
 

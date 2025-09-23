@@ -1066,3 +1066,642 @@ INFO 2025-09-13 16:15:25,486 supabase_storage 21060 13896 Supabase client initia
 INFO 2025-09-13 16:15:39,795 supabase_storage 14848 14388 Supabase client initialized with URL: https://zzkggackkiir...
 INFO 2025-09-13 16:16:14,840 supabase_storage 21824 15848 Supabase client initialized with URL: https://zzkggackkiir...
 INFO 2025-09-15 10:15:13,259 supabase_storage 12096 16280 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-16 09:35:58,935 supabase_storage 14736 18484 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:20:09,920 supabase_storage 8316 12448 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:11,002 supabase_storage 8796 19472 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:27,453 supabase_storage 12156 14556 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:32,191 supabase_storage 2268 15792 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:39,496 supabase_storage 21688 17712 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:47,708 supabase_storage 6380 3636 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:35:59,329 supabase_storage 2700 8324 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:36:13,768 supabase_storage 19588 19372 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:38:08,958 supabase_storage 23304 13348 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:38:19,602 supabase_storage 5340 13020 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:39:51,776 supabase_storage 6320 22300 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:40:00,085 supabase_storage 23256 16604 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:42:19,944 supabase_storage 16904 22488 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:42:54,259 supabase_storage 12736 12796 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:42:59,868 supabase_storage 11184 7764 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:43:04,096 supabase_storage 17072 4680 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:43:18,041 supabase_storage 8876 10192 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:44:21,993 supabase_storage 15808 17828 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:47:40,662 supabase_storage 22692 23400 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:00,458 supabase_storage 13948 9564 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:08,291 supabase_storage 9328 19304 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:14,397 supabase_storage 22112 15672 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:20,084 supabase_storage 23328 21800 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:27,443 supabase_storage 3544 11656 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:38,974 supabase_storage 10048 21744 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:45,903 supabase_storage 12884 14376 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:52:54,214 supabase_storage 3392 21952 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 09:53:12,109 supabase_storage 444 21784 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 10:08:45,003 views 444 10212 === CREATE DONATION REQUEST ===
+INFO 2025-09-17 10:08:45,004 views 444 10212 Campaign ID: 20
+INFO 2025-09-17 10:08:45,005 views 444 10212 Content-Type: application/json
+INFO 2025-09-17 10:08:45,005 views 444 10212 Request method: POST
+INFO 2025-09-17 10:08:45,006 views 444 10212 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-17 10:08:45,009 views 444 10212 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-17 10:08:45,013 views 444 10212 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4MzYyODU3LCJpYXQiOjE3NTgxMDM2NTcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODEwMzY1N31dLCJzZXNzaW9uX2lkIjoiYTk3NTQzNDEtMWRjOS00YjczLTk4ZmItNTA0ZjlkOTA3NTU0IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.Gt-nM7npVEQ-F-SKTENf9O--09FtJovYGk413z4CA4Q', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5173', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5173/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-17 10:08:45,463 views 444 10212 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-17 10:08:45,821 views 444 10212 Created donation record: 53
+INFO 2025-09-17 10:09:01,592 payment_service 444 10212 Creating payment session for campaign 20, amount: 500.0 MRU
+INFO 2025-09-17 10:09:03,329 payment_service 444 10212 NextRemitly response status: 201
+INFO 2025-09-17 10:09:03,331 payment_service 444 10212 Payment session creation successful: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:03,431 views 444 10212 Payment session created successfully: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:04,866 payment_service 444 10212 Getting payment status for session: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:06,505 views 444 10212 Synced donation 53: processing -> pending
+INFO 2025-09-17 10:09:18,080 payment_service 444 10212 Getting payment status for session: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:19,578 views 444 10212 Synced donation 53: pending -> otp_sent
+INFO 2025-09-17 10:09:30,752 payment_service 444 10212 Getting payment status for session: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:43,982 payment_service 444 15444 Getting payment status for session: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 10:09:56,887 payment_service 444 15444 Getting payment status for session: 707940e4-69ed-4236-a1fd-04dc7fdb648b
+INFO 2025-09-17 11:15:13,324 supabase_storage 14304 15300 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 11:34:31,551 serializers 14304 21488 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:34:31,590 serializers 14304 21488 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: 23qpt960.7-745x470.webp (image/webp)>], 'file_1': [<InMemoryUploadedFile: b9e91f71-d5b4-4aa1-be41-99036cb1c1a7.webp (image/webp)>], 'file_2': [<InMemoryUploadedFile: 62bae6e53.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:34:31,590 serializers 14304 21488 Request FILES keys: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:34:31,590 serializers 14304 21488 Files to delete: []
+INFO 2025-09-17 11:34:31,591 serializers 14304 21488 Found 3 new files to process: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:34:31,591 serializers 14304 21488 Processing file file_0: 23qpt960.7-745x470.webp, size=139842, content_type=image/webp
+INFO 2025-09-17 11:34:31,592 serializers 14304 21488 Uploading file 23qpt960.7-745x470.webp to Supabase...
+INFO 2025-09-17 11:34:32,883 supabase_storage 14304 21488 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:34:32,886 supabase_storage 14304 21488 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:34:32,886 supabase_storage 14304 21488 Starting upload for file: 23qpt960.7-745x470.webp to campaign_34
+INFO 2025-09-17 11:34:32,887 supabase_storage 14304 21488 Generated path: campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp
+INFO 2025-09-17 11:34:32,888 supabase_storage 14304 21488 Read file content, size: 139842 bytes
+INFO 2025-09-17 11:34:33,044 supabase_storage 14304 21488 Available buckets: []
+WARNING 2025-09-17 11:34:33,046 supabase_storage 14304 21488 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:34:33,047 supabase_storage 14304 21488 Uploading file to bucket: campaign, path: campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp
+INFO 2025-09-17 11:34:33,636 supabase_storage 14304 21488 Upload response: UploadResponse(path='campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp', full_path='campaign/campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp', fullPath='campaign/campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp')
+INFO 2025-09-17 11:34:33,637 supabase_storage 14304 21488 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp?
+INFO 2025-09-17 11:34:33,638 serializers 14304 21488 SUCCESS: Uploaded 23qpt960.7-745x470.webp to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp?
+INFO 2025-09-17 11:34:33,639 serializers 14304 21488 File path: campaign_34/49b8a73d-996d-4d9d-be18-35cbce4a8ef8.webp
+INFO 2025-09-17 11:34:33,754 serializers 14304 21488 File record created with ID: 17
+INFO 2025-09-17 11:34:33,755 serializers 14304 21488 Processing file file_1: b9e91f71-d5b4-4aa1-be41-99036cb1c1a7.webp, size=356722, content_type=image/webp
+INFO 2025-09-17 11:34:33,755 serializers 14304 21488 Uploading file b9e91f71-d5b4-4aa1-be41-99036cb1c1a7.webp to Supabase...
+INFO 2025-09-17 11:34:33,895 supabase_storage 14304 21488 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:34:33,899 supabase_storage 14304 21488 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:34:33,900 supabase_storage 14304 21488 Starting upload for file: b9e91f71-d5b4-4aa1-be41-99036cb1c1a7.webp to campaign_34
+INFO 2025-09-17 11:34:33,901 supabase_storage 14304 21488 Generated path: campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp
+INFO 2025-09-17 11:34:33,903 supabase_storage 14304 21488 Read file content, size: 356722 bytes
+INFO 2025-09-17 11:34:34,048 supabase_storage 14304 21488 Available buckets: []
+WARNING 2025-09-17 11:34:34,049 supabase_storage 14304 21488 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:34:34,049 supabase_storage 14304 21488 Uploading file to bucket: campaign, path: campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp
+INFO 2025-09-17 11:34:34,724 supabase_storage 14304 21488 Upload response: UploadResponse(path='campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp', full_path='campaign/campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp', fullPath='campaign/campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp')
+INFO 2025-09-17 11:34:34,726 supabase_storage 14304 21488 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp?
+INFO 2025-09-17 11:34:34,727 serializers 14304 21488 SUCCESS: Uploaded b9e91f71-d5b4-4aa1-be41-99036cb1c1a7.webp to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp?
+INFO 2025-09-17 11:34:34,727 serializers 14304 21488 File path: campaign_34/b9801943-b1b2-401f-829a-b66c64a7d328.webp
+INFO 2025-09-17 11:34:34,826 serializers 14304 21488 File record created with ID: 18
+INFO 2025-09-17 11:34:34,827 serializers 14304 21488 Processing file file_2: 62bae6e53.jpg, size=103212, content_type=image/jpeg
+INFO 2025-09-17 11:34:34,828 serializers 14304 21488 Uploading file 62bae6e53.jpg to Supabase...
+INFO 2025-09-17 11:34:34,963 supabase_storage 14304 21488 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:34:34,964 supabase_storage 14304 21488 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:34:34,964 supabase_storage 14304 21488 Starting upload for file: 62bae6e53.jpg to campaign_34
+INFO 2025-09-17 11:34:34,965 supabase_storage 14304 21488 Generated path: campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg
+INFO 2025-09-17 11:34:34,966 supabase_storage 14304 21488 Read file content, size: 103212 bytes
+INFO 2025-09-17 11:34:35,194 supabase_storage 14304 21488 Available buckets: []
+WARNING 2025-09-17 11:34:35,194 supabase_storage 14304 21488 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:34:35,194 supabase_storage 14304 21488 Uploading file to bucket: campaign, path: campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg
+INFO 2025-09-17 11:34:35,512 supabase_storage 14304 21488 Upload response: UploadResponse(path='campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg', full_path='campaign/campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg', fullPath='campaign/campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg')
+INFO 2025-09-17 11:34:35,514 supabase_storage 14304 21488 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg?
+INFO 2025-09-17 11:34:35,515 serializers 14304 21488 SUCCESS: Uploaded 62bae6e53.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg?
+INFO 2025-09-17 11:34:35,516 serializers 14304 21488 File path: campaign_34/5709b807-0ac1-474b-9e96-3e46b170b33e.jpg
+INFO 2025-09-17 11:34:35,615 serializers 14304 21488 File record created with ID: 19
+INFO 2025-09-17 11:34:35,617 serializers 14304 21488 Upload summary: 3 successful, 0 failed
+INFO 2025-09-17 11:34:35,727 serializers 14304 21488 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:36:33,152 serializers 14304 21488 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:36:33,183 serializers 14304 21488 Request FILES: <MultiValueDict: {'file_0': [<TemporaryUploadedFile: Mechelen_AZ_St_Maarten_Maternity_ward.jpg (image/jpeg)>], 'file_1': [<TemporaryUploadedFile: 2.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:36:33,186 serializers 14304 21488 Request FILES keys: ['file_0', 'file_1']
+INFO 2025-09-17 11:36:33,187 serializers 14304 21488 Files to delete: []
+INFO 2025-09-17 11:36:33,187 serializers 14304 21488 Found 2 new files to process: ['file_0', 'file_1']
+INFO 2025-09-17 11:36:33,188 serializers 14304 21488 Processing file file_0: Mechelen_AZ_St_Maarten_Maternity_ward.jpg, size=7566491, content_type=image/jpeg
+INFO 2025-09-17 11:36:33,192 serializers 14304 21488 Uploading file Mechelen_AZ_St_Maarten_Maternity_ward.jpg to Supabase...
+INFO 2025-09-17 11:36:33,590 supabase_storage 14304 21488 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:36:33,590 supabase_storage 14304 21488 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:36:33,591 supabase_storage 14304 21488 Starting upload for file: Mechelen_AZ_St_Maarten_Maternity_ward.jpg to campaign_35
+INFO 2025-09-17 11:36:33,592 supabase_storage 14304 21488 Generated path: campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg
+INFO 2025-09-17 11:36:33,597 supabase_storage 14304 21488 Read file content, size: 7566491 bytes
+INFO 2025-09-17 11:36:33,796 supabase_storage 14304 21488 Available buckets: []
+WARNING 2025-09-17 11:36:33,798 supabase_storage 14304 21488 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:36:33,799 supabase_storage 14304 21488 Uploading file to bucket: campaign, path: campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg
+INFO 2025-09-17 11:36:42,176 supabase_storage 14304 21488 Upload response: UploadResponse(path='campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg', full_path='campaign/campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg', fullPath='campaign/campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg')
+INFO 2025-09-17 11:36:42,177 supabase_storage 14304 21488 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg?
+INFO 2025-09-17 11:36:42,177 serializers 14304 21488 SUCCESS: Uploaded Mechelen_AZ_St_Maarten_Maternity_ward.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg?
+INFO 2025-09-17 11:36:42,179 serializers 14304 21488 File path: campaign_35/0bc81476-0aa7-4c97-aba2-8500fe08e275.jpg
+INFO 2025-09-17 11:36:42,254 serializers 14304 21488 File record created with ID: 20
+INFO 2025-09-17 11:36:42,257 serializers 14304 21488 Processing file file_1: 2.jpg, size=57648, content_type=image/jpeg
+INFO 2025-09-17 11:36:42,257 serializers 14304 21488 Uploading file 2.jpg to Supabase...
+INFO 2025-09-17 11:36:42,657 supabase_storage 14304 21488 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:36:42,658 supabase_storage 14304 21488 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:36:42,658 supabase_storage 14304 21488 Starting upload for file: 2.jpg to campaign_35
+INFO 2025-09-17 11:36:42,658 supabase_storage 14304 21488 Generated path: campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg
+INFO 2025-09-17 11:36:42,660 supabase_storage 14304 21488 Read file content, size: 57648 bytes
+INFO 2025-09-17 11:36:42,786 supabase_storage 14304 21488 Available buckets: []
+WARNING 2025-09-17 11:36:42,786 supabase_storage 14304 21488 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:36:42,788 supabase_storage 14304 21488 Uploading file to bucket: campaign, path: campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg
+INFO 2025-09-17 11:36:43,115 supabase_storage 14304 21488 Upload response: UploadResponse(path='campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg', full_path='campaign/campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg', fullPath='campaign/campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg')
+INFO 2025-09-17 11:36:43,117 supabase_storage 14304 21488 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg?
+INFO 2025-09-17 11:36:43,117 serializers 14304 21488 SUCCESS: Uploaded 2.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg?
+INFO 2025-09-17 11:36:43,119 serializers 14304 21488 File path: campaign_35/31cc0c18-e394-4975-a2e7-daac9f8a3f74.jpg
+INFO 2025-09-17 11:36:43,208 serializers 14304 21488 File record created with ID: 21
+INFO 2025-09-17 11:36:43,210 serializers 14304 21488 Upload summary: 2 successful, 0 failed
+INFO 2025-09-17 11:36:43,308 serializers 14304 21488 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:38:31,579 serializers 14304 1160 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:38:31,607 serializers 14304 1160 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: 3456001077319537433-1024x683.jpg (image/jpeg)>], 'file_1': [<InMemoryUploadedFile: 33VH3LL-highres.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:38:31,607 serializers 14304 1160 Request FILES keys: ['file_0', 'file_1']
+INFO 2025-09-17 11:38:31,608 serializers 14304 1160 Files to delete: []
+INFO 2025-09-17 11:38:31,609 serializers 14304 1160 Found 2 new files to process: ['file_0', 'file_1']
+INFO 2025-09-17 11:38:31,610 serializers 14304 1160 Processing file file_0: 3456001077319537433-1024x683.jpg, size=82251, content_type=image/jpeg
+INFO 2025-09-17 11:38:31,610 serializers 14304 1160 Uploading file 3456001077319537433-1024x683.jpg to Supabase...
+INFO 2025-09-17 11:38:32,193 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:38:32,195 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:38:32,196 supabase_storage 14304 1160 Starting upload for file: 3456001077319537433-1024x683.jpg to campaign_36
+INFO 2025-09-17 11:38:32,197 supabase_storage 14304 1160 Generated path: campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg
+INFO 2025-09-17 11:38:32,198 supabase_storage 14304 1160 Read file content, size: 82251 bytes
+INFO 2025-09-17 11:38:32,500 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:38:32,502 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:38:32,503 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg
+INFO 2025-09-17 11:38:33,429 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg', full_path='campaign/campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg', fullPath='campaign/campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg')
+INFO 2025-09-17 11:38:33,430 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg?
+INFO 2025-09-17 11:38:33,431 serializers 14304 1160 SUCCESS: Uploaded 3456001077319537433-1024x683.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg?
+INFO 2025-09-17 11:38:33,432 serializers 14304 1160 File path: campaign_36/a8e41c5c-6bb1-4327-bc53-0f70b5a247a8.jpg
+INFO 2025-09-17 11:38:33,627 serializers 14304 1160 File record created with ID: 22
+INFO 2025-09-17 11:38:33,629 serializers 14304 1160 Processing file file_1: 33VH3LL-highres.jpg, size=737136, content_type=image/jpeg
+INFO 2025-09-17 11:38:33,630 serializers 14304 1160 Uploading file 33VH3LL-highres.jpg to Supabase...
+INFO 2025-09-17 11:38:33,846 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:38:33,850 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:38:33,850 supabase_storage 14304 1160 Starting upload for file: 33VH3LL-highres.jpg to campaign_36
+INFO 2025-09-17 11:38:33,852 supabase_storage 14304 1160 Generated path: campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg
+INFO 2025-09-17 11:38:33,853 supabase_storage 14304 1160 Read file content, size: 737136 bytes
+INFO 2025-09-17 11:38:34,052 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:38:34,054 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:38:34,055 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg
+INFO 2025-09-17 11:38:35,180 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg', full_path='campaign/campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg', fullPath='campaign/campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg')
+INFO 2025-09-17 11:38:35,180 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg?
+INFO 2025-09-17 11:38:35,181 serializers 14304 1160 SUCCESS: Uploaded 33VH3LL-highres.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg?
+INFO 2025-09-17 11:38:35,181 serializers 14304 1160 File path: campaign_36/49b55eb0-6a7e-49e8-b262-1aeb0da821b1.jpg
+INFO 2025-09-17 11:38:35,262 serializers 14304 1160 File record created with ID: 23
+INFO 2025-09-17 11:38:35,263 serializers 14304 1160 Upload summary: 2 successful, 0 failed
+INFO 2025-09-17 11:38:35,345 serializers 14304 1160 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:39:21,985 serializers 14304 1160 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:39:22,010 serializers 14304 1160 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: WASH_0.png (image/png)>], 'file_1': [<InMemoryUploadedFile: 589236-1627538877.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:39:22,011 serializers 14304 1160 Request FILES keys: ['file_0', 'file_1']
+INFO 2025-09-17 11:39:22,011 serializers 14304 1160 Files to delete: []
+INFO 2025-09-17 11:39:22,014 serializers 14304 1160 Found 2 new files to process: ['file_0', 'file_1']
+INFO 2025-09-17 11:39:22,015 serializers 14304 1160 Processing file file_0: WASH_0.png, size=530708, content_type=image/png
+INFO 2025-09-17 11:39:22,016 serializers 14304 1160 Uploading file WASH_0.png to Supabase...
+INFO 2025-09-17 11:39:22,349 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:39:22,349 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:39:22,351 supabase_storage 14304 1160 Starting upload for file: WASH_0.png to campaign_22
+INFO 2025-09-17 11:39:22,351 supabase_storage 14304 1160 Generated path: campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png
+INFO 2025-09-17 11:39:22,352 supabase_storage 14304 1160 Read file content, size: 530708 bytes
+INFO 2025-09-17 11:39:22,515 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:39:22,517 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:39:22,518 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png
+INFO 2025-09-17 11:39:23,154 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png', full_path='campaign/campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png', fullPath='campaign/campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png')
+INFO 2025-09-17 11:39:23,156 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png?
+INFO 2025-09-17 11:39:23,157 serializers 14304 1160 SUCCESS: Uploaded WASH_0.png to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png?
+INFO 2025-09-17 11:39:23,158 serializers 14304 1160 File path: campaign_22/34db8885-32ef-4169-873a-05a2357742a4.png
+INFO 2025-09-17 11:39:23,238 serializers 14304 1160 File record created with ID: 24
+INFO 2025-09-17 11:39:23,239 serializers 14304 1160 Processing file file_1: 589236-1627538877.jpg, size=310437, content_type=image/jpeg
+INFO 2025-09-17 11:39:23,239 serializers 14304 1160 Uploading file 589236-1627538877.jpg to Supabase...
+INFO 2025-09-17 11:39:23,411 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:39:23,411 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:39:23,412 supabase_storage 14304 1160 Starting upload for file: 589236-1627538877.jpg to campaign_22
+INFO 2025-09-17 11:39:23,413 supabase_storage 14304 1160 Generated path: campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg
+INFO 2025-09-17 11:39:23,414 supabase_storage 14304 1160 Read file content, size: 310437 bytes
+INFO 2025-09-17 11:39:23,539 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:39:23,540 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:39:23,541 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg
+INFO 2025-09-17 11:39:23,987 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg', full_path='campaign/campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg', fullPath='campaign/campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg')
+INFO 2025-09-17 11:39:23,987 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg?
+INFO 2025-09-17 11:39:23,987 serializers 14304 1160 SUCCESS: Uploaded 589236-1627538877.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg?
+INFO 2025-09-17 11:39:23,988 serializers 14304 1160 File path: campaign_22/6754fb8d-fba3-4fef-8f5e-ea01e7cbccc5.jpg
+INFO 2025-09-17 11:39:24,075 serializers 14304 1160 File record created with ID: 25
+INFO 2025-09-17 11:39:24,077 serializers 14304 1160 Upload summary: 2 successful, 0 failed
+INFO 2025-09-17 11:39:24,168 serializers 14304 1160 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:41:57,707 serializers 14304 1160 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:41:57,741 serializers 14304 1160 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: UN0722231.jpg.jpg (image/jpeg)>], 'file_1': [<InMemoryUploadedFile: UN0679921_0.jpg.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:41:57,743 serializers 14304 1160 Request FILES keys: ['file_0', 'file_1']
+INFO 2025-09-17 11:41:57,744 serializers 14304 1160 Files to delete: []
+INFO 2025-09-17 11:41:57,745 serializers 14304 1160 Found 2 new files to process: ['file_0', 'file_1']
+INFO 2025-09-17 11:41:57,747 serializers 14304 1160 Processing file file_0: UN0722231.jpg.jpg, size=46774, content_type=image/jpeg
+INFO 2025-09-17 11:41:57,747 serializers 14304 1160 Uploading file UN0722231.jpg.jpg to Supabase...
+INFO 2025-09-17 11:41:58,327 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:41:58,328 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:41:58,329 supabase_storage 14304 1160 Starting upload for file: UN0722231.jpg.jpg to campaign_32
+INFO 2025-09-17 11:41:58,329 supabase_storage 14304 1160 Generated path: campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg
+INFO 2025-09-17 11:41:58,331 supabase_storage 14304 1160 Read file content, size: 46774 bytes
+INFO 2025-09-17 11:41:58,630 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:41:58,630 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:41:58,631 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg
+INFO 2025-09-17 11:41:59,449 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg', full_path='campaign/campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg', fullPath='campaign/campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg')
+INFO 2025-09-17 11:41:59,451 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg?
+INFO 2025-09-17 11:41:59,452 serializers 14304 1160 SUCCESS: Uploaded UN0722231.jpg.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg?
+INFO 2025-09-17 11:41:59,453 serializers 14304 1160 File path: campaign_32/e488c022-580e-4b5a-934b-465090aa41a2.jpg
+INFO 2025-09-17 11:41:59,655 serializers 14304 1160 File record created with ID: 26
+INFO 2025-09-17 11:41:59,657 serializers 14304 1160 Processing file file_1: UN0679921_0.jpg.jpg, size=140242, content_type=image/jpeg
+INFO 2025-09-17 11:41:59,659 serializers 14304 1160 Uploading file UN0679921_0.jpg.jpg to Supabase...
+INFO 2025-09-17 11:41:59,854 supabase_storage 14304 1160 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:41:59,855 supabase_storage 14304 1160 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:41:59,856 supabase_storage 14304 1160 Starting upload for file: UN0679921_0.jpg.jpg to campaign_32
+INFO 2025-09-17 11:41:59,857 supabase_storage 14304 1160 Generated path: campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg
+INFO 2025-09-17 11:41:59,858 supabase_storage 14304 1160 Read file content, size: 140242 bytes
+INFO 2025-09-17 11:42:00,008 supabase_storage 14304 1160 Available buckets: []
+WARNING 2025-09-17 11:42:00,009 supabase_storage 14304 1160 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:42:00,009 supabase_storage 14304 1160 Uploading file to bucket: campaign, path: campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg
+INFO 2025-09-17 11:42:00,449 supabase_storage 14304 1160 Upload response: UploadResponse(path='campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg', full_path='campaign/campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg', fullPath='campaign/campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg')
+INFO 2025-09-17 11:42:00,450 supabase_storage 14304 1160 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg?
+INFO 2025-09-17 11:42:00,452 serializers 14304 1160 SUCCESS: Uploaded UN0679921_0.jpg.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg?
+INFO 2025-09-17 11:42:00,453 serializers 14304 1160 File path: campaign_32/6766ba02-8a58-4914-8b42-b2c448e18abc.jpg
+INFO 2025-09-17 11:42:00,542 serializers 14304 1160 File record created with ID: 27
+INFO 2025-09-17 11:42:00,543 serializers 14304 1160 Upload summary: 2 successful, 0 failed
+INFO 2025-09-17 11:42:00,618 serializers 14304 1160 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:45:32,169 serializers 14304 12604 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:45:32,205 serializers 14304 12604 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: Mauritania-photo-01 - Copy.jpg (image/jpeg)>], 'file_1': [<InMemoryUploadedFile: r84_0.jpg (image/jpeg)>], 'file_2': [<InMemoryUploadedFile: IMG_5502.jpeg (image/jpeg)>]}>
+INFO 2025-09-17 11:45:32,207 serializers 14304 12604 Request FILES keys: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:45:32,209 serializers 14304 12604 Files to delete: []
+INFO 2025-09-17 11:45:32,213 serializers 14304 12604 Found 3 new files to process: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:45:32,214 serializers 14304 12604 Processing file file_0: Mauritania-photo-01 - Copy.jpg, size=355284, content_type=image/jpeg
+INFO 2025-09-17 11:45:32,215 serializers 14304 12604 Uploading file Mauritania-photo-01 - Copy.jpg to Supabase...
+INFO 2025-09-17 11:45:32,666 supabase_storage 14304 12604 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:45:32,669 supabase_storage 14304 12604 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:45:32,671 supabase_storage 14304 12604 Starting upload for file: Mauritania-photo-01 - Copy.jpg to campaign_33
+INFO 2025-09-17 11:45:32,671 supabase_storage 14304 12604 Generated path: campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg
+INFO 2025-09-17 11:45:32,672 supabase_storage 14304 12604 Read file content, size: 355284 bytes
+INFO 2025-09-17 11:45:32,818 supabase_storage 14304 12604 Available buckets: []
+WARNING 2025-09-17 11:45:32,818 supabase_storage 14304 12604 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:45:32,819 supabase_storage 14304 12604 Uploading file to bucket: campaign, path: campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg
+INFO 2025-09-17 11:45:33,871 supabase_storage 14304 12604 Upload response: UploadResponse(path='campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg', full_path='campaign/campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg', fullPath='campaign/campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg')
+INFO 2025-09-17 11:45:33,872 supabase_storage 14304 12604 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg?
+INFO 2025-09-17 11:45:33,873 serializers 14304 12604 SUCCESS: Uploaded Mauritania-photo-01 - Copy.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg?
+INFO 2025-09-17 11:45:33,873 serializers 14304 12604 File path: campaign_33/03306e32-f56b-42da-8d7f-ae9f0b9c7e5b.jpg
+INFO 2025-09-17 11:45:33,973 serializers 14304 12604 File record created with ID: 28
+INFO 2025-09-17 11:45:33,975 serializers 14304 12604 Processing file file_1: r84_0.jpg, size=31529, content_type=image/jpeg
+INFO 2025-09-17 11:45:33,976 serializers 14304 12604 Uploading file r84_0.jpg to Supabase...
+INFO 2025-09-17 11:45:34,179 supabase_storage 14304 12604 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:45:34,180 supabase_storage 14304 12604 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:45:34,181 supabase_storage 14304 12604 Starting upload for file: r84_0.jpg to campaign_33
+INFO 2025-09-17 11:45:34,181 supabase_storage 14304 12604 Generated path: campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg
+INFO 2025-09-17 11:45:34,182 supabase_storage 14304 12604 Read file content, size: 31529 bytes
+INFO 2025-09-17 11:45:34,384 supabase_storage 14304 12604 Available buckets: []
+WARNING 2025-09-17 11:45:34,385 supabase_storage 14304 12604 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:45:34,385 supabase_storage 14304 12604 Uploading file to bucket: campaign, path: campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg
+INFO 2025-09-17 11:45:34,689 supabase_storage 14304 12604 Upload response: UploadResponse(path='campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg', full_path='campaign/campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg', fullPath='campaign/campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg')
+INFO 2025-09-17 11:45:34,691 supabase_storage 14304 12604 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg?
+INFO 2025-09-17 11:45:34,692 serializers 14304 12604 SUCCESS: Uploaded r84_0.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg?
+INFO 2025-09-17 11:45:34,692 serializers 14304 12604 File path: campaign_33/934c6a6c-6f21-473b-98eb-0597c2b24ff5.jpg
+INFO 2025-09-17 11:45:34,792 serializers 14304 12604 File record created with ID: 29
+INFO 2025-09-17 11:45:34,793 serializers 14304 12604 Processing file file_2: IMG_5502.jpeg, size=905570, content_type=image/jpeg
+INFO 2025-09-17 11:45:34,794 serializers 14304 12604 Uploading file IMG_5502.jpeg to Supabase...
+INFO 2025-09-17 11:45:34,954 supabase_storage 14304 12604 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:45:34,956 supabase_storage 14304 12604 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:45:34,956 supabase_storage 14304 12604 Starting upload for file: IMG_5502.jpeg to campaign_33
+INFO 2025-09-17 11:45:34,957 supabase_storage 14304 12604 Generated path: campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg
+INFO 2025-09-17 11:45:34,958 supabase_storage 14304 12604 Read file content, size: 905570 bytes
+INFO 2025-09-17 11:45:35,089 supabase_storage 14304 12604 Available buckets: []
+WARNING 2025-09-17 11:45:35,090 supabase_storage 14304 12604 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:45:35,091 supabase_storage 14304 12604 Uploading file to bucket: campaign, path: campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg
+INFO 2025-09-17 11:45:36,007 supabase_storage 14304 12604 Upload response: UploadResponse(path='campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg', full_path='campaign/campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg', fullPath='campaign/campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg')
+INFO 2025-09-17 11:45:36,008 supabase_storage 14304 12604 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg?
+INFO 2025-09-17 11:45:36,008 serializers 14304 12604 SUCCESS: Uploaded IMG_5502.jpeg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg?
+INFO 2025-09-17 11:45:36,009 serializers 14304 12604 File path: campaign_33/ad4e79b9-fb90-4eae-a921-09419f27fd49.jpeg
+INFO 2025-09-17 11:45:36,083 serializers 14304 12604 File record created with ID: 30
+INFO 2025-09-17 11:45:36,083 serializers 14304 12604 Upload summary: 3 successful, 0 failed
+INFO 2025-09-17 11:45:36,161 serializers 14304 12604 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:49:15,453 serializers 14304 2680 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:49:15,468 serializers 14304 2680 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: WhatsApp Image 2023-10-17 at 18.36.24.jpeg (image/jpeg)>], 'file_1': [<InMemoryUploadedFile: IMG_1148_0.jpg (image/jpeg)>], 'file_2': [<InMemoryUploadedFile: d9459828-1708-491d-a0f7-0fb14f0edb14.jpg (image/jpeg)>]}>
+INFO 2025-09-17 11:49:15,468 serializers 14304 2680 Request FILES keys: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:49:15,469 serializers 14304 2680 Files to delete: []
+INFO 2025-09-17 11:49:15,469 serializers 14304 2680 Found 3 new files to process: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:49:15,470 serializers 14304 2680 Processing file file_0: WhatsApp Image 2023-10-17 at 18.36.24.jpeg, size=130907, content_type=image/jpeg
+INFO 2025-09-17 11:49:15,470 serializers 14304 2680 Uploading file WhatsApp Image 2023-10-17 at 18.36.24.jpeg to Supabase...
+INFO 2025-09-17 11:49:15,920 supabase_storage 14304 2680 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:49:15,922 supabase_storage 14304 2680 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:49:15,922 supabase_storage 14304 2680 Starting upload for file: WhatsApp Image 2023-10-17 at 18.36.24.jpeg to campaign_23
+INFO 2025-09-17 11:49:15,923 supabase_storage 14304 2680 Generated path: campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg
+INFO 2025-09-17 11:49:15,924 supabase_storage 14304 2680 Read file content, size: 130907 bytes
+INFO 2025-09-17 11:49:16,179 supabase_storage 14304 2680 Available buckets: []
+WARNING 2025-09-17 11:49:16,179 supabase_storage 14304 2680 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:49:16,180 supabase_storage 14304 2680 Uploading file to bucket: campaign, path: campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg
+INFO 2025-09-17 11:49:16,899 supabase_storage 14304 2680 Upload response: UploadResponse(path='campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg', full_path='campaign/campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg', fullPath='campaign/campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg')
+INFO 2025-09-17 11:49:16,900 supabase_storage 14304 2680 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg?
+INFO 2025-09-17 11:49:16,901 serializers 14304 2680 SUCCESS: Uploaded WhatsApp Image 2023-10-17 at 18.36.24.jpeg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg?
+INFO 2025-09-17 11:49:16,901 serializers 14304 2680 File path: campaign_23/1a83fc65-7142-4aee-b62f-f7ea63d9353a.jpeg
+INFO 2025-09-17 11:49:17,101 serializers 14304 2680 File record created with ID: 31
+INFO 2025-09-17 11:49:17,103 serializers 14304 2680 Processing file file_1: IMG_1148_0.jpg, size=169168, content_type=image/jpeg
+INFO 2025-09-17 11:49:17,103 serializers 14304 2680 Uploading file IMG_1148_0.jpg to Supabase...
+INFO 2025-09-17 11:49:17,311 supabase_storage 14304 2680 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:49:17,313 supabase_storage 14304 2680 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:49:17,313 supabase_storage 14304 2680 Starting upload for file: IMG_1148_0.jpg to campaign_23
+INFO 2025-09-17 11:49:17,314 supabase_storage 14304 2680 Generated path: campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg
+INFO 2025-09-17 11:49:17,315 supabase_storage 14304 2680 Read file content, size: 169168 bytes
+INFO 2025-09-17 11:49:17,457 supabase_storage 14304 2680 Available buckets: []
+WARNING 2025-09-17 11:49:17,458 supabase_storage 14304 2680 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:49:17,459 supabase_storage 14304 2680 Uploading file to bucket: campaign, path: campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg
+INFO 2025-09-17 11:49:17,925 supabase_storage 14304 2680 Upload response: UploadResponse(path='campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg', full_path='campaign/campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg', fullPath='campaign/campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg')
+INFO 2025-09-17 11:49:17,926 supabase_storage 14304 2680 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg?
+INFO 2025-09-17 11:49:17,927 serializers 14304 2680 SUCCESS: Uploaded IMG_1148_0.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg?
+INFO 2025-09-17 11:49:17,928 serializers 14304 2680 File path: campaign_23/1d704e12-ad05-4fdf-a1c7-26c23d80afe5.jpg
+INFO 2025-09-17 11:49:18,013 serializers 14304 2680 File record created with ID: 32
+INFO 2025-09-17 11:49:18,014 serializers 14304 2680 Processing file file_2: d9459828-1708-491d-a0f7-0fb14f0edb14.jpg, size=112362, content_type=image/jpeg
+INFO 2025-09-17 11:49:18,014 serializers 14304 2680 Uploading file d9459828-1708-491d-a0f7-0fb14f0edb14.jpg to Supabase...
+INFO 2025-09-17 11:49:18,197 supabase_storage 14304 2680 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:49:18,198 supabase_storage 14304 2680 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:49:18,198 supabase_storage 14304 2680 Starting upload for file: d9459828-1708-491d-a0f7-0fb14f0edb14.jpg to campaign_23
+INFO 2025-09-17 11:49:18,198 supabase_storage 14304 2680 Generated path: campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg
+INFO 2025-09-17 11:49:18,199 supabase_storage 14304 2680 Read file content, size: 112362 bytes
+INFO 2025-09-17 11:49:18,328 supabase_storage 14304 2680 Available buckets: []
+WARNING 2025-09-17 11:49:18,328 supabase_storage 14304 2680 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:49:18,329 supabase_storage 14304 2680 Uploading file to bucket: campaign, path: campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg
+INFO 2025-09-17 11:49:18,605 supabase_storage 14304 2680 Upload response: UploadResponse(path='campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg', full_path='campaign/campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg', fullPath='campaign/campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg')
+INFO 2025-09-17 11:49:18,606 supabase_storage 14304 2680 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg?
+INFO 2025-09-17 11:49:18,606 serializers 14304 2680 SUCCESS: Uploaded d9459828-1708-491d-a0f7-0fb14f0edb14.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg?
+INFO 2025-09-17 11:49:18,608 serializers 14304 2680 File path: campaign_23/dd764f80-88e4-4325-b309-02750a4dd01a.jpg
+INFO 2025-09-17 11:49:18,688 serializers 14304 2680 File record created with ID: 33
+INFO 2025-09-17 11:49:18,689 serializers 14304 2680 Upload summary: 3 successful, 0 failed
+INFO 2025-09-17 11:49:18,764 serializers 14304 2680 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:51:00,114 serializers 14304 5132 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 11:51:00,143 serializers 14304 5132 Request FILES keys: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:51:00,144 serializers 14304 5132 Files to delete: []
+INFO 2025-09-17 11:51:00,145 serializers 14304 5132 Found 3 new files to process: ['file_0', 'file_1', 'file_2']
+INFO 2025-09-17 11:51:00,145 serializers 14304 5132 Processing file file_0: mobile-clinic-1.jpg, size=136955, content_type=image/jpeg
+INFO 2025-09-17 11:51:00,146 serializers 14304 5132 Uploading file mobile-clinic-1.jpg to Supabase...
+INFO 2025-09-17 11:51:00,735 supabase_storage 14304 5132 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:51:00,736 supabase_storage 14304 5132 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:51:00,737 supabase_storage 14304 5132 Starting upload for file: mobile-clinic-1.jpg to campaign_24
+INFO 2025-09-17 11:51:00,738 supabase_storage 14304 5132 Generated path: campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg
+INFO 2025-09-17 11:51:00,739 supabase_storage 14304 5132 Read file content, size: 136955 bytes
+INFO 2025-09-17 11:51:00,935 supabase_storage 14304 5132 Available buckets: []
+WARNING 2025-09-17 11:51:00,937 supabase_storage 14304 5132 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:51:00,938 supabase_storage 14304 5132 Uploading file to bucket: campaign, path: campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg
+INFO 2025-09-17 11:51:01,858 supabase_storage 14304 5132 Upload response: UploadResponse(path='campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg', full_path='campaign/campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg', fullPath='campaign/campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg')
+INFO 2025-09-17 11:51:01,859 supabase_storage 14304 5132 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg?
+INFO 2025-09-17 11:51:01,859 serializers 14304 5132 SUCCESS: Uploaded mobile-clinic-1.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg?
+INFO 2025-09-17 11:51:01,860 serializers 14304 5132 File path: campaign_24/6fc89a96-adf3-4f6d-8755-e0907b308fa1.jpg
+INFO 2025-09-17 11:51:02,061 serializers 14304 5132 File record created with ID: 34
+INFO 2025-09-17 11:51:02,677 supabase_storage 14304 5132 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:51:02,678 supabase_storage 14304 5132 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:51:02,702 supabase_storage 14304 5132 Generated path: campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg
+INFO 2025-09-17 11:51:02,703 supabase_storage 14304 5132 Read file content, size: 23637 bytes
+INFO 2025-09-17 11:51:02,884 supabase_storage 14304 5132 Available buckets: []
+WARNING 2025-09-17 11:51:02,885 supabase_storage 14304 5132 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:51:02,885 supabase_storage 14304 5132 Uploading file to bucket: campaign, path: campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg
+INFO 2025-09-17 11:51:03,187 supabase_storage 14304 5132 Upload response: UploadResponse(path='campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg', full_path='campaign/campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg', fullPath='campaign/campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg')
+INFO 2025-09-17 11:51:03,189 supabase_storage 14304 5132 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg?
+INFO 2025-09-17 11:51:03,213 serializers 14304 5132 File path: campaign_24/deff02c2-f384-42ca-8d81-dee92351b94f.jpg
+INFO 2025-09-17 11:51:03,390 serializers 14304 5132 File record created with ID: 35
+INFO 2025-09-17 11:51:03,392 serializers 14304 5132 Processing file file_2: Mobile-Medical-Health-Clinic-Meets-Healthcare-Organization-for-Sale.avif, size=11046, content_type=image/avif
+INFO 2025-09-17 11:51:03,392 serializers 14304 5132 Uploading file Mobile-Medical-Health-Clinic-Meets-Healthcare-Organization-for-Sale.avif to Supabase...
+INFO 2025-09-17 11:51:03,598 supabase_storage 14304 5132 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 11:51:03,599 supabase_storage 14304 5132 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 11:51:03,601 supabase_storage 14304 5132 Starting upload for file: Mobile-Medical-Health-Clinic-Meets-Healthcare-Organization-for-Sale.avif to campaign_24
+INFO 2025-09-17 11:51:03,601 supabase_storage 14304 5132 Generated path: campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif
+INFO 2025-09-17 11:51:03,602 supabase_storage 14304 5132 Read file content, size: 11046 bytes
+INFO 2025-09-17 11:51:03,728 supabase_storage 14304 5132 Available buckets: []
+WARNING 2025-09-17 11:51:03,729 supabase_storage 14304 5132 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 11:51:03,731 supabase_storage 14304 5132 Uploading file to bucket: campaign, path: campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif
+INFO 2025-09-17 11:51:04,109 supabase_storage 14304 5132 Upload response: UploadResponse(path='campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif', full_path='campaign/campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif', fullPath='campaign/campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif')
+INFO 2025-09-17 11:51:04,109 supabase_storage 14304 5132 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif?
+INFO 2025-09-17 11:51:04,110 serializers 14304 5132 SUCCESS: Uploaded Mobile-Medical-Health-Clinic-Meets-Healthcare-Organization-for-Sale.avif to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif?
+INFO 2025-09-17 11:51:04,110 serializers 14304 5132 File path: campaign_24/61734cdb-1486-4a1f-a35b-55ad0f447544.avif
+INFO 2025-09-17 11:51:04,262 serializers 14304 5132 File record created with ID: 36
+INFO 2025-09-17 11:51:04,263 serializers 14304 5132 Upload summary: 3 successful, 0 failed
+INFO 2025-09-17 11:51:04,426 serializers 14304 5132 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 11:58:30,480 supabase_storage 8196 2640 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-17 12:11:22,231 serializers 8196 9400 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 12:11:22,281 serializers 8196 9400 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: 22588-1-1688975871.webp (image/webp)>]}>
+INFO 2025-09-17 12:11:22,282 serializers 8196 9400 Request FILES keys: ['file_0']
+INFO 2025-09-17 12:11:22,282 serializers 8196 9400 Files to delete: []
+INFO 2025-09-17 12:11:22,283 serializers 8196 9400 Found 1 new files to process: ['file_0']
+INFO 2025-09-17 12:11:22,283 serializers 8196 9400 Processing file file_0: 22588-1-1688975871.webp, size=76122, content_type=image/webp
+INFO 2025-09-17 12:11:22,285 serializers 8196 9400 Uploading file 22588-1-1688975871.webp to Supabase...
+INFO 2025-09-17 12:11:23,285 supabase_storage 8196 9400 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 12:11:23,286 supabase_storage 8196 9400 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 12:11:23,286 supabase_storage 8196 9400 Starting upload for file: 22588-1-1688975871.webp to campaign_26
+INFO 2025-09-17 12:11:23,287 supabase_storage 8196 9400 Generated path: campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp
+INFO 2025-09-17 12:11:23,288 supabase_storage 8196 9400 Read file content, size: 76122 bytes
+INFO 2025-09-17 12:11:23,420 supabase_storage 8196 9400 Available buckets: []
+WARNING 2025-09-17 12:11:23,422 supabase_storage 8196 9400 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 12:11:23,423 supabase_storage 8196 9400 Uploading file to bucket: campaign, path: campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp
+INFO 2025-09-17 12:11:23,950 supabase_storage 8196 9400 Upload response: UploadResponse(path='campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp', full_path='campaign/campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp', fullPath='campaign/campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp')
+INFO 2025-09-17 12:11:23,951 supabase_storage 8196 9400 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp?
+INFO 2025-09-17 12:11:23,951 serializers 8196 9400 SUCCESS: Uploaded 22588-1-1688975871.webp to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp?
+INFO 2025-09-17 12:11:23,951 serializers 8196 9400 File path: campaign_26/aed48d43-82d2-429f-b035-80df8c537265.webp
+INFO 2025-09-17 12:11:24,156 serializers 8196 9400 File record created with ID: 37
+INFO 2025-09-17 12:11:24,158 serializers 8196 9400 Upload summary: 1 successful, 0 failed
+INFO 2025-09-17 12:11:24,357 serializers 8196 9400 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 12:13:05,731 serializers 8196 19140 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 12:13:05,768 serializers 8196 19140 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: Mauritanie1.jpg (image/jpeg)>], 'file_1': [<InMemoryUploadedFile: 5b7ea5ad-8b05-40f0-9b34-e5edae9a9e82.jpeg (image/jpeg)>]}>
+INFO 2025-09-17 12:13:05,769 serializers 8196 19140 Request FILES keys: ['file_0', 'file_1']
+INFO 2025-09-17 12:13:05,769 serializers 8196 19140 Files to delete: []
+INFO 2025-09-17 12:13:05,770 serializers 8196 19140 Found 2 new files to process: ['file_0', 'file_1']
+INFO 2025-09-17 12:13:05,771 serializers 8196 19140 Processing file file_0: Mauritanie1.jpg, size=73101, content_type=image/jpeg
+INFO 2025-09-17 12:13:05,772 serializers 8196 19140 Uploading file Mauritanie1.jpg to Supabase...
+INFO 2025-09-17 12:13:06,416 supabase_storage 8196 19140 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 12:13:06,417 supabase_storage 8196 19140 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 12:13:06,418 supabase_storage 8196 19140 Starting upload for file: Mauritanie1.jpg to campaign_27
+INFO 2025-09-17 12:13:06,418 supabase_storage 8196 19140 Generated path: campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg
+INFO 2025-09-17 12:13:06,419 supabase_storage 8196 19140 Read file content, size: 73101 bytes
+INFO 2025-09-17 12:13:06,658 supabase_storage 8196 19140 Available buckets: []
+WARNING 2025-09-17 12:13:06,658 supabase_storage 8196 19140 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 12:13:06,659 supabase_storage 8196 19140 Uploading file to bucket: campaign, path: campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg
+INFO 2025-09-17 12:13:07,168 supabase_storage 8196 19140 Upload response: UploadResponse(path='campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg', full_path='campaign/campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg', fullPath='campaign/campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg')
+INFO 2025-09-17 12:13:07,168 supabase_storage 8196 19140 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg?
+INFO 2025-09-17 12:13:07,169 serializers 8196 19140 SUCCESS: Uploaded Mauritanie1.jpg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg?
+INFO 2025-09-17 12:13:07,170 serializers 8196 19140 File path: campaign_27/42b8298f-0d45-44a1-acde-ef7e549a40bb.jpg
+INFO 2025-09-17 12:13:07,371 serializers 8196 19140 File record created with ID: 38
+INFO 2025-09-17 12:13:07,373 serializers 8196 19140 Processing file file_1: 5b7ea5ad-8b05-40f0-9b34-e5edae9a9e82.jpeg, size=92739, content_type=image/jpeg
+INFO 2025-09-17 12:13:07,373 serializers 8196 19140 Uploading file 5b7ea5ad-8b05-40f0-9b34-e5edae9a9e82.jpeg to Supabase...
+INFO 2025-09-17 12:13:07,578 supabase_storage 8196 19140 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 12:13:07,580 supabase_storage 8196 19140 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 12:13:07,581 supabase_storage 8196 19140 Starting upload for file: 5b7ea5ad-8b05-40f0-9b34-e5edae9a9e82.jpeg to campaign_27
+INFO 2025-09-17 12:13:07,582 supabase_storage 8196 19140 Generated path: campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg
+INFO 2025-09-17 12:13:07,582 supabase_storage 8196 19140 Read file content, size: 92739 bytes
+INFO 2025-09-17 12:13:07,888 supabase_storage 8196 19140 Available buckets: []
+WARNING 2025-09-17 12:13:07,889 supabase_storage 8196 19140 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 12:13:07,889 supabase_storage 8196 19140 Uploading file to bucket: campaign, path: campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg
+INFO 2025-09-17 12:13:08,294 supabase_storage 8196 19140 Upload response: UploadResponse(path='campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg', full_path='campaign/campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg', fullPath='campaign/campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg')
+INFO 2025-09-17 12:13:08,296 supabase_storage 8196 19140 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg?
+INFO 2025-09-17 12:13:08,297 serializers 8196 19140 SUCCESS: Uploaded 5b7ea5ad-8b05-40f0-9b34-e5edae9a9e82.jpeg to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg?
+INFO 2025-09-17 12:13:08,297 serializers 8196 19140 File path: campaign_27/f632f6f7-0ae8-4123-baba-d8672b752366.jpeg
+INFO 2025-09-17 12:13:08,397 serializers 8196 19140 File record created with ID: 39
+INFO 2025-09-17 12:13:08,399 serializers 8196 19140 Upload summary: 2 successful, 0 failed
+INFO 2025-09-17 12:13:08,598 serializers 8196 19140 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-17 12:16:42,616 serializers 8196 18068 === CAMPAIGN UPDATE STARTED ===
+INFO 2025-09-17 12:16:42,630 serializers 8196 18068 Request FILES: <MultiValueDict: {'file_0': [<InMemoryUploadedFile: blog.webp (image/webp)>]}>
+INFO 2025-09-17 12:16:42,632 serializers 8196 18068 Request FILES keys: ['file_0']
+INFO 2025-09-17 12:16:42,632 serializers 8196 18068 Files to delete: []
+INFO 2025-09-17 12:16:42,633 serializers 8196 18068 Found 1 new files to process: ['file_0']
+INFO 2025-09-17 12:16:42,634 serializers 8196 18068 Processing file file_0: blog.webp, size=36824, content_type=image/webp
+INFO 2025-09-17 12:16:42,635 serializers 8196 18068 Uploading file blog.webp to Supabase...
+INFO 2025-09-17 12:16:43,233 supabase_storage 8196 18068 Successfully connected to Supabase. Available buckets: []
+WARNING 2025-09-17 12:16:43,234 supabase_storage 8196 18068 Bucket 'campaign' not found. Available buckets: []
+INFO 2025-09-17 12:16:43,234 supabase_storage 8196 18068 Starting upload for file: blog.webp to campaign_31
+INFO 2025-09-17 12:16:43,234 supabase_storage 8196 18068 Generated path: campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp
+INFO 2025-09-17 12:16:43,236 supabase_storage 8196 18068 Read file content, size: 36824 bytes
+INFO 2025-09-17 12:16:43,360 supabase_storage 8196 18068 Available buckets: []
+WARNING 2025-09-17 12:16:43,361 supabase_storage 8196 18068 Bucket 'campaign' not found in Supabase
+INFO 2025-09-17 12:16:43,361 supabase_storage 8196 18068 Uploading file to bucket: campaign, path: campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp
+INFO 2025-09-17 12:16:43,843 supabase_storage 8196 18068 Upload response: UploadResponse(path='campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp', full_path='campaign/campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp', fullPath='campaign/campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp')
+INFO 2025-09-17 12:16:43,843 supabase_storage 8196 18068 Generated public URL: https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp?
+INFO 2025-09-17 12:16:43,844 serializers 8196 18068 SUCCESS: Uploaded blog.webp to https://zzkggackkiirezhlbuvo.supabase.co/storage/v1/object/public/campaign/campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp?
+INFO 2025-09-17 12:16:43,844 serializers 8196 18068 File path: campaign_31/d3f703e7-4061-4fda-9a89-0bd8c14334d3.webp
+INFO 2025-09-17 12:16:44,046 serializers 8196 18068 File record created with ID: 40
+INFO 2025-09-17 12:16:44,047 serializers 8196 18068 Upload summary: 1 successful, 0 failed
+INFO 2025-09-17 12:16:44,251 serializers 8196 18068 === CAMPAIGN UPDATE COMPLETED ===
+INFO 2025-09-23 09:47:43,060 supabase_storage 19288 22912 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-23 09:49:25,315 views 19288 12488 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 09:49:25,317 views 19288 12488 Campaign ID: 22
+INFO 2025-09-23 09:49:25,318 views 19288 12488 Content-Type: application/json
+INFO 2025-09-23 09:49:25,319 views 19288 12488 Request method: POST
+INFO 2025-09-23 09:49:25,322 views 19288 12488 Raw body: b'{"amount":250,"donor_name":"","message":"allah y3inkoum","is_anonymous":true}'
+INFO 2025-09-23 09:49:25,325 views 19288 12488 Parsed data: {'amount': 250, 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 09:49:25,327 views 19288 12488 Headers: {'Content-Length': '77', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgwMTA3LCJpYXQiOjE3NTg2MjA5MDcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyMDkwN31dLCJzZXNzaW9uX2lkIjoiZWIxYWFjNzItNzcxZS00MmMyLTk3YTgtMzljNjZjZjgzMzZkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.BEWjcFiPIrnmNGJdCQfTNwaagrLdmgd1IAF2VDj_ZSo', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 09:49:25,954 views 19288 12488 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 09:49:26,337 views 19288 12488 Created donation record: 54
+ERROR 2025-09-23 09:49:40,467 views 19288 12488 Payment session creation failed: Cannot connect to payment service. Please check API key.
+INFO 2025-09-23 09:50:33,927 supabase_storage 5728 9384 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-23 09:50:38,185 views 5728 18308 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 09:50:38,186 views 5728 18308 Campaign ID: 22
+INFO 2025-09-23 09:50:38,186 views 5728 18308 Content-Type: application/json
+INFO 2025-09-23 09:50:38,186 views 5728 18308 Request method: POST
+INFO 2025-09-23 09:50:38,187 views 5728 18308 Raw body: b'{"amount":250,"donor_name":"","message":"allah y3inkoum","is_anonymous":true}'
+INFO 2025-09-23 09:50:38,188 views 5728 18308 Parsed data: {'amount': 250, 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 09:50:38,189 views 5728 18308 Headers: {'Content-Length': '77', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgwMTA3LCJpYXQiOjE3NTg2MjA5MDcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyMDkwN31dLCJzZXNzaW9uX2lkIjoiZWIxYWFjNzItNzcxZS00MmMyLTk3YTgtMzljNjZjZjgzMzZkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.BEWjcFiPIrnmNGJdCQfTNwaagrLdmgd1IAF2VDj_ZSo', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 09:50:38,987 views 5728 18308 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 09:50:39,229 views 5728 18308 Created donation record: 55
+INFO 2025-09-23 09:50:40,999 payment_service 5728 18308 Creating payment session for campaign 22, amount: 250.0 MRU
+INFO 2025-09-23 09:50:41,182 payment_service 5728 18308 NextRemitly response status: 401
+ERROR 2025-09-23 09:50:41,293 views 5728 18308 Payment session creation failed: Invalid API key
+INFO 2025-09-23 10:06:23,061 views 5728 13764 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 10:06:23,062 views 5728 13764 Campaign ID: 22
+INFO 2025-09-23 10:06:23,063 views 5728 13764 Content-Type: application/json
+INFO 2025-09-23 10:06:23,063 views 5728 13764 Request method: POST
+INFO 2025-09-23 10:06:23,064 views 5728 13764 Raw body: b'{"amount":250,"donor_name":"","message":"allah y3inkoum","is_anonymous":true}'
+INFO 2025-09-23 10:06:23,065 views 5728 13764 Parsed data: {'amount': 250, 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:06:23,066 views 5728 13764 Headers: {'Content-Length': '77', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgwMTA3LCJpYXQiOjE3NTg2MjA5MDcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyMDkwN31dLCJzZXNzaW9uX2lkIjoiZWIxYWFjNzItNzcxZS00MmMyLTk3YTgtMzljNjZjZjgzMzZkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.BEWjcFiPIrnmNGJdCQfTNwaagrLdmgd1IAF2VDj_ZSo', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 10:06:23,888 views 5728 13764 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:06:24,289 views 5728 13764 Created donation record: 56
+INFO 2025-09-23 10:06:25,635 payment_service 5728 13764 Creating payment session for campaign 22, amount: 250.0 MRU
+INFO 2025-09-23 10:06:26,436 payment_service 5728 13764 NextRemitly response status: 401
+ERROR 2025-09-23 10:06:26,606 views 5728 13764 Payment session creation failed: Invalid API key
+INFO 2025-09-23 10:25:54,401 views 5728 3304 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 10:25:54,402 views 5728 3304 Campaign ID: 22
+INFO 2025-09-23 10:25:54,403 views 5728 3304 Content-Type: application/json
+INFO 2025-09-23 10:25:54,404 views 5728 3304 Request method: POST
+INFO 2025-09-23 10:25:54,405 views 5728 3304 Raw body: b'{"amount":250,"donor_name":"","message":"allah y3inkoum","is_anonymous":true}'
+INFO 2025-09-23 10:25:54,405 views 5728 3304 Parsed data: {'amount': 250, 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:25:54,406 views 5728 3304 Headers: {'Content-Length': '77', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgwMTA3LCJpYXQiOjE3NTg2MjA5MDcsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyMDkwN31dLCJzZXNzaW9uX2lkIjoiZWIxYWFjNzItNzcxZS00MmMyLTk3YTgtMzljNjZjZjgzMzZkIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.BEWjcFiPIrnmNGJdCQfTNwaagrLdmgd1IAF2VDj_ZSo', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 10:25:54,925 views 5728 3304 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': 'allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:25:55,323 views 5728 3304 Created donation record: 57
+INFO 2025-09-23 10:25:56,565 payment_service 5728 3304 Creating payment session for campaign 22, amount: 250.0 MRU
+INFO 2025-09-23 10:25:56,960 payment_service 5728 3304 NextRemitly response status: 401
+ERROR 2025-09-23 10:25:57,163 views 5728 3304 Payment session creation failed: Invalid API key
+INFO 2025-09-23 10:28:46,125 payment_service 5728 11660 Validating API key for org 1
+INFO 2025-09-23 10:28:46,126 payment_service 5728 11660 API key length: 41
+INFO 2025-09-23 10:28:46,127 payment_service 5728 11660 API key starts with: nxt_live_Q
+INFO 2025-09-23 10:28:47,256 payment_service 5728 11660 Connection test result: True
+INFO 2025-09-23 10:37:35,835 payment_service 5728 11660 Validating API key for org 1
+INFO 2025-09-23 10:37:35,835 payment_service 5728 11660 API key length: 41
+INFO 2025-09-23 10:37:35,836 payment_service 5728 11660 API key starts with: nxt_live_D
+INFO 2025-09-23 10:37:37,382 payment_service 5728 11660 Connection test result: True
+INFO 2025-09-23 10:39:17,925 views 5728 6496 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 10:39:17,926 views 5728 6496 Campaign ID: 32
+INFO 2025-09-23 10:39:17,927 views 5728 6496 Content-Type: application/json
+INFO 2025-09-23 10:39:17,928 views 5728 6496 Request method: POST
+INFO 2025-09-23 10:39:17,929 views 5728 6496 Raw body: b'{"amount":2500,"donor_name":"","message":"Allah y3inkoum","is_anonymous":true}'
+INFO 2025-09-23 10:39:17,930 views 5728 6496 Parsed data: {'amount': 2500, 'donor_name': '', 'message': 'Allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:39:17,931 views 5728 6496 Headers: {'Content-Length': '78', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMTI5LCJpYXQiOjE3NTg2MjM5MjksImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyMzkyOX1dLCJzZXNzaW9uX2lkIjoiYmU0NzdiNDctOGM1Mi00Zjk1LTlmNTAtOGI2ZDBiMDY3OGViIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.OCld1UzcB_cZqOiceTU5HLr1RSRNDt4q2lBUk-68hL4', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 Edg/140.0.0.0', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Microsoft Edge";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en,fr;q=0.9,fr-FR;q=0.8,en-GB;q=0.7,en-US;q=0.6,ar;q=0.5'}
+INFO 2025-09-23 10:39:18,685 views 5728 6496 Validated data: {'amount': Decimal('2500.00'), 'donor_name': '', 'message': 'Allah y3inkoum', 'is_anonymous': True}
+INFO 2025-09-23 10:39:19,050 views 5728 6496 Created donation record: 58
+INFO 2025-09-23 10:39:20,547 payment_service 5728 6496 Creating payment session for campaign 32, amount: 2500.0 MRU
+INFO 2025-09-23 10:39:21,696 payment_service 5728 6496 NextRemitly response status: 201
+INFO 2025-09-23 10:39:21,727 payment_service 5728 6496 Payment session creation successful: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:39:21,917 views 5728 6496 Payment session created successfully: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:39:23,760 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:39:25,707 views 5728 6496 Synced donation 58: processing -> pending
+INFO 2025-09-23 10:39:37,155 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:39:50,386 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:40:03,206 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:40:16,091 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:40:29,092 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:40:42,814 payment_service 5728 6496 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:40:56,333 payment_service 5728 23200 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:41:09,542 payment_service 5728 23200 Getting payment status for session: 6857df2d-3f2c-4a0c-8bb8-4f0df99f741c
+INFO 2025-09-23 10:42:05,350 views 5728 3596 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 10:42:05,351 views 5728 3596 Campaign ID: 32
+INFO 2025-09-23 10:42:05,352 views 5728 3596 Content-Type: application/json
+INFO 2025-09-23 10:42:05,353 views 5728 3596 Request method: POST
+INFO 2025-09-23 10:42:05,353 views 5728 3596 Raw body: b'{"amount":250,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-23 10:42:05,354 views 5728 3596 Parsed data: {'amount': 250, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 10:42:05,355 views 5728 3596 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMjk0LCJpYXQiOjE3NTg2MjQwOTQsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jTnSZEuK1l4-tDNNFIce_hd6zv5ngRozhx3KHgrGGDM', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 10:42:05,788 views 5728 3596 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 10:42:06,063 views 5728 3596 Created donation record: 59
+INFO 2025-09-23 10:42:07,718 payment_service 5728 3596 Creating payment session for campaign 32, amount: 250.0 MRU
+INFO 2025-09-23 10:42:08,433 payment_service 5728 3596 NextRemitly response status: 201
+INFO 2025-09-23 10:42:08,435 payment_service 5728 3596 Payment session creation successful: 50d92535-322b-484b-99dc-be1b00a4c504
+INFO 2025-09-23 10:42:08,635 views 5728 3596 Payment session created successfully: 50d92535-322b-484b-99dc-be1b00a4c504
+INFO 2025-09-23 10:42:10,057 payment_service 5728 3596 Getting payment status for session: 50d92535-322b-484b-99dc-be1b00a4c504
+INFO 2025-09-23 10:42:11,900 views 5728 3596 Synced donation 59: processing -> authenticated
+INFO 2025-09-23 10:42:23,574 payment_service 5728 3596 Getting payment status for session: 50d92535-322b-484b-99dc-be1b00a4c504
+INFO 2025-09-23 10:42:25,490 views 5728 3596 Synced donation 59: authenticated -> otp_sent
+INFO 2025-09-23 10:42:36,988 payment_service 5728 3596 Getting payment status for session: 50d92535-322b-484b-99dc-be1b00a4c504
+INFO 2025-09-23 10:42:39,138 views 5728 3596 Synced donation 59: otp_sent -> completed
+INFO 2025-09-23 11:54:12,013 views 5728 12120 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 11:54:12,014 views 5728 12120 Campaign ID: 32
+INFO 2025-09-23 11:54:12,014 views 5728 12120 Content-Type: application/json
+INFO 2025-09-23 11:54:12,014 views 5728 12120 Request method: POST
+INFO 2025-09-23 11:54:12,014 views 5728 12120 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-23 11:54:12,015 views 5728 12120 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 11:54:12,015 views 5728 12120 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMjk0LCJpYXQiOjE3NTg2MjQwOTQsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jTnSZEuK1l4-tDNNFIce_hd6zv5ngRozhx3KHgrGGDM', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 11:54:12,742 views 5728 12120 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 11:54:13,034 views 5728 12120 Created donation record: 60
+INFO 2025-09-23 11:54:14,283 payment_service 5728 12120 Creating payment session for campaign 32, amount: 500.0 MRU
+INFO 2025-09-23 11:54:14,982 payment_service 5728 12120 NextRemitly response status: 201
+INFO 2025-09-23 11:54:14,983 payment_service 5728 12120 Payment session creation successful: 0b6b1ab5-85cc-4f18-ba93-8459a2b3a75c
+INFO 2025-09-23 11:54:15,185 views 5728 12120 Payment session created successfully: 0b6b1ab5-85cc-4f18-ba93-8459a2b3a75c
+INFO 2025-09-23 11:54:16,422 payment_service 5728 12120 Getting payment status for session: 0b6b1ab5-85cc-4f18-ba93-8459a2b3a75c
+INFO 2025-09-23 11:54:17,489 views 5728 12120 Synced donation 60: processing -> authenticated
+INFO 2025-09-23 11:54:28,909 payment_service 5728 12120 Getting payment status for session: 0b6b1ab5-85cc-4f18-ba93-8459a2b3a75c
+INFO 2025-09-23 11:54:30,340 views 5728 12120 Synced donation 60: authenticated -> otp_sent
+INFO 2025-09-23 11:54:42,324 payment_service 5728 12120 Getting payment status for session: 0b6b1ab5-85cc-4f18-ba93-8459a2b3a75c
+INFO 2025-09-23 11:54:44,062 views 5728 12120 Synced donation 60: otp_sent -> completed
+INFO 2025-09-23 11:59:44,808 views 5728 12796 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 11:59:44,810 views 5728 12796 Campaign ID: 32
+INFO 2025-09-23 11:59:44,811 views 5728 12796 Content-Type: application/json
+INFO 2025-09-23 11:59:44,812 views 5728 12796 Request method: POST
+INFO 2025-09-23 11:59:44,812 views 5728 12796 Raw body: b'{"amount":100,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-23 11:59:44,813 views 5728 12796 Parsed data: {'amount': 100, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 11:59:44,814 views 5728 12796 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMjk0LCJpYXQiOjE3NTg2MjQwOTQsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jTnSZEuK1l4-tDNNFIce_hd6zv5ngRozhx3KHgrGGDM', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 11:59:45,191 views 5728 12796 Validated data: {'amount': Decimal('100.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-23 11:59:45,456 views 5728 12796 Created donation record: 61
+INFO 2025-09-23 11:59:46,560 payment_service 5728 12796 Creating payment session for campaign 32, amount: 100.0 MRU
+INFO 2025-09-23 11:59:47,268 payment_service 5728 12796 NextRemitly response status: 201
+INFO 2025-09-23 11:59:47,269 payment_service 5728 12796 Payment session creation successful: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 11:59:47,367 views 5728 12796 Payment session created successfully: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 11:59:48,348 payment_service 5728 12796 Getting payment status for session: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 11:59:49,472 views 5728 12796 Synced donation 61: processing -> authenticated
+INFO 2025-09-23 12:00:01,090 payment_service 5728 12796 Getting payment status for session: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 12:00:13,481 payment_service 5728 12796 Getting payment status for session: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 12:00:15,015 views 5728 12796 Synced donation 61: authenticated -> otp_sent
+INFO 2025-09-23 12:00:26,279 payment_service 5728 12796 Getting payment status for session: 33d5f9e1-5907-48d4-8961-d33df23f4d9d
+INFO 2025-09-23 12:00:27,920 views 5728 12796 Synced donation 61: otp_sent -> completed
+INFO 2025-09-23 12:04:29,171 views 5728 12796 === CREATE DONATION REQUEST ===
+INFO 2025-09-23 12:04:29,172 views 5728 12796 Campaign ID: 32
+INFO 2025-09-23 12:04:29,173 views 5728 12796 Content-Type: application/json
+INFO 2025-09-23 12:04:29,173 views 5728 12796 Request method: POST
+INFO 2025-09-23 12:04:29,174 views 5728 12796 Raw body: b'{"amount":50000,"donor_name":"Famille Bouamatou","message":"","is_anonymous":false}'
+INFO 2025-09-23 12:04:29,175 views 5728 12796 Parsed data: {'amount': 50000, 'donor_name': 'Famille Bouamatou', 'message': '', 'is_anonymous': False}
+INFO 2025-09-23 12:04:29,176 views 5728 12796 Headers: {'Content-Length': '83', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMjk0LCJpYXQiOjE3NTg2MjQwOTQsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jTnSZEuK1l4-tDNNFIce_hd6zv5ngRozhx3KHgrGGDM', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-23 12:04:29,695 views 5728 12796 Validated data: {'amount': Decimal('50000.00'), 'donor_name': 'Famille Bouamatou', 'message': '', 'is_anonymous': False}
+INFO 2025-09-23 12:04:30,093 views 5728 12796 Created donation record: 62
+INFO 2025-09-23 12:04:31,329 payment_service 5728 12796 Creating payment session for campaign 32, amount: 50000.0 MRU
+INFO 2025-09-23 12:04:32,038 payment_service 5728 12796 NextRemitly response status: 201
+INFO 2025-09-23 12:04:32,039 payment_service 5728 12796 Payment session creation successful: cb2373c5-b131-4511-a349-f5181c3a7c25
+INFO 2025-09-23 12:04:32,245 views 5728 12796 Payment session created successfully: cb2373c5-b131-4511-a349-f5181c3a7c25
+INFO 2025-09-23 12:04:33,580 payment_service 5728 12796 Getting payment status for session: cb2373c5-b131-4511-a349-f5181c3a7c25
+INFO 2025-09-23 12:04:35,007 views 5728 12796 Synced donation 62: processing -> authenticated
+INFO 2025-09-23 12:04:46,988 payment_service 5728 12796 Getting payment status for session: cb2373c5-b131-4511-a349-f5181c3a7c25
+INFO 2025-09-23 12:04:48,625 views 5728 12796 Synced donation 62: authenticated -> otp_sent
+INFO 2025-09-23 12:05:00,200 payment_service 5728 12796 Getting payment status for session: cb2373c5-b131-4511-a349-f5181c3a7c25
+INFO 2025-09-23 12:05:02,040 views 5728 12796 Synced donation 62: otp_sent -> completed

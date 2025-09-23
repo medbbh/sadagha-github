@@ -25,10 +25,21 @@ export default function NavBar() {
   const [hasVolunteerProfile, setHasVolunteerProfile] = useState(false);
   const [browseOpen, setBrowseOpen] = useState(false);
 
+  const [query, setQuery] = useState("");
+
   const navigate = useNavigate();
   const location = useLocation();
   const abortControllerRef = useRef(null);
   const lastFetchRef = useRef(0);
+
+
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate(`/explore?search=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -113,7 +124,7 @@ export default function NavBar() {
         console.error('Logout error:', error);
       } else {
         authLogout();
-        navigate('/login');
+        navigate('/feed');
       }
     } catch (err) {
       setError('An unexpected error occurred during logout');
@@ -321,7 +332,26 @@ export default function NavBar() {
                   </Link>
                 )
               }
-
+              
+            {/* add favorite button */}
+            <div className="hidden md:flex">
+              {user && (
+                <button
+                  onClick={handleFavoritesClick}
+                  disabled={isToggling}
+                  className={`relative flex items-center space-x-1 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200 ${isToggling ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
+                >
+                  <Heart className="h-4 w-4" />
+                  <span>{t('navbar.favorites')}</span>
+                  {totalFavorites > 0 && (
+                    <span className="absolute -top-2 -end-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                      {totalFavorites > 9 ? '9+' : totalFavorites}
+                    </span>
+                  )}
+                </button>
+              )}
+            </div>
 
               <Link
                 to="/how-it-works"
@@ -331,6 +361,7 @@ export default function NavBar() {
               </Link>
 
             </div>
+
 
             {/* Center - Logo */}
             <div className="flex-1 flex justify-center">
@@ -342,22 +373,26 @@ export default function NavBar() {
               </a> */}
               <Link to="/feed">
                 <img src="/logo.png" alt="Logo" className="h-20 w-20" />
-
               </Link>
             </div>
 
             {/* Right Side */}
             <div className="hidden md:flex items-center space-x-4">
-              
+
               <LanguageSelector />
-              
+
               <div className="relative hover:opacity-90 transition-opacity duration-200">
                 <input
                   type="text"
                   placeholder={t('navbar.search')}
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="ps-8 pe-4 py-1.5 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] focus:border-transparent text-sm w-40"
                 />
-                <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60" />
+                <Search 
+                  className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60"
+                  onClick={() => query.trim() && navigate(`/explore?search=${encodeURIComponent(query.trim())}`)} />
               </div>
 
 
@@ -578,11 +613,7 @@ export default function NavBar() {
             <div className="flex items-center space-x-2">
               <Heart className="h-5 w-5 text-red-600" />
               <h2 className="text-lg font-semibold text-gray-900">{t('navbar.favorites')}</h2>
-              {totalFavorites > 0 && (
-                <span className="bg-gray-100 text-gray-600 text-sm px-2 py-1 rounded-full">
-                  {displayedCount} of {totalFavorites}
-                </span>
-              )}
+
             </div>
             <button
               onClick={() => setShowFavorites(false)}

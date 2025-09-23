@@ -4,7 +4,7 @@ import { Loader2 } from "lucide-react";
 import { campaignDonations } from "../../api/endpoints/CampaignAPI";
 import { useTranslation } from "react-i18next";
 
-const CampaignDonations = ({ campaignId }) => {
+const CampaignDonationsMessages = ({ campaignId }) => {
     const { t } = useTranslation();
     const [donations, setDonations] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -43,10 +43,7 @@ const CampaignDonations = ({ campaignId }) => {
     }
 
     return (
-        <div className="mt-6 bg-white rounded-xl shadow p-4 sm:p-6">
-            <h2 className="text-lg font-semibold text-gray-800 mb-4">
-                {t("campaignDonationsMessage.title")}
-            </h2>
+        <div className="my  -6 bg-white rounded-xl shadow p-4 sm:p-6">
             <ul className="divide-y divide-gray-200">
                 {donations.map((donation) => (
                     <li key={donation.id} className="py-3 flex justify-between items-start">
@@ -75,4 +72,4 @@ const CampaignDonations = ({ campaignId }) => {
     );
 };
 
-export default CampaignDonations;
+export default CampaignDonationsMessages;

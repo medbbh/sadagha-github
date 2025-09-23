@@ -7,7 +7,6 @@ import DonationForm from './DonationForm';
 import FacebookLiveEmbed from './FacebookLiveEmbed';
 import FacebookLiveEmbedSimple from './FacebookLiveEmbedSimple';
 import ShareButton from './ShareButton';
-import CampaignDonationsMessages from './CampaignDonationsMessages';
 import Loading from '../common/Loading';
 
 
@@ -138,19 +137,11 @@ export default function CampaignDetail() {
                     </span>
                   </div>
                 </div>
-                <div className={`flex space-x-2 `}>
-                  <button className="p-2 text-gray-500 hover:text-red-500 transition-colors">
-                    <Heart className="w-5 h-5" />
-                  </button>
-                  <button className="p-2 text-gray-500 hover:text-blue-500 transition-colors">
-                    <Share2 className="w-5 h-5" />
-                  </button>
-                </div>
               </div>
 
               {/* Progress Bar */}
               <div className="mb-6">
-                <div className={`flex justify-between mb-1 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`flex justify-between mb-1 ${isRTL ? '' : ''}`}>
                   <span className="text-sm font-medium text-gray-700">
                     {t('campaignDetail.raised')} {campaign.current_amount} MRU
                   </span>
@@ -184,43 +175,7 @@ export default function CampaignDetail() {
               </div>
 
               {/* Campaign Details Grid */}
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className={`flex items-center space-x-3 ${isRTL ? 'space-x-reverse' : ''}`}>
-                    <div className="p-2 bg-blue-100 rounded-full">
-                      <Clock className="w-5 h-5 text-blue-600" />
-                    </div>
-                    <div className={isRTL ? 'text-right' : 'text-left'}>
-                      <p className="text-xs text-gray-500">{t('campaignDetail.created')}</p>
-                      <p className="font-medium">
-                        {new Date(campaign.created_at).toLocaleDateString(i18n.language)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className={`flex items-center space-x-3 ${isRTL ? ' space-x-reverse' : ''}`}>
-                    <div className="p-2 bg-green-100 rounded-full">
-                      <Target className="w-5 h-5 text-green-600" />
-                    </div>
-                    <div className={isRTL ? 'text-right' : 'text-left'}>
-                      <p className="text-xs text-gray-500">{t('campaignDetail.target')}</p>
-                      <p className="font-medium">{campaign.target} MRU</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className={`flex items-center space-x-3 ${isRTL ? ' space-x-reverse' : ''}`}>
-                    <div className="p-2 bg-purple-100 rounded-full">
-                      <Users className="w-5 h-5 text-purple-600" />
-                    </div>
-                    <div className={isRTL ? 'text-right' : 'text-left'}>
-                      <p className="text-xs text-gray-500">{t('campaignDetail.donors')}</p>
-                      <p className="font-medium">{campaign.number_of_donors}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              
             </div>
 
             {/* Facebook Live Embeds */}
@@ -278,9 +233,6 @@ export default function CampaignDetail() {
               />
             </div>
             
-            <div>
-              <CampaignDonationsMessages campaignId={campaign.id} />
-            </div>
 
             {/* Compact Share Button in Sidebar */}
             <div>

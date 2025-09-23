@@ -17,7 +17,7 @@ class NextRemitlyService:
     def __init__(self, api_key: str):
         self.api_key = api_key
         # self.base_url = getattr(settings, 'NEXTREMITLY_BASE_URL')
-        self.base_url = "https://medbbh.pythonanywhere.com"
+        self.base_url = "https://nextremitly-backend-fe52128f2003.herokuapp.com"
         # self.frontend_url = getattr(settings, 'NEXTREMITLY_FRONTEND_URL')
         self.frontend_url = "https://next-remitly-frontend.vercel.app"
         self.timeout = 30
@@ -84,7 +84,7 @@ class NextRemitlyService:
         """Create payment session directly with NextRemitly"""
         
         # Build webhook URL
-        webhook_url = f"{getattr(settings, 'BACKEND_URL', 'https://medbbh.pythonanywhere.com')}/api/campaigns/donation-webhook/"
+        webhook_url = f"{getattr(settings, 'BACKEND_URL', 'https://nextremitly-backend-fe52128f2003.herokuapp.com')}/api/campaigns/donation-webhook/"
         
         payment_data = {
             "amount": amount,

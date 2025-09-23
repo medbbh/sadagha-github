@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { supabase } from '../../supabaseClient';
 import { useNavigate, Link } from 'react-router-dom';
-import { Eye, EyeOff, Mail, Lock, Chrome } from 'lucide-react';
+import { Eye, EyeOff, Mail, Lock, Chrome, Facebook } from 'lucide-react';
+import { FcGoogle } from "react-icons/fc";
+import { SiFacebook } from "react-icons/si"; // Simple Icons
 
 const Login = () => {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
-  
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -36,7 +38,7 @@ const Login = () => {
   const handleGoogleLogin = async () => {
     setError('');
     setLoading(true);
-    
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
@@ -46,7 +48,26 @@ const Login = () => {
         },
       }
     });
-    
+
+    if (error) {
+      setError(error.message);
+      setLoading(false);
+    }
+  };
+
+  // login with Facebook
+  const handleFacebookLogin = async () => {
+    setError('');
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: `${window.location.origin}/`,
+        queryParams: {
+          prompt: 'select_account',
+        },
+      }
+    });
     if (error) {
       setError(error.message);
       setLoading(false);
@@ -54,15 +75,15 @@ const Login = () => {
   };
 
   return (
-    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
+    <div className={`min-h-screen bg-gray-50 flex flex-col justify-center py-2 sm:px-6 lg:px-8 ${isRTL ? 'rtl' : 'ltr'}`}>
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         {/* Logo/Brand */}
         <div className="flex justify-center">
-          <div className="bg-blue-600 text-white p-3 rounded-full">
-            <span className="text-2xl font-bold">SADA9A</span>
+          <div className="p-3 rounded-full">
+            <img src="/logo.png" alt="Logo" className="h-40 w-40" />
           </div>
         </div>
-        <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
           {t('auth.login.welcomeBack')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -76,7 +97,7 @@ const Login = () => {
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+      <div className="mt-5 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10">
           {/* Google Login Button */}
           <button
@@ -84,8 +105,18 @@ const Login = () => {
             disabled={loading}
             className="w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Chrome className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            <FcGoogle className={`h-5 w-5 text-gray-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
             {t('auth.login.continueWithGoogle')}
+          </button>
+
+          {/* Facebook Login Button */}
+          <button
+            onClick={handleFacebookLogin}
+            disabled={loading}
+            className="mt-3 w-full flex justify-center items-center px-4 py-3 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <SiFacebook className={`h-5 w-5 text-blue-500 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            {t('auth.login.continueWithFacebook')}
           </button>
 
           <div className="mt-6">
@@ -123,9 +154,8 @@ const Login = () => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    isRTL ? 'pr-10 pl-3 text-right' : 'pl-10 pr-3 text-left'
-                  }`}
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${isRTL ? 'pr-10 pl-3 text-right' : 'pl-10 pr-3 text-left'
+                    }`}
                   placeholder={t('auth.common.enterEmail')}
                 />
               </div>
@@ -145,9 +175,8 @@ const Login = () => {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-                    isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'
-                  }`}
+                  className={`block w-full py-3 border border-gray-300 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${isRTL ? 'pr-10 pl-10 text-right' : 'pl-10 pr-10 text-left'
+                    }`}
                   placeholder={t('auth.common.enterPassword')}
                 />
                 <button
@@ -161,17 +190,6 @@ const Login = () => {
             </div>
 
             <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className={`block text-sm text-gray-700 ${isRTL ? 'mr-2' : 'ml-2'}`}>
-                  {t('auth.login.rememberMe')}
-                </label>
-              </div>
 
               <Link
                 to="/forgot-password"

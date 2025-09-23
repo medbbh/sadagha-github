@@ -6,6 +6,8 @@ import DonationService from '../../api/endpoints/donationAPI';
 import { useNavigate } from 'react-router-dom';
 import CelebrationAnimation from './CelebrationOverlay';
 import { useAuth } from '../../contexts/AuthContext';
+import CampaignDonationsMessages from './CampaignDonationsMessages';
+
 
 export default function DonationForm({
   campaignId: propCampaignId,
@@ -35,7 +37,15 @@ export default function DonationForm({
   const [paymentUrl, setPaymentUrl] = useState(null);
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [pollingMessage, setPollingMessage] = useState('');
+  const [currentPopup, setCurrentPopup] = useState(null);
   const { user } = useAuth();
+
+  // Cleanup celebration animation on unmount
+  useEffect(() => {
+    return () => {
+      setShowCelebration(false);
+    };
+  }, []);
 
   // Validation
   const validateForm = () => {
@@ -155,10 +165,41 @@ export default function DonationForm({
 
         if (data.status === 'completed') {
           setPollingMessage('');
+
+          // Close popup immediately when payment is completed
+          if (currentPopup && !currentPopup.closed) {
+            try {
+              currentPopup.close();
+              console.log('Popup closed due to payment completion detected in polling');
+            } catch (e) {
+              console.warn('Could not close popup from polling:', e);
+            }
+          }
+
           console.log('Payment completed successfully!');
+
+          // Handle payment success
+          const donationInfo = {
+            donation_id: donationId,
+            session_id: sessionId,
+            amount: donationAmount
+          };
+
+          handlePaymentSuccess(donationInfo);
           return;
         } else if (data.status === 'failed' || data.status === 'cancelled') {
           setPollingMessage('');
+
+          // Close popup on failure/cancellation too
+          if (currentPopup && !currentPopup.closed) {
+            try {
+              currentPopup.close();
+              console.log('Popup closed due to payment failure/cancellation');
+            } catch (e) {
+              console.warn('Could not close popup:', e);
+            }
+          }
+
           setError('Payment was not completed');
           return;
         }
@@ -195,6 +236,8 @@ export default function DonationForm({
         return false;
       }
 
+      // Store popup reference for polling function
+      setCurrentPopup(popup);
       setupPopupHandlers(popup, sessionId, donationInfo);
       return true;
 
@@ -206,11 +249,35 @@ export default function DonationForm({
 
   const setupPopupHandlers = (popup, sessionId, donationInfo) => {
     let isPaymentCompleted = false;
+    let cleanupDone = false;
+
+    const forceClosePopup = () => {
+      if (!popup.closed) {
+        try {
+          popup.close();
+          console.log('Popup force-closed');
+        } catch (e) {
+          console.warn('Could not force close popup:', e);
+        }
+      }
+    };
+
+    const cleanup = () => {
+      if (cleanupDone) return;
+      cleanupDone = true;
+
+      clearInterval(checkClosed);
+      window.removeEventListener('message', messageHandler);
+      forceClosePopup();
+
+      // Clear popup reference
+      setCurrentPopup(null);
+    };
 
     const checkClosed = setInterval(() => {
       if (popup.closed) {
-        clearInterval(checkClosed);
         console.log('Payment popup closed');
+        cleanup();
 
         if (!isPaymentCompleted) {
           setTimeout(() => {
@@ -218,7 +285,7 @@ export default function DonationForm({
           }, 1000);
         }
       }
-    }, 1000);
+    }, 500); // Check more frequently
 
     const messageHandler = (event) => {
       console.log('Received message from popup:', event.data);
@@ -234,28 +301,36 @@ export default function DonationForm({
         return;
       }
 
-      if (event.data.type === 'payment-completed' || event.data.type === 'payment-success') {
+      // Handle any success-related messages
+      if (event.data.type === 'payment-completed' ||
+        event.data.type === 'payment-success' ||
+        event.data.type === 'success' ||
+        event.data.status === 'completed' ||
+        event.data.status === 'success') {
+
         isPaymentCompleted = true;
+        console.log('Payment completed via message - immediately closing popup');
 
-        popup.close();
-        clearInterval(checkClosed);
-        window.removeEventListener('message', messageHandler);
+        // Immediately close popup
+        forceClosePopup();
+        cleanup();
 
-        console.log('Payment completed via message - popup closed, redirecting main tab');
+        // Handle success immediately
+        setTimeout(() => {
+          handlePaymentSuccess(donationInfo);
+        }, 100);
 
-        handlePaymentSuccess(donationInfo);
-
-      } else if (event.data.type === 'payment-failed') {
-        popup.close();
-        clearInterval(checkClosed);
-        window.removeEventListener('message', messageHandler);
+      } else if (event.data.type === 'payment-failed' || event.data.status === 'failed') {
+        console.log('Payment failed - closing popup');
+        forceClosePopup();
+        cleanup();
         setError('Payment failed. Please try again.');
         setShowPaymentOptions(false);
 
-      } else if (event.data.type === 'payment-cancelled') {
-        popup.close();
-        clearInterval(checkClosed);
-        window.removeEventListener('message', messageHandler);
+      } else if (event.data.type === 'payment-cancelled' || event.data.status === 'cancelled') {
+        console.log('Payment cancelled - closing popup');
+        forceClosePopup();
+        cleanup();
         setError('Payment was cancelled.');
         setShowPaymentOptions(false);
       }
@@ -263,11 +338,31 @@ export default function DonationForm({
 
     window.addEventListener('message', messageHandler);
 
+    // Also listen for URL changes in popup that might indicate success
+    const urlCheckInterval = setInterval(() => {
+      if (popup.closed) return;
+
+      try {
+        const popupUrl = popup.location.href;
+        if (popupUrl.includes('success') || popupUrl.includes('completed')) {
+          console.log('Success detected in popup URL - closing popup');
+          isPaymentCompleted = true;
+          forceClosePopup();
+          cleanup();
+          clearInterval(urlCheckInterval);
+          handlePaymentSuccess(donationInfo);
+        }
+      } catch (e) {
+        // Cross-origin restrictions prevent URL access, this is normal
+      }
+    }, 1000);
+
+    // Timeout to close popup after 15 minutes
     setTimeout(() => {
       if (!popup.closed) {
-        popup.close();
-        clearInterval(checkClosed);
-        window.removeEventListener('message', messageHandler);
+        console.log('Payment session expired - closing popup');
+        clearInterval(urlCheckInterval);
+        cleanup();
         setError('Payment session expired. Please try again.');
       }
     }, 900000);
@@ -283,10 +378,13 @@ export default function DonationForm({
         console.log('Payment status:', statusData);
 
         if (statusData.status === 'completed' || statusData.status === 'success') {
+          console.log('Payment confirmed as successful - handling success');
           handlePaymentSuccess(donationInfo);
         } else if (statusData.status === 'failed') {
+          console.log('Payment confirmed as failed');
           setError('Payment failed. Please try again.');
         } else if (statusData.status === 'cancelled') {
+          console.log('Payment confirmed as cancelled');
           setError('Payment was cancelled.');
         } else {
           console.log('Payment status unclear, assuming success and redirecting');
@@ -297,7 +395,7 @@ export default function DonationForm({
         handlePaymentSuccess(donationInfo);
       }
     } catch (err) {
-      console.log('Error checking payment status:', err);
+      console.log('Error checking payment status:', err, 'assuming success');
       handlePaymentSuccess(donationInfo);
     }
   };
@@ -305,14 +403,28 @@ export default function DonationForm({
   const handlePaymentSuccess = (donationInfo) => {
     console.log('Payment successful, showing celebration...');
 
+    // Clear any existing celebration first to prevent stacking
+    setShowCelebration(false);
+
     setError(null);
     setIsLoading(false);
     setShowPaymentOptions(false);
-    setShowCelebration(true);
+    setPollingMessage('');
+
+    // Show celebration after a brief delay to ensure previous one is cleared
+    setTimeout(() => {
+      setShowCelebration(true);
+
+      // Auto-hide celebration after duration
+      setTimeout(() => {
+        setShowCelebration(false);
+      }, 4000);
+    }, 100);
 
     if (refreshCampaign) {
       refreshCampaign();
     }
+
     // Update parent component with new donation
     onDonationSuccess?.({
       donation_id: donationInfo.donation_id,
@@ -372,6 +484,9 @@ export default function DonationForm({
     setIsAnonymous(false);
     setPaymentUrl(null);
     setShowPaymentOptions(false);
+    setShowCelebration(false);
+    setPollingMessage('');
+    setCurrentPopup(null);
   };
 
   const retryPopup = () => {
@@ -452,6 +567,8 @@ export default function DonationForm({
                 </div>
               </div>
 
+
+
               <div className="w-full bg-gray-200 rounded-full h-4 mb-3 overflow-hidden">
                 <div
                   className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm"
@@ -466,6 +583,10 @@ export default function DonationForm({
                 </span>
                 <span>{(targetAmount || 0) - (currentAmount || 0)} MRU {t('donationForm.toGo')}</span>
               </div>
+            </div>
+
+            <div className='my-5'>
+              <CampaignDonationsMessages campaignId={campaignId} />
             </div>
 
             {/* Polling Message */}
@@ -509,9 +630,9 @@ export default function DonationForm({
                 </label>
                 <div className="relative">
                   {/* Dollar Sign Icon */}
-                  <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
+                  {/* <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
                     <DollarSign className="h-5 w-5 text-gray-400" />
-                  </div>
+                  </div> */}
 
                   {/* Input Field */}
                   <input
@@ -519,7 +640,7 @@ export default function DonationForm({
                     id="customAmount"
                     value={donationAmount}
                     onChange={(e) => setDonationAmount(Number(e.target.value))}
-                    className={`block w-full ${isRTL ? 'pr-10 pl-16' : 'pl-10 pr-16'} py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
+                    className={`block w-full pe-5 ps-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
                     placeholder={t('donationForm.enterAmount')}
                     min="1"
                     step="0.01"

@@ -38,6 +38,7 @@ class FileViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    # sort them by dated created
     queryset = Category.objects.annotate(campaign_count=Count('campaigns', distinct=True))
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
@@ -333,10 +334,13 @@ class CampaignViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         user = self.request.user
-    
+        
         # Ensure only verified orgs can create campaigns
-        if not getattr(user, "is_verified", False) or user.role != "organization":
-            raise PermissionDenied("Only verified organizations can create campaigns.")
+        if user.role != "organization":
+            raise PermissionDenied("Only organizations can create campaigns.")
+        
+        if not hasattr(user, "organization_profile") or not user.organization_profile.is_verified:
+            raise PermissionDenied("Organization must be verified to create campaigns.")
         
         return serializer.save(owner=user)
     

@@ -148,7 +148,7 @@ const ForgotPassword = () => {
           <Link
             to="/login"
             className={`inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-500 transition-colors ${
-              isRTL ? 'flex-row-reverse' : ''
+              isRTL ? '' : ''
             }`}
           >
             <ArrowLeft className={`h-4 w-4 ${isRTL ? 'ml-2 rotate-180' : 'mr-2'}`} />

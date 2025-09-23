@@ -139,7 +139,7 @@ const NextRemitlyStatusCard = ({ status, onManage, onTest, testing }) => {
           )}
 
           <a
-            href="https://nextremitly.com"
+            href="https://next-remitly-frontend.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 border border-gray-200 transition-colors"

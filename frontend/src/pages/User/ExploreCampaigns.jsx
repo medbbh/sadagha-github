@@ -16,6 +16,7 @@ export default function ExploreCampaigns() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
 
+
   // State management
   const [campaigns, setCampaigns] = useState([]);
   const [categories, setCategories] = useState([]);
