@@ -74,6 +74,7 @@ NEXTREMITLY_FRONTEND_URL = os.getenv('NEXTREMITLY_FRONTEND_URL')
 # Your frontend URLs
 FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
 BACKEND_URL = 'http://localhost:8002'   # Sada9a backend URL
+FASTAPI_URL = "http://localhost:8000"
 
 # Add to CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [

@@ -224,7 +224,7 @@ export const fetchMyInvitations = async (status = null) => {
 
     const url = `/volunteers/invitations/my_invitations/${queryParams.toString() ? `?${queryParams.toString()}` : ''}`;
     const response = await api.get(url);
-    console.log('My invitations response:', response);
+    // console.log('My invitations response:', response);
     return response;
   } catch (error) {
     console.error('Failed to fetch my invitations:', error);

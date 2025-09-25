@@ -111,7 +111,7 @@
     "helpNow": "ساعد الآن",
     "livesAtStake": "أشخاص تمت مساعدتهم",
     "criticalCampaigns": "حملات حرجة تحتاج إلى دعم فوري",
-        "urgentNeed": "احتياج عاجل",
+    "urgentNeed": "احتياج عاجل",
     "raised": "تم جمعه",
     "donors": "متبرعين",
     "goal": "الهدف",
@@ -127,6 +127,25 @@
     "errorLoading": "خطأ في تحميل الفئات:",
     "noCategories": "لا توجد فئات متاحة في الوقت الحالي.",
     "unnamedCategory": "فئة بدون اسم"
+  },
+  "recommendations": {
+    "title": "موصى لك",
+    "subtitle": "حملات منتقاة بناءً على اهتماماتك ونشاطك",
+    "viewMore": "عرض المزيد من التوصيات",
+    "campaign": {
+      "raised": "تم جمعه",
+      "goal": "الهدف",
+      "day": "يوم",
+      "days": "أيام",
+      "d": "أ"
+    }
+  },
+  "similarCampaigns": {
+    "title": "قد تعجبك أيضًا",
+    "subtitle": "اكتشف المزيد من الحملات التي تلهم الكرم.",
+    "suggestion": "مقترح",
+    "nearby": "بالقرب",
+    "raised": "تم جمعها"
   },
   "featured": {
     "title": "الحملات المميزة",
@@ -210,7 +229,7 @@
     "campaignNotFound": "لم يتم العثور على الحملة",
     "campaignNotFoundDescription": "الحملة التي تبحث عنها غير موجودة أو تم حذفها.",
     "noImagesAvailable": "لا توجد صور متاحة",
-    "aboutTheOrganization": "حول المنظمة",
+    "organisation": "المنظمة",
     "contactNumber": "رقم الاتصال",
     "address": "العنوان",
     "website": "الموقع الإلكتروني",
@@ -288,18 +307,17 @@
     "validationMinAmount": "الرجاء إدخال مبلغ تبرع صحيح (الحد الأدنى 1 أوقية)",
     "validationEmail": "الرجاء إدخال عنوان بريد إلكتروني صحيح",
     "popupBlocked": "النافذة المنبثقة ما زالت محجوبة. الرجاء تجربة خيار \"فتح في علامة تبويب جديدة\" أو السماح بالنوافذ المنبثقة لهذا الموقع.",
-        "loginRequired": "تسجيل الدخول مطلوب",
+    "loginRequired": "تسجيل الدخول مطلوب",
     "loginDescription": "يرجى تسجيل الدخول إلى حسابك للتبرع ودعم هذه الحملة.",
     "loginButton": "تسجيل الدخول للمتابعة",
     "noAccount": "ليس لديك حساب؟",
     "signUp": "سجل هنا"
-  
   },
-    "campaignDonationsMessage": {
+  "campaignDonationsMessage": {
     "title": "قائمة التبرعات",
     "noDonations": "لا توجد تبرعات لهذه الحملة بعد.",
     "anonymous": "مجهول"
-    },
+  },
   "share": {
     "shareThisCampaign": "شارك هذه الحملة",
     "share": "مشاركة",
@@ -1115,8 +1133,8 @@
       "cancel": "إلغاء",
       "delete": "حذف",
       "deleting": "جاري الحذف...",
-      "noEditDeleteBecauseDonations":"تحتوي هذه الحملة على تبرعات لذالك لا يمكن تحديثها أو حذفها.",
-      "failedToDelete":"فشل في الحذف",
+      "noEditDeleteBecauseDonations": "تحتوي هذه الحملة على تبرعات لذالك لا يمكن تحديثها أو حذفها.",
+      "failedToDelete": "فشل في الحذف",
       "uncategorized": "غير مصنف",
       "featured": "مميز",
       "createdDate": "تم إنشاؤها {{date}} • {{days}} يوم نشط",
@@ -1283,17 +1301,17 @@
         }
       },
       "stats": {
-          "nextRemitlyConfigured": "إعداد NextRemitly",
-          "paymentStatus": "حالة الدفع",
-          "verifiedStatus": "حالة التحقق",
-          "memberSince": "عضو منذ"
+        "nextRemitlyConfigured": "إعداد NextRemitly",
+        "paymentStatus": "حالة الدفع",
+        "verifiedStatus": "حالة التحقق",
+        "memberSince": "عضو منذ"
       }
     },
     "common": {
-        "active": "نشط",
-        "inactive": "غير نشط",
-        "yes": "نعم",
-        "no": "لا"
+      "active": "نشط",
+      "inactive": "غير نشط",
+      "yes": "نعم",
+      "no": "لا"
     },
     "organizationProfileForm": {
       "title": "ملف المنظمة",

@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ChevronLeft, ChevronRight, Heart, Share2, Calendar, Users, Target, DollarSign, Clock, Phone, MapPin, Globe, Building, Copy, CheckCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Heart, Share2, Calendar, Users, Target, DollarSign, Clock, Phone, MapPin, Globe, Building, Copy, CheckCircle, Link2Off, ExternalLink } from 'lucide-react';
 import { campaignDonations, fetchCampaignById } from '../../api/endpoints/CampaignAPI';
 import DonationForm from './DonationForm';
 import FacebookLiveEmbed from './FacebookLiveEmbed';
 import FacebookLiveEmbedSimple from './FacebookLiveEmbedSimple';
 import ShareButton from './ShareButton';
 import Loading from '../common/Loading';
+import SimilarCampaigns from './SimilarCampaigns';
 
 
 
@@ -140,7 +141,7 @@ export default function CampaignDetail() {
               </div>
 
               {/* Progress Bar */}
-              <div className="mb-6">
+              {/* <div className="mb-6">
                 <div className={`flex justify-between mb-1 ${isRTL ? '' : ''}`}>
                   <span className="text-sm font-medium text-gray-700">
                     {t('campaignDetail.raised')} {campaign.current_amount} MRU
@@ -162,7 +163,7 @@ export default function CampaignDetail() {
                   <span>{progress.toFixed(1)}% {t('campaignDetail.funded')}</span>
                   <span>{campaign.number_of_donors} {t('campaignDetail.donors')}</span>
                 </div>
-              </div>
+              </div> */}
 
               {/* Campaign Story */}
               <div className="mb-8">
@@ -175,7 +176,7 @@ export default function CampaignDetail() {
               </div>
 
               {/* Campaign Details Grid */}
-              
+
             </div>
 
             {/* Facebook Live Embeds */}
@@ -232,7 +233,7 @@ export default function CampaignDetail() {
                 refreshCampaign={refreshCampaignData}
               />
             </div>
-            
+
 
             {/* Compact Share Button in Sidebar */}
             <div>
@@ -246,9 +247,17 @@ export default function CampaignDetail() {
               />
             </div>
           </div>
+
+
         </div>
 
       </div>
+
+      {/* similar campaigns section */}
+      <div>
+        <SimilarCampaigns campaignId={campaign.id} />
+      </div>
+
     </div>
   );
 }
@@ -261,87 +270,31 @@ function OrganizationInfoCard({ organization, paymentNumbers, onCopyPaymentNumbe
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden">
       <div className="p-6">
-        <div className={`flex items-center space-x-3 mb-4 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-          <div className="p-2 bg-blue-100 rounded-full">
+        <div className={`flex items-center space-x-3 mb-6 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
+          {/* <div className="p-2 bg-blue-100 rounded-full">
             <Building className="w-5 h-5 text-blue-600" />
-          </div>
+          </div> */}
           <h2 className={`text-xl font-semibold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {t('campaignDetail.aboutTheOrganization')}
+            {t('campaignDetail.organisation')}
           </h2>
         </div>
 
         {/* Organization Name and Description */}
-        <div className="mb-6">
-          <h3 className={`text-lg font-semibold text-gray-900 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
-            {organization.org_name}
-          </h3>
-          {organization.description && (
-            <p className={`text-gray-600 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
-              {organization.description}
-            </p>
-          )}
+
+        <div className="mb-6 flex items-center ">
+            <img src={organization.profile_image_url} alt={organization.org_name} className="w-20 h-20 object-cover rounded-full mr-4" />
+            <div className="flex-1">
+            <div className={`text-lg flex gap-1 font-semibold text-gray-900 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
+              <h3>{organization.org_name}</h3>
+              <Link to={`/organizations/${organization.id}`} className="text-blue-600 hover:underline flex items-center">
+                <ExternalLink className="w-4 h-4 ml-1" />
+              </Link>
+            </div>
+            {/* description under the org name  */}
+            <span className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{organization.description}</span>
+            </div>
         </div>
 
-        {/* Organization Details Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-          {organization.phone_number && (
-            <div className={`flex items-center space-x-3 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              <Phone className="w-4 h-4 text-gray-400" />
-              <div className={isRTL ? 'text-right' : 'text-left'}>
-                <p className="text-sm text-gray-500">{t('campaignDetail.contactNumber')}</p>
-                <p className="font-medium text-gray-900">{organization.phone_number}</p>
-              </div>
-            </div>
-          )}
-
-          {organization.address && (
-            <div className={`flex items-center space-x-3 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              <MapPin className="w-4 h-4 text-gray-400" />
-              <div className={isRTL ? 'text-right' : 'text-left'}>
-                <p className="text-sm text-gray-500">{t('campaignDetail.address')}</p>
-                <p className="font-medium text-gray-900">{organization.address}</p>
-              </div>
-            </div>
-          )}
-
-          {organization.website && (
-            <div className={`flex items-center space-x-3 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              <Globe className="w-4 h-4 text-gray-400" />
-              <div className={isRTL ? 'text-right' : 'text-left'}>
-                <p className="text-sm text-gray-500">{t('campaignDetail.website')}</p>
-                <a
-                  href={organization.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-medium text-blue-600 hover:text-blue-700 transition-colors"
-                >
-                  {organization.website}
-                </a>
-              </div>
-            </div>
-          )}
-
-          <div className={`flex items-center space-x-3 ${isRTL ? 'flex-row-reverse space-x-reverse' : ''}`}>
-            <Calendar className="w-4 h-4 text-gray-400" />
-            <div className={isRTL ? 'text-right' : 'text-left'}>
-              <p className="text-sm text-gray-500">{t('campaignDetail.memberSince')}</p>
-              <p className="font-medium text-gray-900">
-                {new Date(organization.created_at).toLocaleDateString(i18n.language, {
-                  year: 'numeric',
-                  month: 'long'
-                })}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Verification Badge */}
-        {organization.is_verified && (
-          <div className="mt-6 flex items-center justify-center p-3 bg-green-50 rounded-lg">
-            <CheckCircle className={`w-5 h-5 text-green-600 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-            <span className="text-green-800 font-medium">{t('campaignDetail.verifiedOrganization')}</span>
-          </div>
-        )}
       </div>
     </div>
   );

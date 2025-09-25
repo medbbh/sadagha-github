@@ -28,7 +28,7 @@ export const getFavoriteCampaigns = async () => {
   try {
     const favorites = JSON.parse(localStorage.getItem('favoriteCampaigns')) || [];
     if (favorites.length === 0) {
-      console.log('No favorite campaigns found');
+      // console.log('No favorite campaigns found');
       return [];
     }
     console.log('Fetching favorite campaigns:', favorites);

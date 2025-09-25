@@ -3,7 +3,7 @@ import api from '../axiosConfig';
 export const fetchCategories = async () => {
   try {
     const response = await api.get('/campaigns/categories/');
-    console.log('Categories response:', response);
+    // console.log('Categories response:', response);
     return response;
   } catch (error) {
     console.error('Failed to fetch categories:', error);

@@ -6,6 +6,8 @@ import { fetchCampaigns, featuredCampaigns } from '../../api/endpoints/CampaignA
 import { useEffect, useState } from 'react';
 import Loading from '../../components/common/Loading';
 import Footer from '../../components/Layout/Footer';
+import { User } from 'lucide-react';
+import UserRecommendationsSection from './sections/UserRecommendationsSection';
 
 export default function HomePage() {
   const [campaigns, setCampaigns] = useState([]);
@@ -38,9 +40,9 @@ export default function HomePage() {
       setLoading(true);
       setError(null);
       const data = await featuredCampaigns();
-      console.log('Featured Data:', data);
-      console.log('Featured Data type:', typeof data);
-      console.log('Featured Data is array:', Array.isArray(data));
+      // console.log('Featured Data:', data);
+      // console.log('Featured Data type:', typeof data);
+      // console.log('Featured Data is array:', Array.isArray(data));
       
       // Ensure we're passing an array to the component
       if (Array.isArray(data)) {
@@ -100,6 +102,9 @@ export default function HomePage() {
       {/* Uncomment these sections when ready */}
       <HeroSection />
       <CategoriesSection />
+
+      <UserRecommendationsSection userId={7} />
+
       <FeaturedCampaignsCarousel 
         Campaigns={featuredData || []} 
         loading={loading && !featuredData?.length} 

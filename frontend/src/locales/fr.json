@@ -111,7 +111,7 @@
     "helpNow": "Aidez Maintenant",
     "livesAtStake": "personnes aidées",
     "criticalCampaigns": "Des campagnes critiques ont besoin d'un soutien immédiat",
-        "urgentNeed": "BESOIN URGENT",
+    "urgentNeed": "BESOIN URGENT",
     "raised": "collecté",
     "donors": "donateurs",
     "goal": "Objectif",
@@ -128,6 +128,26 @@
     "noCategories": "Aucune catégorie disponible pour le moment.",
     "unnamedCategory": "Catégorie Sans Nom"
   },
+  "recommendations": {
+    "title": "Recommandé pour vous",
+    "subtitle": "Campagnes sélectionnées en fonction de vos intérêts et de votre activité",
+    "viewMore": "Voir plus de recommandations",
+    "campaign": {
+      "raised": "collecté",
+      "goal": "Objectif",
+      "day": "jour",
+      "days": "jours",
+      "d": "d"
+    }
+  },
+    "similarCampaigns": {
+    "title": "Vous pourriez aussi aimer",
+    "subtitle": "Découvrez plus de campagnes qui inspirent la générosité.",
+    "suggestion": "Suggéré",
+      "nearby": "À proximité",
+  "raised": "collectés"
+  },
+
   "featured": {
     "title": "Campagnes en Vedette",
     "subtitle": "Campagnes ayant un grand impact en ce moment",
@@ -210,7 +230,7 @@
     "campaignNotFound": "Campagne introuvable",
     "campaignNotFoundDescription": "La campagne que vous recherchez n'existe pas ou a été supprimée.",
     "noImagesAvailable": "Aucune image disponible",
-    "aboutTheOrganization": "À Propos de l'Organisation",
+    "organisation": "L'Organisation",
     "contactNumber": "Numéro de Contact",
     "address": "Adresse",
     "website": "Site Web",
@@ -288,17 +308,17 @@
     "validationMinAmount": "Veuillez entrer un montant de don valide (minimum 1 MRU)",
     "validationEmail": "Veuillez entrer une adresse email valide",
     "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site.",
-        "loginRequired": "Connexion Requise",
+    "loginRequired": "Connexion Requise",
     "loginDescription": "Veuillez vous connecter à votre compte pour faire un don et soutenir cette campagne.",
     "loginButton": "Se Connecter pour Continuer",
     "noAccount": "Vous n'avez pas de compte ?",
     "signUp": "Inscrivez-vous ici"
   },
-    "campaignDonationsMessage": {
+  "campaignDonationsMessage": {
     "title": "Liste des dons",
     "noDonations": "Aucun don pour cette campagne pour l'instant.",
     "anonymous": "Anonyme"
-    },
+  },
   "share": {
     "shareThisCampaign": "Partager cette campagne",
     "share": "Partager",
@@ -961,7 +981,7 @@
       "terms": "Conditions"
     },
     "dashboard": {
-      "verificationNotice":"Votre compte organisation n'est pas encore vérifié. Veuillez compléter la vérification pour accéder à toutes les fonctionnalités telles que la création de campagnes et de demandes de bénévolat.",
+      "verificationNotice": "Votre compte organisation n'est pas encore vérifié. Veuillez compléter la vérification pour accéder à toutes les fonctionnalités telles que la création de campagnes et de demandes de bénévolat.",
       "welcomeBack": "Bon retour, {{name}}",
       "organization": "Organisation",
       "overviewSubtitle": "Voici un aperçu de vos performances de collecte de fonds",
@@ -1114,8 +1134,8 @@
       "cancel": "Annuler",
       "delete": "Supprimer",
       "deleting": "Suppression en cours...",
-      "noEditDeleteBecauseDonations" : "Cette campagne a déjà des dons et ne peut pas être mise à jour ou supprimée.",
-      "failedToDelete":"Echec de la suppression",
+      "noEditDeleteBecauseDonations": "Cette campagne a déjà des dons et ne peut pas être mise à jour ou supprimée.",
+      "failedToDelete": "Echec de la suppression",
       "uncategorized": "Sans catégorie",
       "featured": "En vedette",
       "createdDate": "Créée le {{date}} • {{days}} jours active",

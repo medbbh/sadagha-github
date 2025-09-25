@@ -4,7 +4,7 @@ import api from '../axiosConfig';
 export const fetchMyVolunteerProfile = async () => {
   try {
     const response = await api.get('/volunteers/profiles/my_profile/');
-    console.log('My volunteer profile response:', response);
+    // console.log('My volunteer profile response:', response);
     return response;
   } catch (error) {
     console.error('Failed to fetch my volunteer profile:', error);

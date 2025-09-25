@@ -128,6 +128,27 @@
     "noCategories": "No categories available at the moment.",
     "unnamedCategory": "Unnamed Category"
   },
+  "recommendations": {
+    "title": "Recommended for You",
+    "subtitle": "Campaigns curated based on your interests and activity",
+    "viewMore": "View More Recommendations",
+    "campaign": {
+      "raised": "raised",
+      "goal": "Goal",
+      "day": "day",
+      "days": "days",
+      "d": "d"
+    }
+  },
+  "similarCampaigns": {
+    "title": "You might also like",
+    "subtitle": "Discover more campaigns that inspire generosity.",
+    "suggestion": "Suggested",
+    "nearby": "Nearby",
+    "raised": "raised"
+  },
+
+
   "featured": {
     "title": "Featured Campaigns",
     "subtitle": "Campaigns making a big impact right now",
@@ -210,7 +231,7 @@
     "campaignNotFound": "Campaign not found",
     "campaignNotFoundDescription": "The campaign you're looking for doesn't exist or has been removed.",
     "noImagesAvailable": "No images available",
-    "aboutTheOrganization": "About the Organization",
+    "organisation": "The organization",
     "contactNumber": "Contact Number",
     "address": "Address",
     "website": "Website",
@@ -961,7 +982,7 @@
       "terms": "Terms"
     },
     "dashboard": {
-      "verificationNotice":"Your organization account is not verified yet. Please complete verification to unlock all features such as creating campaigns and volunteer requests.",
+      "verificationNotice": "Your organization account is not verified yet. Please complete verification to unlock all features such as creating campaigns and volunteer requests.",
       "welcomeBack": "Welcome back, {{name}}",
       "organization": "Organization",
       "overviewSubtitle": "Here's an overview of your fundraising performance",
@@ -1114,8 +1135,8 @@
       "cancel": "Cancel",
       "delete": "Delete",
       "deleting": "Deleting...",
-          "noEditDeleteBecauseDonations": "This campaign already has donations and cannot be updated or deleted.",
-      "failedToDelete":"Failed to detele",
+      "noEditDeleteBecauseDonations": "This campaign already has donations and cannot be updated or deleted.",
+      "failedToDelete": "Failed to detele",
       "uncategorized": "Uncategorized",
       "featured": "Featured",
       "createdDate": "Created {{date}} • {{days}} days active",

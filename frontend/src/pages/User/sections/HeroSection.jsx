@@ -19,7 +19,7 @@ export function HeroSection() {
   const fetchUrgentCampaigns = async () => {
     try {
       const data = await getUrgentCampaigns();
-      console.log("Urgent Campaigns:", data);
+      // console.log("Urgent Campaigns:", data);
       setUrgentCampaigns(data.urgent_campaigns || []);
     } catch (err) {
       console.error("Failed to fetch urgent campaigns:", err);

@@ -1015,3 +1015,73 @@ def campaign_donations(request, campaign_id):
         {"donations": serializer.data},
         status=status.HTTP_200_OK
     )
+
+
+
+
+# New view functions to integrate with FastAPI microservice for recommendations
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def user_recommendations(request, user_id):
+    """
+    Get campaign recommendations for a user (via FastAPI + Django campaigns)
+    """
+    fastapi_url = f"{settings.FASTAPI_URL}/recommendations/{user_id}"
+    resp = requests.get(fastapi_url)
+
+    if resp.status_code != 200:
+        return Response(
+            {"error": "Failed to fetch from recommendation service"},
+            status=status.HTTP_502_BAD_GATEWAY
+        )
+
+    recommendations = resp.json().get("recommendations", [])
+    campaign_ids = [rec["campaign_id"] for rec in recommendations]
+
+    campaigns = Campaign.objects.filter(id__in=campaign_ids)
+    serializer = CampaignSerializer(campaigns, many=True)
+
+    # Merge recommendation metadata
+    enriched = []
+    for rec in recommendations:
+        campaign = next((c for c in serializer.data if c["id"] == rec["campaign_id"]), None)
+        if campaign:
+            campaign["score"] = rec["score"]
+            campaign["reason"] = rec["reason"]
+            enriched.append(campaign)
+
+    return Response({"user_id": user_id, "recommendations": enriched})
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def similar_campaigns(request, campaign_id):
+    """
+    Get similar campaigns for a given campaign (via FastAPI + Django campaigns)
+    """
+    fastapi_url = f"{settings.FASTAPI_URL}/recommendations/similar/{campaign_id}"
+    resp = requests.get(fastapi_url)
+
+    if resp.status_code != 200:
+        return Response(
+            {"error": "Failed to fetch from recommendation service"},
+            status=status.HTTP_502_BAD_GATEWAY
+        )
+
+    recommendations = resp.json().get("similar_campaigns", [])
+    campaign_ids = [rec["campaign_id"] for rec in recommendations]
+
+    campaigns = Campaign.objects.filter(id__in=campaign_ids)
+    serializer = CampaignSerializer(campaigns, many=True)
+
+    # Merge recommendation metadata
+    enriched = []
+    for rec in recommendations:
+        campaign = next((c for c in serializer.data if c["id"] == rec["campaign_id"]), None)
+        if campaign:
+            campaign["score"] = rec["score"]
+            campaign["reason"] = rec["reason"]
+            enriched.append(campaign)
+
+    return Response({"campaign_id": campaign_id, "similar_campaigns": enriched})
