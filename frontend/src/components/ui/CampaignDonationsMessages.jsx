@@ -43,7 +43,7 @@ const CampaignDonationsMessages = ({ campaignId }) => {
     }
 
     return (
-        <div className="my  -6 bg-white rounded-xl shadow p-4 sm:p-6">
+        <div className="my-6 max-h-64 overflow-auto bg-white rounded-xl shadow p-4 sm:p-6">
             <ul className="divide-y divide-gray-200">
                 {donations.map((donation) => (
                     <li key={donation.id} className="py-3 flex justify-between items-start">

@@ -314,11 +314,13 @@
     "noAccount": "Vous n'avez pas de compte ?",
     "signUp": "Inscrivez-vous ici"
   },
-  "campaignDonationsMessage": {
-    "title": "Liste des dons",
-    "noDonations": "Aucun don pour cette campagne pour l'instant.",
-    "anonymous": "Anonyme"
-  },
+"campaignDonationsMessage": {
+  "noDonations": "Aucun don pour le moment",
+  "anonymous": "Anonyme",
+  "recentDonors": "Donateurs Récents",
+  "viewAll": "Voir Tout",
+  "allDonors": "Tous les Donateurs"
+},
   "share": {
     "shareThisCampaign": "Partager cette campagne",
     "share": "Partager",

@@ -108,7 +108,6 @@ export const usePayment = () => {
       // Enhanced security - verify origin
       const allowedOrigins = [
         'https://next-remitly-frontend.vercel.app', 
-        'https://nextremitly.com',
         window.location.origin // Allow same origin
       ];
       

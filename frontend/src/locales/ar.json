@@ -283,7 +283,7 @@
     "of": "من",
     "goal": "الهدف",
     "funded": "ممول",
-    "supporters": "مؤيدين",
+    "supporters": "متبرعين",
     "toGo": "متبقي",
     "chooseDonationAmount": "اختر مبلغ تبرعك",
     "customAmount": "مبلغ مخصص",
@@ -313,11 +313,13 @@
     "noAccount": "ليس لديك حساب؟",
     "signUp": "سجل هنا"
   },
-  "campaignDonationsMessage": {
-    "title": "قائمة التبرعات",
-    "noDonations": "لا توجد تبرعات لهذه الحملة بعد.",
-    "anonymous": "مجهول"
-  },
+"campaignDonationsMessage": {
+  "noDonations": "لا توجد تبرعات بعد",
+  "anonymous": "مجهول",
+  "recentDonors": "المتبرعون الأخيرون",
+  "viewAll": "عرض الكل",
+  "allDonors": "جميع المتبرعين"
+},
   "share": {
     "shareThisCampaign": "شارك هذه الحملة",
     "share": "مشاركة",

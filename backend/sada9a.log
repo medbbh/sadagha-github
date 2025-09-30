@@ -1720,3 +1720,513 @@ INFO 2025-09-24 11:50:08,601 supabase_storage 15280 14356 Supabase client initia
 INFO 2025-09-24 11:50:12,947 supabase_storage 416 1160 Supabase client initialized with URL: https://zzkggackkiir...
 INFO 2025-09-24 11:50:21,045 supabase_storage 22280 9300 Supabase client initialized with URL: https://zzkggackkiir...
 INFO 2025-09-25 09:56:49,722 supabase_storage 20752 6020 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-25 11:17:48,056 views 20752 12660 === CREATE DONATION REQUEST ===
+INFO 2025-09-25 11:17:48,056 views 20752 12660 Campaign ID: 24
+INFO 2025-09-25 11:17:48,058 views 20752 12660 Content-Type: application/json
+INFO 2025-09-25 11:17:48,058 views 20752 12660 Request method: POST
+INFO 2025-09-25 11:17:48,060 views 20752 12660 Raw body: b'{"amount":25000.02,"donor_name":"med yahya","message":"tewvi9","is_anonymous":false}'
+INFO 2025-09-25 11:17:48,061 views 20752 12660 Parsed data: {'amount': 25000.02, 'donor_name': 'med yahya', 'message': 'tewvi9', 'is_anonymous': False}
+INFO 2025-09-25 11:17:48,062 views 20752 12660 Headers: {'Content-Length': '84', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU4ODgzMjk0LCJpYXQiOjE3NTg2MjQwOTQsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.jTnSZEuK1l4-tDNNFIce_hd6zv5ngRozhx3KHgrGGDM', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-25 11:17:48,465 views 20752 12660 Validated data: {'amount': Decimal('25000.02'), 'donor_name': 'med yahya', 'message': 'tewvi9', 'is_anonymous': False}
+INFO 2025-09-25 11:17:49,133 views 20752 12660 Created donation record: 63
+INFO 2025-09-25 11:17:53,294 payment_service 20752 12660 Creating payment session for campaign 24, amount: 25000.02 MRU
+INFO 2025-09-25 11:17:54,265 payment_service 20752 12660 NextRemitly response status: 201
+INFO 2025-09-25 11:17:54,266 payment_service 20752 12660 Payment session creation successful: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:17:54,365 views 20752 12660 Payment session created successfully: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:17:55,564 payment_service 20752 12660 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:17:57,730 views 20752 12660 Synced donation 63: processing -> pending
+INFO 2025-09-25 11:18:09,798 payment_service 20752 12660 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:18:23,336 payment_service 20752 12660 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:18:37,251 payment_service 20752 12660 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:18:51,650 payment_service 20752 12660 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:19:04,553 payment_service 20752 6388 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:19:18,031 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:19:34,299 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:19:50,580 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:20:05,123 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:20:21,711 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:20:34,190 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:20:47,293 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:21:00,232 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:21:13,628 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:21:31,553 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:21:54,381 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:22:07,281 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:22:20,976 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:22:35,589 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:22:48,309 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:23:01,354 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:23:14,874 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:23:28,893 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:23:42,927 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:23:56,643 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:24:09,545 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:24:23,245 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:24:36,287 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-25 11:24:49,585 payment_service 20752 16108 Getting payment status for session: b210225f-7206-4e83-990b-301cc4573052
+INFO 2025-09-29 11:44:56,629 supabase_storage 11768 19816 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-29 11:45:53,838 views 11768 19252 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 11:45:53,840 views 11768 19252 Campaign ID: 33
+INFO 2025-09-29 11:45:53,840 views 11768 19252 Content-Type: application/json
+INFO 2025-09-29 11:45:53,841 views 11768 19252 Request method: POST
+INFO 2025-09-29 11:45:53,841 views 11768 19252 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 11:45:53,842 views 11768 19252 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 11:45:53,843 views 11768 19252 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 11:45:54,327 views 11768 19252 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 11:45:54,696 views 11768 19252 Created donation record: 64
+INFO 2025-09-29 11:45:56,560 payment_service 11768 19252 Creating payment session for campaign 33, amount: 500.0 MRU
+INFO 2025-09-29 11:45:58,284 payment_service 11768 19252 NextRemitly response status: 201
+INFO 2025-09-29 11:45:58,286 payment_service 11768 19252 Payment session creation successful: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:45:58,488 views 11768 19252 Payment session created successfully: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:45:59,894 payment_service 11768 19252 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:46:01,766 views 11768 19252 Synced donation 64: processing -> pending
+INFO 2025-09-29 11:46:13,336 payment_service 11768 19252 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:46:26,136 payment_service 11768 19252 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:46:35,558 views 11768 3704 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 11:46:35,558 views 11768 3704 Campaign ID: 33
+INFO 2025-09-29 11:46:35,559 views 11768 3704 Content-Type: application/json
+INFO 2025-09-29 11:46:35,560 views 11768 3704 Request method: POST
+INFO 2025-09-29 11:46:35,560 views 11768 3704 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":false}'
+INFO 2025-09-29 11:46:35,561 views 11768 3704 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-09-29 11:46:35,563 views 11768 3704 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+ERROR 2025-09-29 11:46:36,176 views 11768 3704 Invalid request data: {'non_field_errors': [ErrorDetail(string='Please provide either your email or name, or make the donation anonymous', code='invalid')]}
+INFO 2025-09-29 11:46:38,733 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:46:46,719 views 11768 3704 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 11:46:46,720 views 11768 3704 Campaign ID: 33
+INFO 2025-09-29 11:46:46,721 views 11768 3704 Content-Type: application/json
+INFO 2025-09-29 11:46:46,721 views 11768 3704 Request method: POST
+INFO 2025-09-29 11:46:46,721 views 11768 3704 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 11:46:46,723 views 11768 3704 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 11:46:46,724 views 11768 3704 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 11:46:47,242 views 11768 3704 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 11:46:47,507 views 11768 3704 Created donation record: 65
+INFO 2025-09-29 11:46:48,768 payment_service 11768 3704 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 11:46:49,486 payment_service 11768 3704 NextRemitly response status: 201
+INFO 2025-09-29 11:46:49,486 payment_service 11768 3704 Payment session creation successful: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:46:49,585 views 11768 3704 Payment session created successfully: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:46:50,821 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:46:51,238 payment_service 11768 19252 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:46:52,249 views 11768 3704 Synced donation 65: processing -> pending
+INFO 2025-09-29 11:47:04,884 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:47:04,885 payment_service 11768 19252 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:47:18,359 payment_service 11768 19252 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:47:18,360 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:47:31,568 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:47:31,569 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:47:44,372 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:47:44,373 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:47:57,347 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:47:57,348 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:48:10,483 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:48:10,484 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:48:23,283 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:48:23,283 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:48:36,489 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:48:36,490 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:48:50,627 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:48:50,628 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:49:04,450 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:49:04,561 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:49:17,450 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:49:17,450 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:49:30,353 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:49:30,354 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:49:43,668 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:49:43,669 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:49:57,601 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:49:57,602 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:50:11,419 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:50:11,420 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:50:24,113 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:50:24,114 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:50:37,134 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:50:37,134 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:50:49,918 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:50:50,033 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:03,535 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:51:03,536 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:17,574 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:51:17,575 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:30,378 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:30,379 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:51:44,449 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:51:44,450 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:58,422 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:51:58,422 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:52:11,235 payment_service 11768 3704 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:52:11,236 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:52:25,661 payment_service 11768 9724 Getting payment status for session: 78a2a667-02b2-4d4e-b69b-442bf32ebd65
+INFO 2025-09-29 11:52:25,663 payment_service 11768 3704 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:52:39,175 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:52:52,693 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:53:06,105 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 11:53:22,371 payment_service 11768 9724 Getting payment status for session: 9a2aa3f5-2e99-4fe3-96db-6ab70f415c44
+INFO 2025-09-29 12:04:01,156 views 11768 24412 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 12:04:01,157 views 11768 24412 Campaign ID: 33
+INFO 2025-09-29 12:04:01,158 views 11768 24412 Content-Type: application/json
+INFO 2025-09-29 12:04:01,158 views 11768 24412 Request method: POST
+INFO 2025-09-29 12:04:01,158 views 11768 24412 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":false}'
+INFO 2025-09-29 12:04:01,159 views 11768 24412 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-09-29 12:04:01,159 views 11768 24412 Headers: {'Content-Length': '64', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+ERROR 2025-09-29 12:04:01,689 views 11768 24412 Invalid request data: {'non_field_errors': [ErrorDetail(string='Please provide either your email or name, or make the donation anonymous', code='invalid')]}
+INFO 2025-09-29 12:04:04,533 views 11768 24412 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 12:04:04,536 views 11768 24412 Campaign ID: 33
+INFO 2025-09-29 12:04:04,537 views 11768 24412 Content-Type: application/json
+INFO 2025-09-29 12:04:04,538 views 11768 24412 Request method: POST
+INFO 2025-09-29 12:04:04,539 views 11768 24412 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 12:04:04,540 views 11768 24412 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:04:04,542 views 11768 24412 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 12:04:05,184 views 11768 24412 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:04:05,560 views 11768 24412 Created donation record: 66
+INFO 2025-09-29 12:04:07,205 payment_service 11768 24412 Creating payment session for campaign 33, amount: 500.0 MRU
+INFO 2025-09-29 12:04:08,017 payment_service 11768 24412 NextRemitly response status: 201
+INFO 2025-09-29 12:04:08,018 payment_service 11768 24412 Payment session creation successful: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:04:08,221 views 11768 24412 Payment session created successfully: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:04:09,575 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:04:11,379 views 11768 24412 Synced donation 66: processing -> pending
+INFO 2025-09-29 12:04:23,069 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:04:36,161 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:04:49,589 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:05:03,411 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:05:16,728 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:05:30,649 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:05:44,474 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:05:57,378 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:06:10,484 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:06:23,086 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:06:36,591 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:06:50,931 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:07:04,453 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:07:18,169 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:07:32,523 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:07:46,852 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:08:00,358 payment_service 11768 24412 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:08:13,274 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:08:26,026 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:08:39,478 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:08:53,301 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:09:07,740 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:09:21,665 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:09:35,399 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:09:49,209 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:10:03,752 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:10:17,657 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:10:31,409 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:10:45,121 payment_service 11768 1476 Getting payment status for session: aa33bf03-1bcc-46b9-97fa-0a0663cd6d45
+INFO 2025-09-29 12:18:24,889 views 11768 20556 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 12:18:24,890 views 11768 20556 Campaign ID: 33
+INFO 2025-09-29 12:18:24,890 views 11768 20556 Content-Type: application/json
+INFO 2025-09-29 12:18:24,891 views 11768 20556 Request method: POST
+INFO 2025-09-29 12:18:24,891 views 11768 20556 Raw body: b'{"amount":250,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 12:18:24,892 views 11768 20556 Parsed data: {'amount': 250, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:18:24,892 views 11768 20556 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 12:18:25,413 views 11768 20556 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:18:25,712 views 11768 20556 Created donation record: 67
+INFO 2025-09-29 12:18:26,948 payment_service 11768 20556 Creating payment session for campaign 33, amount: 250.0 MRU
+INFO 2025-09-29 12:18:27,658 payment_service 11768 20556 NextRemitly response status: 201
+INFO 2025-09-29 12:18:27,660 payment_service 11768 20556 Payment session creation successful: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:18:27,859 views 11768 20556 Payment session created successfully: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:18:29,199 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:18:30,829 views 11768 20556 Synced donation 67: processing -> pending
+INFO 2025-09-29 12:18:42,104 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:18:55,217 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:19:08,455 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:19:21,619 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:19:35,548 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:19:48,450 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:20:01,147 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:20:14,253 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:20:27,259 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:20:40,261 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:20:53,508 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:21:06,140 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:21:19,173 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:21:32,192 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:21:45,207 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:21:58,289 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:22:11,443 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:22:25,323 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:22:38,534 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:22:51,240 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:23:04,525 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:23:18,673 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:23:32,091 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:23:45,198 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:23:58,815 payment_service 11768 20556 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:24:12,435 payment_service 11768 23512 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:24:25,540 payment_service 11768 23512 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:24:38,058 payment_service 11768 23512 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:24:51,345 payment_service 11768 23512 Getting payment status for session: ec9f9b9f-161b-4fc2-b641-ea9b539a85ef
+INFO 2025-09-29 12:27:35,492 views 11768 23512 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 12:27:35,493 views 11768 23512 Campaign ID: 33
+INFO 2025-09-29 12:27:35,493 views 11768 23512 Content-Type: application/json
+INFO 2025-09-29 12:27:35,494 views 11768 23512 Request method: POST
+INFO 2025-09-29 12:27:35,494 views 11768 23512 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 12:27:35,495 views 11768 23512 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:27:35,496 views 11768 23512 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 12:27:36,116 views 11768 23512 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:27:36,516 views 11768 23512 Created donation record: 68
+INFO 2025-09-29 12:27:37,743 payment_service 11768 23512 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 12:27:38,422 payment_service 11768 23512 NextRemitly response status: 201
+INFO 2025-09-29 12:27:38,423 payment_service 11768 23512 Payment session creation successful: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:27:38,564 views 11768 23512 Payment session created successfully: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:27:39,695 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:27:41,121 views 11768 23512 Synced donation 68: processing -> pending
+INFO 2025-09-29 12:27:52,898 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:28:05,911 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:28:19,371 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:28:32,734 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:28:46,456 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:28:59,559 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:29:13,604 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:29:27,619 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:29:40,781 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:29:54,859 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:30:08,485 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:30:22,507 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:30:35,613 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:30:48,307 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:31:01,828 payment_service 11768 23512 Getting payment status for session: 32395a9a-865f-4c22-82b6-0b2c6f416f91
+INFO 2025-09-29 12:46:48,405 views 11768 2836 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 12:46:48,407 views 11768 2836 Campaign ID: 33
+INFO 2025-09-29 12:46:48,407 views 11768 2836 Content-Type: application/json
+INFO 2025-09-29 12:46:48,408 views 11768 2836 Request method: POST
+INFO 2025-09-29 12:46:48,412 views 11768 2836 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 12:46:48,415 views 11768 2836 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:46:48,416 views 11768 2836 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 12:46:49,244 views 11768 2836 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 12:46:49,630 views 11768 2836 Created donation record: 69
+INFO 2025-09-29 12:46:51,283 payment_service 11768 2836 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 12:46:51,987 payment_service 11768 2836 NextRemitly response status: 201
+INFO 2025-09-29 12:46:51,988 payment_service 11768 2836 Payment session creation successful: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:46:52,092 views 11768 2836 Payment session created successfully: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:46:53,318 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:46:55,059 views 11768 2836 Synced donation 69: processing -> pending
+INFO 2025-09-29 12:47:07,657 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:47:21,680 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:47:35,424 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:47:50,561 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:48:03,972 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:48:17,696 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:48:31,321 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:48:45,565 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:49:00,294 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:49:14,323 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:49:27,735 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:49:41,155 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:49:54,159 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:50:07,363 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:50:20,369 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:50:33,288 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:50:46,281 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:50:59,589 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:51:13,123 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:51:26,315 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:51:40,653 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:51:54,476 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:52:08,192 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:52:22,707 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:52:37,588 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:52:51,280 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:53:05,030 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:53:18,443 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 12:53:32,679 payment_service 11768 2836 Getting payment status for session: 150efd60-f1fc-4e8f-8130-a8030ec9e8aa
+INFO 2025-09-29 13:14:52,969 views 11768 10304 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 13:14:52,971 views 11768 10304 Campaign ID: 33
+INFO 2025-09-29 13:14:52,971 views 11768 10304 Content-Type: application/json
+INFO 2025-09-29 13:14:52,972 views 11768 10304 Request method: POST
+INFO 2025-09-29 13:14:52,972 views 11768 10304 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 13:14:52,973 views 11768 10304 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 13:14:52,973 views 11768 10304 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 13:14:53,504 views 11768 10304 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 13:14:54,038 views 11768 10304 Created donation record: 70
+INFO 2025-09-29 13:14:55,230 payment_service 11768 10304 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 13:14:55,945 payment_service 11768 10304 NextRemitly response status: 201
+INFO 2025-09-29 13:14:55,946 payment_service 11768 10304 Payment session creation successful: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:14:56,067 views 11768 10304 Payment session created successfully: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:14:57,307 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:14:58,792 views 11768 10304 Synced donation 70: processing -> pending
+INFO 2025-09-29 13:15:10,184 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:15:23,485 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:15:36,725 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:15:50,108 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:16:03,529 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:16:16,324 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:16:29,533 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:16:42,127 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:16:55,192 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:17:08,341 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:17:21,657 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:17:34,454 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:17:47,356 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:18:00,054 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:18:13,367 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:18:26,165 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:18:39,477 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:18:52,484 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:19:05,282 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:19:18,798 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:19:32,932 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:19:46,446 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:19:59,566 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:20:12,044 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:20:13,686 views 11768 10304 Synced donation 70: pending -> authenticated
+INFO 2025-09-29 13:20:25,141 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:20:26,893 views 11768 10304 Synced donation 70: authenticated -> wallet_selected
+INFO 2025-09-29 13:20:39,284 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:20:52,250 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:21:05,176 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 13:21:18,405 payment_service 11768 10304 Getting payment status for session: 76c367c6-5ad1-4818-814c-683d42abf7b2
+INFO 2025-09-29 15:24:56,423 views 11768 5884 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 15:24:56,424 views 11768 5884 Campaign ID: 33
+INFO 2025-09-29 15:24:56,425 views 11768 5884 Content-Type: application/json
+INFO 2025-09-29 15:24:56,425 views 11768 5884 Request method: POST
+INFO 2025-09-29 15:24:56,426 views 11768 5884 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 15:24:56,427 views 11768 5884 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:24:56,428 views 11768 5884 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 15:24:57,051 views 11768 5884 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:24:57,445 views 11768 5884 Created donation record: 71
+INFO 2025-09-29 15:25:09,640 payment_service 11768 5884 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 15:25:10,262 payment_service 11768 5884 NextRemitly response status: 201
+INFO 2025-09-29 15:25:10,263 payment_service 11768 5884 Payment session creation successful: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:10,448 views 11768 5884 Payment session created successfully: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:11,679 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:13,114 views 11768 5884 Synced donation 71: processing -> pending
+INFO 2025-09-29 15:25:24,890 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:37,037 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:50,267 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:25:51,452 views 11768 5884 Synced donation 71: pending -> authenticated
+INFO 2025-09-29 15:26:03,307 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:26:16,396 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:26:29,411 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:26:42,357 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:26:55,037 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:27:08,619 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:27:20,857 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:27:33,830 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:27:46,611 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:27:59,513 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:28:12,720 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:28:26,953 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:28:40,135 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:28:52,991 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:29:06,896 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:29:20,928 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:29:34,540 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:29:46,896 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+INFO 2025-09-29 15:29:59,320 payment_service 11768 5884 Getting payment status for session: 78df9e3f-6fc8-489d-97e2-e20f242ef75e
+ERROR 2025-09-29 15:30:23,073 payment_service 11768 5884 Error getting payment status: HTTPSConnectionPool(host='nextremitly-backend-fe52128f2003.herokuapp.com', port=443): Max retries exceeded with url: /api/payment/sessions/78df9e3f-6fc8-489d-97e2-e20f242ef75e/ (Caused by ResponseError('too many 500 error responses'))
+INFO 2025-09-29 15:30:58,608 views 11768 5884 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 15:30:58,609 views 11768 5884 Campaign ID: 33
+INFO 2025-09-29 15:30:58,609 views 11768 5884 Content-Type: application/json
+INFO 2025-09-29 15:30:58,610 views 11768 5884 Request method: POST
+INFO 2025-09-29 15:30:58,611 views 11768 5884 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 15:30:58,613 views 11768 5884 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:30:58,614 views 11768 5884 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 15:30:59,133 views 11768 5884 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:30:59,528 views 11768 5884 Created donation record: 72
+ERROR 2025-09-29 15:31:21,974 views 11768 5884 Payment session creation failed: Cannot connect to payment service. Please check API key.
+INFO 2025-09-29 15:31:33,286 views 11768 5884 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 15:31:33,287 views 11768 5884 Campaign ID: 33
+INFO 2025-09-29 15:31:33,288 views 11768 5884 Content-Type: application/json
+INFO 2025-09-29 15:31:33,288 views 11768 5884 Request method: POST
+INFO 2025-09-29 15:31:33,289 views 11768 5884 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 15:31:33,289 views 11768 5884 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:31:33,290 views 11768 5884 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 15:31:33,559 views 11768 5884 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:31:33,725 views 11768 5884 Created donation record: 73
+ERROR 2025-09-29 15:31:54,924 views 11768 5884 Payment session creation failed: Cannot connect to payment service. Please check API key.
+INFO 2025-09-29 15:33:05,684 views 11768 10000 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 15:33:05,686 views 11768 10000 Campaign ID: 33
+INFO 2025-09-29 15:33:05,688 views 11768 10000 Content-Type: application/json
+INFO 2025-09-29 15:33:05,689 views 11768 10000 Request method: POST
+INFO 2025-09-29 15:33:05,690 views 11768 10000 Raw body: b'{"amount":250,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 15:33:05,692 views 11768 10000 Parsed data: {'amount': 250, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:33:05,697 views 11768 10000 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 15:33:06,314 views 11768 10000 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 15:33:06,709 views 11768 10000 Created donation record: 74
+ERROR 2025-09-29 15:33:28,724 views 11768 10000 Payment session creation failed: Cannot connect to payment service. Please check API key.
+INFO 2025-09-29 16:30:33,682 views 11768 20196 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 16:30:33,684 views 11768 20196 Campaign ID: 33
+INFO 2025-09-29 16:30:33,685 views 11768 20196 Content-Type: application/json
+INFO 2025-09-29 16:30:33,686 views 11768 20196 Request method: POST
+INFO 2025-09-29 16:30:33,686 views 11768 20196 Raw body: b'{"amount":250,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 16:30:33,687 views 11768 20196 Parsed data: {'amount': 250, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:30:33,688 views 11768 20196 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 16:30:34,191 views 11768 20196 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:30:34,585 views 11768 20196 Created donation record: 75
+INFO 2025-09-29 16:30:35,565 payment_service 11768 20196 Creating payment session for campaign 33, amount: 250.0 MRU
+INFO 2025-09-29 16:30:35,721 payment_service 11768 20196 NextRemitly response status: 201
+INFO 2025-09-29 16:30:35,722 payment_service 11768 20196 Payment session creation successful: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:30:35,821 views 11768 20196 Payment session created successfully: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:30:36,950 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:30:37,962 views 11768 20196 Synced donation 75: processing -> pending
+INFO 2025-09-29 16:30:49,531 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:31:02,543 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:31:15,531 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:31:29,794 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:31:33,772 views 11768 20196 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 16:31:33,773 views 11768 20196 Campaign ID: 33
+INFO 2025-09-29 16:31:33,776 views 11768 20196 Content-Type: application/json
+INFO 2025-09-29 16:31:33,777 views 11768 20196 Request method: POST
+INFO 2025-09-29 16:31:33,778 views 11768 20196 Raw body: b'{"amount":250,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 16:31:33,779 views 11768 20196 Parsed data: {'amount': 250, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:31:33,782 views 11768 20196 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 16:31:34,418 views 11768 20196 Validated data: {'amount': Decimal('250.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:31:34,692 views 11768 20196 Created donation record: 76
+INFO 2025-09-29 16:31:36,336 payment_service 11768 20196 Creating payment session for campaign 33, amount: 250.0 MRU
+INFO 2025-09-29 16:31:36,549 payment_service 11768 20196 NextRemitly response status: 201
+INFO 2025-09-29 16:31:36,553 payment_service 11768 20196 Payment session creation successful: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:31:36,651 views 11768 20196 Payment session created successfully: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:31:39,059 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:31:40,460 views 11768 20196 Synced donation 76: processing -> pending
+INFO 2025-09-29 16:31:42,008 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:31:51,394 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:31:54,870 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:32:03,485 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:32:07,247 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:32:15,551 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:32:19,509 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:32:28,134 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:32:31,831 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:32:40,876 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:32:45,356 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:32:54,159 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:32:57,820 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:33:06,923 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:33:10,810 payment_service 11768 4376 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:33:22,482 payment_service 11768 4376 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:33:24,159 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:33:35,529 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:33:37,280 payment_service 11768 4376 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:33:48,123 payment_service 11768 4376 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:33:49,811 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:34:00,856 payment_service 11768 20196 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:34:01,811 payment_service 11768 4376 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:34:13,921 payment_service 11768 4376 Getting payment status for session: 12e85372-52bd-46ee-90dc-95d4f690bbbc
+INFO 2025-09-29 16:34:14,808 payment_service 11768 20196 Getting payment status for session: 69db6f97-4752-493e-8576-dce8aa22a2c4
+INFO 2025-09-29 16:34:22,737 views 11768 20196 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 16:34:22,738 views 11768 20196 Campaign ID: 33
+INFO 2025-09-29 16:34:22,739 views 11768 20196 Content-Type: application/json
+INFO 2025-09-29 16:34:22,741 views 11768 20196 Request method: POST
+INFO 2025-09-29 16:34:22,743 views 11768 20196 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":false}'
+INFO 2025-09-29 16:34:22,744 views 11768 20196 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': False}
+INFO 2025-09-29 16:34:22,746 views 11768 20196 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+ERROR 2025-09-29 16:34:23,159 views 11768 20196 Invalid request data: {'non_field_errors': [ErrorDetail(string='Please provide either your email or name, or make the donation anonymous', code='invalid')]}
+INFO 2025-09-29 16:34:49,049 views 11768 13564 === CREATE DONATION REQUEST ===
+INFO 2025-09-29 16:34:49,050 views 11768 13564 Campaign ID: 33
+INFO 2025-09-29 16:34:49,051 views 11768 13564 Content-Type: application/json
+INFO 2025-09-29 16:34:49,051 views 11768 13564 Request method: POST
+INFO 2025-09-29 16:34:49,052 views 11768 13564 Raw body: b'{"amount":25,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-29 16:34:49,052 views 11768 13564 Parsed data: {'amount': 25, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:34:49,053 views 11768 13564 Headers: {'Content-Length': '62', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-29 16:34:49,583 views 11768 13564 Validated data: {'amount': Decimal('25.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-29 16:34:49,968 views 11768 13564 Created donation record: 77
+INFO 2025-09-29 16:34:52,229 payment_service 11768 13564 Creating payment session for campaign 33, amount: 25.0 MRU
+INFO 2025-09-29 16:34:52,427 payment_service 11768 13564 NextRemitly response status: 201
+INFO 2025-09-29 16:34:52,428 payment_service 11768 13564 Payment session creation successful: ccc03ccc-c307-489e-ac3b-d47d601cd97a
+INFO 2025-09-29 16:34:52,529 views 11768 13564 Payment session created successfully: ccc03ccc-c307-489e-ac3b-d47d601cd97a
+INFO 2025-09-29 16:34:53,688 payment_service 11768 13564 Getting payment status for session: ccc03ccc-c307-489e-ac3b-d47d601cd97a
+INFO 2025-09-29 16:34:55,177 views 11768 13564 Synced donation 77: processing -> pending
+INFO 2025-09-29 16:35:06,219 payment_service 11768 22544 Getting payment status for session: ccc03ccc-c307-489e-ac3b-d47d601cd97a
+INFO 2025-09-30 09:11:11,535 supabase_storage 11768 15644 Supabase client initialized with URL: https://zzkggackkiir...

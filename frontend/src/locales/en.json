@@ -315,11 +315,14 @@
     "noAccount": "Don't have an account?",
     "signUp": "Sign up here"
   },
-  "campaignDonationsMessage": {
-    "title": "Donations List",
-    "noDonations": "No donations for this campaign yet.",
-    "anonymous": "Anonymous"
-  },
+"campaignDonationsMessage": {
+  "noDonations": "No donations yet",
+  "anonymous": "Anonymous",
+  "recentDonors": "Recent Donors",
+  "viewAll": "View All",
+  "allDonors": "All Donors"
+},
+  
   "share": {
     "shareThisCampaign": "Share This Campaign",
     "share": "Share",

@@ -194,14 +194,24 @@ export default function CampaignDetail() {
           </div>
 
           {/* Social Share Button */}
-          <ShareButton
+          {/* <ShareButton
             campaign={campaign}
             variant="full"
             showPreview={true}
             showMetaTags={true}
             className="shadow-sm"
             platforms={['facebook', 'twitter', 'whatsapp']}
-          />
+          /> */}
+                      <div>
+              <ShareButton
+                campaign={campaign}
+                variant="compact"
+                showPreview={false}
+                showMetaTags={false}
+                className="shadow-sm"
+                platforms={['facebook', 'twitter', 'whatsapp']}
+              />
+            </div>
 
           {/* Organization Information Card */}
           {campaign.organization && (
@@ -234,18 +244,6 @@ export default function CampaignDetail() {
               />
             </div>
 
-
-            {/* Compact Share Button in Sidebar */}
-            <div>
-              <ShareButton
-                campaign={campaign}
-                variant="compact"
-                showPreview={false}
-                showMetaTags={false}
-                className="shadow-sm"
-                platforms={['facebook', 'twitter', 'whatsapp']}
-              />
-            </div>
           </div>
 
 
@@ -282,17 +280,22 @@ function OrganizationInfoCard({ organization, paymentNumbers, onCopyPaymentNumbe
         {/* Organization Name and Description */}
 
         <div className="mb-6 flex items-center ">
-            <img src={organization.profile_image_url} alt={organization.org_name} className="w-20 h-20 object-cover rounded-full mr-4" />
-            <div className="flex-1">
+          <img src={organization.profile_image_url} alt={organization.org_name} className="w-20 h-20 object-cover rounded-full mr-4" />
+          <div className="flex-1">
             <div className={`text-lg flex gap-1 font-semibold text-gray-900 mb-2 ${isRTL ? 'text-right' : 'text-left'}`}>
               <h3>{organization.org_name}</h3>
-              <Link to={`/organizations/${organization.id}`} className="text-blue-600 hover:underline flex items-center">
+              <a
+                href={`/organizations/${organization.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline flex items-center"
+              >
                 <ExternalLink className="w-4 h-4 ml-1" />
-              </Link>
+              </a>
             </div>
             {/* description under the org name  */}
             <span className={`text-gray-600 text-sm ${isRTL ? 'text-right' : 'text-left'}`}>{organization.description}</span>
-            </div>
+          </div>
         </div>
 
       </div>

@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import CelebrationAnimation from './CelebrationOverlay';
 import { useAuth } from '../../contexts/AuthContext';
 import CampaignDonationsMessages from './CampaignDonationsMessages';
+import CombinedProgressDonors from './CombinedProgressDonors';
 
 
 export default function DonationForm({
@@ -292,7 +293,6 @@ export default function DonationForm({
 
       const allowedOrigins = [
         'https://next-remitly-frontend.vercel.app',
-        'https://nextremitly.com',
         window.location.origin
       ];
 
@@ -519,221 +519,162 @@ export default function DonationForm({
     <>
       {user ?
 
-        (
-          <div className={`p-6 bg-white rounded-xl shadow-lg border border-gray-100 relative ${isRTL ? 'text-end' : 'text-start'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-            {/* Celebration Animation */}
-            <CelebrationAnimation
-              isVisible={showCelebration}
-              duration={4000}
-              type="confetti"
-              intensity="medium"
-            />
+        <div className={`p-4 sm:p-6 bg-white rounded-xl shadow-lg border border-gray-100 relative ${isRTL ? 'text-end' : 'text-start'}`} dir={isRTL ? 'rtl' : 'ltr'}>
+  {/* Celebration Animation */}
+  <CelebrationAnimation
+    isVisible={showCelebration}
+    duration={4000}
+    type="confetti"
+    intensity="medium"
+  />
 
+  <div className="mb-4">
+    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 flex items-center">
+      <Heart className={`w-5 h-5 sm:w-6 sm:h-6 text-red-500 ${isRTL ? 'ms-2' : 'me-2'}`} />
+      {t('donationForm.supportThisCampaign')}
+    </h2>
+    <p className="text-sm text-gray-600">{t('donationForm.makeDifference')}</p>
+  </div>
 
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center">
-                <Heart className={`w-6 h-6 text-red-500 ${isRTL ? 'ms-2' : 'me-2'}`} />
-                {t('donationForm.supportThisCampaign')}
-              </h2>
-              <p className="text-gray-600">{t('donationForm.makeDifference')}</p>
-            </div>
+  {/* Success Message */}
+  {showSuccessMessage && (
+    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
+      <CheckCircle className={`w-5 h-5 text-green-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
+      <div>
+        <p className="text-green-800 font-medium text-sm">{t('donationForm.thankyouDonation')}</p>
+        <p className="text-green-700 text-xs">{t('donationForm.redirectingSuccess')}</p>
+      </div>
+    </div>
+  )}
 
-            {/* Success Message */}
-            {showSuccessMessage && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
-                <CheckCircle className={`w-5 h-5 text-green-600 ${isRTL ? 'ms-2' : 'me-2'}`} />
-                <div>
-                  <p className="text-green-800 font-medium">{t('donationForm.thankyouDonation')}</p>
-                  <p className="text-green-700 text-sm">{t('donationForm.redirectingSuccess')}</p>
-                </div>
-              </div>
-            )}
+  {/* Combined Progress & Donors */}
+  <CombinedProgressDonors
+    campaignId={campaignId}
+    currentAmount={currentAmount}
+    targetAmount={targetAmount}
+    donorsCount={donorsCount}
+    isRTL={isRTL}
+  />
 
-            {/* Payment Options */}
+  {/* Polling Message */}
+  {pollingMessage && (
+    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+      <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`}></div>
+      <p className="text-sm text-blue-700">{pollingMessage}</p>
+    </div>
+  )}
 
+  {/* Error Display */}
+  {error && (
+    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
+      <AlertCircle className={`w-5 h-5 text-red-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
+      <p className="text-sm text-red-700">{error}</p>
+    </div>
+  )}
 
-            {/* Progress Summary */}
-            <div className="mb-6 bg-gray-50 border border-gray-200 p-5 rounded-xl">
-              <div className="flex justify-between items-center mb-3">
-                <div>
-                  <p className="text-lg font-bold text-gray-900">{currentAmount || 0} MRU</p>
-                  <p className="text-sm text-gray-600">
-                    {t('donationForm.raised')} {t('donationForm.of')} {targetAmount || 0} MRU {t('donationForm.goal')}
-                  </p>
-                </div>
-                <div className="text-end">
-                  <p className="text-lg font-bold text-blue-600">{(progress || 0).toFixed(1)}%</p>
-                  <p className="text-sm text-gray-600">{t('donationForm.funded')}</p>
-                </div>
-              </div>
+  {/* Donation Amount - Compact */}
+  <div className="mb-4">
+    <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.chooseDonationAmount')}</h3>
 
+    {/* Quick amounts in 2 rows on mobile, 1 row on desktop */}
+    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
+      {quickAmounts.map((amount) => (
+        <button
+          key={amount}
+          onClick={() => setDonationAmount(amount)}
+          className={`py-2 px-2 rounded-lg border-2 transition-all font-medium text-xs sm:text-sm ${
+            donationAmount === amount
+              ? 'border-blue-500 bg-blue-50 text-blue-700 scale-105 shadow'
+              : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+          }`}
+        >
+          {amount}
+        </button>
+      ))}
+    </div>
 
+    {/* Custom amount inline */}
+    <div className="relative">
+      <input
+        type="number"
+        value={donationAmount}
+        onChange={(e) => setDonationAmount(Number(e.target.value))}
+        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+        placeholder={t('donationForm.customAmount')}
+        min="1"
+        dir={isRTL ? 'rtl' : 'ltr'}
+      />
+      <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+        <span className="text-gray-500 text-sm font-medium">MRU</span>
+      </div>
+    </div>
+  </div>
 
-              <div className="w-full bg-gray-200 rounded-full h-4 mb-3 overflow-hidden">
-                <div
-                  className="bg-blue-500 h-full rounded-full transition-all duration-500 ease-out shadow-sm"
-                  style={{ width: `${Math.min(progress || 0, 100)}%` }}
-                />
-              </div>
+  {/* Donor Info - Compact */}
+  <div className="mb-4">
+    <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.donorInformation')}</h3>
 
-              <div className="flex justify-between text-sm text-gray-700">
-                <span className="flex items-center">
-                  <User className={`w-4 h-4 ${isRTL ? 'ms-1' : 'me-1'}`} />
-                  {donorsCount || 0} {t('donationForm.supporters')}
-                </span>
-                <span>{(targetAmount || 0) - (currentAmount || 0)} MRU {t('donationForm.toGo')}</span>
-              </div>
-            </div>
+    <div className="space-y-3">
+      {/* Name input */}
+      <div className="relative">
+        <User className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400`} />
+        <input
+          type="text"
+          value={donorName}
+          onChange={(e) => setDonorName(e.target.value)}
+          className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+          placeholder={t('donationForm.yourFullName')}
+          disabled={isAnonymous}
+        />
+      </div>
 
-            <div className='my-5'>
-              <CampaignDonationsMessages campaignId={campaignId} />
-            </div>
+      {/* Message */}
+      <div className="relative">
+        <MessageSquare className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-3 w-4 h-4 text-gray-400`} />
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          rows="2"
+          className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+          placeholder={t('donationForm.shareMessage')}
+        />
+      </div>
 
-            {/* Polling Message */}
-            {pollingMessage && (
-              <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
-                <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 ${isRTL ? 'ms-2' : 'me-2'}`}></div>
-                <p className="text-sm text-blue-700">{pollingMessage}</p>
-              </div>
-            )}
+      {/* Anonymous checkbox */}
+      <div className="flex items-center">
+        <input
+          type="checkbox"
+          id="anonymous"
+          checked={isAnonymous}
+          onChange={(e) => setIsAnonymous(e.target.checked)}
+          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        />
+        <label htmlFor="anonymous" className={`text-sm text-gray-700 ${isRTL ? 'me-2' : 'ms-2'}`}>
+          {t('donationForm.makeAnonymous')}
+        </label>
+      </div>
+    </div>
+  </div>
 
-            {/* Error Display */}
-            {error && (
-              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
-                <AlertCircle className={`w-5 h-5 text-red-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
-                <p className="text-sm text-red-700">{error}</p>
-              </div>
-            )}
-
-            {/* Donation Amount Selection */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('donationForm.chooseDonationAmount')}</h3>
-
-              <div className="grid grid-cols-3 gap-3 mb-4">
-                {quickAmounts.map((amount) => (
-                  <button
-                    key={amount}
-                    onClick={() => setDonationAmount(amount)}
-                    className={`py-3 px-2 rounded-lg border-2 transition-all duration-200 font-medium text-sm ${donationAmount === amount
-                      ? 'border-blue-500 bg-blue-50 text-blue-700 transform scale-105 shadow-md'
-                      : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50 hover:shadow-sm'
-                      }`}
-                  >
-                    {amount} MRU
-                  </button>
-                ))}
-              </div>
-
-              <div>
-                <label htmlFor="customAmount" className="block text-sm font-medium text-gray-700 mb-2">
-                  {t('donationForm.customAmount')}
-                </label>
-                <div className="relative">
-                  {/* Dollar Sign Icon */}
-                  {/* <div className={`absolute inset-y-0 ${isRTL ? 'right-0 pr-3' : 'left-0 pl-3'} flex items-center pointer-events-none`}>
-                    <DollarSign className="h-5 w-5 text-gray-400" />
-                  </div> */}
-
-                  {/* Input Field */}
-                  <input
-                    type="number"
-                    id="customAmount"
-                    value={donationAmount}
-                    onChange={(e) => setDonationAmount(Number(e.target.value))}
-                    className={`block w-full pe-5 ps-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-lg`}
-                    placeholder={t('donationForm.enterAmount')}
-                    min="1"
-                    step="0.01"
-                    dir={isRTL ? 'rtl' : 'ltr'}
-                  />
-
-                  {/* Currency Code */}
-                  <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
-                    <span className="text-gray-500 text-sm font-medium">MRU</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Donor Information */}
-            <div className="mb-6">
-              <h3 className="text-lg font-semibold text-gray-800 mb-4">{t('donationForm.donorInformation')}</h3>
-
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="donorName" className="block text-sm font-medium text-gray-700 mb-1">
-                      {t('donationForm.fullName')}
-                    </label>
-                    <div className="relative">
-                      <User className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400`} />
-                      <input
-                        type="text"
-                        id="donorName"
-                        value={donorName}
-                        onChange={(e) => setDonorName(e.target.value)}
-                        className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                        placeholder={t('donationForm.yourFullName')}
-                        disabled={isAnonymous}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    {t('donationForm.messageOfSupport')}
-                  </label>
-                  <div className="relative">
-                    <MessageSquare className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-3 w-4 h-4 text-gray-400`} />
-                    <textarea
-                      id="message"
-                      value={message}
-                      onChange={(e) => setMessage(e.target.value)}
-                      rows="3"
-                      className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500`}
-                      placeholder={t('donationForm.shareMessage')}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    id="anonymous"
-                    checked={isAnonymous}
-                    onChange={(e) => setIsAnonymous(e.target.checked)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <label htmlFor="anonymous" className={`text-sm text-gray-700 ${isRTL ? 'me-3' : 'ms-3'}`}>
-                    {t('donationForm.makeAnonymous')}
-                  </label>
-                </div>
-              </div>
-            </div>
-
-            {/* Donation Button */}
-            <button
-              onClick={handleDonate}
-              disabled={isLoading || donationAmount < 1 || !campaignId}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-4 px-6 rounded-xl shadow-lg transition-all duration-300 transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center text-lg"
-            >
-              {isLoading ? (
-                <>
-                  <div className={`animate-spin rounded-full h-5 w-5 border-b-2 border-white ${isRTL ? 'ms-3' : 'me-3'}`}></div>
-                  {t('donationForm.processing')}
-                </>
-              ) : (
-                <>
-                  {t('donationForm.donate')} {donationAmount} MRU
-
-                  <CreditCard className={`w-5 h-5 ms-2`} />
-                </>
-              )}
-            </button>
-
-          </div>
-        )
+  {/* Donation Button */}
+  <button
+    onClick={handleDonate}
+    disabled={isLoading || donationAmount < 1 || !campaignId}
+    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center"
+  >
+    {isLoading ? (
+      <>
+        <div className={`animate-spin rounded-full h-5 w-5 border-b-2 border-white ${isRTL ? 'ms-2' : 'me-2'}`}></div>
+        <span className="text-sm sm:text-base">{t('donationForm.processing')}</span>
+      </>
+    ) : (
+      <>
+        <span className="text-sm sm:text-base">{t('donationForm.donate')} {donationAmount} MRU</span>
+        <CreditCard className={`w-5 h-5 ${isRTL ? 'me-2' : 'ms-2'}`} />
+      </>
+    )}
+  </button>
+</div>
         :
 
         (
