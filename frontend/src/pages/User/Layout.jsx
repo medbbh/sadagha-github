@@ -8,6 +8,7 @@ export default function Layout({ children }) {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-teal-50 to-indigo-50">
       {/* Navbar Component */}
+      
       <NavBar />
       
       {/* Main Content with top padding to account for fixed navbar */}
@@ -18,7 +19,7 @@ export default function Layout({ children }) {
       </main>
       
       {/* Footer */}
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

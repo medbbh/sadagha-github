@@ -7,10 +7,12 @@ import jwt
 from django.conf import settings
 from accounts.models import User
 from rest_framework.decorators import action
-from .serializers import UserProfileSerializer  # Add this import
+from .serializers import UserProfileSerializer, ContactSerializer  # Add this import
 from django.db.models import Prefetch
 from campaign.models import Donation
 from .serializers import UserUpdateSerializer
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
 @api_view(["GET"])
 @authentication_classes([SupabaseAuthentication])
@@ -245,3 +247,59 @@ def user_profile(request):
                 {'error': str(e)}, 
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def contact_us(request):
+    """
+    Handle contact form submissions
+    """
+    serializer = ContactSerializer(data=request.data)
+    
+    if serializer.is_valid():
+        name = serializer.validated_data['name']
+        email = serializer.validated_data['email']
+        subject = serializer.validated_data['subject']
+        message = serializer.validated_data['message']
+        
+        try:
+            # Email content
+            email_subject = f"Contact Form: {subject}"
+            email_message = f"""
+New contact form submission from Sadagha App:
+
+Name: {name}
+Email: {email}
+Subject: {subject}
+
+Message:
+{message}
+
+---
+This message was sent from the Sadagha contact form.
+            """
+            
+            # Send email
+            send_mail(
+                email_subject,
+                email_message,
+                settings.DEFAULT_FROM_EMAIL,
+                [settings.EMAIL_HOST_USER],  # Send to your email
+                fail_silently=False,
+            )
+            
+            return Response({
+                'success': True,
+                'message': 'Your message has been sent successfully. We will get back to you soon!'
+            }, status=status.HTTP_200_OK)
+            
+        except Exception as e:
+            return Response({
+                'success': False,
+                'message': 'Failed to send message. Please try again later.'
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+    return Response({
+        'success': False,
+        'errors': serializer.errors
+    }, status=status.HTTP_400_BAD_REQUEST)

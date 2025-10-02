@@ -33,7 +33,7 @@ export function HeroSection() {
           {/* Left Side - Enhanced with Urgency Messaging */}
           <div className={`space-y-6 ${isRTL ? "md:pl-8 text-right" : "md:pr-8 text-left"}`}>
             {/* Urgency Alert */}
-            {urgentCampaigns.length > 0 && (
+            {/* {urgentCampaigns.length > 0 && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -55,7 +55,7 @@ export function HeroSection() {
                   </div>
                 </div>
               </motion.div>
-            )}
+            )} */}
 
             {/* Main Title */}
             <h1 className="text-4xl md:text-5xl font-bold text-[#3366CC] leading-tight">

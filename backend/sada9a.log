@@ -2230,3 +2230,147 @@ INFO 2025-09-29 16:34:53,688 payment_service 11768 13564 Getting payment status 
 INFO 2025-09-29 16:34:55,177 views 11768 13564 Synced donation 77: processing -> pending
 INFO 2025-09-29 16:35:06,219 payment_service 11768 22544 Getting payment status for session: ccc03ccc-c307-489e-ac3b-d47d601cd97a
 INFO 2025-09-30 09:11:11,535 supabase_storage 11768 15644 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-09-30 09:21:08,330 views 11768 16300 === CREATE DONATION REQUEST ===
+INFO 2025-09-30 09:21:08,331 views 11768 16300 Campaign ID: 24
+INFO 2025-09-30 09:21:08,331 views 11768 16300 Content-Type: application/json
+INFO 2025-09-30 09:21:08,332 views 11768 16300 Request method: POST
+INFO 2025-09-30 09:21:08,332 views 11768 16300 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-30 09:21:08,333 views 11768 16300 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:21:08,334 views 11768 16300 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-30 09:21:08,840 views 11768 16300 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:21:09,149 views 11768 16300 Created donation record: 78
+INFO 2025-09-30 09:21:10,996 payment_service 11768 16300 Creating payment session for campaign 24, amount: 500.0 MRU
+INFO 2025-09-30 09:21:11,813 payment_service 11768 16300 NextRemitly response status: 201
+INFO 2025-09-30 09:21:11,815 payment_service 11768 16300 Payment session creation successful: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:11,914 views 11768 16300 Payment session created successfully: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:13,553 payment_service 11768 16300 Getting payment status for session: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:15,396 views 11768 16300 Synced donation 78: processing -> pending
+INFO 2025-09-30 09:21:26,766 payment_service 11768 16300 Getting payment status for session: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:38,430 views 11768 16300 === CREATE DONATION REQUEST ===
+INFO 2025-09-30 09:21:38,431 views 11768 16300 Campaign ID: 24
+INFO 2025-09-30 09:21:38,432 views 11768 16300 Content-Type: application/json
+INFO 2025-09-30 09:21:38,433 views 11768 16300 Request method: POST
+INFO 2025-09-30 09:21:38,434 views 11768 16300 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-30 09:21:38,436 views 11768 16300 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:21:38,441 views 11768 16300 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-30 09:21:38,784 views 11768 16300 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:21:38,951 views 11768 16300 Created donation record: 79
+INFO 2025-09-30 09:21:39,665 payment_service 11768 13056 Getting payment status for session: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:40,690 payment_service 11768 16300 Creating payment session for campaign 24, amount: 500.0 MRU
+INFO 2025-09-30 09:21:41,409 payment_service 11768 16300 NextRemitly response status: 201
+INFO 2025-09-30 09:21:41,414 payment_service 11768 16300 Payment session creation successful: 8b700bdf-48af-45f9-87c8-d0929814cdca
+INFO 2025-09-30 09:21:41,507 views 11768 16300 Payment session created successfully: 8b700bdf-48af-45f9-87c8-d0929814cdca
+INFO 2025-09-30 09:21:42,945 payment_service 11768 16300 Getting payment status for session: 8b700bdf-48af-45f9-87c8-d0929814cdca
+INFO 2025-09-30 09:21:44,784 views 11768 16300 Synced donation 79: processing -> authenticated
+INFO 2025-09-30 09:21:52,571 payment_service 11768 16300 Getting payment status for session: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:21:56,974 payment_service 11768 16300 Getting payment status for session: 8b700bdf-48af-45f9-87c8-d0929814cdca
+INFO 2025-09-30 09:22:06,186 payment_service 11768 16300 Getting payment status for session: 1f7a1bee-87e4-4173-a55d-d9374dabff51
+INFO 2025-09-30 09:22:10,179 payment_service 11768 16300 Getting payment status for session: 8b700bdf-48af-45f9-87c8-d0929814cdca
+INFO 2025-09-30 09:22:28,500 views 11768 24320 === CREATE DONATION REQUEST ===
+INFO 2025-09-30 09:22:28,501 views 11768 24320 Campaign ID: 24
+INFO 2025-09-30 09:22:28,501 views 11768 24320 Content-Type: application/json
+INFO 2025-09-30 09:22:28,502 views 11768 24320 Request method: POST
+INFO 2025-09-30 09:22:28,502 views 11768 24320 Raw body: b'{"amount":500,"donor_name":"","message":"","is_anonymous":true}'
+INFO 2025-09-30 09:22:28,503 views 11768 24320 Parsed data: {'amount': 500, 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:22:28,504 views 11768 24320 Headers: {'Content-Length': '63', 'Content-Type': 'application/json', 'Host': '127.0.0.1:8002', 'Connection': 'keep-alive', 'Sec-Ch-Ua-Platform': '"Windows"', 'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsImtpZCI6InF0MXdMa2Jzd21DVjFmdW0iLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3p6a2dnYWNra2lpcmV6aGxidXZvLnN1cGFiYXNlLmNvL2F1dGgvdjEiLCJzdWIiOiIzNDA3OWMwNS1iY2VhLTQwY2ItOTU0MS1lNTViNTRkMjkwOWMiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzU5NDA1NTI1LCJpYXQiOjE3NTkxNDYzMjUsImVtYWlsIjoibWJhYmFoMzQ1MEBnbWFpbC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6Imdvb2dsZSIsInByb3ZpZGVycyI6WyJnb29nbGUiXX0sInVzZXJfbWV0YWRhdGEiOnsiYXZhdGFyX3VybCI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hL0FDZzhvY0libXR5VV9RRGkyMk8tSDg2LWl1MVRyWWdQLW4xYUgxaU83ZUVHZHZsb1JyUnc1M0xqPXM5Ni1jIiwiZW1haWwiOiJtYmFiYWgzNDUwQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmdWxsX25hbWUiOiJtZWQgYmJoIiwiaXNzIjoiaHR0cHM6Ly9hY2NvdW50cy5nb29nbGUuY29tIiwibmFtZSI6Im1lZCBiYmgiLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NJYm10eVVfUURpMjJPLUg4Ni1pdTFUcllnUC1uMWFIMWlPN2VFR2R2bG9SclJ3NTNMaj1zOTYtYyIsInByb3ZpZGVyX2lkIjoiMTEyOTU5MTk3MTM3NDc4MDgyNjM1Iiwicm9sZSI6InVzZXIiLCJzdWIiOiIxMTI5NTkxOTcxMzc0NzgwODI2MzUifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTc1ODYyNDA5NH1dLCJzZXNzaW9uX2lkIjoiMzEyZjkyMWMtMzlhMC00MTdiLWI5MjgtNTJhOTViMzNmYTU5IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.x6-m2gTTzpN05QQBhVUgNoKDNYjI9ZKtfFSV8--gBBw', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36', 'Accept': 'application/json', 'Sec-Ch-Ua': '"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"', 'Sec-Ch-Ua-Mobile': '?0', 'Origin': 'http://localhost:5174', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:5174/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'en-CN,en;q=0.9,fr-CN;q=0.8,fr;q=0.7,ar-MR;q=0.6,ar;q=0.5,en-GB;q=0.4,en-US;q=0.3'}
+INFO 2025-09-30 09:22:29,058 views 11768 24320 Validated data: {'amount': Decimal('500.00'), 'donor_name': '', 'message': '', 'is_anonymous': True}
+INFO 2025-09-30 09:22:29,531 views 11768 24320 Created donation record: 80
+INFO 2025-09-30 09:22:31,077 payment_service 11768 24320 Creating payment session for campaign 24, amount: 500.0 MRU
+INFO 2025-09-30 09:22:31,784 payment_service 11768 24320 NextRemitly response status: 201
+INFO 2025-09-30 09:22:31,787 payment_service 11768 24320 Payment session creation successful: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:22:31,888 views 11768 24320 Payment session created successfully: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:22:33,124 payment_service 11768 24320 Getting payment status for session: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:22:35,163 views 11768 24320 Synced donation 80: processing -> authenticated
+INFO 2025-09-30 09:22:46,498 payment_service 11768 24320 Getting payment status for session: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:22:48,378 views 11768 24320 Synced donation 80: authenticated -> otp_sent
+INFO 2025-09-30 09:22:59,637 payment_service 11768 24320 Getting payment status for session: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:23:12,954 payment_service 11768 24320 Getting payment status for session: 75a56313-f86a-4559-a756-2863df1d5187
+INFO 2025-09-30 09:23:15,306 views 11768 24320 Synced donation 80: otp_sent -> completed
+INFO 2025-10-01 16:19:03,052 supabase_storage 22500 9408 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:23:02,561 supabase_storage 14920 1404 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:48:07,867 supabase_storage 16684 8064 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:48:16,621 supabase_storage 2596 9196 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:50:43,618 supabase_storage 17052 11252 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:50:52,732 supabase_storage 22652 11608 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:51:48,872 supabase_storage 4076 7236 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 10:52:07,704 supabase_storage 1572 21248 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 11:00:42,487 supabase_storage 2592 21092 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 11:00:54,614 views 2592 21704 Platform statistics endpoint called
+INFO 2025-10-02 11:00:55,240 views 2592 21704 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:00:55,241 views 2592 21704 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:00:55,241 views 2592 21704 Organization count: 2
+INFO 2025-10-02 11:00:55,241 views 2592 21704 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:00:55.241118+00:00'}
+INFO 2025-10-02 11:00:55,842 views 2592 10072 Platform statistics endpoint called
+INFO 2025-10-02 11:00:56,430 views 2592 10072 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:00:56,431 views 2592 10072 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:00:56,431 views 2592 10072 Organization count: 2
+INFO 2025-10-02 11:00:56,431 views 2592 10072 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:00:56.431725+00:00'}
+INFO 2025-10-02 11:02:17,264 views 2592 3444 Platform statistics endpoint called
+INFO 2025-10-02 11:02:17,888 views 2592 3444 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:17,888 views 2592 3444 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:17,889 views 2592 3444 Organization count: 2
+INFO 2025-10-02 11:02:17,890 views 2592 3444 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:17.889134+00:00'}
+INFO 2025-10-02 11:02:18,544 views 2592 21704 Platform statistics endpoint called
+INFO 2025-10-02 11:02:19,196 views 2592 21704 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:19,197 views 2592 21704 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:19,197 views 2592 21704 Organization count: 2
+INFO 2025-10-02 11:02:19,198 views 2592 21704 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:19.198039+00:00'}
+INFO 2025-10-02 11:02:47,980 views 2592 22836 Platform statistics endpoint called
+INFO 2025-10-02 11:02:48,538 views 2592 22836 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:48,539 views 2592 22836 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:48,539 views 2592 22836 Organization count: 2
+INFO 2025-10-02 11:02:48,540 views 2592 22836 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:48.540126+00:00'}
+INFO 2025-10-02 11:02:49,688 views 2592 10072 Platform statistics endpoint called
+INFO 2025-10-02 11:02:50,297 views 2592 10072 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:50,298 views 2592 10072 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:50,299 views 2592 10072 Organization count: 2
+INFO 2025-10-02 11:02:50,300 views 2592 10072 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:50.300029+00:00'}
+INFO 2025-10-02 11:02:54,831 views 2592 21704 Platform statistics endpoint called
+INFO 2025-10-02 11:02:55,386 views 2592 21704 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:55,387 views 2592 21704 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:55,387 views 2592 21704 Organization count: 2
+INFO 2025-10-02 11:02:55,387 views 2592 21704 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:55.387003+00:00'}
+INFO 2025-10-02 11:02:55,948 views 2592 3444 Platform statistics endpoint called
+INFO 2025-10-02 11:02:56,504 views 2592 3444 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:02:56,505 views 2592 3444 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:02:56,505 views 2592 3444 Organization count: 2
+INFO 2025-10-02 11:02:56,505 views 2592 3444 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:02:56.505159+00:00'}
+INFO 2025-10-02 11:03:28,376 views 2592 21948 Platform statistics endpoint called
+INFO 2025-10-02 11:03:28,896 views 2592 21948 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:03:28,897 views 2592 21948 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:03:28,897 views 2592 21948 Organization count: 2
+INFO 2025-10-02 11:03:28,898 views 2592 21948 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:03:28.898300+00:00'}
+INFO 2025-10-02 11:03:29,437 views 2592 10072 Platform statistics endpoint called
+INFO 2025-10-02 11:03:29,962 views 2592 10072 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:03:29,962 views 2592 10072 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:03:29,962 views 2592 10072 Organization count: 2
+INFO 2025-10-02 11:03:29,963 views 2592 10072 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:03:29.963553+00:00'}
+INFO 2025-10-02 11:07:04,363 views 2592 10072 Platform statistics endpoint called
+INFO 2025-10-02 11:07:05,183 views 2592 10072 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:07:05,184 views 2592 10072 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:07:05,184 views 2592 10072 Organization count: 2
+INFO 2025-10-02 11:07:05,185 views 2592 10072 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:07:05.185973+00:00'}
+INFO 2025-10-02 11:07:05,873 views 2592 22836 Platform statistics endpoint called
+INFO 2025-10-02 11:07:06,429 views 2592 22836 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:07:06,430 views 2592 22836 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:07:06,431 views 2592 22836 Organization count: 2
+INFO 2025-10-02 11:07:06,432 views 2592 22836 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:07:06.432108+00:00'}
+INFO 2025-10-02 11:09:14,496 views 2592 21948 Platform statistics endpoint called
+INFO 2025-10-02 11:09:15,220 views 2592 21948 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:09:15,221 views 2592 21948 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:09:15,222 views 2592 21948 Organization count: 2
+INFO 2025-10-02 11:09:15,222 views 2592 21948 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:09:15.222822+00:00'}
+INFO 2025-10-02 11:09:15,913 views 2592 14300 Platform statistics endpoint called
+INFO 2025-10-02 11:09:16,603 views 2592 14300 Campaign stats: {'total_campaigns': 14, 'active_campaigns': 14, 'total_raised': Decimal('113160.00'), 'total_donors': 15}
+INFO 2025-10-02 11:09:16,604 views 2592 14300 Donation stats: {'total_donations': 41, 'unique_donors': 1}
+INFO 2025-10-02 11:09:16,604 views 2592 14300 Organization count: 2
+INFO 2025-10-02 11:09:16,605 views 2592 14300 Returning response data: {'campaigns': {'total': 14, 'active': 14, 'completed': 0}, 'financial': {'total_raised': '113160.00', 'total_donations': 41, 'average_donation': '2760.00'}, 'community': {'total_donors': 1, 'organizations': 2, 'verified_organizations': 1, 'volunteers': 0}, 'categories': 10, 'success_rate': 0.0, 'last_updated': '2025-10-02T11:09:16.605851+00:00'}
+INFO 2025-10-02 12:11:28,277 supabase_storage 14448 6292 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 12:11:51,382 supabase_storage 18768 13176 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 12:11:58,712 supabase_storage 22556 13424 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 12:12:18,005 supabase_storage 11704 15944 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 12:12:26,248 supabase_storage 4960 13116 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 12:12:34,082 supabase_storage 3312 5228 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 13:00:32,114 supabase_storage 26096 25992 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 13:00:38,890 supabase_storage 17592 18788 Supabase client initialized with URL: https://zzkggackkiir...
+INFO 2025-10-02 13:12:40,423 supabase_storage 3060 19592 Supabase client initialized with URL: https://zzkggackkiir...

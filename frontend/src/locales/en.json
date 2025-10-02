@@ -91,7 +91,47 @@
     "loadMore": "Load More",
     "remaining": "remaining",
     "loading": "Loading...",
-    "funded": "funded"
+    "funded": "funded",
+    "contact": "Contact"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "getInTouch": "Get in Touch",
+    "phone": "Phone",
+    "address": "Address",
+    "businessHours": "Business Hours",
+    "weekdays": "Monday - Friday: 9:00 AM - 6:00 PM",
+    "weekend": "Saturday - Sunday: 10:00 AM - 4:00 PM",
+    "sendMessage": "Send us a Message",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "subject": "Subject",
+    "subjectPlaceholder": "What is this about?",
+    "message": "Message",
+    "messagePlaceholder": "Tell us how we can help you...",
+    "sendButton": "Send Message",
+    "sending": "Sending...",
+    "successMessage": "Your message has been sent successfully. We will get back to you soon!",
+    "errorMessage": "Failed to send message. Please try again later.",
+    "location": "Nouakchott, Mauritania"
+  },
+  "footer": {
+    "description": "A bridge of giving that connects generous hearts with those in need through verified and transparent charity campaigns.",
+    "explore": "Explore",
+    "browseCampaigns": "Browse Campaigns",
+    "categories": "Categories",
+    "organizations": "Organizations",
+    "howItWorks": "How It Works",
+    "volunteer": "Volunteer",
+    "support": "Support",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "copyright": "All rights reserved.",
+    "verifiedSecure": "Verified & Secure"
   },
   "hero": {
     "title": {
@@ -1941,6 +1981,226 @@
         "reminderError": "Failed to send reminder",
         "lastReminder": "Last reminder sent"
       }
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About SADA9A",
+      "subtitle": "Connecting generous hearts across Mauritania with verified organizations creating positive change in our communities."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "description": "SADA9A is dedicated to creating a transparent, secure, and impactful platform for charitable giving in Mauritania. We bridge the gap between those who want to help and those who need support.",
+      "vision": "We envision a Mauritania where every act of kindness creates lasting positive change, where communities come together to support one another, and where transparency builds trust in charitable giving.",
+      "mauritaniaFocus": "Built for Mauritania",
+      "mauritaniaDescription": "Making a difference across all regions of Mauritania through verified campaigns and trusted organizations."
+    },
+    "features": {
+      "title": "Platform Features",
+      "subtitle": "Real tools that make charitable giving transparent, secure, and impactful",
+      "verification": {
+        "title": "Organization Verification",
+        "description": "Only verified organizations can create campaigns, ensuring your donations reach legitimate causes."
+      },
+      "facebook": {
+        "title": "Facebook Live Integration",
+        "description": "Watch live updates from campaigns and see your impact in real-time through integrated Facebook Live streams."
+      },
+      "tracking": {
+        "title": "Real-time Tracking",
+        "description": "Track every donation and see exactly how campaigns progress toward their goals with complete transparency."
+      },
+      "volunteer": {
+        "title": "Volunteer Matching",
+        "description": "Connect skilled volunteers with organizations through our intelligent matching system based on skills and location."
+      }
+    },
+    "values": {
+      "title": "Our Core Values",
+      "subtitle": "The principles that guide everything we do at SADA9A",
+      "compassion": {
+        "title": "Compassion",
+        "description": "We believe in the power of empathy and understanding to drive meaningful change in our communities."
+      },
+      "community": {
+        "title": "Community",
+        "description": "Building strong connections between donors, volunteers, and organizations to create lasting impact."
+      },
+      "transparency": {
+        "title": "Transparency",
+        "description": "Every donation is tracked, every campaign is verified, and every impact is measured and reported."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "Focusing on measurable outcomes that create real, positive change in people's lives."
+      }
+    },
+    "stats": {
+      "title": "Our Impact So Far",
+      "subtitle": "Numbers that reflect the positive change we're creating together",
+      "campaigns": {
+        "number": "500+",
+        "label": "Active Campaigns"
+      },
+      "donors": {
+        "number": "10,000+",
+        "label": "Total Donors"
+      },
+      "raised": {
+        "number": "2M+ MRU",
+        "label": "Funds Raised"
+      },
+      "organizations": {
+        "number": "13",
+        "label": "Verified Organizations"
+      }
+    },
+
+    "cta": {
+      "title": "Join Our Mission",
+      "subtitle": "Whether you want to donate, volunteer, or partner with us, there's a place for you in the SADA9A community.",
+      "exploreCampaigns": "Explore Campaigns",
+      "becomeVolunteer": "Become a Volunteer"
+    }
+  },
+  "faq": {
+    "hero": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Find answers to common questions about SADA9A and how our platform works"
+    },
+    "search": {
+      "placeholder": "Search for answers...",
+      "noResults": "No results found",
+      "tryDifferentTerms": "Try different search terms or browse the categories below"
+    },
+    "categories": {
+      "general": {
+        "title": "General Questions"
+      },
+      "donations": {
+        "title": "Donations & Payments"
+      },
+      "campaigns": {
+        "title": "Campaign Management"
+      },
+      "account": {
+        "title": "Account & Profile"
+      }
+    },
+    "general": {
+      "whatIsSadagha": {
+        "question": "What is SADA9A?",
+        "answer": "SADA9A is Mauritania's leading crowdfunding platform that connects generous hearts with verified organizations and causes. We facilitate transparent charitable giving and volunteer opportunities to create positive impact in local communities."
+      },
+      "howItWorks": {
+        "question": "How does SADA9A work?",
+        "answer": "SADA9A works by allowing verified organizations to create fundraising campaigns for their causes. Donors can browse, search, and support campaigns that matter to them. We also connect volunteers with organizations through our matching system based on skills and location."
+      }
+    },
+    "donations": {
+      "howToDonate": {
+        "question": "How do I make a donation?",
+        "answer": "To donate, simply browse campaigns, click on one that interests you, and click the 'Donate' button. You'll be guided through a secure payment process where you can choose your amount and payment method."
+      },
+      "paymentMethods": {
+        "question": "What payment methods are accepted?",
+        "answer": "Payment methods depend on what each organization has available. Some may only accept Bankily, while others may offer multiple options like Sedad, Bimbank, or other local payment systems."
+      }
+    },
+    "campaigns": {
+      "createCampaign": {
+        "question": "How can I create a campaign?",
+        "answer": "Only verified organizations can create campaigns on SADA9A. If you represent an organization, you need to complete our verification process first. Individual fundraising is not currently supported to ensure transparency and accountability."
+      },
+      "verification": {
+        "question": "What is the verification process?",
+        "answer": "Organizations must provide legal documentation, proof of registration, contact information, and details about their mission. Our team reviews all applications to ensure legitimacy and transparency before approval."
+      }
+    },
+    "account": {
+      "createAccount": {
+        "question": "How do I create an account?",
+        "answer": "Click 'Sign Up' in the top navigation, then choose to register with email or continue with Google/Facebook. Fill in your basic information and verify your email address to complete the process."
+      },
+      "forgotPassword": {
+        "question": "I forgot my password. What should I do?",
+        "answer": "Click 'Forgot Password' on the login page, enter your email address, and we'll send you a secure link to reset your password."
+      }
+    }
+  },
+  "privacy": {
+    "hero": {
+      "title": "Privacy Policy",
+      "subtitle": "Your privacy is important to us. This policy explains how we collect, use, and protect your personal information.",
+      "lastUpdated": "Last updated: January 2025"
+    },
+    "introduction": {
+      "title": "Introduction",
+      "content": "SADA9A is committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, share, and protect information about you when you use our crowdfunding platform and related services."
+    },
+    "sections": {
+      "informationCollection": {
+        "title": "Information We Collect",
+        "content": [
+          "We collect information you provide directly to us, such as when you create an account, make a donation, create a campaign, or contact us for support.",
+          "Personal information may include your name, email address, phone number, payment information, and any other information you choose to provide.",
+          "We also collect information automatically when you use our platform, including your IP address, browser type, device information, and usage patterns."
+        ]
+      },
+      "informationUse": {
+        "title": "How We Use Your Information",
+        "content": [
+          "We use your information to provide, maintain, and improve our services, including processing donations and managing campaigns.",
+          "We communicate with you about your account, transactions, and important updates about our platform.",
+          "We use information to prevent fraud, ensure security, and comply with legal obligations.",
+          "With your consent, we may send you promotional communications about new features or campaigns that might interest you."
+        ]
+      },
+      "informationSharing": {
+        "title": "Information Sharing",
+        "content": [
+          "We do not sell, trade, or rent your personal information to third parties.",
+          "We may share information with verified organizations when you make donations or participate in their campaigns.",
+          "We may share information with service providers who help us operate our platform, subject to confidentiality agreements.",
+          "We may disclose information when required by law or to protect our rights and the safety of our users."
+        ]
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "content": [
+          "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.",
+          "We use secure servers and encryption technologies to protect sensitive information during transmission.",
+          "While we strive to protect your information, no method of transmission over the internet is 100% secure, and we cannot guarantee absolute security."
+        ]
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "content": [
+          "We use cookies and similar technologies to enhance your experience on our platform and analyze usage patterns.",
+          "You can control cookie settings through your browser preferences, though some features may not function properly if cookies are disabled.",
+          "We may use analytics services to understand how users interact with our platform and improve our services."
+        ]
+      },
+      "userRights": {
+        "title": "Your Rights",
+        "content": [
+          "You have the right to access, update, or delete your personal information at any time through your account settings.",
+          "You can opt out of promotional communications by following the unsubscribe instructions in our emails.",
+          "You may request a copy of your personal data or ask us to transfer it to another service.",
+          "If you have concerns about how we handle your information, you can contact us using the information provided below."
+        ]
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": [
+          "If you have any questions about this Privacy Policy or our privacy practices, please contact us.",
+          "We will respond to your inquiries promptly and work to address any concerns you may have."
+        ]
+      }
+    },
+    "contact": {
+      "title": "Questions About Privacy?",
+      "description": "If you have any questions or concerns about our privacy practices, please don't hesitate to contact us."
     }
   }
 }

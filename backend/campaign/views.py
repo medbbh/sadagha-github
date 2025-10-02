@@ -1085,3 +1085,93 @@ def similar_campaigns(request, campaign_id):
             enriched.append(campaign)
 
     return Response({"campaign_id": campaign_id, "similar_campaigns": enriched})
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def platform_statistics(request):
+    """
+    Get real platform statistics for About Us page
+    """
+    logger.info("Platform statistics endpoint called")
+    try:
+        # Get campaign statistics
+        campaign_stats = Campaign.objects.aggregate(
+            total_campaigns=Count('id'),
+            active_campaigns=Count('id', filter=Q(current_amount__lt=F('target'))),
+            total_raised=Sum('current_amount'),
+            total_donors=Sum('number_of_donors')
+        )
+        
+        # Get category count
+        category_count = Category.objects.count()
+        
+        # Get organization statistics
+        from accounts.models import User
+        organization_count = User.objects.filter(role='organization').count()
+        
+        # Try to get verified orgs with error handling
+        try:
+            verified_orgs = User.objects.filter(
+                role='organization',
+                organization_profile__is_verified=True
+            ).count()
+        except Exception as org_error:
+            logger.warning(f"Error getting verified orgs: {org_error}")
+            verified_orgs = 0
+        
+        # Get volunteer statistics
+        volunteer_count = User.objects.filter(role='volunteer').count()
+        
+        # Get donation statistics
+        donation_stats = Donation.objects.filter(status='completed').aggregate(
+            total_donations=Count('id'),
+            unique_donors=Count('donor', distinct=True)
+        )
+        
+        # Calculate success rate
+        completed_campaigns = Campaign.objects.filter(
+            current_amount__gte=F('target')
+        ).count()
+        
+        success_rate = 0
+        if campaign_stats['total_campaigns'] > 0:
+            success_rate = round((completed_campaigns / campaign_stats['total_campaigns']) * 100, 1)
+        
+        logger.info(f"Campaign stats: {campaign_stats}")
+        logger.info(f"Donation stats: {donation_stats}")
+        logger.info(f"Organization count: {organization_count}")
+        
+        response_data = {
+            'campaigns': {
+                'total': campaign_stats['total_campaigns'] or 0,
+                'active': campaign_stats['active_campaigns'] or 0,
+                'completed': completed_campaigns
+            },
+            'financial': {
+                'total_raised': str(campaign_stats['total_raised'] or 0),
+                'total_donations': donation_stats['total_donations'] or 0,
+                'average_donation': str(
+                    (campaign_stats['total_raised'] / donation_stats['total_donations']) 
+                    if donation_stats['total_donations'] > 0 else 0
+                )
+            },
+            'community': {
+                'total_donors': donation_stats['unique_donors'] or 0,
+                'organizations': organization_count,
+                'verified_organizations': verified_orgs,
+                'volunteers': volunteer_count
+            },
+            'categories': category_count,
+            'success_rate': success_rate,
+            'last_updated': timezone.now().isoformat()
+        }
+        
+        logger.info(f"Returning response data: {response_data}")
+        return Response(response_data, status=status.HTTP_200_OK)
+        
+    except Exception as e:
+        logger.error(f"Error getting platform statistics: {str(e)}")
+        return Response({
+            'error': 'Failed to retrieve platform statistics'
+        }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

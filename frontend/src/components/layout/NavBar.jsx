@@ -332,26 +332,26 @@ export default function NavBar() {
                   </Link>
                 )
               }
-              
-            {/* add favorite button */}
-            <div className="hidden md:flex">
-              {user && (
-                <button
-                  onClick={handleFavoritesClick}
-                  disabled={isToggling}
-                  className={`relative flex items-center space-x-1 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200 ${isToggling ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                >
-                  <Heart className="h-4 w-4" />
-                  <span>{t('navbar.favorites')}</span>
-                  {totalFavorites > 0 && (
-                    <span className="absolute -top-2 -end-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {totalFavorites > 9 ? '9+' : totalFavorites}
-                    </span>
-                  )}
-                </button>
-              )}
-            </div>
+
+              {/* add favorite button */}
+              <div className="hidden md:flex">
+                {user && (
+                  <button
+                    onClick={handleFavoritesClick}
+                    disabled={isToggling}
+                    className={`relative flex items-center space-x-1 px-3 py-1.5 rounded-md text-md text-[#3366CC] font-medium hover:bg-[#3366CC]/5 transition-colors duration-200 ${isToggling ? 'opacity-50 cursor-not-allowed' : ''
+                      }`}
+                  >
+                    <Heart className="h-4 w-4" />
+                    <span>{t('navbar.favorites')}</span>
+                    {totalFavorites > 0 && (
+                      <span className="absolute -top-2 -end-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                        {totalFavorites > 9 ? '9+' : totalFavorites}
+                      </span>
+                    )}
+                  </button>
+                )}
+              </div>
 
               <Link
                 to="/how-it-works"
@@ -359,6 +359,7 @@ export default function NavBar() {
               >
                 {t('navbar.howItWorks')}
               </Link>
+
 
             </div>
 
@@ -390,7 +391,7 @@ export default function NavBar() {
                   onKeyDown={handleKeyDown}
                   className="ps-8 pe-4 py-1.5 rounded-full border border-[#3366CC]/30 focus:outline-none focus:ring-1 focus:ring-[#3366CC] focus:border-transparent text-sm w-40"
                 />
-                <Search 
+                <Search
                   className="absolute left-2.5 top-1/2 transform -translate-y-1/2 h-3.5 w-3.5 text-[#3366CC]/60"
                   onClick={() => query.trim() && navigate(`/explore?search=${encodeURIComponent(query.trim())}`)} />
               </div>
@@ -414,7 +415,7 @@ export default function NavBar() {
 
                   <button
                     onClick={handleLogout}
-                    className="px-4 py-1.5 rounded-md text-sm bg-[#FF9800] text-white border border-[#FF9800] font-medium hover:bg-[#FB8C00] transition-colors duration-200"
+                    className="px-4 py-1.5 cursor-pointer rounded-md text-sm bg-red-600 text-white border border-red-600 font-medium hover:bg-red-700 transition-colors duration-200"
                   >
                     {t('navbar.logout')}
                   </button>
@@ -572,7 +573,7 @@ export default function NavBar() {
                       handleLogout();
                       setIsOpen(false);
                     }}
-                    className="w-full mt-2 px-3 py-2 rounded text-sm font-medium text-white bg-[#FF9800] border border-[#FF9800] text-center hover:bg-[#FB8C00]"
+                    className="w-full mt-2 px-3 py-2 rounded text-sm font-medium text-white bg-red-600 border border-red-600 text-center hover:bg-red-700"
                   >
                     {t('navbar.logout')}
                   </button>

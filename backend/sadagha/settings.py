@@ -53,7 +53,6 @@ INSTALLED_APPS = [
     'campaign',
     'organizations',
     'volunteers',
-    'channels',
     'admin_panel',
 ]
 
@@ -220,14 +219,13 @@ REST_FRAMEWORK = {
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# Channels
-ASGI_APPLICATION = 'sadagha.routing.application'
 
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
+
+# Email Configuration
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'mhamed.bbh01@gmail.com'
+EMAIL_HOST_PASSWORD = 'nfew ennf ocpf vgnp'
+DEFAULT_FROM_EMAIL = 'mhamed.bbh01@gmail.com'

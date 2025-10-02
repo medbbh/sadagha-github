@@ -91,7 +91,47 @@
     "loadMore": "Charger Plus",
     "remaining": "restant",
     "loading": "Chargement...",
-    "funded": "financé"
+    "funded": "financé",
+    "contact": "Contact"
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Nous aimerions avoir de vos nouvelles. Envoyez-nous un message et nous vous répondrons dès que possible.",
+    "getInTouch": "Entrer en Contact",
+    "phone": "Téléphone",
+    "address": "Adresse",
+    "businessHours": "Heures d'Ouverture",
+    "weekdays": "Lundi - Vendredi : 9h00 - 18h00",
+    "weekend": "Samedi - Dimanche : 10h00 - 16h00",
+    "sendMessage": "Envoyez-nous un Message",
+    "name": "Nom Complet",
+    "namePlaceholder": "Entrez votre nom complet",
+    "email": "Adresse Email",
+    "emailPlaceholder": "Entrez votre adresse email",
+    "subject": "Sujet",
+    "subjectPlaceholder": "De quoi s'agit-il ?",
+    "message": "Message",
+    "messagePlaceholder": "Dites-nous comment nous pouvons vous aider...",
+    "sendButton": "Envoyer le Message",
+    "sending": "Envoi en cours...",
+    "successMessage": "Votre message a été envoyé avec succès. Nous vous répondrons bientôt !",
+    "errorMessage": "Échec de l'envoi du message. Veuillez réessayer plus tard.",
+    "location": "Nouakchott, Mauritanie"
+  },
+  "footer": {
+    "description": "Un pont de générosité qui unit les cœurs généreux aux personnes dans le besoin à travers des campagnes caritatives certifiées et transparentes.",
+    "explore": "Explorer",
+    "browseCampaigns": "Parcourir les Campagnes",
+    "categories": "Catégories",
+    "organizations": "Organisations",
+    "howItWorks": "Comment ça marche",
+    "volunteer": "Bénévole",
+    "support": "Support",
+    "aboutUs": "À propos de nous",
+    "contact": "Contact",
+    "faq": "FAQ",
+    "copyright": "Tous droits réservés.",
+    "verifiedSecure": "Vérifié et Sécurisé"
   },
   "hero": {
     "title": {
@@ -1939,6 +1979,226 @@
         "reminderError": "Échec de l'envoi du rappel",
         "lastReminder": "Dernier rappel envoyé"
       }
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "À Propos de SADA9A",
+      "subtitle": "Connecter les cœurs généreux à travers la Mauritanie avec des organisations vérifiées créant un changement positif dans nos communautés."
+    },
+    "mission": {
+      "title": "Notre Mission",
+      "description": "SADA9A se consacre à créer une plateforme transparente, sécurisée et impactante pour les dons caritatifs en Mauritanie. Nous comblons le fossé entre ceux qui veulent aider et ceux qui ont besoin de soutien.",
+      "vision": "Nous envisageons une Mauritanie où chaque acte de bonté crée un changement positif durable, où les communautés se rassemblent pour se soutenir mutuellement, et où la transparence construit la confiance dans les dons caritatifs.",
+      "mauritaniaFocus": "Conçu pour la Mauritanie",
+      "mauritaniaDescription": "Faire une différence dans toutes les régions de Mauritanie grâce à des campagnes vérifiées et des organisations de confiance."
+    },
+    "features": {
+      "title": "Fonctionnalités de la Plateforme",
+      "subtitle": "Des outils réels qui rendent les dons caritatifs transparents, sécurisés et impactants",
+      "verification": {
+        "title": "Vérification des Organisations",
+        "description": "Seules les organisations vérifiées peuvent créer des campagnes, garantissant que vos dons atteignent des causes légitimes."
+      },
+      "facebook": {
+        "title": "Intégration Facebook Live",
+        "description": "Regardez les mises à jour en direct des campagnes et voyez votre impact en temps réel grâce aux flux Facebook Live intégrés."
+      },
+      "tracking": {
+        "title": "Suivi en Temps Réel",
+        "description": "Suivez chaque don et voyez exactement comment les campagnes progressent vers leurs objectifs avec une transparence complète."
+      },
+      "volunteer": {
+        "title": "Correspondance de Bénévoles",
+        "description": "Connectez des bénévoles qualifiés avec des organisations grâce à notre système de correspondance intelligent basé sur les compétences et la localisation."
+      }
+    },
+    "values": {
+      "title": "Nos Valeurs Fondamentales",
+      "subtitle": "Les principes qui guident tout ce que nous faisons chez SADA9A",
+      "compassion": {
+        "title": "Compassion",
+        "description": "Nous croyons au pouvoir de l'empathie et de la compréhension pour conduire un changement significatif dans nos communautés."
+      },
+      "community": {
+        "title": "Communauté",
+        "description": "Construire des connexions solides entre donateurs, bénévoles et organisations pour créer un impact durable."
+      },
+      "transparency": {
+        "title": "Transparence",
+        "description": "Chaque don est suivi, chaque campagne est vérifiée, et chaque impact est mesuré et rapporté."
+      },
+      "impact": {
+        "title": "Impact",
+        "description": "Se concentrer sur des résultats mesurables qui créent un changement réel et positif dans la vie des gens."
+      }
+    },
+    "stats": {
+      "title": "Notre Impact Jusqu'à Présent",
+      "subtitle": "Des chiffres qui reflètent le changement positif que nous créons ensemble",
+      "campaigns": {
+        "number": "500+",
+        "label": "Campagnes Actives"
+      },
+      "donors": {
+        "number": "10 000+",
+        "label": "Total des Donateurs"
+      },
+      "raised": {
+        "number": "2M+ MRU",
+        "label": "Fonds Collectés"
+      },
+      "organizations": {
+        "number": "13",
+        "label": "Organisations Vérifiées"
+      }
+    },
+
+    "cta": {
+      "title": "Rejoignez Notre Mission",
+      "subtitle": "Que vous souhaitiez faire un don, être bénévole ou vous associer avec nous, il y a une place pour vous dans la communauté SADA9A.",
+      "exploreCampaigns": "Explorer les Campagnes",
+      "becomeVolunteer": "Devenir Bénévole"
+    }
+  },
+  "faq": {
+    "hero": {
+      "title": "Questions Fréquemment Posées",
+      "subtitle": "Trouvez des réponses aux questions courantes sur SADA9A et le fonctionnement de notre plateforme"
+    },
+    "search": {
+      "placeholder": "Rechercher des réponses...",
+      "noResults": "Aucun résultat trouvé",
+      "tryDifferentTerms": "Essayez des termes de recherche différents ou parcourez les catégories ci-dessous"
+    },
+    "categories": {
+      "general": {
+        "title": "Questions Générales"
+      },
+      "donations": {
+        "title": "Dons et Paiements"
+      },
+      "campaigns": {
+        "title": "Gestion des Campagnes"
+      },
+      "account": {
+        "title": "Compte et Profil"
+      }
+    },
+    "general": {
+      "whatIsSadagha": {
+        "question": "Qu'est-ce que SADA9A ?",
+        "answer": "SADA9A est la principale plateforme de financement participatif de Mauritanie qui connecte les cœurs généreux avec des organisations et des causes vérifiées. Nous facilitons les dons caritatifs transparents et les opportunités de bénévolat pour créer un impact positif dans les communautés locales."
+      },
+      "howItWorks": {
+        "question": "Comment fonctionne SADA9A ?",
+        "answer": "SADA9A fonctionne en permettant aux organisations vérifiées de créer des campagnes de collecte de fonds pour leurs causes. Les donateurs peuvent parcourir, rechercher et soutenir les campagnes qui leur tiennent à cœur. Nous connectons également les bénévoles avec les organisations grâce à notre système de correspondance basé sur les compétences et la localisation."
+      }
+    },
+    "donations": {
+      "howToDonate": {
+        "question": "Comment faire un don ?",
+        "answer": "Pour faire un don, parcourez simplement les campagnes, cliquez sur celle qui vous intéresse, et cliquez sur le bouton 'Faire un don'. Vous serez guidé à travers un processus de paiement sécurisé où vous pourrez choisir votre montant et votre méthode de paiement."
+      },
+      "paymentMethods": {
+        "question": "Quelles méthodes de paiement sont acceptées ?",
+        "answer": "Les méthodes de paiement dépendent de ce que chaque organisation a disponible. Certaines peuvent n'accepter que Bankily, tandis que d'autres peuvent offrir plusieurs options comme Sedad, Bimbank, ou d'autres systèmes de paiement locaux."
+      }
+    },
+    "campaigns": {
+      "createCampaign": {
+        "question": "Comment puis-je créer une campagne ?",
+        "answer": "Seules les organisations vérifiées peuvent créer des campagnes sur SADA9A. Si vous représentez une organisation, vous devez d'abord compléter notre processus de vérification. La collecte de fonds individuelle n'est actuellement pas prise en charge pour assurer la transparence et la responsabilité."
+      },
+      "verification": {
+        "question": "Qu'est-ce que le processus de vérification ?",
+        "answer": "Les organisations doivent fournir une documentation légale, une preuve d'enregistrement, des informations de contact et des détails sur leur mission. Notre équipe examine toutes les candidatures pour assurer la légitimité et la transparence avant approbation."
+      }
+    },
+    "account": {
+      "createAccount": {
+        "question": "Comment créer un compte ?",
+        "answer": "Cliquez sur 'S'inscrire' dans la navigation principale, puis choisissez de vous inscrire avec un email ou continuer avec Google/Facebook. Remplissez vos informations de base et vérifiez votre adresse email pour compléter le processus."
+      },
+      "forgotPassword": {
+        "question": "J'ai oublié mon mot de passe. Que dois-je faire ?",
+        "answer": "Cliquez sur 'Mot de passe oublié' sur la page de connexion, entrez votre adresse email, et nous vous enverrons un lien sécurisé pour réinitialiser votre mot de passe."
+      }
+    }
+  },
+  "privacy": {
+    "hero": {
+      "title": "Politique de Confidentialité",
+      "subtitle": "Votre vie privée est importante pour nous. Cette politique explique comment nous collectons, utilisons et protégeons vos informations personnelles.",
+      "lastUpdated": "Dernière mise à jour : Janvier 2025"
+    },
+    "introduction": {
+      "title": "Introduction",
+      "content": "SADA9A s'engage à protéger votre vie privée et à assurer la sécurité de vos informations personnelles. Cette Politique de Confidentialité explique comment nous collectons, utilisons, partageons et protégeons les informations vous concernant lorsque vous utilisez notre plateforme de financement participatif et les services associés."
+    },
+    "sections": {
+      "informationCollection": {
+        "title": "Informations que Nous Collectons",
+        "content": [
+          "Nous collectons les informations que vous nous fournissez directement, par exemple lorsque vous créez un compte, faites un don, créez une campagne ou nous contactez pour obtenir de l'aide.",
+          "Les informations personnelles peuvent inclure votre nom, adresse e-mail, numéro de téléphone, informations de paiement et toute autre information que vous choisissez de fournir.",
+          "Nous collectons également automatiquement des informations lorsque vous utilisez notre plateforme, notamment votre adresse IP, le type de navigateur, les informations sur l'appareil et les habitudes d'utilisation."
+        ]
+      },
+      "informationUse": {
+        "title": "Comment Nous Utilisons Vos Informations",
+        "content": [
+          "Nous utilisons vos informations pour fournir, maintenir et améliorer nos services, y compris le traitement des dons et la gestion des campagnes.",
+          "Nous communiquons avec vous concernant votre compte, les transactions et les mises à jour importantes de notre plateforme.",
+          "Nous utilisons les informations pour prévenir la fraude, assurer la sécurité et nous conformer aux obligations légales.",
+          "Avec votre consentement, nous pouvons vous envoyer des communications promotionnelles sur de nouvelles fonctionnalités ou campagnes qui pourraient vous intéresser."
+        ]
+      },
+      "informationSharing": {
+        "title": "Partage d'Informations",
+        "content": [
+          "Nous ne vendons, n'échangeons ni ne louons vos informations personnelles à des tiers.",
+          "Nous pouvons partager des informations avec des organisations vérifiées lorsque vous faites des dons ou participez à leurs campagnes.",
+          "Nous pouvons partager des informations avec des prestataires de services qui nous aident à exploiter notre plateforme, sous réserve d'accords de confidentialité.",
+          "Nous pouvons divulguer des informations lorsque la loi l'exige ou pour protéger nos droits et la sécurité de nos utilisateurs."
+        ]
+      },
+      "dataSecurity": {
+        "title": "Sécurité des Données",
+        "content": [
+          "Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos informations personnelles contre l'accès non autorisé, l'altération, la divulgation ou la destruction.",
+          "Nous utilisons des serveurs sécurisés et des technologies de cryptage pour protéger les informations sensibles pendant la transmission.",
+          "Bien que nous nous efforcions de protéger vos informations, aucune méthode de transmission sur Internet n'est sécurisée à 100%, et nous ne pouvons garantir une sécurité absolue."
+        ]
+      },
+      "cookies": {
+        "title": "Cookies et Suivi",
+        "content": [
+          "Nous utilisons des cookies et des technologies similaires pour améliorer votre expérience sur notre plateforme et analyser les habitudes d'utilisation.",
+          "Vous pouvez contrôler les paramètres des cookies via les préférences de votre navigateur, bien que certaines fonctionnalités puissent ne pas fonctionner correctement si les cookies sont désactivés.",
+          "Nous pouvons utiliser des services d'analyse pour comprendre comment les utilisateurs interagissent avec notre plateforme et améliorer nos services."
+        ]
+      },
+      "userRights": {
+        "title": "Vos Droits",
+        "content": [
+          "Vous avez le droit d'accéder, de mettre à jour ou de supprimer vos informations personnelles à tout moment via les paramètres de votre compte.",
+          "Vous pouvez vous désabonner des communications promotionnelles en suivant les instructions de désabonnement dans nos e-mails.",
+          "Vous pouvez demander une copie de vos données personnelles ou nous demander de les transférer à un autre service.",
+          "Si vous avez des préoccupations concernant la façon dont nous traitons vos informations, vous pouvez nous contacter en utilisant les informations fournies ci-dessous."
+        ]
+      },
+      "contact": {
+        "title": "Nous Contacter",
+        "content": [
+          "Si vous avez des questions sur cette Politique de Confidentialité ou nos pratiques de confidentialité, veuillez nous contacter.",
+          "Nous répondrons rapidement à vos demandes et travaillerons pour répondre à toutes vos préoccupations."
+        ]
+      }
+    },
+    "contact": {
+      "title": "Questions sur la Confidentialité ?",
+      "description": "Si vous avez des questions ou des préoccupations concernant nos pratiques de confidentialité, n'hésitez pas à nous contacter."
     }
   }
 }

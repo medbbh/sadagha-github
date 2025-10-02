@@ -51,42 +51,45 @@ import InvitedVolunteers from './pages/Orginazation/InvitedVolunteers';
 import PublicLayout from './pages/User/PublicLayout';
 import VerifiedProtectedRoute from './components/VerifiedProtectedRoute';
 import AdminProfilePage from './pages/Admin/AdminProfilePage';
+import AboutUs from './pages/User/AboutUs';
+import FAQ from './pages/User/FAQ';
+import Contact from './pages/User/Contact';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
-  
-  console.log('RoleBasedRedirect state:', { 
-    user: !!user, 
+
+  console.log('RoleBasedRedirect state:', {
+    user: !!user,
     loading,
     userEmail: user?.email,
     role: getUserRole(),
     isFullyAuthenticated: isFullyAuthenticated(),
     needsRegistration: needsRegistration()
   });
-  
+
   if (loading) {
     console.log('Showing loading: auth loading');
     return <Loading />;
   }
-  
+
   if (!user) {
     console.log('No user, redirecting to login');
     return <Navigate to="/feed" replace />;
   }
-  
+
   if (needsRegistration()) {
     console.log('User needs to complete registration');
     return <Navigate to="/confirm-role" replace />;
   }
-  
+
   if (!isFullyAuthenticated()) {
     console.log('User not fully authenticated, showing loading');
     return <Loading />;
   }
-  
+
   const role = getUserRole();
   console.log('User role determined:', role);
-  
+
   if (role === 'organization') {
     console.log('Redirecting to organization dashboard');
     return <Navigate to="/organization" replace />;
@@ -155,16 +158,16 @@ function App() {
         </ProtectedRoute>
       } >
 
-      <Route path="/admin/users" element={<UserManagement />} />
-      <Route path="/admin/organizations" element={<OrganizationManagement />} />
-      <Route path="/admin/campaigns" element={<CampaignManagement />} />
-      <Route path="/admin/financial" element={<FinancialManagement />} />
-      <Route path="/admin/categories" element={<CategoryManagement />} />
-      <Route path="/admin/profile" element={<AdminProfilePage />} />
+        <Route path="/admin/users" element={<UserManagement />} />
+        <Route path="/admin/organizations" element={<OrganizationManagement />} />
+        <Route path="/admin/campaigns" element={<CampaignManagement />} />
+        <Route path="/admin/financial" element={<FinancialManagement />} />
+        <Route path="/admin/categories" element={<CategoryManagement />} />
+        <Route path="/admin/profile" element={<AdminProfilePage />} />
       </Route>
-      
 
-      
+
+
       {/* USER routes */}
       <Route element={<PublicLayout />}>
         <Route path="/feed" element={<Home />} />
@@ -174,6 +177,9 @@ function App() {
         <Route path="/categories" element={<Categories />} />
         <Route path="/organizations" element={<OrganizationsList />} />
         <Route path="/organizations/:id" element={<OrganizationDetail />} />
+        <Route path='about' element={<AboutUs />} />
+        <Route path='faq' element={<FAQ />} />
+        <Route path='contact' element={<Contact />} />
       </Route>
 
       <Route element={
@@ -185,7 +191,7 @@ function App() {
         <Route path="/campaign/:campaignId/donation/success" element={<DonationSuccessPage />} />
         <Route path="/profile" element={<UserProfilePage />} />
 
-    
+
         {/* <Route path="/volunteer" element={<VolunteerDashboard />} /> */}
         <Route path="/volunteer/invitations" element={<VolunteerInvitations />} />
 
@@ -214,7 +220,7 @@ function App() {
         <Route path="/organization/volunteers/requests/:requestId" element={<VerifiedProtectedRoute><VolunteerRequestDetail /></VerifiedProtectedRoute>} />
         <Route path="/organization/volunteers/requests/:requestId/invitations" element={<VerifiedProtectedRoute><InvitedVolunteers /></VerifiedProtectedRoute>} />
 
-        <Route path="/organization/volunteers/requests/:requestId/matches" element={<VerifiedProtectedRoute><VolunteerMatching /></VerifiedProtectedRoute>} />     
+        <Route path="/organization/volunteers/requests/:requestId/matches" element={<VerifiedProtectedRoute><VolunteerMatching /></VerifiedProtectedRoute>} />
       </Route>
 
 
