@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  Folder, Search, Plus, Edit, Trash2, Eye, TrendingUp, 
-  Target, DollarSign, Users, Calendar, BarChart3, Activity
+import {
+  Search, Plus, Edit, Trash2, Eye, TrendingUp,
+  Target, DollarSign, Calendar, BarChart3, Activity,
+  ChartLine, GraduationCap, HeartPulse, Baby, Droplet,
+  Leaf, HandHeart, Lightbulb, House,
+  Utensils, Book, Users, Coins,
+  Stethoscope, TreePine, School, Shirt, Folder
 } from 'lucide-react';
+import { iconMap, iconOptions } from '../../utils/iconMap';
 import { categoryApi } from '../../api/endpoints/CategoryAdminAPI';
 
 const CategoryManagement = () => {
@@ -15,12 +20,18 @@ const CategoryManagement = () => {
   const [categoryCampaigns, setCategoryCampaigns] = useState([]);
   const [stats, setStats] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const [showIconPicker, setShowIconPicker] = useState(false);
+
+
 
   // Form states
   const [formData, setFormData] = useState({
     name: '',
+    icon_class: '',
     description: ''
   });
+
+  const SelectedIcon = iconOptions.find(opt => opt.value === formData.icon_class)?.Icon || Folder;
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -40,9 +51,10 @@ const CategoryManagement = () => {
           Object.entries(filters).filter(([_, value]) => value !== '')
         )
       };
-      
+
       const response = await categoryApi.getCategories(params);
-      
+      console.log("categories : ",response.results)
+
       setCategories(response.results || response);
     } catch (err) {
       setError(err.message);
@@ -74,6 +86,7 @@ const CategoryManagement = () => {
   const openEditModal = (category) => {
     setFormData({
       name: category.name,
+      icon_class: category.icon_class,
       description: category.description || ''
     });
     setSelectedCategory(category);
@@ -199,7 +212,17 @@ const CategoryManagement = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center">
                   <div className="h-12 w-12 rounded-lg bg-blue-100 flex items-center justify-center">
-                    <Folder className="h-6 w-6 text-blue-600" />
+
+                    {/* category icon */}
+                    <div
+                      className="h-12 w-12 rounded-lg flex items-center justify-center"
+                    >
+                      {(() => {
+                        const IconComponent = iconMap[category.icon_class] || iconMap['folder'];
+                        return <IconComponent size={24} strokeWidth={2} />;
+                      })()}
+                    </div>
+
                   </div>
                   <div className="ml-3">
                     <h3 className="text-lg font-medium text-gray-900">{category.name}</h3>
@@ -318,6 +341,77 @@ const CategoryManagement = () => {
                     placeholder="Enter category name"
                   />
                 </div>
+
+
+
+                {/* Icon Selector */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Icon
+                  </label>
+
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowIconPicker(!showIconPicker)}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg flex items-center justify-between hover:border-gray-400 transition"
+                    >
+                      <div className="flex items-center gap-3">
+                        <SelectedIcon size={24} />
+                        <span>
+                          {iconOptions.find(opt => opt.value === formData.icon_class)?.label || 'Select an icon'}
+                        </span>
+                      </div>
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+
+                    {/* Icon Picker Dropdown */}
+                    {showIconPicker && (
+                      <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-lg shadow-lg max-h-96 overflow-y-auto">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 p-3">
+                          {iconOptions.map(({ value, label, Icon }) => (
+                            <button
+                              key={value}
+                              type="button"
+                              onClick={() => {
+                                setFormData({ ...formData, icon_class: value });
+                                setShowIconPicker(false);
+                              }}
+                              className={`flex flex-col items-center gap-2 p-3 rounded-lg border-2 transition hover:bg-gray-50 ${formData.icon_class === value
+                                ? 'border-blue-500 bg-blue-50'
+                                : 'border-gray-200'
+                                }`}
+                            >
+                              <Icon size={32} />
+                              <span className="text-xs text-center">{label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

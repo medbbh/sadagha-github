@@ -10,10 +10,14 @@ logger = logging.getLogger(__name__)
 
 class CategorySerializer(serializers.ModelSerializer):
     campaign_count = serializers.IntegerField(read_only=True)
-
+    # total raised amount across all campaigns in this category
+    total_raised = serializers.DecimalField(max_digits=15, decimal_places=2, read_only=True)
+    # progress percentage towards total target across all campaigns in this category
+    progress_percentage = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True)
+    
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description', 'campaign_count']
+        fields = ['id', 'name', 'icon_class', 'description', 'campaign_count','total_raised','progress_percentage']
         read_only_fields = ['id', 'campaign_count']
 
 class FileSerializer(serializers.ModelSerializer):

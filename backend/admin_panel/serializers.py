@@ -496,7 +496,7 @@ class AdminCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = [
-            'id', 'name', 'description', 'created_at', 'updated_at',
+            'id', 'name', 'icon_class', 'description', 'created_at', 'updated_at',
             'campaign_count', 'active_campaigns', 'total_raised'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']

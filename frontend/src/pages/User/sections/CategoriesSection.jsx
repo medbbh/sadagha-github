@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { fetchCategories } from '../../../api/endpoints/CategoryAPI';
+import { iconMap } from '../../../utils/iconMap';
 
 export function CategoriesSection() {
   const { t, i18n } = useTranslation();
@@ -38,25 +39,6 @@ export function CategoriesSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Helper function to get category icon
-  const getCategoryIcon = (categoryName) => {
-    const icons = {
-      'health': '🏥',
-      'education': '📚',
-      'environment': '🌱',
-      'technology': '💻',
-      'arts': '🎨',
-      'sports': '⚽',
-      'community': '🏘️',
-      'animals': '🐾',
-      'emergency': '🚨',
-      'food': '🍽️'
-    };
-    
-    const name = categoryName?.toLowerCase() || '';
-    const matchedIcon = Object.keys(icons).find(key => name.includes(key));
-    return icons[matchedIcon] || '📁';
-  };
 
   // Helper function to get category color
   const getCategoryColor = (index) => {
@@ -124,7 +106,6 @@ export function CategoriesSection() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
           {categories.map((category, index) => {
             const categoryColor = getCategoryColor(index);
-            const categoryIcon = getCategoryIcon(category.name);
             const campaignCount = category.campaign_count || 0;
             
             return (
@@ -148,8 +129,13 @@ export function CategoriesSection() {
                   }}
                 >
                   <div className="text-4xl mb-3" style={{ fontSize: '2.5rem' }}>
-                    {categoryIcon}
+                      {(() => {
+                        const IconComponent = iconMap[category.icon_class] || iconMap['folder'];
+                        return <IconComponent size={24} strokeWidth={2} />;
+                      })()}
                   </div>
+
+
                   <h3 className="font-semibold text-gray-800 text-sm mb-1" style={{ color: '#1f2937' }}>
                     {category.name || t('categories_section.unnamedCategory')}
                   </h3>
