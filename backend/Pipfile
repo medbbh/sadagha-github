@@ -19,6 +19,7 @@ xlsxwriter = "==3.1.9"
 reportlab = "==4.0.7"
 channels = "*"
 channels-redis = "*"
+django-redis = "==5.4.0"
 
 [dev-packages]
 

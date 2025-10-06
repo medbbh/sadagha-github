@@ -21,7 +21,8 @@ export default function OrganizationsList() {
       try {
         setLoading(true);
         const data = await fetchOrganizations({ search: searchQuery });
-        setOrganizations(data || []);
+        console.log('Fetched organizations:', data);
+        setOrganizations(data.results || []);
       } catch (err) {
         setError(err.message);
       } finally {

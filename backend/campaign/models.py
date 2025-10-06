@@ -48,6 +48,12 @@ class Campaign(models.Model):
     def has_facebook_live(self):
         return bool(self.facebook_live_url and self.facebook_video_id)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['owner', '-created_at']),
+            models.Index(fields=['current_amount']),
+        ]
+
 class File(models.Model):
     name = models.CharField(max_length=255)
     url = models.URLField()

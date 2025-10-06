@@ -864,30 +864,54 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
             )
 
 
+from django.core.cache import cache
+from rest_framework.pagination import PageNumberPagination
+import time
+
+
 class PublicOrganizationViewSet(viewsets.ReadOnlyModelViewSet):
-    """Public endpoint for viewing organizations and their campaigns"""
     queryset = OrganizationProfile.objects.filter(is_verified=True)
     serializer_class = PublicOrganizationProfileSerializer
     permission_classes = [AllowAny]
-    pagination_class = None
 
     def retrieve(self, request, pk=None):
+        start = time.time()
+        page = request.GET.get('page', 1)
+        cache_key = f"organization:detail:{pk}:page:{page}"
+
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return Response(cached_data)
+
         organization = self.get_object()
         serializer = self.get_serializer(organization)
-        
-        # Get organization's active campaigns
+
+        # Campaigns queryset
         campaigns = Campaign.objects.filter(
             owner=organization.owner,
-            current_amount__lt=models.F('target')  # Only active campaigns
-        ).order_by('-created_at')[:10]
+            current_amount__lt=models.F('target')
+        ).select_related('owner').prefetch_related('donations').order_by('-created_at')
+
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_campaigns = paginator.paginate_queryset(campaigns, request)
+        campaign_serializer = CampaignSerializer(paginated_campaigns, many=True)
+
+        # 👇 Instead of returning only the campaigns, use paginator.get_paginated_response
+        campaigns_paginated_response = paginator.get_paginated_response(campaign_serializer.data)
+
+        response_data = {
+            "organization": serializer.data,
+            "campaigns": campaigns_paginated_response.data,  # contains results, count, next, prev
+            "campaigns_count": campaigns.count(),
+            "payment_info": {
+                "can_receive_donations": organization.can_receive_payments(),
+                "payment_method": "NextRemitly" if organization.can_receive_payments() else None
+            },
+        }
+
+        cache.set(cache_key, response_data, timeout=120)
+
+        print(f"######################## Total time: {time.time() - start}s")
+        return Response(response_data)
         
-        campaign_data = CampaignSerializer(campaigns, many=True).data
-        
-        return Response({
-            'organization': serializer.data,
-            'campaigns': campaign_data,
-            'payment_info': {
-                'can_receive_donations': organization.can_receive_payments(),
-                'payment_method': 'NextRemitly' if organization.can_receive_payments() else None
-            }
-        })

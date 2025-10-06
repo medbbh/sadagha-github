@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { fetchOrganizationById, fetchOrganizationCampaigns } from '../../api/endpoints/OrgAPI';
+import { fetchOrganizationById, fetchOrganizationCampaigns, getOrganizationWithCampaigns } from '../../api/endpoints/OrgAPI';
 import CampaignCard from '../../components/ui/CampaignCard';
 import Loading from '../../components/common/Loading';
 import { ChevronLeft, Building2, ExternalLink, Phone, CheckCircle, XCircle, MapPin, Globe } from 'lucide-react';
+import Pagination from './Pagination';
 
 export default function OrganizationDetail() {
   const { t, i18n } = useTranslation();
@@ -14,27 +15,56 @@ export default function OrganizationDetail() {
 
   const [organization, setOrganization] = useState(null);
   const [campaigns, setCampaigns] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setLoading(true);
-        const orgData = await fetchOrganizationById(id);
-        setOrganization(orgData.organization);
-        
-        const campaignsData = await fetchOrganizationCampaigns(id);
-        console.log('Fetched campaigns:', campaignsData);
-        setCampaigns(campaignsData || []);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
 
-    loadData();
+  // In your API call
+const fetchOrganization = async (page = 1) => {
+  try {
+    setLoading(true);
+    const data = await getOrganizationWithCampaigns(id, page);
+    console.log('Fetched organization with campaigns:', data);
+    setOrganization(data.organization);
+    setCampaigns(data.campaigns.results);
+    setTotalPages(Math.ceil(data.campaigns.count / 10));
+    setLoading(false);
+  } catch (error) {
+    console.error('Error fetching organization:', error);
+  }finally {
+    setLoading(false);
+  }
+};
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+    fetchOrganization(page);
+  };
+
+
+  useEffect(() => {
+    // const loadData = async () => {
+    //   try {
+    //     setLoading(true);
+    //     const orgData = await fetchOrganizationById(id);
+    //     console.log('Fetched organization:', orgData);
+    //     setOrganization(orgData.organization);
+        
+    //     const campaignsData = await fetchOrganizationCampaigns(id);
+    //     console.log('Fetched campaigns:', campaignsData);
+    //     setCampaigns(campaignsData || []);
+    //   } catch (err) {
+    //     setError(err.message);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    // loadData();
+
+    fetchOrganization(currentPage);
   }, [id]);
 
   const ErrorState = () => (
@@ -278,6 +308,17 @@ export default function OrganizationDetail() {
             )}
           </div>
         </div>
+
+                        {/* Pagination */}
+                        {totalPages > 1 && (
+                          <div className="mt-8">
+                            <Pagination
+                              currentPage={currentPage}
+                              totalPages={totalPages}
+                              onPageChange={handlePageChange}
+                            />
+                          </div>
+                        )}
       </div>
     </div>
   );

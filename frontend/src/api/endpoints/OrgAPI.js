@@ -299,6 +299,11 @@ export const fetchOrganizationCampaigns = async (orgId) => {
   }
 };
 
+export const getOrganizationWithCampaigns = async (orgId, page = 1) => {
+  const response = await api.get(`/org/public-organizations/${orgId}/?page=${page}`);
+  return response;
+}
+
 // Combined Dashboard Data Fetch
 export const fetchFullDashboardData = async (period = '30d') => {
   try {
@@ -505,6 +510,7 @@ export default {
   fetchOrganizations: withErrorHandling(fetchOrganizations),
   fetchOrganizationById: withErrorHandling(fetchOrganizationById),
   fetchOrganizationCampaigns: withErrorHandling(fetchOrganizationCampaigns),
+  getOrganizationWithCampaigns: withErrorHandling(getOrganizationWithCampaigns),
   
   // Utilities
   downloadExportedFile,
