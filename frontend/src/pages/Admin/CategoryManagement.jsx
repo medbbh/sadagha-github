@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import {
   Search, Plus, Edit, Trash2, Eye, TrendingUp,
   Target, DollarSign, Calendar, BarChart3, Activity,
   ChartLine, GraduationCap, HeartPulse, Baby, Droplet,
   Leaf, HandHeart, Lightbulb, House,
   Utensils, Book, Users, Coins,
-  Stethoscope, TreePine, School, Shirt, Folder
+  Stethoscope, TreePine, School, Shirt, Folder, Loader2
 } from 'lucide-react';
 import { iconMap, iconOptions } from '../../utils/iconMap';
 import { categoryApi } from '../../api/endpoints/CategoryAdminAPI';
@@ -22,7 +22,9 @@ const CategoryManagement = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showIconPicker, setShowIconPicker] = useState(false);
 
-
+  // Loading states for individual actions
+  const [actionLoading, setActionLoading] = useState({});
+  const [formLoading, setFormLoading] = useState(false);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -38,14 +40,34 @@ const CategoryManagement = () => {
     search: ''
   });
 
+  // Debounced search
+  const [searchDebounceTimer, setSearchDebounceTimer] = useState(null);
+
+  // Debounced effect for search
   useEffect(() => {
-    fetchCategories();
-    fetchStats();
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+    
+    const timer = setTimeout(() => {
+      fetchCategories();
+    }, filters.search ? 500 : 0); // 500ms debounce for search, immediate for other filters
+    
+    setSearchDebounceTimer(timer);
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [filters]);
 
-  const fetchCategories = async () => {
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchCategories = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {
         ...Object.fromEntries(
           Object.entries(filters).filter(([_, value]) => value !== '')
@@ -58,10 +80,12 @@ const CategoryManagement = () => {
       setCategories(response.results || response);
     } catch (err) {
       setError(err.message);
+      // Auto-dismiss error after 5 seconds
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters]);
 
   const fetchStats = async () => {
     try {
@@ -73,17 +97,17 @@ const CategoryManagement = () => {
     }
   };
 
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = useCallback((key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
-  };
+  }, []);
 
-  const openCreateModal = () => {
-    setFormData({ name: '', description: '' });
+  const openCreateModal = useCallback(() => {
+    setFormData({ name: '', icon_class: '', description: '' });
     setIsEditing(false);
     setShowCategoryModal(true);
-  };
+  }, []);
 
-  const openEditModal = (category) => {
+  const openEditModal = useCallback((category) => {
     setFormData({
       name: category.name,
       icon_class: category.icon_class,
@@ -92,11 +116,12 @@ const CategoryManagement = () => {
     setSelectedCategory(category);
     setIsEditing(true);
     setShowCategoryModal(true);
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     try {
+      setFormLoading(true);
       console.log('Submitting form data:', formData); // Debug log
       if (isEditing) {
         await categoryApi.updateCategory(selectedCategory.id, formData);
@@ -109,23 +134,31 @@ const CategoryManagement = () => {
     } catch (err) {
       console.error('Form submission error:', err); // Debug log
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setFormLoading(false);
     }
-  };
+  }, [formData, isEditing, selectedCategory, fetchCategories]);
 
-  const handleDelete = async (categoryId) => {
+  const handleDelete = useCallback(async (categoryId) => {
     if (window.confirm('Are you sure you want to delete this category? This action cannot be undone.')) {
       try {
+        setActionLoading(prev => ({ ...prev, [`delete_${categoryId}`]: true }));
         await categoryApi.deleteCategory(categoryId);
         fetchCategories();
         fetchStats();
       } catch (err) {
         setError(err.message);
+        setTimeout(() => setError(null), 5000);
+      } finally {
+        setActionLoading(prev => ({ ...prev, [`delete_${categoryId}`]: false }));
       }
     }
-  };
+  }, [fetchCategories]);
 
-  const openCampaignsModal = async (category) => {
+  const openCampaignsModal = useCallback(async (category) => {
     try {
+      setActionLoading(prev => ({ ...prev, [`campaigns_${category.id}`]: true }));
       setSelectedCategory(category);
       const response = await categoryApi.getCategoryCampaigns(category.id);
       console.log('Fetched campaigns for category:', response); // Debug log
@@ -133,22 +166,63 @@ const CategoryManagement = () => {
       setShowCampaignsModal(true);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`campaigns_${category.id}`]: false }));
     }
-  };
+  }, []);
 
-  const getCampaignStatusColor = (status) => {
+  // Memoized color function
+  const getCampaignStatusColor = useMemo(() => (status) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'active': return 'bg-blue-100 text-blue-800';
       case 'new': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  if (loading) {
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[placeholder*="Search categories"]');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+      
+      // Escape to close modals or clear error
+      if (e.key === 'Escape') {
+        if (showCategoryModal) {
+          setShowCategoryModal(false);
+        } else if (showCampaignsModal) {
+          setShowCampaignsModal(false);
+        } else if (error) {
+          setError(null);
+        }
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [showCategoryModal, showCampaignsModal, error]);
+
+  if (loading && categories.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Category Management</h1>
+            <p className="text-gray-600">Manage campaign categories and their performance</p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg shadow border">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500">Loading categories...</p>
+        </div>
       </div>
     );
   }
@@ -160,10 +234,13 @@ const CategoryManagement = () => {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Category Management</h1>
           <p className="text-gray-600">Manage campaign categories and their performance</p>
+          <div className="text-xs text-gray-500 mt-1">
+            Shortcuts: Ctrl+K (search), Esc (close/clear)
+          </div>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Category
@@ -184,16 +261,38 @@ const CategoryManagement = () => {
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow border mb-6">
+      <div className="bg-white p-4 rounded-lg shadow border mb-6 relative">
+        {loading && categories.length > 0 && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+            <div className="flex items-center space-x-2">
+              <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+              <span className="text-sm text-gray-600">Updating...</span>
+            </div>
+          </div>
+        )}
         <div className="relative max-w-md">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
           <input
             type="text"
-            placeholder="Search categories..."
-            className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            placeholder="Search categories... (Ctrl+K to focus)"
+            className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={filters.search}
             onChange={(e) => handleFilterChange('search', e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Escape') {
+                e.target.blur();
+              }
+            }}
           />
+          {filters.search && (
+            <button
+              onClick={() => handleFilterChange('search', '')}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              title="Clear search"
+            >
+              ×
+            </button>
+          )}
         </div>
       </div>
 
@@ -232,10 +331,15 @@ const CategoryManagement = () => {
                 <div className="flex space-x-1">
                   <button
                     onClick={() => openCampaignsModal(category)}
-                    className="p-2 text-gray-400 hover:text-blue-600"
+                    disabled={actionLoading[`campaigns_${category.id}`]}
+                    className="p-2 text-gray-400 hover:text-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="View Campaigns"
                   >
-                    <Eye className="h-4 w-4" />
+                    {actionLoading[`campaigns_${category.id}`] ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
                   </button>
                   <button
                     onClick={() => openEditModal(category)}
@@ -246,10 +350,15 @@ const CategoryManagement = () => {
                   </button>
                   <button
                     onClick={() => handleDelete(category.id)}
-                    className="p-2 text-gray-400 hover:text-red-600"
+                    disabled={actionLoading[`delete_${category.id}`]}
+                    className="p-2 text-gray-400 hover:text-red-600 disabled:opacity-50 disabled:cursor-not-allowed"
                     title="Delete Category"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    {actionLoading[`delete_${category.id}`] ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -294,26 +403,47 @@ const CategoryManagement = () => {
 
       {/* Empty State */}
       {categories.length === 0 && !loading && (
-        <div className="text-center py-12">
+        <div className="text-center py-12 bg-white rounded-lg shadow border">
           <Folder className="mx-auto h-12 w-12 text-gray-400" />
-          <h3 className="mt-2 text-sm font-medium text-gray-900">No categories</h3>
-          <p className="mt-1 text-sm text-gray-500">Get started by creating a new category.</p>
+          <h3 className="mt-2 text-sm font-medium text-gray-900">No categories found</h3>
+          <p className="mt-1 text-sm text-gray-500">
+            {filters.search 
+              ? 'No categories match your search. Try adjusting your search terms.'
+              : 'Get started by creating a new category.'
+            }
+          </p>
           <div className="mt-6">
-            <button
-              onClick={openCreateModal}
-              className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              <Plus className="h-4 w-4 mr-2" />
-              Add Category
-            </button>
+            {filters.search ? (
+              <button
+                onClick={() => handleFilterChange('search', '')}
+                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+              >
+                Clear search
+              </button>
+            ) : (
+              <button
+                onClick={openCreateModal}
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Add Category
+              </button>
+            )}
           </div>
         </div>
       )}
 
       {/* Category Create/Edit Modal */}
       {showCategoryModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowCategoryModal(false);
+            }
+          }}
+        >
+          <div className="relative mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
             <div className="mt-3">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium text-gray-900">
@@ -321,7 +451,8 @@ const CategoryManagement = () => {
                 </h3>
                 <button
                   onClick={() => setShowCategoryModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+                  aria-label="Close modal"
                 >
                   ×
                 </button>
@@ -430,14 +561,17 @@ const CategoryManagement = () => {
                   <button
                     type="button"
                     onClick={() => setShowCategoryModal(false)}
-                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                    disabled={formLoading}
+                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-gray-500"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                    disabled={formLoading || !formData.name.trim()}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center"
                   >
+                    {formLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
                     {isEditing ? 'Update' : 'Create'}
                   </button>
                 </div>
@@ -449,8 +583,15 @@ const CategoryManagement = () => {
 
       {/* Category Campaigns Modal */}
       {showCampaignsModal && selectedCategory && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-          <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 shadow-lg rounded-md bg-white max-h-screen overflow-y-auto">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowCampaignsModal(false);
+            }
+          }}
+        >
+          <div className="relative mx-auto p-5 border w-full max-w-6xl shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
             <div className="mt-3">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-medium text-gray-900">
@@ -458,7 +599,8 @@ const CategoryManagement = () => {
                 </h3>
                 <button
                   onClick={() => setShowCampaignsModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+                  aria-label="Close modal"
                 >
                   ×
                 </button>
@@ -559,7 +701,8 @@ const CategoryManagement = () => {
               <div className="flex justify-end mt-6">
                 <button
                   onClick={() => setShowCampaignsModal(false)}
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  autoFocus
                 >
                   Close
                 </button>

@@ -1,9 +1,9 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   DollarSign, Search, Filter, Eye, Flag, AlertTriangle, TrendingUp, 
   CreditCard, Users, Activity, Clock, CheckCircle, XCircle, 
-  BarChart3, PieChart, Calendar, Shield, Zap, Globe
+  BarChart3, PieChart, Calendar, Shield, Zap, Globe, Loader2
 } from 'lucide-react';
 import { financialApi } from '../../api/endpoints/FinancialAdminAPI';
 
@@ -15,6 +15,9 @@ const FinancialManagement = () => {
   const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [dashboardStats, setDashboardStats] = useState({});
   const [activeTab, setActiveTab] = useState('transactions'); // transactions, analytics, monitoring, fraud
+
+  // Loading states for individual actions
+  const [actionLoading, setActionLoading] = useState({});
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -29,6 +32,9 @@ const FinancialManagement = () => {
     hours: '24' // for monitoring
   });
 
+  // Debounced search
+  const [searchDebounceTimer, setSearchDebounceTimer] = useState(null);
+
   // Analytics data
   const [paymentAnalytics, setPaymentAnalytics] = useState(null);
   const [revenueAnalytics, setRevenueAnalytics] = useState(null);
@@ -40,23 +46,39 @@ const FinancialManagement = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
+  // Debounced effect for search
   useEffect(() => {
-    if (activeTab === 'transactions') {
-      fetchDonations();
-    } else if (activeTab === 'analytics') {
-      fetchAnalyticsData();
-    } else if (activeTab === 'monitoring') {
-      fetchMonitoringData();
-    } else if (activeTab === 'fraud') {
-      fetchFraudData();
-      
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
     }
-    fetchDashboardStats();
+    
+    const timer = setTimeout(() => {
+      if (activeTab === 'transactions') {
+        fetchDonations();
+      } else if (activeTab === 'analytics') {
+        fetchAnalyticsData();
+      } else if (activeTab === 'monitoring') {
+        fetchMonitoringData();
+      } else if (activeTab === 'fraud') {
+        fetchFraudData();
+      }
+    }, filters.search ? 500 : 0); // 500ms debounce for search, immediate for other filters
+    
+    setSearchDebounceTimer(timer);
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [currentPage, filters, activeTab]);
 
-  const fetchDonations = async () => {
+  useEffect(() => {
+    fetchDashboardStats();
+  }, []);
+
+  const fetchDonations = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {
         page: currentPage,
         ...Object.fromEntries(
@@ -70,10 +92,12 @@ const FinancialManagement = () => {
       setTotalCount(response.count || response.length);
     } catch (err) {
       setError(err.message);
+      // Auto-dismiss error after 5 seconds
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, filters]);
 
   const fetchDashboardStats = async () => {
     try {
@@ -85,9 +109,10 @@ const FinancialManagement = () => {
     }
   };
 
-  const fetchAnalyticsData = async () => {
+  const fetchAnalyticsData = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const [payment, revenue, trends] = await Promise.all([
         financialApi.getPaymentAnalytics(),
         financialApi.getRevenueAnalytics(30),
@@ -100,14 +125,16 @@ const FinancialManagement = () => {
       console.log('Revenue Analytics:', revenue);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchMonitoringData = async () => {
+  const fetchMonitoringData = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const params = {
         hours: filters.hours,
         status: filters.status,
@@ -118,73 +145,118 @@ const FinancialManagement = () => {
       setDashboardStats(prev => ({ ...prev, monitoring: response.summary }));
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, [filters.hours, filters.status, filters.min_amount]);
 
-  const fetchFraudData = async () => {
+  const fetchFraudData = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const fraudResponse = await financialApi.getFraudDetection();
       console.log('Fraud Data:', fraudResponse);
       setFraudData(fraudResponse);
       setDonations(fraudResponse.suspicious_transactions || []);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = useCallback((key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
     setCurrentPage(1);
-  };
+  }, []);
 
-  const openTransactionDetails = async (transaction) => {
+  const openTransactionDetails = useCallback(async (transaction) => {
     try {
+      setActionLoading(prev => ({ ...prev, [`details_${transaction.id}`]: true }));
       const details = await financialApi.getTransactionDetails(transaction.id);
       setSelectedTransaction({ ...transaction, details });
       setShowTransactionModal(true);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`details_${transaction.id}`]: false }));
     }
-  };
+  }, []);
 
-  const handleFlagTransaction = async (transactionId, reason) => {
+  const handleFlagTransaction = useCallback(async (transactionId, reason) => {
+    if (!window.confirm('Are you sure you want to flag this transaction?')) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`flag_${transactionId}`]: true }));
       await financialApi.flagTransaction(transactionId, reason);
       if (activeTab === 'transactions') {
         fetchDonations();
       }
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`flag_${transactionId}`]: false }));
     }
-  };
+  }, [activeTab, fetchDonations]);
 
-  const getStatusColor = (status) => {
+  // Memoized color functions
+  const getStatusColor = useMemo(() => (status) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'pending': return 'bg-yellow-100 text-yellow-800';
       case 'failed': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  const getRiskColor = (level) => {
+  const getRiskColor = useMemo(() => (level) => {
     switch (level) {
       case 'high': return 'bg-red-100 text-red-800';
       case 'medium': return 'bg-yellow-100 text-yellow-800';
       case 'low': return 'bg-green-100 text-green-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[placeholder*="Search transactions"]');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+      
+      // Escape to clear error
+      if (e.key === 'Escape' && error) {
+        setError(null);
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [error]);
 
   if (loading && !donations.length) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Financial Management</h1>
+          <p className="text-gray-600">Monitor transactions, analytics, and financial performance</p>
+        </div>
+        <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg shadow border">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500">Loading financial data...</p>
+        </div>
       </div>
     );
   }
@@ -193,8 +265,15 @@ const FinancialManagement = () => {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Financial Management</h1>
-        <p className="text-gray-600">Monitor transactions, analytics, and financial performance</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Financial Management</h1>
+            <p className="text-gray-600">Monitor transactions, analytics, and financial performance</p>
+          </div>
+          <div className="text-xs text-gray-500 text-right">
+            <p>Shortcuts: Ctrl+K (search), Esc (clear error)</p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -272,11 +351,25 @@ const FinancialManagement = () => {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                 <input
                   type="text"
-                  placeholder="Search transactions..."
-                  className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  placeholder="Search transactions... (Ctrl+K to focus)"
+                  className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   value={filters.search}
                   onChange={(e) => handleFilterChange('search', e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                      e.target.blur();
+                    }
+                  }}
                 />
+                {filters.search && (
+                  <button
+                    onClick={() => handleFilterChange('search', '')}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    title="Clear search"
+                  >
+                    ×
+                  </button>
+                )}
               </div>
               <select
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -320,6 +413,7 @@ const FinancialManagement = () => {
             onViewDetails={openTransactionDetails}
             onFlag={handleFlagTransaction}
             loading={loading}
+            actionLoading={actionLoading}
           />
         </div>
       )}
@@ -341,6 +435,7 @@ const FinancialManagement = () => {
           onViewDetails={openTransactionDetails}
           stats={dashboardStats.monitoring}
           loading={loading}
+          actionLoading={actionLoading}
         />
       )}
 
@@ -351,6 +446,7 @@ const FinancialManagement = () => {
           onViewDetails={openTransactionDetails}
           onFlag={handleFlagTransaction}
           loading={loading}
+          actionLoading={actionLoading}
         />
       )}
 
@@ -427,7 +523,7 @@ const FinancialManagement = () => {
 export default FinancialManagement;
 
 // Fraud Tab Component
-const FraudTab = ({ fraudData, donations, onViewDetails, onFlag, loading }) => {
+const FraudTab = ({ fraudData, donations, onViewDetails, onFlag, loading, actionLoading = {} }) => {
   if (loading) {
     return <div className="text-center py-8">Loading fraud detection data...</div>;
   }
@@ -515,6 +611,7 @@ const FraudTab = ({ fraudData, donations, onViewDetails, onFlag, loading }) => {
             onViewDetails={onViewDetails}
             onFlag={onFlag}
             loading={false}
+            actionLoading={actionLoading}
           />
         ) : (
           <div className="text-center py-8">
@@ -530,9 +627,26 @@ const FraudTab = ({ fraudData, donations, onViewDetails, onFlag, loading }) => {
 
 
 // Transaction Details Modal Component
-const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
+const TransactionDetailsModal = React.memo(({ transaction, onClose, onFlag }) => {
   const [flagReason, setFlagReason] = useState('');
   const [showFlagModal, setShowFlagModal] = useState(false);
+
+  // Handle keyboard events
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showFlagModal) {
+          setShowFlagModal(false);
+          setFlagReason('');
+        } else {
+          onClose();
+        }
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, showFlagModal]);
 
   const handleFlag = async () => {
     if (flagReason.trim()) {
@@ -543,13 +657,29 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
     }
   };
 
+  // Handle backdrop click
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white max-h-screen overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
+      <div className="relative mx-auto p-5 border w-full max-w-4xl shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
         <div className="mt-3">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900">Transaction Details</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">×</button>
+            <button 
+              onClick={onClose} 
+              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              aria-label="Close modal"
+            >
+              ×
+            </button>
           </div>
           
           {/* Transaction Info */}
@@ -652,7 +782,8 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
             </div>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              autoFocus
             >
               Close
             </button>
@@ -662,8 +793,16 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
 
       {/* Flag Modal */}
       {showFlagModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowFlagModal(false);
+              setFlagReason('');
+            }
+          }}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-[90vw]">
             <h4 className="text-lg font-medium text-gray-900 mb-4">Flag Transaction</h4>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -680,14 +819,14 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowFlagModal(false)}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
               <button
                 onClick={handleFlag}
                 disabled={!flagReason.trim()}
-                className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:opacity-50"
+                className="px-4 py-2 bg-orange-600 text-white rounded hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 Flag Transaction
               </button>
@@ -697,10 +836,10 @@ const TransactionDetailsModal = ({ transaction, onClose, onFlag }) => {
       )}
     </div>
   );
-};
+});
 
 // Transactions Table Component
-const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
+const TransactionsTable = ({ donations, onViewDetails, onFlag, loading, actionLoading = {} }) => {
   const getStatusColor = (status) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
@@ -720,7 +859,15 @@ const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow border overflow-hidden">
+    <div className="bg-white rounded-lg shadow border overflow-hidden relative">
+      {loading && donations.length > 0 && (
+        <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+          <div className="flex items-center space-x-2">
+            <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+            <span className="text-sm text-gray-600">Updating...</span>
+          </div>
+        </div>
+      )}
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
@@ -752,7 +899,20 @@ const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {donations.map((donation) => (
+            {donations.length === 0 && !loading ? (
+              <tr>
+                <td colSpan="8" className="px-6 py-12 text-center">
+                  <div className="flex flex-col items-center">
+                    <DollarSign className="h-12 w-12 text-gray-400 mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No transactions found</h3>
+                    <p className="text-gray-500">
+                      No transactions match your current filters.
+                    </p>
+                  </div>
+                </td>
+              </tr>
+            ) : (
+              donations.map((donation) => (
               <tr key={donation.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4">
                   <div className="text-sm font-medium text-gray-900">#{donation.id}</div>
@@ -792,22 +952,33 @@ const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() => onViewDetails(donation)}
-                      className="text-blue-600 hover:text-blue-900"
+                      disabled={actionLoading[`details_${donation.id}`]}
+                      className="text-blue-600 hover:text-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="View Details"
                     >
-                      <Eye className="h-4 w-4" />
+                      {actionLoading[`details_${donation.id}`] ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
                     </button>
                     <button
                       onClick={() => onFlag(donation.id, 'Manual review requested')}
-                      className="text-orange-600 hover:text-orange-900"
+                      disabled={actionLoading[`flag_${donation.id}`]}
+                      className="text-orange-600 hover:text-orange-900 disabled:opacity-50 disabled:cursor-not-allowed"
                       title="Flag Transaction"
                     >
-                      <Flag className="h-4 w-4" />
+                      {actionLoading[`flag_${donation.id}`] ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Flag className="h-4 w-4" />
+                      )}
                     </button>
                   </div>
                 </td>
               </tr>
-            ))}
+              ))
+            )}
           </tbody>
         </table>
       </div>
@@ -817,7 +988,7 @@ const TransactionsTable = ({ donations, onViewDetails, onFlag, loading }) => {
 
 
 // Monitoring Tab Component
-const MonitoringTab = ({ donations, filters, onFilterChange, onViewDetails, stats, loading }) => {
+const MonitoringTab = ({ donations, filters, onFilterChange, onViewDetails, stats, loading, actionLoading = {} }) => {
   return (
     <div className="space-y-6">
       {/* Real-time Filters */}
@@ -954,9 +1125,14 @@ const MonitoringTab = ({ donations, filters, onFilterChange, onViewDetails, stat
                   <td className="px-6 py-4">
                     <button
                       onClick={() => onViewDetails(donation)}
-                      className="text-blue-600 hover:text-blue-900"
+                      disabled={actionLoading[`details_${donation.id}`]}
+                      className="text-blue-600 hover:text-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Eye className="h-4 w-4" />
+                      {actionLoading[`details_${donation.id}`] ? (
+                        <Loader2 className="h-4 w-4 animate-spin" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
                     </button>
                   </td>
                 </tr>

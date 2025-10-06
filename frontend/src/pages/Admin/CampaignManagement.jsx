@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   Target, Search, Filter, Eye, Star, StarOff, TrendingUp, Users, 
   DollarSign, Calendar, Flag, CheckCircle, XCircle, AlertTriangle,
-  FileText, Play, Activity, BarChart3, Shield, Heart
+  FileText, Play, Activity, BarChart3, Shield, Heart, Loader2
 } from 'lucide-react';
 import { campaignApi } from '../../api/endpoints/CampaignAdminAPI';
 
@@ -15,6 +15,10 @@ const CampaignManagement = () => {
   const [selectedCampaign, setSelectedCampaign] = useState(null);
   const [stats, setStats] = useState({});
   const [activeTab, setActiveTab] = useState('all'); // all, featured, trending
+
+  // Loading states for individual actions
+  const [actionLoading, setActionLoading] = useState({});
+  const [bulkActionLoading, setBulkActionLoading] = useState(false);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -30,19 +34,39 @@ const CampaignManagement = () => {
     max_target: ''
   });
 
+  // Debounced search
+  const [searchDebounceTimer, setSearchDebounceTimer] = useState(null);
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
+  // Debounced effect for search
   useEffect(() => {
-    fetchCampaigns();
-    fetchStats();
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+    
+    const timer = setTimeout(() => {
+      fetchCampaigns();
+    }, filters.search ? 500 : 0); // 500ms debounce for search, immediate for other filters
+    
+    setSearchDebounceTimer(timer);
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [currentPage, filters, activeTab]);
 
-  const fetchCampaigns = async () => {
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchCampaigns = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       let params = {
         page: currentPage,
         ...Object.fromEntries(
@@ -63,10 +87,12 @@ const CampaignManagement = () => {
       setTotalCount(response.count || response.length);
     } catch (err) {
       setError(err.message);
+      // Auto-dismiss error after 5 seconds
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, filters, activeTab]);
 
   const fetchStats = async () => {
     try {
@@ -78,61 +104,97 @@ const CampaignManagement = () => {
     }
   };
 
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = useCallback((key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handleCampaignSelect = (campaignId) => {
+  const handleCampaignSelect = useCallback((campaignId) => {
     setSelectedCampaigns(prev => 
       prev.includes(campaignId) 
         ? prev.filter(id => id !== campaignId)
         : [...prev, campaignId]
     );
-  };
+  }, []);
 
-  const handleSelectAll = () => {
+  const handleSelectAll = useCallback(() => {
     if (selectedCampaigns.length === campaigns.length) {
       setSelectedCampaigns([]);
     } else {
       setSelectedCampaigns(campaigns.map(campaign => campaign.id));
     }
-  };
+  }, [selectedCampaigns.length, campaigns]);
 
-  const handleToggleFeatured = async (campaignId, isFeatured) => {
+  const handleToggleFeatured = useCallback(async (campaignId, isFeatured) => {
+    const action = isFeatured ? 'remove from featured' : 'add to featured';
+    if (!window.confirm(`Are you sure you want to ${action} this campaign?`)) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`featured_${campaignId}`]: true }));
+      
+      // Optimistic update
+      setCampaigns(prev => prev.map(campaign => 
+        campaign.id === campaignId 
+          ? { ...campaign, featured: !isFeatured }
+          : campaign
+      ));
+      
       if (isFeatured) {
         await campaignApi.unsetFeatured(campaignId);
       } else {
         await campaignApi.setFeatured(campaignId);
       }
-      fetchCampaigns();
     } catch (err) {
       setError(err.message);
+      // Revert optimistic update on error
+      fetchCampaigns();
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`featured_${campaignId}`]: false }));
     }
-  };
+  }, [fetchCampaigns]);
 
-  const handleBulkFeature = async (action) => {
+  const handleBulkFeature = useCallback(async (action) => {
+    const actionText = action === 'feature' ? 'feature' : 'unfeature';
+    if (!window.confirm(`Are you sure you want to ${actionText} ${selectedCampaigns.length} campaign(s)?`)) {
+      return;
+    }
+    
     try {
+      setBulkActionLoading(true);
       await campaignApi.bulkFeature(selectedCampaigns, action);
       setSelectedCampaigns([]);
       fetchCampaigns();
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setBulkActionLoading(false);
     }
-  };
+  }, [selectedCampaigns, fetchCampaigns]);
 
-  const handleModerateCampaign = async (campaignId, action, reason = '') => {
+  const handleModerateCampaign = useCallback(async (campaignId, action, reason = '') => {
+    if (!window.confirm(`Are you sure you want to ${action} this campaign?`)) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`moderate_${campaignId}`]: true }));
       await campaignApi.moderateCampaign(campaignId, action, reason);
       fetchCampaigns();
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`moderate_${campaignId}`]: false }));
     }
-  };
+  }, [fetchCampaigns]);
 
-  const openCampaignDetails = async (campaign) => {
+  const openCampaignDetails = useCallback(async (campaign) => {
     try {
+      setActionLoading(prev => ({ ...prev, [`details_${campaign.id}`]: true }));
       const [campaignDetails, donations, files, analytics] = await Promise.all([
         campaignApi.getCampaign(campaign.id),
         campaignApi.getCampaignDonations(campaign.id, { limit: 10 }),
@@ -150,19 +212,23 @@ const CampaignManagement = () => {
       setShowCampaignModal(true);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`details_${campaign.id}`]: false }));
     }
-  };
+  }, []);
 
-  const getCampaignStatusColor = (status) => {
+  // Memoized color functions
+  const getCampaignStatusColor = useMemo(() => (status) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
       case 'active': return 'bg-blue-100 text-blue-800';
       case 'new': return 'bg-gray-100 text-gray-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  const getPerformanceColor = (rating) => {
+  const getPerformanceColor = useMemo(() => (rating) => {
     switch (rating) {
       case 'excellent': return 'bg-green-100 text-green-800';
       case 'good': return 'bg-blue-100 text-blue-800';
@@ -170,12 +236,47 @@ const CampaignManagement = () => {
       case 'poor': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  if (loading) {
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[placeholder*="Search campaigns"]');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+      
+      // Ctrl/Cmd + A to select all visible campaigns
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a' && !e.target.matches('input, textarea, select')) {
+        e.preventDefault();
+        handleSelectAll();
+      }
+      
+      // Escape to clear selection
+      if (e.key === 'Escape' && selectedCampaigns.length > 0 && !e.target.matches('input, textarea, select')) {
+        setSelectedCampaigns([]);
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleSelectAll, selectedCampaigns.length]);
+
+  if (loading && campaigns.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Campaign Management</h1>
+          <p className="text-gray-600">Monitor and manage all fundraising campaigns</p>
+        </div>
+        <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg shadow border">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500">Loading campaigns...</p>
+        </div>
       </div>
     );
   }
@@ -184,8 +285,15 @@ const CampaignManagement = () => {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Campaign Management</h1>
-        <p className="text-gray-600">Monitor and manage all fundraising campaigns</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Campaign Management</h1>
+            <p className="text-gray-600">Monitor and manage all fundraising campaigns</p>
+          </div>
+          <div className="text-xs text-gray-500 text-right">
+            <p>Shortcuts: Ctrl+K (search), Ctrl+A (select all), Esc (clear)</p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -261,11 +369,25 @@ const CampaignManagement = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <input
               type="text"
-              placeholder="Search campaigns..."
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Search campaigns... (Ctrl+K to focus)"
+              className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.target.blur();
+                }
+              }}
             />
+            {filters.search && (
+              <button
+                onClick={() => handleFilterChange('search', '')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                title="Clear search"
+              >
+                ×
+              </button>
+            )}
           </div>
           <select
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -322,14 +444,18 @@ const CampaignManagement = () => {
             <div className="flex space-x-2">
               <button
                 onClick={() => handleBulkFeature('feature')}
-                className="px-3 py-1 bg-yellow-600 text-white rounded text-sm hover:bg-yellow-700"
+                disabled={bulkActionLoading}
+                className="px-3 py-1 bg-yellow-600 text-white rounded text-sm hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
               >
+                {bulkActionLoading && <Loader2 className="h-3 w-3 animate-spin mr-1" />}
                 Feature
               </button>
               <button
                 onClick={() => handleBulkFeature('unfeature')}
-                className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+                disabled={bulkActionLoading}
+                className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
               >
+                {bulkActionLoading && <Loader2 className="h-3 w-3 animate-spin mr-1" />}
                 Unfeature
               </button>
             </div>
@@ -345,7 +471,15 @@ const CampaignManagement = () => {
       )}
 
       {/* Campaigns Table */}
-      <div className="bg-white rounded-lg shadow border overflow-hidden">
+      <div className="bg-white rounded-lg shadow border overflow-hidden relative">
+        {loading && campaigns.length > 0 && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+            <div className="flex items-center space-x-2">
+              <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+              <span className="text-sm text-gray-600">Updating...</span>
+            </div>
+          </div>
+        )}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -382,7 +516,46 @@ const CampaignManagement = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {campaigns.map((campaign) => (
+              {campaigns.length === 0 && !loading ? (
+                <tr>
+                  <td colSpan="8" className="px-6 py-12 text-center">
+                    <div className="flex flex-col items-center">
+                      <Target className="h-12 w-12 text-gray-400 mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">No campaigns found</h3>
+                      <p className="text-gray-500">
+                        {Object.values(filters).some(v => v) || activeTab !== 'all'
+                          ? 'Try adjusting your filters or changing tabs to see more results.'
+                          : 'No campaigns have been created yet.'
+                        }
+                      </p>
+                      {(Object.values(filters).some(v => v) || activeTab !== 'all') && (
+                        <button
+                          onClick={() => {
+                            setFilters({
+                              search: '',
+                              category: '',
+                              featured: '',
+                              campaign_status: '',
+                              owner_role: '',
+                              is_verified_org: '',
+                              created_after: '',
+                              created_before: '',
+                              min_target: '',
+                              max_target: ''
+                            });
+                            setActiveTab('all');
+                            setCurrentPage(1);
+                          }}
+                          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Clear all filters
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                campaigns.map((campaign) => (
                 <tr key={campaign.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <input
@@ -457,29 +630,47 @@ const CampaignManagement = () => {
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => openCampaignDetails(campaign)}
-                        className="text-blue-600 hover:text-blue-900"
+                        disabled={actionLoading[`details_${campaign.id}`]}
+                        className="text-blue-600 hover:text-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Details"
                       >
-                        <Eye className="h-4 w-4" />
+                        {actionLoading[`details_${campaign.id}`] ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </button>
                       <button
                         onClick={() => handleToggleFeatured(campaign.id, campaign.featured)}
-                        className={`${campaign.featured ? 'text-yellow-600 hover:text-yellow-900' : 'text-gray-400 hover:text-yellow-600'}`}
+                        disabled={actionLoading[`featured_${campaign.id}`]}
+                        className={`${campaign.featured ? 'text-yellow-600 hover:text-yellow-900' : 'text-gray-400 hover:text-yellow-600'} disabled:opacity-50 disabled:cursor-not-allowed`}
                         title={campaign.featured ? 'Remove from Featured' : 'Add to Featured'}
                       >
-                        {campaign.featured ? <Star className="h-4 w-4 fill-current" /> : <Star className="h-4 w-4" />}
+                        {actionLoading[`featured_${campaign.id}`] ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : campaign.featured ? (
+                          <Star className="h-4 w-4 fill-current" />
+                        ) : (
+                          <Star className="h-4 w-4" />
+                        )}
                       </button>
                       <button
                         onClick={() => handleModerateCampaign(campaign.id, 'flag', 'Manual review')}
-                        className="text-orange-600 hover:text-orange-900"
+                        disabled={actionLoading[`moderate_${campaign.id}`]}
+                        className="text-orange-600 hover:text-orange-900 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="Flag for Review"
                       >
-                        <Flag className="h-4 w-4" />
+                        {actionLoading[`moderate_${campaign.id}`] ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Flag className="h-4 w-4" />
+                        )}
                       </button>
                     </div>
                   </td>
                 </tr>
-              ))}
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -553,11 +744,29 @@ const CampaignManagement = () => {
 };
 
 // Campaign Details Modal Component
-const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, onModerate }) => {
+const CampaignDetailsModal = React.memo(({ campaign, onClose, onUpdate, onToggleFeatured, onModerate }) => {
   const [activeTab, setActiveTab] = useState('overview');
   const [moderationAction, setModerationAction] = useState('');
   const [moderationReason, setModerationReason] = useState('');
   const [showModerationModal, setShowModerationModal] = useState(false);
+
+  // Handle keyboard events
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showModerationModal) {
+          setShowModerationModal(false);
+          setModerationAction('');
+          setModerationReason('');
+        } else {
+          onClose();
+        }
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, showModerationModal]);
 
   const handleModeration = async () => {
     try {
@@ -591,13 +800,29 @@ const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, o
     }
   };
 
+  // Handle backdrop click
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 xl:w-2/3 shadow-lg rounded-md bg-white max-h-screen overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
+      <div className="relative mx-auto p-5 border w-full max-w-6xl shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
         <div className="mt-3">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900">Campaign Details</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">×</button>
+            <button 
+              onClick={onClose} 
+              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              aria-label="Close modal"
+            >
+              ×
+            </button>
           </div>
           
           {/* Tabs */}
@@ -885,7 +1110,8 @@ const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, o
             </div>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              autoFocus
             >
               Close
             </button>
@@ -895,8 +1121,17 @@ const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, o
 
       {/* Moderation Modal */}
       {showModerationModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowModerationModal(false);
+              setModerationAction('');
+              setModerationReason('');
+            }
+          }}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-[90vw]">
             <h4 className="text-lg font-medium text-gray-900 mb-4">
               {moderationAction === 'flag' ? 'Flag Campaign' : 'Suspend Campaign'}
             </h4>
@@ -919,17 +1154,17 @@ const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, o
                   setModerationAction('');
                   setModerationReason('');
                 }}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
               <button
                 onClick={handleModeration}
                 disabled={!moderationReason.trim()}
-                className={`px-4 py-2 text-white rounded disabled:opacity-50 ${
+                className={`px-4 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 ${
                   moderationAction === 'flag'
-                    ? 'bg-orange-600 hover:bg-orange-700'
-                    : 'bg-red-600 hover:bg-red-700'
+                    ? 'bg-orange-600 hover:bg-orange-700 focus:ring-orange-500'
+                    : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
                 }`}
               >
                 Confirm {moderationAction === 'flag' ? 'Flag' : 'Suspend'}
@@ -940,6 +1175,6 @@ const CampaignDetailsModal = ({ campaign, onClose, onUpdate, onToggleFeatured, o
       )}
     </div>
   );
-};
+});
 
 export default CampaignManagement;

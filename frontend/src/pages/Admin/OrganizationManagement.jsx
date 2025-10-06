@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { 
   Building2, Search, Filter, Eye, CheckCircle, XCircle, AlertTriangle,
   CreditCard, TrendingUp, Users, DollarSign, FileText, Clock,
-  Shield, ShieldCheck, ShieldX, MoreHorizontal
+  Shield, ShieldCheck, ShieldX, MoreHorizontal, Loader2
 } from 'lucide-react';
 import { organizationApi } from '../../api/endpoints/OrganizationAdminAPI';
 
@@ -16,6 +16,10 @@ const OrganizationManagement = () => {
   const [stats, setStats] = useState({});
   const [activeTab, setActiveTab] = useState('all'); // all, verification, verified
 
+  // Loading states for individual actions
+  const [actionLoading, setActionLoading] = useState({});
+  const [bulkActionLoading, setBulkActionLoading] = useState(false);
+
   // Filter states
   const [filters, setFilters] = useState({
     search: '',
@@ -26,19 +30,39 @@ const OrganizationManagement = () => {
     created_before: ''
   });
 
+  // Debounced search
+  const [searchDebounceTimer, setSearchDebounceTimer] = useState(null);
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
+  // Debounced effect for search
   useEffect(() => {
-    fetchOrganizations();
-    fetchStats();
+    if (searchDebounceTimer) {
+      clearTimeout(searchDebounceTimer);
+    }
+    
+    const timer = setTimeout(() => {
+      fetchOrganizations();
+    }, filters.search ? 500 : 0); // 500ms debounce for search, immediate for other filters
+    
+    setSearchDebounceTimer(timer);
+    
+    return () => {
+      if (timer) clearTimeout(timer);
+    };
   }, [currentPage, filters, activeTab]);
 
-  const fetchOrganizations = async () => {
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchOrganizations = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       let params = {
         page: currentPage,
         ...Object.fromEntries(
@@ -60,10 +84,12 @@ const OrganizationManagement = () => {
       setTotalCount(response.count || response.length);
     } catch (err) {
       setError(err.message);
+      // Auto-dismiss error after 5 seconds
+      setTimeout(() => setError(null), 5000);
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, filters, activeTab]);
 
   const fetchStats = async () => {
     try {
@@ -75,66 +101,126 @@ const OrganizationManagement = () => {
     }
   };
 
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = useCallback((key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));
     setCurrentPage(1);
-  };
+  }, []);
 
-  const handleOrgSelect = (orgId) => {
+  const handleOrgSelect = useCallback((orgId) => {
     setSelectedOrgs(prev => 
       prev.includes(orgId) 
         ? prev.filter(id => id !== orgId)
         : [...prev, orgId]
     );
-  };
+  }, []);
 
-  const handleSelectAll = () => {
+  const handleSelectAll = useCallback(() => {
     if (selectedOrgs.length === organizations.length) {
       setSelectedOrgs([]);
     } else {
       setSelectedOrgs(organizations.map(org => org.id));
     }
-  };
+  }, [selectedOrgs.length, organizations]);
 
-  const handleVerifyOrganization = async (orgId, notes = '') => {
+  const handleVerifyOrganization = useCallback(async (orgId, notes = '') => {
+    if (!window.confirm('Are you sure you want to verify this organization?')) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`verify_${orgId}`]: true }));
+      
+      // Optimistic update
+      setOrganizations(prev => prev.map(org => 
+        org.id === orgId 
+          ? { ...org, is_verified: true, verification_status: 'verified' }
+          : org
+      ));
+      
       await organizationApi.verifyOrganization(orgId, notes);
-      fetchOrganizations();
     } catch (err) {
       setError(err.message);
+      // Revert optimistic update on error
+      fetchOrganizations();
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`verify_${orgId}`]: false }));
     }
-  };
+  }, [fetchOrganizations]);
 
-  const handleRejectVerification = async (orgId, reason) => {
+  const handleRejectVerification = useCallback(async (orgId, reason) => {
+    if (!window.confirm('Are you sure you want to reject this organization\'s verification?')) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`reject_${orgId}`]: true }));
+      
+      // Optimistic update
+      setOrganizations(prev => prev.map(org => 
+        org.id === orgId 
+          ? { ...org, verification_status: 'incomplete' }
+          : org
+      ));
+      
       await organizationApi.rejectVerification(orgId, reason);
-      fetchOrganizations();
     } catch (err) {
       setError(err.message);
+      // Revert optimistic update on error
+      fetchOrganizations();
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`reject_${orgId}`]: false }));
     }
-  };
+  }, [fetchOrganizations]);
 
-  const handleRevokeVerification = async (orgId, reason) => {
+  const handleRevokeVerification = useCallback(async (orgId, reason) => {
+    if (!window.confirm('Are you sure you want to revoke this organization\'s verification?')) {
+      return;
+    }
+    
     try {
+      setActionLoading(prev => ({ ...prev, [`revoke_${orgId}`]: true }));
+      
+      // Optimistic update
+      setOrganizations(prev => prev.map(org => 
+        org.id === orgId 
+          ? { ...org, is_verified: false, verification_status: 'incomplete' }
+          : org
+      ));
+      
       await organizationApi.revokeVerification(orgId, reason);
-      fetchOrganizations();
     } catch (err) {
       setError(err.message);
+      // Revert optimistic update on error
+      fetchOrganizations();
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`revoke_${orgId}`]: false }));
     }
-  };
+  }, [fetchOrganizations]);
 
-  const handleBulkVerify = async () => {
+  const handleBulkVerify = useCallback(async () => {
+    if (!window.confirm(`Are you sure you want to verify ${selectedOrgs.length} organization(s)?`)) {
+      return;
+    }
+    
     try {
+      setBulkActionLoading(true);
       await organizationApi.bulkVerify(selectedOrgs);
       setSelectedOrgs([]);
       fetchOrganizations();
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setBulkActionLoading(false);
     }
-  };
+  }, [selectedOrgs, fetchOrganizations]);
 
-  const openOrgDetails = async (org) => {
+  const openOrgDetails = useCallback(async (org) => {
     try {
+      setActionLoading(prev => ({ ...prev, [`details_${org.id}`]: true }));
       const [orgDetails, campaigns, analytics] = await Promise.all([
         organizationApi.getOrganization(org.id),
         organizationApi.getOrganizationCampaigns(org.id),
@@ -150,19 +236,23 @@ const OrganizationManagement = () => {
       setShowOrgModal(true);
     } catch (err) {
       setError(err.message);
+      setTimeout(() => setError(null), 5000);
+    } finally {
+      setActionLoading(prev => ({ ...prev, [`details_${org.id}`]: false }));
     }
-  };
+  }, []);
 
-  const getVerificationStatusColor = (status) => {
+  // Memoized color functions
+  const getVerificationStatusColor = useMemo(() => (status) => {
     switch (status) {
       case 'verified': return 'bg-green-100 text-green-800';
       case 'pending_review': return 'bg-yellow-100 text-yellow-800';
       case 'incomplete': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  const getHealthColor = (health) => {
+  const getHealthColor = useMemo(() => (health) => {
     switch (health) {
       case 'excellent': return 'bg-green-100 text-green-800';
       case 'good': return 'bg-blue-100 text-blue-800';
@@ -170,12 +260,47 @@ const OrganizationManagement = () => {
       case 'poor': return 'bg-red-100 text-red-800';
       default: return 'bg-gray-100 text-gray-800';
     }
-  };
+  }, []);
 
-  if (loading) {
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl/Cmd + K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[placeholder*="Search organizations"]');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      }
+      
+      // Ctrl/Cmd + A to select all visible organizations
+      if ((e.ctrlKey || e.metaKey) && e.key === 'a' && !e.target.matches('input, textarea, select')) {
+        e.preventDefault();
+        handleSelectAll();
+      }
+      
+      // Escape to clear selection
+      if (e.key === 'Escape' && selectedOrgs.length > 0 && !e.target.matches('input, textarea, select')) {
+        setSelectedOrgs([]);
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [handleSelectAll, selectedOrgs.length]);
+
+  if (loading && organizations.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      <div className="p-6">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Organization Management</h1>
+          <p className="text-gray-600">Manage and verify platform organizations</p>
+        </div>
+        <div className="flex flex-col items-center justify-center h-64 bg-white rounded-lg shadow border">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+          <p className="text-gray-500">Loading organizations...</p>
+        </div>
       </div>
     );
   }
@@ -184,8 +309,15 @@ const OrganizationManagement = () => {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Organization Management</h1>
-        <p className="text-gray-600">Manage and verify platform organizations</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Organization Management</h1>
+            <p className="text-gray-600">Manage and verify platform organizations</p>
+          </div>
+          <div className="text-xs text-gray-500 text-right">
+            <p>Shortcuts: Ctrl+K (search), Ctrl+A (select all), Esc (clear)</p>
+          </div>
+        </div>
       </div>
 
       {/* Stats Cards */}
@@ -261,11 +393,25 @@ const OrganizationManagement = () => {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
             <input
               type="text"
-              placeholder="Search organizations..."
-              className="pl-10 pr-4 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="Search organizations... (Ctrl+K to focus)"
+              className="pl-10 pr-10 py-2 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               value={filters.search}
               onChange={(e) => handleFilterChange('search', e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.target.blur();
+                }
+              }}
             />
+            {filters.search && (
+              <button
+                onClick={() => handleFilterChange('search', '')}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                title="Clear search"
+              >
+                ×
+              </button>
+            )}
           </div>
           <select
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -322,8 +468,10 @@ const OrganizationManagement = () => {
             <div className="flex space-x-2">
               <button
                 onClick={handleBulkVerify}
-                className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700"
+                disabled={bulkActionLoading}
+                className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
               >
+                {bulkActionLoading && <Loader2 className="h-3 w-3 animate-spin mr-1" />}
                 Bulk Verify
               </button>
             </div>
@@ -339,7 +487,15 @@ const OrganizationManagement = () => {
       )}
 
       {/* Organizations Table */}
-      <div className="bg-white rounded-lg shadow border overflow-hidden">
+      <div className="bg-white rounded-lg shadow border overflow-hidden relative">
+        {loading && organizations.length > 0 && (
+          <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10">
+            <div className="flex items-center space-x-2">
+              <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+              <span className="text-sm text-gray-600">Updating...</span>
+            </div>
+          </div>
+        )}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -376,7 +532,42 @@ const OrganizationManagement = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {organizations.map((org) => (
+              {organizations.length === 0 && !loading ? (
+                <tr>
+                  <td colSpan="8" className="px-6 py-12 text-center">
+                    <div className="flex flex-col items-center">
+                      <Building2 className="h-12 w-12 text-gray-400 mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 mb-2">No organizations found</h3>
+                      <p className="text-gray-500">
+                        {Object.values(filters).some(v => v) || activeTab !== 'all'
+                          ? 'Try adjusting your filters or changing tabs to see more results.'
+                          : 'No organizations have been registered yet.'
+                        }
+                      </p>
+                      {(Object.values(filters).some(v => v) || activeTab !== 'all') && (
+                        <button
+                          onClick={() => {
+                            setFilters({
+                              search: '',
+                              is_verified: '',
+                              has_documents: '',
+                              verification_status: '',
+                              created_after: '',
+                              created_before: ''
+                            });
+                            setActiveTab('all');
+                            setCurrentPage(1);
+                          }}
+                          className="mt-3 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                          Clear all filters
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ) : (
+                organizations.map((org) => (
                 <tr key={org.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <input
@@ -421,42 +612,63 @@ const OrganizationManagement = () => {
                     <div className="flex items-center space-x-2">
                       <button
                         onClick={() => openOrgDetails(org)}
-                        className="text-blue-600 hover:text-blue-900"
+                        disabled={actionLoading[`details_${org.id}`]}
+                        className="text-blue-600 hover:text-blue-900 disabled:opacity-50 disabled:cursor-not-allowed"
                         title="View Details"
                       >
-                        <Eye className="h-4 w-4" />
+                        {actionLoading[`details_${org.id}`] ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
                       </button>
                       {!org.is_verified && org.verification_status === 'pending_review' && (
                         <>
                           <button
                             onClick={() => handleVerifyOrganization(org.id)}
-                            className="text-green-600 hover:text-green-900"
+                            disabled={actionLoading[`verify_${org.id}`]}
+                            className="text-green-600 hover:text-green-900 disabled:opacity-50 disabled:cursor-not-allowed"
                             title="Verify"
                           >
-                            <CheckCircle className="h-4 w-4" />
+                            {actionLoading[`verify_${org.id}`] ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <CheckCircle className="h-4 w-4" />
+                            )}
                           </button>
                           <button
                             onClick={() => handleRejectVerification(org.id, 'Incomplete documentation')}
-                            className="text-red-600 hover:text-red-900"
+                            disabled={actionLoading[`reject_${org.id}`]}
+                            className="text-red-600 hover:text-red-900 disabled:opacity-50 disabled:cursor-not-allowed"
                             title="Reject"
                           >
-                            <XCircle className="h-4 w-4" />
+                            {actionLoading[`reject_${org.id}`] ? (
+                              <Loader2 className="h-4 w-4 animate-spin" />
+                            ) : (
+                              <XCircle className="h-4 w-4" />
+                            )}
                           </button>
                         </>
                       )}
                       {org.is_verified && (
                         <button
                           onClick={() => handleRevokeVerification(org.id, 'Manual review required')}
-                          className="text-orange-600 hover:text-orange-900"
+                          disabled={actionLoading[`revoke_${org.id}`]}
+                          className="text-orange-600 hover:text-orange-900 disabled:opacity-50 disabled:cursor-not-allowed"
                           title="Revoke Verification"
                         >
-                          <ShieldX className="h-4 w-4" />
+                          {actionLoading[`revoke_${org.id}`] ? (
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                          ) : (
+                            <ShieldX className="h-4 w-4" />
+                          )}
                         </button>
                       )}
                     </div>
                   </td>
                 </tr>
-              ))}
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -531,10 +743,27 @@ const OrganizationManagement = () => {
 };
 
 // Organization Details Modal Component
-const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, onReject, onRevoke }) => {
+const OrganizationDetailsModal = React.memo(({ organization, onClose, onUpdate, onVerify, onReject, onRevoke }) => {
   const [activeTab, setActiveTab] = useState('profile');
   const [actionReason, setActionReason] = useState('');
   const [showActionModal, setShowActionModal] = useState(null);
+
+  // Handle keyboard events
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        if (showActionModal) {
+          setShowActionModal(null);
+          setActionReason('');
+        } else {
+          onClose();
+        }
+      }
+    };
+    
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [onClose, showActionModal]);
 
 
     const getVerificationStatusColor = (status) => {
@@ -577,13 +806,29 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
     }
   };
 
+  // Handle backdrop click
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-      <div className="relative top-10 mx-auto p-5 border w-11/12 md:w-4/5 lg:w-3/4 xl:w-2/3 shadow-lg rounded-md bg-white max-h-screen overflow-y-auto">
+    <div 
+      className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center p-4"
+      onClick={handleBackdropClick}
+    >
+      <div className="relative mx-auto p-5 border w-full max-w-6xl shadow-lg rounded-md bg-white max-h-[90vh] overflow-y-auto">
         <div className="mt-3">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-medium text-gray-900">Organization Details</h3>
-            <button onClick={onClose} className="text-gray-400 hover:text-gray-600">×</button>
+            <button 
+              onClick={onClose} 
+              className="text-gray-400 hover:text-gray-600 text-2xl leading-none"
+              aria-label="Close modal"
+            >
+              ×
+            </button>
           </div>
           
           {/* Tabs */}
@@ -777,7 +1022,8 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
             </div>
             <button
               onClick={onClose}
-              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+              className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              autoFocus
             >
               Close
             </button>
@@ -787,8 +1033,16 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
 
       {/* Action Confirmation Modal */}
       {showActionModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+        <div 
+          className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-60"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowActionModal(null);
+              setActionReason('');
+            }
+          }}
+        >
+          <div className="bg-white p-6 rounded-lg shadow-lg w-96 max-w-[90vw]">
             <h4 className="text-lg font-medium text-gray-900 mb-4">
               {showActionModal === 'verify' && 'Verify Organization'}
               {showActionModal === 'reject' && 'Reject Verification'}
@@ -816,19 +1070,19 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
                   setShowActionModal(null);
                   setActionReason('');
                 }}
-                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500"
               >
                 Cancel
               </button>
               <button
                 onClick={() => handleAction(showActionModal)}
                 disabled={showActionModal !== 'verify' && !actionReason.trim()}
-                className={`px-4 py-2 text-white rounded disabled:opacity-50 ${
+                className={`px-4 py-2 text-white rounded disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 ${
                   showActionModal === 'verify' 
-                    ? 'bg-green-600 hover:bg-green-700' 
+                    ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500' 
                     : showActionModal === 'reject'
-                    ? 'bg-red-600 hover:bg-red-700'
-                    : 'bg-orange-600 hover:bg-orange-700'
+                    ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
+                    : 'bg-orange-600 hover:bg-orange-700 focus:ring-orange-500'
                 }`}
               >
                 Confirm
@@ -839,6 +1093,6 @@ const OrganizationDetailsModal = ({ organization, onClose, onUpdate, onVerify, o
       )}
     </div>
   );
-};
+});
 
 export default OrganizationManagement;
