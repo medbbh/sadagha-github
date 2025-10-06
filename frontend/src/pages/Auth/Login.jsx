@@ -80,10 +80,10 @@ const Login = () => {
         {/* Logo/Brand */}
         <div className="flex justify-center">
           <div className="p-3 rounded-full">
-            <img src="/logo.png" alt="Logo" className="h-40 w-40" />
+            <img src="/logo.png" alt="Logo" className="h-36 w-36" />
           </div>
         </div>
-        <h2 className="mt-4 text-center text-3xl font-bold tracking-tight text-gray-900">
+        <h2 className="mt-2 text-center text-2xl font-bold tracking-tight text-gray-900">
           {t('auth.login.welcomeBack')}
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
@@ -133,7 +133,7 @@ const Login = () => {
           </div>
 
           {/* Email/Password Form */}
-          <form className="mt-6 space-y-6" onSubmit={handleLogin}>
+          <form className="mt-4 space-y-6" onSubmit={handleLogin}>
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                 <p className="text-sm text-red-600">{error}</p>

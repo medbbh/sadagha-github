@@ -680,6 +680,56 @@ class OrganizationDashboardViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
 
+    # recent activities - donations and campaigns in last 7 days
+    @action(detail=False, methods=['get'])
+    def recent_activities(self, request):
+        """Get recent activities (donations and campaigns) for dashboard"""
+        try:
+            if request.user.role != 'organization':
+                return Response(
+                    {'error': 'Only organizations can access recent activities'},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            profile, created = OrganizationProfile.objects.get_or_create(
+                owner=request.user,
+                defaults={'org_name': f"{request.user.first_name or request.user.username}'s Organization"}
+            )
+            
+            seven_days_ago = timezone.now() - timedelta(days=30)
+            
+            # Recent donations
+            recent_donations = Donation.objects.filter(
+                campaign__owner=profile.owner,
+                status='completed',
+                created_at__gte=seven_days_ago
+            ).order_by('-created_at')[:10]
+            
+            donation_data = DonationSerializer(recent_donations, many=True).data
+            
+            # Recent campaigns
+            recent_campaigns = Campaign.objects.filter(
+                owner=profile.owner,
+                created_at__gte=seven_days_ago
+            ).order_by('-created_at')[:5]
+            
+            campaign_data = CampaignSerializer(recent_campaigns, many=True).data
+            
+            activities = {
+                'recent_donations': donation_data,
+                'recent_campaigns': campaign_data
+            }
+            
+            return Response(activities)
+
+        except Exception as e:
+            return Response(
+                {'error': 'Failed to fetch recent activities', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+
     @action(detail=False, methods=['get'])
     def payment_summary(self, request):
         """Get payment configuration summary for dashboard"""

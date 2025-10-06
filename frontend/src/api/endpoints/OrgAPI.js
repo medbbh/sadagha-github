@@ -110,6 +110,24 @@ export const fetchOrgStatistics = async (period = '30d') => {
   }
 };
 
+export const fetchRecentActivities = async (period = '30d') => {
+  try {
+    const response = await api.get('/org/dashboard/recent_activities/', {
+      params: { period }
+    });
+    return response;
+  }
+  catch (error) {
+    console.error('Failed to fetch recent activities:', error);
+    throw {
+      message: error.message || 'Failed to fetch recent activities',
+      details: error.details,
+      status: error.response?.status,
+      ...error
+    };
+  }
+};
+
 export const fetchPaymentSummary = async () => {
   try {
     const response = await api.get('/org/dashboard/payment_summary/');
@@ -472,6 +490,7 @@ export default {
   
   // Dashboard Data
   fetchOrgStatistics: withErrorHandling(fetchOrgStatistics),
+  fetchRecentActivities: withErrorHandling(fetchRecentActivities),
   fetchPaymentSummary: withErrorHandling(fetchPaymentSummary),
   fetchDashboardOverview: withErrorHandling(fetchDashboardOverview),
   fetchFullDashboardData: withErrorHandling(fetchFullDashboardData),
