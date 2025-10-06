@@ -11,6 +11,17 @@ export const fetchCategories = async () => {
   }
 };
 
+export const fetchTopCategories = async () => {
+  try {
+    const response = await api.get('/campaigns/categories/top_categories/');
+    console.log('Top Categories response:', response);
+    return response;
+  } catch (error) {
+    console.error('Failed to fetch top categories:', error);
+    throw error;
+  }
+};
+
 export const fetchCategoryById = async (id) => {
   try {
     const response = await api.get(`/campaigns/categories/${id}/`);

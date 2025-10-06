@@ -45,6 +45,7 @@ const UserManagement = () => {
       };
       const response = await userApi.getUsers(params);
       setUsers(response.results || response);
+      console.log('Fetched users:', response);
       setTotalPages(Math.ceil(response.count / 20) || 1);
       setTotalCount(response.count || response.length);
     } catch (err) {

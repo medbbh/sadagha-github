@@ -99,7 +99,7 @@ const RoleBasedRedirect = () => {
   }
   else if (role === 'admin') {
     console.log('Redirecting to admin dashboard');
-    return <Navigate to="/admin" replace />;
+    return <Navigate to="/admin/users" replace />;
   } else {
     console.log('No valid role, redirecting to confirm-role');
     return <Navigate to="/confirm-role" replace />;

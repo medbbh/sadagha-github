@@ -43,6 +43,14 @@ class CategoryViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
+    # fetch 6 categories with most campaigns
+    @action(detail=False, methods=['get'])
+    def top_categories(self, request, *args, **kwargs):
+        top_categories = self.get_queryset().order_by('-campaign_count')[:6]
+        serializer = self.get_serializer(top_categories, many=True)
+        return Response(serializer.data)
+    
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def facebook_oauth_url(request):

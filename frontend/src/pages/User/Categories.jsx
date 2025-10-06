@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, ArrowRight, Grid, Heart } from 'lucide-react';
 import { fetchCategories } from '../../api/endpoints/CategoryAPI';
 import Loading from '../../components/common/Loading';
+import { iconMap } from '../../utils/iconMap';
 
 export default function Categories() {
   const { t, i18n } = useTranslation();
@@ -60,35 +61,35 @@ export default function Categories() {
   );
 
   // Helper function to get category icon (simplified)
-  const getCategoryIcon = (categoryName) => {
-    const icons = {
-      'health': '🏥',
-      'education': '📚',
-      'environment': '🌱',
-      'technology': '💻',
-      'arts': '🎨',
-      'sports': '⚽',
-      'community': '🏘️',
-      'animals': '🐾',
-      'emergency': '🚨',
-      'food': '🍽️',
-      'disaster': '🌪️',
-      'medical': '🩺',
-      'children': '👶',
-      'elderly': '👴',
-      'women': '👩',
-      'youth': '🧑',
-      'music': '🎵',
-      'film': '🎬',
-      'culture': '🎭',
-      'religion': '⛪',
-      'charity': '❤️'
-    };
+  // const getCategoryIcon = (categoryName) => {
+  //   const icons = {
+  //     'health': '🏥',
+  //     'education': '📚',
+  //     'environment': '🌱',
+  //     'technology': '💻',
+  //     'arts': '🎨',
+  //     'sports': '⚽',
+  //     'community': '🏘️',
+  //     'animals': '🐾',
+  //     'emergency': '🚨',
+  //     'food': '🍽️',
+  //     'disaster': '🌪️',
+  //     'medical': '🩺',
+  //     'children': '👶',
+  //     'elderly': '👴',
+  //     'women': '👩',
+  //     'youth': '🧑',
+  //     'music': '🎵',
+  //     'film': '🎬',
+  //     'culture': '🎭',
+  //     'religion': '⛪',
+  //     'charity': '❤️'
+  //   };
     
-    const name = categoryName?.toLowerCase() || '';
-    const matchedIcon = Object.keys(icons).find(key => name.includes(key));
-    return icons[matchedIcon] || '📁';
-  };
+  //   const name = categoryName?.toLowerCase() || '';
+  //   const matchedIcon = Object.keys(icons).find(key => name.includes(key));
+  //   return icons[matchedIcon] || '📁';
+  // };
 
   const handleCategoryClick = (categoryId) => {
     console.log('Navigating to category:', categoryId);
@@ -222,7 +223,6 @@ export default function Categories() {
             {/* Warmer Categories Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredCategories.map((category, index) => {
-                const categoryIcon = getCategoryIcon(category.name);
                 const campaignCount = category.campaign_count || 0;
                 
                 // Subtle background variations for warmth
@@ -245,7 +245,12 @@ export default function Categories() {
                     {/* Icon and Count with subtle background */}
                     <div className={`flex items-center justify-between mb-4 `}>
                       <div className="flex items-center justify-center w-12 h-12 bg-white rounded-lg shadow-sm">
-                        <span className="text-2xl">{categoryIcon}</span>
+                        <div className="text-4xl mb-3" style={{ fontSize: '2.5rem' }}>
+                              {(() => {
+                                const IconComponent = iconMap[category.icon_class] || iconMap['folder'];
+                                return <IconComponent size={24} strokeWidth={2} />;
+                              })()}
+                        </div>
                       </div>
                       <div className="bg-white/70 px-2 py-1 rounded-full text-xs font-medium text-gray-600">
                         {formatNumber(campaignCount)}

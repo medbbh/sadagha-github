@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { fetchCategories } from '../../../api/endpoints/CategoryAPI';
+import { fetchCategories, fetchTopCategories } from '../../../api/endpoints/CategoryAPI';
 import { iconMap } from '../../../utils/iconMap';
 
 export function CategoriesSection() {
@@ -18,8 +18,8 @@ export function CategoriesSection() {
     const loadCategories = async () => {
       try {
         setLoading(true);
-        const data = await fetchCategories();
-        setCategories(data.results || []);
+        const data = await  fetchTopCategories();
+        setCategories(data || []);
       } catch (err) {
         console.error('Categories fetch error:', err);
         setError(err.message);
