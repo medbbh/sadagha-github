@@ -1,11 +1,20 @@
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 export default function Footer() {
   const { t, i18n } = useTranslation();
   const isRTL = i18n.language === 'ar';
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShow(true), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
 
   return (
-    <footer className="bg-white border-t border-gray-200 mt-16" dir={isRTL ? 'rtl' : 'ltr'}>
+    <footer className={`bg-white border-t border-gray-200 mt-16 duration-300 ${show ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+      dir={isRTL ? 'rtl' : 'ltr'}>
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
           {/* Brand Section */}
