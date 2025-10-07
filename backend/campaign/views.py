@@ -26,7 +26,8 @@ from django.db import transaction
 from .utils.supabase_storage import delete_file
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import PermissionDenied
-
+from django.core.cache import cache
+import hashlib
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +47,17 @@ class CategoryViewSet(viewsets.ModelViewSet):
     # fetch 6 categories with most campaigns
     @action(detail=False, methods=['get'])
     def top_categories(self, request, *args, **kwargs):
+        cache_key = 'top_categories'
+
+        cache_data = cache.get(cache_key)
+        if cache_data: 
+            return Response(cache_data)
+
         top_categories = self.get_queryset().order_by('-campaign_count')[:6]
         serializer = self.get_serializer(top_categories, many=True)
-        return Response(serializer.data)
+        response_data = serializer.data
+        cache.set(cache_key, response_data, timeout=3600)  # Cache for 1 hour
+        return Response(response_data)
     
 
 @api_view(['GET'])
@@ -255,14 +264,45 @@ class CampaignViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+    def list(self, request, *args, **kwargs):
+        # Build cache key from query params
+        category = request.query_params.get('category', '')
+        search = request.query_params.get('search', '')
+        featured = request.query_params.get('featured', '')
+        page = request.query_params.get('page', '1')
+        
+        cache_key = f"campaigns:list:cat={category}:search={search}:feat={featured}:page={page}"
+        
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return Response(cached_data)
+        
+        # Default DRF list logic
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            response_data = self.get_paginated_response(serializer.data).data
+            cache.set(cache_key, response_data, timeout=300)  # 5 minutes
+            return Response(response_data)
+        
+        serializer = self.get_serializer(queryset, many=True)
+        cache.set(cache_key, serializer.data, timeout=300)
+        return Response(serializer.data)
+
     @action(detail=False, methods=['get'])
     def urgent(self, request):
         """Get 5 most urgent campaigns based on multiple factors"""
         
         now = timezone.now()
+        cache_key = 'urgent_campaigns'
+        cache_data = cache.get(cache_key)
+        if cache_data:
+            return Response(cache_data)
         
         # Calculate urgency score using existing fields
-        urgent_campaigns = self.get_queryset().annotate(
+        urgent_campaigns = self.get_queryset().select_related('category', 'owner', 'organization').annotate(
             # Calculate funding ratio (0-1)
             funding_ratio=Case(
                 When(target__gt=0, then=F('current_amount') / F('target')),
@@ -328,17 +368,19 @@ class CampaignViewSet(viewsets.ModelViewSet):
             )
             campaigns_with_urgency.append(campaign_data)
         
-        return Response({
+        response_data = {
             'urgent_campaigns': campaigns_with_urgency,
             'total_count': len(campaigns_with_urgency),
-            'last_updated': now,
+            'last_updated': now.isoformat(),
             'criteria': {
                 'funding_gap': 'Campaigns with less than 50% funding get higher urgency',
                 'time_pressure': 'Older campaigns (14+ days) get higher urgency',  
                 'activity': 'Campaigns without recent updates (3+ days) get higher urgency',
                 'engagement': 'Campaigns with fewer donors (<20) get higher urgency'
             }
-        })
+        }
+        cache.set(cache_key, response_data, timeout=3600)  # Cache for 1 hour
+        return Response(response_data)
     
     def perform_create(self, serializer):
         user = self.request.user
@@ -385,8 +427,6 @@ class CampaignViewSet(viewsets.ModelViewSet):
         updated_instance = self.get_queryset().get(pk=instance.pk)
         return_serializer = self.get_serializer(updated_instance)
         return Response(return_serializer.data)
-    
-
 
     def destroy(self, request, *args, **kwargs):
         """
@@ -523,7 +563,6 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 'error': 'An unexpected error occurred. Please try again.'
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
-
     @action(detail=False, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def sync_donation_status(self, request):
         """Manually trigger status sync for a specific donation"""
@@ -568,7 +607,6 @@ class CampaignViewSet(viewsets.ModelViewSet):
             logger.error(f"Error syncing donation status: {str(e)}")
             return Response({'error': 'Sync failed'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
-
     @action(detail=False, methods=['post'], permission_classes=[permissions.IsAuthenticated])
     def donation_webhook(self, request):
         """
@@ -746,7 +784,6 @@ class CampaignViewSet(viewsets.ModelViewSet):
                 {'error': 'Error checking payment status'},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-
 
     @action(detail=False, methods=['get'], permission_classes=[permissions.IsAuthenticated])
     def my_campaigns(self, request):
@@ -1062,8 +1099,7 @@ def campaign_donations(request, campaign_id):
 #     return Response({"user_id": user_id, "recommendations": enriched})
 
 
-from django.core.cache import cache
-import hashlib
+
 
 @api_view(['GET'])
 @permission_classes([permissions.AllowAny])

@@ -52,6 +52,12 @@ class Campaign(models.Model):
         indexes = [
             models.Index(fields=['owner', '-created_at']),
             models.Index(fields=['current_amount']),
+            models.Index(fields=['category', '-created_at']),
+            models.Index(fields=['featured', '-created_at']),
+            models.Index(fields=['live_status']),
+            models.Index(fields=['organization', '-created_at']),
+            models.Index(fields=['current_amount', 'target', '-created_at']),  # NEW - for urgent campaigns filter
+            models.Index(fields=['name']),
         ]
 
 class File(models.Model):
@@ -108,7 +114,6 @@ class Donation(models.Model):
             models.Index(fields=['payment_session_id']),
             models.Index(fields=['status', 'created_at']),
             models.Index(fields=['donor', 'created_at']),
-
             models.Index(fields=['created_at']),
         ]
     

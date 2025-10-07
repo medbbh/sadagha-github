@@ -94,6 +94,7 @@ export default function SimilarCampaigns({ campaignId }) {
                         <div className="relative w-full h-32 sm:h-36 md:h-40">
                             <img
                                 src={campaign.files?.[0]?.url || "/api/placeholder/400/300"}
+                                loading="lazy"
                                 alt={campaign.name}
                                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                                 onError={(e) => {

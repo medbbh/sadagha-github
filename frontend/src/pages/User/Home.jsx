@@ -83,16 +83,24 @@ export default function HomePage() {
 
   if (error) {
     return (
-      <div className="pt-20 flex items-center justify-center min-h-screen">
-        <div className="text-center">
-          <p className="text-red-600 mb-4">Error: {error}</p>
-          <button 
-            onClick={() => loadCampaigns()}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-          >
-            Retry
-          </button>
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="bg-white shadow-md rounded-lg p-8 max-w-sm w-full text-center">
+        <div className="flex justify-center mb-4">
+        <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-red-100">
+          <svg className="w-7 h-7 text-red-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </span>
         </div>
+        <h2 className="text-lg font-semibold text-red-600 mb-2">Something went wrong</h2>
+        <p className="text-gray-700 mb-4 break-words">Error: {error}</p>
+        <button
+        onClick={() => loadCampaigns()}
+        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+        >
+        Retry
+        </button>
+      </div>
       </div>
     );
   }

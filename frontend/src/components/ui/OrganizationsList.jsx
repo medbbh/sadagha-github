@@ -99,6 +99,7 @@ export default function OrganizationsList() {
         {org.cover_image_url ? (
           <img
             src={org.cover_image_url}
+            loading="lazy"
             alt={org.org_name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
           />

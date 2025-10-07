@@ -109,6 +109,7 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
             <div className="relative w-full md:w-72 lg:w-80 md:h-auto flex-shrink-0 overflow-hidden">
               <img 
                 src={imageUrl} 
+                loading="lazy"
                 alt={campaign.name}
                 className="w-full h-full object-cover"
                 onError={(e) => {
@@ -229,6 +230,7 @@ export default function CampaignCard({ data, viewMode = 'grid', className = '', 
         <div className="relative h-48 overflow-hidden">
           <img 
             src={imageUrl} 
+            loading="lazy"
             alt={campaign.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={(e) => {

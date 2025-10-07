@@ -132,6 +132,7 @@ export default function UserRecommendationsSection({ userId }) {
                         campaign.files?.[0]?.url ||
                         "/api/placeholder/400/300"
                       }
+                      loading="lazy"
                       alt={campaign.name}
                       className="w-full h-full object-cover"
                       onError={(e) => {
@@ -182,6 +183,7 @@ export default function UserRecommendationsSection({ userId }) {
                 <div className="relative w-28 h-28 sm:w-full sm:h-40 flex-shrink-0">
                   <img
                     src={campaign.files?.[0]?.url || "/api/placeholder/300/300"}
+                    loading="lazy"
                     alt={campaign.name}
                     className="w-full h-full object-cover"
                     onError={(e) => {
