@@ -126,9 +126,10 @@ const fetchOrganization = async (page = 1) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <button
             onClick={() => navigate('/organizations')}
-            className={`flex items-center text-gray-600 hover:text-gray-900 transition-colors `}
+            className={`flex items-center text-gray-600 hover:text-gray-900 transition-colors ${isRTL ? '' : ''}`}
+            dir={isRTL ? 'rtl' : 'ltr'}
           >
-            <ChevronLeft className={`h-5 w-5 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+            <ChevronLeft className={`h-5 w-5 ${isRTL ? 'mr-1' : 'mr-1'}`} style={isRTL ? { transform: 'rotate(180deg)' } : {}} />
             <span className="font-medium">{t('organizations.backToOrganizations')}</span>
           </button>
         </div>

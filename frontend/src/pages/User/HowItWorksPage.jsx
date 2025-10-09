@@ -223,7 +223,7 @@ const HowItWorksPage = () => {
             <p className="text-xl md:text-2xl text-blue-100 mb-10 max-w-4xl mx-auto leading-relaxed">
               {t('howItWorks.hero.subtitle')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="inline-flex items-center px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-blue-50 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                 <Play className={`w-5 h-5 ${isRTL ? 'ms-2' : 'me-2'}`} />
                 {t('howItWorks.hero.watchDemo')}
@@ -232,7 +232,7 @@ const HowItWorksPage = () => {
                 <Heart className={`w-5 h-5 ${isRTL ? 'ms-2' : 'me-2'}`} />
                 {t('howItWorks.hero.getStarted')}
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

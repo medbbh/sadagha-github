@@ -74,7 +74,7 @@ NEXTREMITLY_FRONTEND_URL = os.getenv('NEXTREMITLY_FRONTEND_URL')
 # Your frontend URLs
 FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
 BACKEND_URL = 'http://localhost:8002'   # Sada9a backend URL
-FASTAPI_URL = "http://localhost:8000"
+FASTAPI_URL = "https://recommendation-service-1012340654195.us-central1.run.app"
 
 # Add to CORS_ALLOWED_ORIGINS
 CORS_ALLOWED_ORIGINS = [
@@ -218,14 +218,51 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 12,  # Default page size
 }
 
+# local redis conf
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django_redis.cache.RedisCache',
+#         'LOCATION': 'redis://127.0.0.1:6379/1',
+#         'OPTIONS': {
+#             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+#         }
+#     }
+# }
 
+# upstash redis conf
+
+REDIS_URL = os.environ.get('REDIS_URL')
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': REDIS_URL,
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    }
+}
+
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+#             "capacity": 1500,
+#             "expiry": 10,
+#             # Add timeouts to prevent hanging
+#             "connection_kwargs": {
+#                 "socket_connect_timeout": 5,
+#                 "socket_timeout": 5,
+#                 "retry_on_timeout": True,
+#                 "max_connections": 50,
+#             },
+#         },
+#     },
+# }
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
 
@@ -244,3 +281,40 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'mhamed.bbh01@gmail.com'
 EMAIL_HOST_PASSWORD = 'nfew ennf ocpf vgnp'
 DEFAULT_FROM_EMAIL = 'mhamed.bbh01@gmail.com'
+
+
+
+# Production settings
+if os.environ.get('ENVIRONMENT') == 'production':
+    DEBUG = False  # Disable debug in production
+
+    # Allowed hosts
+    ALLOWED_HOSTS_ENV = os.environ.get('ALLOWED_HOSTS', '')
+    if ALLOWED_HOSTS_ENV:
+        ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_ENV.split(',')]
+    else:
+        ALLOWED_HOSTS = [
+            'localhost',
+            '127.0.0.1',
+            'sadagha-django-1095200651803.europe-west2.run.app',  # exact Cloud Run host
+        ]
+
+    # Tell Django to trust the proxy headers from Cloud Run
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # 🚨 Disable forced SSL redirect (Cloud Run already handles HTTPS)
+    SECURE_SSL_REDIRECT = False
+
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
+    # CORS
+    FRONTEND_URL = os.environ.get('FRONTEND_URL', '')
+    if FRONTEND_URL:
+        CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+
+    # Static files
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATIC_URL = '/static/'

@@ -847,7 +847,7 @@
         "makeSecureDonations": {
           "title": "Make Secure Donations",
           "description": "Donate safely using multiple payment methods with instant confirmation.",
-          "details": "Multiple payment options with automatic receipts"
+          "details": "Multiple payment options"
         },
         "trackProgress": {
           "title": "Track Campaign Progress",

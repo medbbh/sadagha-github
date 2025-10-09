@@ -21,6 +21,7 @@ channels = "*"
 channels-redis = "*"
 django-redis = "==5.4.0"
 django-compression-middleware = "*"
+gunicorn = "==21.2.0"
 
 [dev-packages]
 

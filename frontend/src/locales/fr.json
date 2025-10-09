@@ -845,7 +845,7 @@
         "makeSecureDonations": {
           "title": "Faites des Dons Sécurisés",
           "description": "Donnez en toute sécurité en utilisant plusieurs méthodes de paiement avec confirmation instantanée.",
-          "details": "Plusieurs options de paiement avec reçus automatiques"
+          "details": "Plusieurs options de paiement"
         },
         "trackProgress": {
           "title": "Suivez le Progrès des Campagnes",

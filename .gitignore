@@ -1,5 +1,6 @@
 # backend
 backend/.env
+backend/docker.env
 backend/sada9a.log
 
 # nextremitly payment service

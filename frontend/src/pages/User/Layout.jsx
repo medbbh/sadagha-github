@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Footer from '../../components/Layout/Footer';
 import Loading from '../../components/common/Loading';
 import { Outlet } from 'react-router-dom';
 import NavBar from '../../components/layout/NavBar';
+import Footer from '../../components/layout/Footer';
 
 export default function Layout({ children }) {
   return (

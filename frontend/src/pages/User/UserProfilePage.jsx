@@ -233,10 +233,10 @@ const UserProfilePage = () => {
   };
 
   const tabs = [
-    { id: 'profile', name: t('profile.tabs.profile'), icon: User },
-    { id: 'volunteer', name: t('profile.tabs.volunteer'), icon: Heart },
-    { id: 'donations', name: t('profile.tabs.donations'), icon: CreditCard },
-    { id: 'settings', name: t('profile.tabs.settings'), icon: Settings }
+    { id: 'profile', name: t('profile.tabs.profile'), icon: User, disabled : false },
+    { id: 'volunteer', name: t('profile.tabs.volunteer'), icon: Heart,disabled : false },
+    { id: 'donations', name: t('profile.tabs.donations'), icon: CreditCard, disabled : false },
+    { id: 'settings', name: t('profile.tabs.settings'), icon: Settings, disabled : true },
   ];
 
   if (loading || profileLoading) {
@@ -314,11 +314,14 @@ const UserProfilePage = () => {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
+                      disabled={tab.disabled}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${isRTL ? ' text-right' : 'text-left'} ${
                         activeTab === tab.id
                           ? 'bg-blue-600 text-white shadow-md'
                           : 'text-gray-600 hover:bg-gray-100'
-                      }`}
+                      }
+                      ${tab.disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}
+                      `}
                     >
                       <Icon className="w-5 h-5" />
                       {tab.name}
@@ -368,12 +371,12 @@ const UserProfilePage = () => {
               )}
 
               {/* Settings Tab */}
-              {activeTab === 'settings' && (
+              {/* {activeTab === 'settings' && (
                 <SettingsTab 
                   settings={settings}
                   handleSettingChange={handleSettingChange}
                 />
-              )}
+              )} */}
             </div>
           </div>
         </div>

@@ -844,7 +844,7 @@
         "makeSecureDonations": {
           "title": "قم بتبرعات آمنة",
           "description": "تبرع بأمان باستخدام طرق دفع متعددة مع تأكيد فوري.",
-          "details": "خيارات دفع متعددة مع إيصالات تلقائية"
+          "details": "خيارات دفع متعددة "
         },
         "trackProgress": {
           "title": "تابع تقدم الحملة",
@@ -1304,7 +1304,7 @@
       "campaignLabel": "الحملة: {{name}}",
       "noCampaignData": "لا توجد بيانات حملات",
       "createCampaignsToSeeMetrics": "أنشئ حملات لعرض الإحصائيات",
-      "topDonors": "أكبر المتبرعين",
+      "topDonors": "الأكثر تبرعا",
       "donationCount": "{{count}} تبرع",
       "noDonorsInPeriod": "لا يوجد متبرعون في هذه الفترة"
     },

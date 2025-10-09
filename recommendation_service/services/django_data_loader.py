@@ -1,23 +1,24 @@
 import pandas as pd
 from sqlalchemy.orm import Session
-from sqlalchemy import text
+from sqlalchemy import text, create_engine
 from typing import Tuple
 import logging
-
-import sys
 import os
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from models.database import engine
+from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
 
+# Load environment variables
+load_dotenv()
 
 class DjangoDataLoader:
     """Service for loading data from Django tables in Supabase"""
     
     def __init__(self):
-        self.engine = engine
+        DATABASE_URL = os.getenv("DATABASE_URL")
+        if not DATABASE_URL:
+            raise ValueError("DATABASE_URL environment variable is required")
+        self.engine = create_engine(DATABASE_URL)
     
     def load_all_data(self) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
         """
