@@ -85,6 +85,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://172.20.10.3:5174",  # Sada9a frontend
     "https://nextremitly-backend-fe52128f2003.herokuapp.com",  # Nextremitly backend
     "http://localhost:8001",  # Nextremitly microservice
+    "https://sadagha.vercel.app",  # Production frontend
 ]
 
 # Logging configuration for debugging
@@ -136,6 +137,10 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
     'x-user-role',
 ]
+
+# Additional CORS settings for production
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = False  # Set to False for security
 ROOT_URLCONF = "sadagha.urls"
 
 TEMPLATES = [
@@ -161,7 +166,17 @@ WSGI_APPLICATION = "sadagha.wsgi.application"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': env.db(),
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres.zzkggackkiirezhlbuvo',
+        'PASSWORD': 'm34503710M_',
+        'HOST': 'aws-0-eu-west-2.pooler.supabase.com',
+        'PORT': '6543',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+    }
 }
 
 
@@ -312,8 +327,8 @@ if os.environ.get('ENVIRONMENT') == 'production':
 
     # CORS
     FRONTEND_URL = os.environ.get('FRONTEND_URL', '')
-    if FRONTEND_URL:
-        CORS_ALLOWED_ORIGINS = [FRONTEND_URL]
+    if FRONTEND_URL and FRONTEND_URL not in CORS_ALLOWED_ORIGINS:
+        CORS_ALLOWED_ORIGINS.append(FRONTEND_URL)
 
     # Static files
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
