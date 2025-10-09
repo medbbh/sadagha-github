@@ -85,7 +85,7 @@ export const sendPasswordResetEmail = async () => {
     if (!user) throw new Error('No authenticated user found');
 
     const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
-      redirectTo: `http://localhost:5174/reset-password` // Direct to reset-password page
+      redirectTo: `https://sadagha.vercel.app/reset-password` // Direct to reset-password page
     });
 
     if (error) throw new Error(error.message);

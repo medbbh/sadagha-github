@@ -86,7 +86,7 @@ export default function SimilarCampaigns({ campaignId }) {
             >
                 {campaigns.map((campaign) => (
                     <Link
-                        to={`/campaign/${campaign.campaign_id}`}
+                        to={`/campaign/${campaign.id}`}
                         key={campaign.campaign_id}
                         className="flex-shrink-0 w-60 bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden border border-gray-100"
                     >

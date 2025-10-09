@@ -345,13 +345,19 @@
     "supportingBanks": "يدعم بنكيلي، سداد، بيم بنك والمزيد",
     "errorCampaignMissing": "خطأ: معرف الحملة مفقود",
     "validationMinAmount": "الرجاء إدخال مبلغ تبرع صحيح (الحد الأدنى 1 أوقية)",
+    "validationNameRequired": "الرجاء إدخال اسمك أو اختيار التبرع المجهول",
+    "nameRequired": "الاسم مطلوب",
+    "anonymousDonor": "متبرع مجهول",
     "validationEmail": "الرجاء إدخال عنوان بريد إلكتروني صحيح",
     "popupBlocked": "النافذة المنبثقة ما زالت محجوبة. الرجاء تجربة خيار \"فتح في علامة تبويب جديدة\" أو السماح بالنوافذ المنبثقة لهذا الموقع.",
     "loginRequired": "تسجيل الدخول مطلوب",
     "loginDescription": "يرجى تسجيل الدخول إلى حسابك للتبرع ودعم هذه الحملة.",
     "loginButton": "تسجيل الدخول للمتابعة",
     "noAccount": "ليس لديك حساب؟",
-    "signUp": "سجل هنا"
+    "signUp": "سجل هنا",
+    "campaignFullyFunded": "تم تمويل الحملة بالكامل!",
+"campaignFundedMessage": "لقد وصلت هذه الحملة إلى هدفها. شكراً لسخائك!",
+"browseOtherCampaigns": "تصفح حملات أخرى"
   },
 "campaignDonationsMessage": {
   "noDonations": "لا توجد تبرعات بعد",

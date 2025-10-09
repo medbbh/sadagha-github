@@ -347,13 +347,19 @@
     "supportingBanks": "Supporting Bankily, Sedad, Bimbank & more",
     "errorCampaignMissing": "Error: Campaign ID is missing",
     "validationMinAmount": "Please enter a valid donation amount (minimum 1 MRU)",
+    "validationNameRequired": "Please enter your name or select anonymous donation",
+    "nameRequired": "Name is required",
+    "anonymousDonor": "Anonymous Donor",
     "validationEmail": "Please enter a valid email address",
     "popupBlocked": "Popup is still blocked. Please try the \"Open in New Tab\" option or allow popups for this site.",
     "loginRequired": "Login Required",
     "loginDescription": "Please log in to your account to make a donation and support this campaign.",
     "loginButton": "Login to Continue",
     "noAccount": "Don't have an account?",
-    "signUp": "Sign up here"
+    "signUp": "Sign up here",
+    "campaignFullyFunded": "Campaign Fully Funded!",
+"campaignFundedMessage": "This campaign has reached its goal. Thank you for your kindness!",
+"browseOtherCampaigns": "Browse Other Campaigns"
   },
 "campaignDonationsMessage": {
   "noDonations": "No donations yet",

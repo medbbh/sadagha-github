@@ -39,7 +39,12 @@ export default function DonationForm({
   const [showPaymentOptions, setShowPaymentOptions] = useState(false);
   const [pollingMessage, setPollingMessage] = useState('');
   const [currentPopup, setCurrentPopup] = useState(null);
+  const [validationAttempted, setValidationAttempted] = useState(false);
   const { user } = useAuth();
+
+
+  // Calculate if campaign is fully funded
+  const isFunded = Number(currentAmount) >= Number(targetAmount);
 
   // Cleanup celebration animation on unmount
   useEffect(() => {
@@ -48,20 +53,62 @@ export default function DonationForm({
     };
   }, []);
 
+  useEffect(() => {
+    if (user && user?.user_metadata.full_name) {
+      setDonorName(user.user_metadata.full_name);
+    }
+    console.log('is funded or not : ', isFunded);
+  }, [user]);
+
+  // Helper function to check if form is valid
+  const isFormValid = () => {
+    const valid = campaignId &&
+      campaignId !== 'undefined' &&
+      donationAmount >= 1 &&
+      (isAnonymous || (donorName && donorName.trim() !== ''));
+    console.log('Form validation:', {
+      campaignId,
+      donationAmount,
+      isAnonymous,
+      donorName: `"${donorName}"`,
+      valid
+    });
+    return valid;
+  };
+
   // Validation
   const validateForm = () => {
+    console.log('validateForm called with:', { campaignId, donationAmount, isAnonymous, donorName });
+
     if (!campaignId || campaignId === 'undefined') {
+      console.log('Campaign ID validation failed');
       return t('donationForm.errorCampaignMissing');
     }
     if (donationAmount < 1) {
+      console.log('Donation amount validation failed');
       return t('donationForm.validationMinAmount');
     }
+    if (!isAnonymous && (!donorName || donorName.trim() === '')) {
+      console.log('Name validation failed - not anonymous and no name provided');
+      return t('donationForm.validationNameRequired');
+    }
 
+    console.log('All validation passed');
     return null;
   };
 
   const handleDonate = async () => {
+    // Double check - if form is not valid, don't proceed
+    if (!isFormValid()) {
+      setValidationAttempted(true);
+      const validationError = validateForm();
+      setError(validationError || t('donationForm.validationNameRequired'));
+      return;
+    }
+
+    setValidationAttempted(true);
     const validationError = validateForm();
+
     if (validationError) {
       setError(validationError);
       return;
@@ -71,11 +118,10 @@ export default function DonationForm({
     setError(null);
     setShowPaymentOptions(false);
 
-
-    // UNCOMMENT THIS WHEN PAYMENT IS READY
+    // Prepare donation data with proper name handling
     const donationData = {
       amount: parseFloat(donationAmount),
-      donor_name: donorName || '',
+      donor_name: isAnonymous ? 'Anonymous' : (donorName || ''),
       message: message || '',
       is_anonymous: isAnonymous
     };
@@ -403,23 +449,24 @@ export default function DonationForm({
   const handlePaymentSuccess = (donationInfo) => {
     console.log('Payment successful, showing celebration...');
 
-    // Clear any existing celebration first to prevent stacking
-    setShowCelebration(false);
+    // Prevent multiple celebrations by checking if already showing
+    if (showCelebration) {
+      console.log('Celebration already showing, skipping duplicate');
+      return;
+    }
 
     setError(null);
     setIsLoading(false);
     setShowPaymentOptions(false);
     setPollingMessage('');
 
-    // Show celebration after a brief delay to ensure previous one is cleared
-    setTimeout(() => {
-      setShowCelebration(true);
+    // Show celebration only once
+    setShowCelebration(true);
 
-      // Auto-hide celebration after duration
-      setTimeout(() => {
-        setShowCelebration(false);
-      }, 4000);
-    }, 100);
+    // Auto-hide celebration after duration
+    setTimeout(() => {
+      setShowCelebration(false);
+    }, 4000);
 
     if (refreshCampaign) {
       refreshCampaign();
@@ -487,6 +534,8 @@ export default function DonationForm({
     setShowCelebration(false);
     setPollingMessage('');
     setCurrentPopup(null);
+    setValidationAttempted(false);
+    setError(null);
   };
 
   const retryPopup = () => {
@@ -499,6 +548,8 @@ export default function DonationForm({
       }
     }
   };
+
+
 
   // Don't render if no campaign ID
   if (!campaignId || campaignId === 'undefined') {
@@ -520,163 +571,197 @@ export default function DonationForm({
       {user ?
 
         <div className={`p-4 sm:p-6 bg-white rounded-xl shadow-lg border border-gray-100 relative ${isRTL ? 'text-end' : 'text-start'}`} dir={isRTL ? 'rtl' : 'ltr'}>
-  {/* Celebration Animation */}
-  <CelebrationAnimation
-    isVisible={showCelebration}
-    duration={4000}
-    type="confetti"
-    intensity="medium"
-  />
+          {/* Celebration Animation */}
+          <CelebrationAnimation
+            isVisible={showCelebration}
+            duration={4000}
+            type="confetti"
+            intensity="medium"
+          />
 
-  <div className="mb-4">
-    <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 flex items-center">
-      <Heart className={`w-5 h-5 sm:w-6 sm:h-6 text-red-500 ${isRTL ? 'ms-2' : 'me-2'}`} />
-      {t('donationForm.supportThisCampaign')}
-    </h2>
-    <p className="text-sm text-gray-600">{t('donationForm.makeDifference')}</p>
-  </div>
+          <div className="mb-4">
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1 flex items-center">
+              <Heart className={`w-5 h-5 sm:w-6 sm:h-6 text-red-500 ${isRTL ? 'ms-2' : 'me-2'}`} />
+              {t('donationForm.supportThisCampaign')}
+            </h2>
+            <p className="text-sm text-gray-600">{t('donationForm.makeDifference')}</p>
+          </div>
 
-  {/* Success Message */}
-  {showSuccessMessage && (
-    <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
-      <CheckCircle className={`w-5 h-5 text-green-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
-      <div>
-        <p className="text-green-800 font-medium text-sm">{t('donationForm.thankyouDonation')}</p>
-        <p className="text-green-700 text-xs">{t('donationForm.redirectingSuccess')}</p>
-      </div>
-    </div>
-  )}
+          {/* Success Message */}
+          {showSuccessMessage && (
+            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg flex items-center">
+              <CheckCircle className={`w-5 h-5 text-green-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
+              <div>
+                <p className="text-green-800 font-medium text-sm">{t('donationForm.thankyouDonation')}</p>
+                <p className="text-green-700 text-xs">{t('donationForm.redirectingSuccess')}</p>
+              </div>
+            </div>
+          )}
 
-  {/* Combined Progress & Donors */}
-  <CombinedProgressDonors
-    campaignId={campaignId}
-    currentAmount={currentAmount}
-    targetAmount={targetAmount}
-    donorsCount={donorsCount}
-    isRTL={isRTL}
-  />
+          {/* Combined Progress & Donors */}
+          <CombinedProgressDonors
+            campaignId={campaignId}
+            currentAmount={currentAmount}
+            targetAmount={targetAmount}
+            donorsCount={donorsCount}
+            isRTL={isRTL}
+          />
 
-  {/* Polling Message */}
-  {pollingMessage && (
-    <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
-      <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`}></div>
-      <p className="text-sm text-blue-700">{pollingMessage}</p>
-    </div>
-  )}
+          {/* Polling Message */}
+          {pollingMessage && (
+            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center">
+              <div className={`animate-spin rounded-full h-4 w-4 border-b-2 border-blue-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`}></div>
+              <p className="text-sm text-blue-700">{pollingMessage}</p>
+            </div>
+          )}
 
-  {/* Error Display */}
-  {error && (
-    <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg flex items-center">
-      <AlertCircle className={`w-5 h-5 text-red-600 flex-shrink-0 ${isRTL ? 'ms-2' : 'me-2'}`} />
-      <p className="text-sm text-red-700">{error}</p>
-    </div>
-  )}
 
-  {/* Donation Amount - Compact */}
-  <div className="mb-4">
-    <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.chooseDonationAmount')}</h3>
 
-    {/* Quick amounts in 2 rows on mobile, 1 row on desktop */}
-    <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
-      {quickAmounts.map((amount) => (
-        <button
-          key={amount}
-          onClick={() => setDonationAmount(amount)}
-          className={`py-2 px-2 rounded-lg border-2 transition-all font-medium text-xs sm:text-sm ${
-            donationAmount === amount
-              ? 'border-blue-500 bg-blue-50 text-blue-700 scale-105 shadow'
-              : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
-          }`}
-        >
-          {amount}
-        </button>
-      ))}
-    </div>
+          {
+            isFunded ? (
+              <div className="p-6 bg-green-50 border border-green-200 rounded-lg text-center">
+                <CheckCircle className="w-10 h-10 text-green-600 mx-auto mb-2" />
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">{t('donationForm.campaignFullyFunded')}</h3>
+                <p className="text-gray-700 mb-4">{t('donationForm.campaignFundedMessage')}</p>
+                <button onClick={() => navigate('/campaigns')} className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-200 transform hover:scale-105">
+                  {t('donationForm.browseOtherCampaigns')}
+                </button>
+              </div>
+            )
+          :
+          (<>
+                    {/* Donation Amount - Compact */}
 
-    {/* Custom amount inline */}
-    <div className="relative">
-      <input
-        type="number"
-        value={donationAmount}
-        onChange={(e) => setDonationAmount(Number(e.target.value))}
-        className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
-        placeholder={t('donationForm.customAmount')}
-        min="1"
-        dir={isRTL ? 'rtl' : 'ltr'}
-      />
-      <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
-        <span className="text-gray-500 text-sm font-medium">MRU</span>
-      </div>
-    </div>
-  </div>
+          <div className="mb-4">
+            <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.chooseDonationAmount')}</h3>
 
-  {/* Donor Info - Compact */}
-  <div className="mb-4">
-    <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.donorInformation')}</h3>
+            {/* Quick amounts in 2 rows on mobile, 1 row on desktop */}
+            <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-3">
+              {quickAmounts.map((amount) => (
+                <button
+                  key={amount}
+                  onClick={() => setDonationAmount(amount)}
+                  className={`py-2 px-2 rounded-lg border-2 transition-all font-medium text-xs sm:text-sm ${donationAmount === amount
+                    ? 'border-blue-500 bg-blue-50 text-blue-700 scale-105 shadow'
+                    : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50'
+                    }`}
+                >
+                  {amount}
+                </button>
+              ))}
+            </div>
 
-    <div className="space-y-3">
-      {/* Name input */}
-      <div className="relative">
-        <User className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400`} />
-        <input
-          type="text"
-          value={donorName}
-          onChange={(e) => setDonorName(e.target.value)}
-          className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
-          placeholder={t('donationForm.yourFullName')}
-          disabled={isAnonymous}
-        />
-      </div>
+            {/* Custom amount inline */}
+            <div className="relative">
+              <input
+                type="number"
+                value={donationAmount}
+                onChange={(e) => setDonationAmount(Number(e.target.value))}
+                className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-base"
+                placeholder={t('donationForm.customAmount')}
+                min="1"
+                dir={isRTL ? 'rtl' : 'ltr'}
+              />
+              <div className={`absolute inset-y-0 ${isRTL ? 'left-0 pl-3' : 'right-0 pr-3'} flex items-center pointer-events-none`}>
+                <span className="text-gray-500 text-sm font-medium">MRU</span>
+              </div>
+            </div>
+          </div>
 
-      {/* Message */}
-      <div className="relative">
-        <MessageSquare className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-3 w-4 h-4 text-gray-400`} />
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          rows="2"
-          className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
-          placeholder={t('donationForm.shareMessage')}
-        />
-      </div>
+          {/* Donor Info - Compact */}
+          <div className="mb-4">
+            <h3 className="text-base font-semibold text-gray-800 mb-3">{t('donationForm.donorInformation')}</h3>
 
-      {/* Anonymous checkbox */}
-      <div className="flex items-center">
-        <input
-          type="checkbox"
-          id="anonymous"
-          checked={isAnonymous}
-          onChange={(e) => setIsAnonymous(e.target.checked)}
-          className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-        />
-        <label htmlFor="anonymous" className={`text-sm text-gray-700 ${isRTL ? 'me-2' : 'ms-2'}`}>
-          {t('donationForm.makeAnonymous')}
-        </label>
-      </div>
-    </div>
-  </div>
+            <div className="space-y-3">
+              {/* Name input */}
+              <div className="relative">
+                <User className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400`} />
+                <input
+                  type="text"
+                  value={donorName}
+                  onChange={(e) => {
+                    setDonorName(e.target.value);
+                    if (validationAttempted) {
+                      setError(null);
+                    }
+                  }}
+                  className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2.5 border rounded-lg focus:outline-none focus:ring-2 text-sm ${!isAnonymous && (!donorName || donorName.trim() === '') && validationAttempted
+                    ? 'border-red-300 bg-red-50 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-blue-500'
+                    }`}
+                  placeholder={isAnonymous ? t('donationForm.anonymousDonor') : t('donationForm.yourFullName')}
+                  disabled={isAnonymous}
+                  required={!isAnonymous}
+                />
+                {!isAnonymous && (!donorName || donorName.trim() === '') && validationAttempted && (
+                  <div className="absolute -bottom-5 left-0 text-xs text-red-600">
+                    {t('donationForm.nameRequired')}
+                  </div>
+                )}
+              </div>
 
-  {/* Donation Button */}
-  <button
-    onClick={handleDonate}
-    disabled={isLoading || donationAmount < 1 || !campaignId}
-    className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center"
-  >
-    {isLoading ? (
-      <>
-        <div className={`animate-spin rounded-full h-5 w-5 border-b-2 border-white ${isRTL ? 'ms-2' : 'me-2'}`}></div>
-        <span className="text-sm sm:text-base">{t('donationForm.processing')}</span>
-      </>
-    ) : (
-      <>
-        <span className="text-sm sm:text-base">{t('donationForm.donate')} {donationAmount} MRU</span>
-        <CreditCard className={`w-5 h-5 ${isRTL ? 'me-2' : 'ms-2'}`} />
-      </>
-    )}
-  </button>
-</div>
+              {/* Message */}
+              <div className="relative">
+                <MessageSquare className={`absolute ${isRTL ? 'end-3' : 'start-3'} top-3 w-4 h-4 text-gray-400`} />
+                <textarea
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  rows="2"
+                  className={`w-full ${isRTL ? 'pe-10 ps-3' : 'ps-10 pe-3'} py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm`}
+                  placeholder={t('donationForm.shareMessage')}
+                />
+              </div>
+
+              {/* Anonymous checkbox */}
+              <div className="flex items-center mt-4">
+                <input
+                  type="checkbox"
+                  id="anonymous"
+                  checked={isAnonymous}
+                  onChange={(e) => {
+                    setIsAnonymous(e.target.checked);
+                    // Clear validation state when switching to anonymous
+                    if (e.target.checked) {
+                      setError(null);
+                      setValidationAttempted(false);
+                    }
+                  }}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                />
+                <label htmlFor="anonymous" className={`text-sm text-gray-700 ${isRTL ? 'me-2' : 'ms-2'}`}>
+                  {t('donationForm.makeAnonymous')}
+                </label>
+              </div>
+            </div>
+          </div>
+
+          {/* Donation Button */}
+          <button
+            onClick={handleDonate}
+            disabled={isLoading || !isFormValid()}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition-all transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed flex items-center justify-center"
+          >
+            {isLoading ? (
+              <>
+                <div className={`animate-spin rounded-full h-5 w-5 border-b-2 border-white ${isRTL ? 'ms-2' : 'me-2'}`}></div>
+                <span className="text-sm sm:text-base">{t('donationForm.processing')}</span>
+              </>
+            ) : (
+              <>
+                <span className="text-sm sm:text-base">{t('donationForm.donate')} {donationAmount} MRU</span>
+                <CreditCard className={`w-5 h-5 ${isRTL ? 'me-2' : 'ms-2'}`} />
+              </>
+            )}
+          </button>
+
+          </>)
+
+            }
+
+        </div>
+
+
         :
-
         (
           <div className={`p-8 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl shadow-lg border border-blue-200 text-center`}>
             <div className="max-w-md mx-auto">

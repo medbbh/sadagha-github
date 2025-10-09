@@ -16,9 +16,12 @@ const CombinedProgressDonors = ({
   const [currentDonorIndex, setCurrentDonorIndex] = useState(0);
   const [showModal, setShowModal] = useState(false);
 
+  const amountToGo = Math.max(0, targetAmount - currentAmount); // Prevent negative values
+
   const progress = targetAmount ? (currentAmount / targetAmount) * 100 : 0;
   const visibleDonors = 3; // Number of donors to show at once
 
+  
   useEffect(() => {
     const fetchDonations = async () => {
       try {
@@ -90,7 +93,9 @@ const CombinedProgressDonors = ({
             <User className={`w-4 h-4 ${isRTL ? 'ms-1' : 'me-1'}`} />
             {donorsCount || 0} {t('donationForm.supporters')}
           </span>
-          <span>{(targetAmount || 0) - (currentAmount || 0)} MRU {t('donationForm.toGo')}</span>
+          {/* <span>{(targetAmount || 0) - (currentAmount || 0)} MRU {t('donationForm.toGo')}</span> */}
+          <span>{amountToGo} MRU {t('donationForm.toGo')}</span>
+
         </div>
 
         {/* Recent Donors */}

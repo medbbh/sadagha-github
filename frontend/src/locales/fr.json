@@ -346,13 +346,19 @@
     "supportingBanks": "Soutenant Bankily, Sedad, Bimbank et plus",
     "errorCampaignMissing": "Erreur : ID de campagne manquant",
     "validationMinAmount": "Veuillez entrer un montant de don valide (minimum 1 MRU)",
+    "validationNameRequired": "Veuillez entrer votre nom ou sélectionner un don anonyme",
+    "nameRequired": "Le nom est requis",
+    "anonymousDonor": "Donateur Anonyme",
     "validationEmail": "Veuillez entrer une adresse email valide",
     "popupBlocked": "La popup est toujours bloquée. Veuillez essayer l'option \"Ouvrir dans un Nouvel Onglet\" ou autoriser les popups pour ce site.",
     "loginRequired": "Connexion Requise",
     "loginDescription": "Veuillez vous connecter à votre compte pour faire un don et soutenir cette campagne.",
     "loginButton": "Se Connecter pour Continuer",
     "noAccount": "Vous n'avez pas de compte ?",
-    "signUp": "Inscrivez-vous ici"
+    "signUp": "Inscrivez-vous ici",
+    "campaignFullyFunded": "Campagne Entièrement Financée !",
+"campaignFundedMessage": "Cette campagne a atteint son objectif. Merci pour votre générosité !",
+"browseOtherCampaigns": "Parcourir d'Autres Campagnes"
   },
 "campaignDonationsMessage": {
   "noDonations": "Aucun don pour le moment",
