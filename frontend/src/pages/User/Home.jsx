@@ -5,7 +5,6 @@ import { CallToActionSection } from './sections/CallToActionSection';
 import { fetchCampaigns, featuredCampaigns } from '../../api/endpoints/CampaignAPI';
 import { useEffect, useState } from 'react';
 import Loading from '../../components/common/Loading';
-import Footer from '../../components/Layout/Footer';
 import { User } from 'lucide-react';
 import UserRecommendationsSection from './sections/UserRecommendationsSection';
 
@@ -119,7 +118,6 @@ export default function HomePage() {
       />
       <CallToActionSection />
 
-      {/* <Footer /> */}
     </div>
   );
 }
