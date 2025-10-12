@@ -69,6 +69,28 @@
       "passwordsDontMatch": "Les mots de passe ne correspondent pas",
       "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères",
       "updateError": "Une erreur s'est produite lors de la mise à jour de votre mot de passe."
+    },
+        "confirmRole": {
+      "title": "Complete Your Registration",
+      "welcome": "Welcome",
+      "selectAccount": "Please select your account type to continue:",
+      "roles": {
+        "user": {
+          "title": "Regular User",
+          "description": "Donate to campaigns and volunteer for causes"
+        },
+        "organization": {
+          "title": "Organization",
+          "description": "Create campaigns and manage charitable projects"
+        }
+      },
+      "continue": "Continue",
+      "settingUp": "Setting up your account...",
+      "errors": {
+        "loginFirst": "Please log in first",
+        "alreadyRegistered": "You are already registered. Please refresh or go to the dashboard.",
+        "registrationFailed": "Failed to register. Please try again."
+      }
     }
   },
   "navbar": {

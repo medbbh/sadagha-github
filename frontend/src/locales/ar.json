@@ -69,6 +69,28 @@
       "passwordsDontMatch": "كلمات المرور غير متطابقة",
       "passwordTooShort": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
       "updateError": "حدث خطأ أثناء تحديث كلمة المرور."
+    },
+        "confirmRole": {
+      "title": "أكمل تسجيلك",
+      "welcome": "مرحباً",
+      "selectAccount": "يرجى اختيار نوع حسابك للمتابعة:",
+      "roles": {
+        "user": {
+          "title": "مستخدم عادي",
+          "description": "التبرع للحملات والتطوع للقضايا"
+        },
+        "organization": {
+          "title": "منظمة",
+          "description": "إنشاء الحملات وإدارة المشاريع الخيرية"
+        }
+      },
+      "continue": "متابعة",
+      "settingUp": "جارٍ إعداد حسابك...",
+      "errors": {
+        "loginFirst": "يرجى تسجيل الدخول أولاً",
+        "alreadyRegistered": "أنت مسجل بالفعل. يرجى التحديث أو الانتقال إلى لوحة التحكم.",
+        "registrationFailed": "فشل التسجيل. يرجى المحاولة مرة أخرى."
+      }
     }
   },
   "navbar": {

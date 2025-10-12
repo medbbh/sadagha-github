@@ -9,6 +9,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isSelectingRole, setIsSelectingRole] = useState(false);
 
   // Function to get access token for API calls
   const getToken = useCallback(async () => {
@@ -60,7 +61,7 @@ export const AuthProvider = ({ children }) => {
 
       // console.log('🔄 Role sync check:', { backendRole, supabaseRole });
 
-      // If roles don't match, update Supabase metadata
+      // Only sync if backend user exists and has a role
       if (backendRole && backendRole !== supabaseRole) {
         console.log('🔄 Syncing role from backend to Supabase...');
         
@@ -80,6 +81,11 @@ export const AuthProvider = ({ children }) => {
 
       return backendRole;
     } catch (error) {
+      // If user doesn't exist in backend yet (404), that's expected for new users
+      if (error.response?.status === 404) {
+        console.log('🔄 User not found in backend - needs registration');
+        return null;
+      }
       console.error('Role sync failed:', error);
       return null;
     }
@@ -150,14 +156,22 @@ export const AuthProvider = ({ children }) => {
   // auto role sync
   useEffect(() => {
     // Auto-sync role when user is authenticated
-    if (user && !loading) {
-      const timer = setTimeout(() => {
-        syncUserRole();
-      }, 1000); // Small delay to ensure everything is loaded
+    // But skip if user is on role confirmation page, has no role yet, or is actively selecting a role
+    if (user && !loading && !isSelectingRole) {
+      const currentPath = window.location.pathname;
+      const isOnConfirmRolePage = currentPath === '/confirm-role';
+      const hasExistingRole = !!getUserRole();
+      
+      // Only auto-sync if user already has a role AND not on confirm-role page
+      if (!isOnConfirmRolePage && hasExistingRole) {
+        const timer = setTimeout(() => {
+          syncUserRole();
+        }, 1000); // Small delay to ensure everything is loaded
 
-      return () => clearTimeout(timer);
+        return () => clearTimeout(timer);
+      }
     }
-  }, [user, loading, syncUserRole]);
+  }, [user, loading, isSelectingRole, syncUserRole]);
 
 
   useEffect(() => {
@@ -196,6 +210,16 @@ export const AuthProvider = ({ children }) => {
     const result = hasUser && !hasRole;
     
     return result;
+  };
+
+  // Function to mark that user is actively selecting a role
+  const startRoleSelection = () => {
+    setIsSelectingRole(true);
+  };
+
+  // Function to mark that role selection is complete
+  const completeRoleSelection = () => {
+    setIsSelectingRole(false);
   };
 
   // Register user in Django
@@ -249,6 +273,8 @@ export const AuthProvider = ({ children }) => {
     registerDjangoUser,
     isFullyAuthenticated,
     needsRegistration,
+    startRoleSelection,
+    completeRoleSelection,
     // For backward compatibility
     profile: user ? {
       id: user.id,

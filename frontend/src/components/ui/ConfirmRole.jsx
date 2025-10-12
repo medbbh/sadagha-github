@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import Loading from '../common/Loading';
+import { UserCircle, Building2, Check } from 'lucide-react';
 
 const ConfirmRole = () => {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+  
   const { 
     user, 
     registerDjangoUser, 
     isFullyAuthenticated, 
     needsRegistration, 
     loading,
-    getUserRole 
+    getUserRole,
+    startRoleSelection,
+    completeRoleSelection
   } = useAuth();
+  
   const [selectedRole, setSelectedRole] = useState('user');
   const [isRegistering, setIsRegistering] = useState(false);
   const [error, setError] = useState('');
@@ -46,7 +54,7 @@ const ConfirmRole = () => {
 
   const handleRoleSelection = async () => {
     if (!user) {
-      setError('Please log in first');
+      setError(t('auth.confirmRole.errors.loginFirst'));
       return;
     }
 
@@ -58,12 +66,15 @@ const ConfirmRole = () => {
       await registerDjangoUser(selectedRole);
       console.log('✅ Registration completed, should redirect automatically');
       
+      // Mark role selection as complete
+      completeRoleSelection();
+      
       // The useEffect will handle navigation once isFullyAuthenticated becomes true
     } catch (err) {
       console.error('❌ Registration failed:', err);
       setError(err.message.includes('already') 
-        ? 'You are already registered. Please refresh or go to the dashboard.' 
-        : err.message || 'Failed to register. Please try again.');
+        ? t('auth.confirmRole.errors.alreadyRegistered')
+        : err.message || t('auth.confirmRole.errors.registrationFailed'));
       setIsRegistering(false);
     }
   };
@@ -80,67 +91,104 @@ const ConfirmRole = () => {
     return <Loading />;
   }
 
+  // Mark that user is actively selecting a role
+  React.useEffect(() => {
+    startRoleSelection();
+    return () => completeRoleSelection();
+  }, [startRoleSelection, completeRoleSelection]);
+
   console.log('📋 ConfirmRole - showing role selection form');
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-center mb-6">Complete Your Registration</h2>
+    <div className={`min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4 ${isRTL ? 'rtl' : 'ltr'}`}>
+      <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Check className="w-8 h-8 text-blue-600" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            {t('auth.confirmRole.title')}
+          </h2>
+          <p className="text-gray-600">
+            {t('auth.confirmRole.welcome')} {user?.email}! {t('auth.confirmRole.selectAccount')}
+          </p>
+        </div>
         
-        <p className="text-gray-600 text-center mb-6">
-          Welcome {user?.email}! Please select your account type to continue:
-        </p>
-        
+        {/* Role Selection */}
         <div className="space-y-4 mb-6">
-          <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+          <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+            selectedRole === 'user' 
+              ? 'border-blue-600 bg-blue-50' 
+              : 'border-gray-300 hover:bg-gray-50'
+          } ${isRegistering ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <input
               type="radio"
               name="role"
               value="user"
               checked={selectedRole === 'user'}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="mr-3"
+              className={`${isRTL ? 'ml-3' : 'mr-3'}`}
               disabled={isRegistering}
             />
-            <div>
-              <div className="font-medium">Regular User</div>
+            <UserCircle className={`h-6 w-6 text-blue-600 flex-shrink-0 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <div className="font-medium text-gray-900">
+                {t('auth.confirmRole.roles.user.title')}
+              </div>
               <div className="text-sm text-gray-500">
-                Donate to campaigns and volunteer for causes
+                {t('auth.confirmRole.roles.user.description')}
               </div>
             </div>
           </label>
           
-          <label className="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50">
+          <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+            selectedRole === 'organization' 
+              ? 'border-blue-600 bg-blue-50' 
+              : 'border-gray-300 hover:bg-gray-50'
+          } ${isRegistering ? 'opacity-50 cursor-not-allowed' : ''}`}>
             <input
               type="radio"
               name="role"
               value="organization"
               checked={selectedRole === 'organization'}
               onChange={(e) => setSelectedRole(e.target.value)}
-              className="mr-3"
+              className={`${isRTL ? 'ml-3' : 'mr-3'}`}
               disabled={isRegistering}
             />
-            <div>
-              <div className="font-medium">Organization</div>
+            <Building2 className={`h-6 w-6 text-blue-600 flex-shrink-0 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+            <div className={isRTL ? 'text-right' : 'text-left'}>
+              <div className="font-medium text-gray-900">
+                {t('auth.confirmRole.roles.organization.title')}
+              </div>
               <div className="text-sm text-gray-500">
-                Create campaigns and manage charitable projects
+                {t('auth.confirmRole.roles.organization.description')}
               </div>
             </div>
           </label>
         </div>
         
+        {/* Error Message */}
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg">
             {error}
           </div>
         )}
         
+        {/* Submit Button */}
         <button
           onClick={handleRoleSelection}
           disabled={isRegistering}
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isRegistering ? 'Setting up your account...' : 'Continue'}
+          {isRegistering ? (
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+              {t('auth.confirmRole.settingUp')}
+            </div>
+          ) : (
+            t('auth.confirmRole.continue')
+          )}
         </button>
       </div>
     </div>
