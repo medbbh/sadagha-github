@@ -86,6 +86,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://nextremitly-backend-fe52128f2003.herokuapp.com",  # Nextremitly backend
     "http://localhost:8001",  # Nextremitly microservice
     "https://sadagha.vercel.app",  # Production frontend
+    "https://www.sada9a.com"
 ]
 
 # Logging configuration for debugging
