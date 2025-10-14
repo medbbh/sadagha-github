@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="Recommendation Service",
-    description="A microservice for handling recommendations with Arabic text support",
+    description="AI-powered microservice for handling recommendations with multilingual support",
     version="1.0.0"
 )
 
@@ -25,9 +25,10 @@ async def root():
         "version": "1.0.0",
         "arabic_support": "✅ يدعم النصوص العربية",
         "features": [
-            "Personalized recommendations",
-            "Similar campaigns",
-            "Arabic text support",
+            "AI-powered personalized recommendations",
+            "Semantic similarity matching",
+            "Multilingual support (Arabic + English)",
+            "Neural embedding-based recommendations",
             "Real-time data from Supabase"
         ]
     }

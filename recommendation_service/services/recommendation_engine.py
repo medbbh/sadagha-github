@@ -1,8 +1,14 @@
 import pandas as pd
-from typing import List, Dict, Tuple
+import numpy as np
+from typing import List, Dict, Tuple, Optional
 import logging
 from collections import Counter
 from datetime import datetime, timedelta
+from sentence_transformers import SentenceTransformer
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import StandardScaler
+import pickle
+import os
 
 try:
     from .django_data_loader import DjangoDataLoader
@@ -17,13 +23,40 @@ logger = logging.getLogger(__name__)
 
 
 class RecommendationEngine:
-    """Campaign recommendation engine based on user behavior and popularity"""
+    """AI-powered campaign recommendation engine using embedding-based models"""
     
     def __init__(self):
         self.data_loader = DjangoDataLoader()
         self._donations_df = None
         self._campaigns_df = None
         self._last_refresh = None
+        
+        # AI Model components
+        self.sentence_model = None
+        self.campaign_embeddings = None
+        self.user_embeddings = None
+        self.scaler = StandardScaler()
+        self.embeddings_cache_path = "embeddings_cache.pkl"
+        
+        # Initialize the multilingual sentence transformer (supports Arabic)
+        self._initialize_ai_model()
+        
+    def _initialize_ai_model(self):
+        """Initialize the AI model for embeddings"""
+        try:
+            # Use multilingual model that supports Arabic text
+            logger.info("Loading multilingual sentence transformer model...")
+            self.sentence_model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+            logger.info("AI model loaded successfully")
+        except Exception as e:
+            logger.error(f"Failed to load AI model: {str(e)}")
+            # Fallback to a smaller model if the main one fails
+            try:
+                self.sentence_model = SentenceTransformer('all-MiniLM-L6-v2')
+                logger.info("Loaded fallback AI model")
+            except Exception as e2:
+                logger.error(f"Failed to load fallback model: {str(e2)}")
+                self.sentence_model = None
         
     def _refresh_data_if_needed(self):
         """Refresh data if it's older than 1 hour or not loaded"""
@@ -37,8 +70,56 @@ class RecommendationEngine:
             self._donations_df = donations_df[donations_df['status'] == 'completed'].copy()
             self._campaigns_df = campaigns_df[campaigns_df['is_active'] == True].copy()
             
+            # Generate embeddings for campaigns
+            self._generate_campaign_embeddings()
+            
             self._last_refresh = datetime.now()
             logger.info(f"Data refreshed: {len(self._donations_df)} donations, {len(self._campaigns_df)} campaigns")
+    
+    def _generate_campaign_embeddings(self):
+        """Generate embeddings for all campaigns using AI model"""
+        if self.sentence_model is None or len(self._campaigns_df) == 0:
+            logger.warning("Cannot generate embeddings: model not loaded or no campaigns")
+            return
+            
+        try:
+            # Create text representations of campaigns (title + description + category)
+            campaign_texts = []
+            for _, campaign in self._campaigns_df.iterrows():
+                text_parts = []
+                
+                # Add title
+                if pd.notna(campaign.get('title')):
+                    text_parts.append(str(campaign['title']))
+                
+                # Add description
+                if pd.notna(campaign.get('description')):
+                    text_parts.append(str(campaign['description']))
+                
+                # Add category
+                if pd.notna(campaign.get('category')):
+                    text_parts.append(f"Category: {campaign['category']}")
+                
+                # Add organization name
+                if pd.notna(campaign.get('organization_name')):
+                    text_parts.append(f"Organization: {campaign['organization_name']}")
+                
+                campaign_text = " ".join(text_parts) if text_parts else "No description available"
+                campaign_texts.append(campaign_text)
+            
+            # Generate embeddings
+            logger.info(f"Generating embeddings for {len(campaign_texts)} campaigns...")
+            self.campaign_embeddings = self.sentence_model.encode(
+                campaign_texts, 
+                show_progress_bar=False,
+                convert_to_numpy=True
+            )
+            
+            logger.info(f"Generated embeddings with shape: {self.campaign_embeddings.shape}")
+            
+        except Exception as e:
+            logger.error(f"Error generating campaign embeddings: {str(e)}")
+            self.campaign_embeddings = None
     
     def get_recommendations(self, user_id: str, top_n: int = 5) -> List[Dict]:
         """
@@ -69,9 +150,14 @@ class RecommendationEngine:
             recommendations = []
             
             if len(user_donations) > 0:
-                # User has donation history - use collaborative filtering
-                recommendations = self._get_collaborative_recommendations(user_donations, top_n)
-                logger.info(f"Generated {len(recommendations)} collaborative recommendations for user {user_id}")
+                # User has donation history - use AI-powered recommendations
+                if self.campaign_embeddings is not None:
+                    recommendations = self._get_ai_recommendations(user_donations, top_n)
+                    logger.info(f"Generated {len(recommendations)} AI recommendations for user {user_id}")
+                else:
+                    # Fallback to collaborative filtering if AI not available
+                    recommendations = self._get_collaborative_recommendations(user_donations, top_n)
+                    logger.info(f"Generated {len(recommendations)} collaborative recommendations for user {user_id}")
             
             # Fill remaining slots with popular campaigns
             if len(recommendations) < top_n:
@@ -89,6 +175,155 @@ class RecommendationEngine:
             # Fallback to popular campaigns only
             return self._get_popular_recommendations(top_n=top_n)
     
+    def _get_ai_recommendations(self, user_donations: pd.DataFrame, top_n: int) -> List[Dict]:
+        """Generate AI-powered recommendations based on user profile embedding"""
+        
+        # Create user profile embedding
+        user_profile = self._create_user_profile_embedding(user_donations)
+        
+        if user_profile is None:
+            logger.warning("Could not create user profile, falling back to collaborative filtering")
+            return self._get_collaborative_recommendations(user_donations, top_n)
+        
+        try:
+            # Get campaigns user has already donated to
+            donated_campaigns = set(user_donations['campaign_id'].unique())
+            
+            # Calculate similarities between user profile and all campaigns
+            similarities = cosine_similarity([user_profile], self.campaign_embeddings)[0]
+            
+            # Create recommendations
+            recommendations = []
+            
+            # Sort by similarity score (descending)
+            sorted_indices = np.argsort(similarities)[::-1]
+            
+            for idx in sorted_indices:
+                campaign_row = self._campaigns_df.iloc[idx]
+                campaign_id = campaign_row['id']
+                
+                # Skip campaigns user has already donated to
+                if campaign_id in donated_campaigns:
+                    continue
+                
+                similarity_score = similarities[idx]
+                
+                # Apply additional scoring factors
+                final_score = self._calculate_final_ai_score(
+                    similarity_score, campaign_row, user_donations
+                )
+                
+                recommendations.append({
+                    'campaign_id': int(campaign_id),
+                    'score': float(final_score),
+                    'reason': f'AI semantic similarity ({similarity_score:.3f})'
+                })
+                
+                if len(recommendations) >= top_n:
+                    break
+            
+            return recommendations
+            
+        except Exception as e:
+            logger.error(f"Error in AI recommendations: {str(e)}")
+            return self._get_collaborative_recommendations(user_donations, top_n)
+    
+    def _create_user_profile_embedding(self, user_donations: pd.DataFrame) -> Optional[np.ndarray]:
+        """Create user profile embedding from their donation history"""
+        if self.campaign_embeddings is None or len(user_donations) == 0:
+            return None
+            
+        try:
+            # Get campaign indices for user's donations
+            donated_campaign_ids = user_donations['campaign_id'].unique()
+            
+            # Find corresponding embeddings
+            user_campaign_embeddings = []
+            campaign_weights = []
+            
+            for campaign_id in donated_campaign_ids:
+                # Find campaign in our dataframe
+                campaign_idx = self._campaigns_df[self._campaigns_df['id'] == campaign_id].index
+                
+                if len(campaign_idx) > 0:
+                    idx = campaign_idx[0]
+                    # Get the position in our embeddings array
+                    embedding_idx = self._campaigns_df.index.get_loc(idx)
+                    
+                    if embedding_idx < len(self.campaign_embeddings):
+                        user_campaign_embeddings.append(self.campaign_embeddings[embedding_idx])
+                        
+                        # Weight by donation amount and recency
+                        campaign_donations = user_donations[user_donations['campaign_id'] == campaign_id]
+                        total_amount = campaign_donations['amount'].sum()
+                        # Handle timezone-aware datetime comparison
+                        cutoff_date = datetime.now() - timedelta(days=90)
+                        try:
+                            created_dates = pd.to_datetime(campaign_donations['created_at'])
+                            if created_dates.dt.tz is not None:
+                                # If timezone-aware, make cutoff timezone-aware too
+                                import pytz
+                                cutoff_date = cutoff_date.replace(tzinfo=pytz.UTC)
+                            recent_donations = len(campaign_donations[created_dates > cutoff_date])
+                        except Exception:
+                            # Fallback: assume all donations are recent
+                            recent_donations = len(campaign_donations)
+                        
+                        weight = np.log1p(total_amount) * (1 + recent_donations * 0.1)
+                        campaign_weights.append(weight)
+            
+            if len(user_campaign_embeddings) == 0:
+                return None
+            
+            # Create weighted average of user's campaign embeddings
+            user_campaign_embeddings = np.array(user_campaign_embeddings)
+            campaign_weights = np.array(campaign_weights)
+            
+            # Normalize weights
+            campaign_weights = campaign_weights / campaign_weights.sum()
+            
+            # Weighted average
+            user_profile = np.average(user_campaign_embeddings, axis=0, weights=campaign_weights)
+            
+            return user_profile
+            
+        except Exception as e:
+            logger.error(f"Error creating user profile embedding: {str(e)}")
+            return None
+    
+    def _calculate_final_ai_score(self, similarity_score: float, campaign_row: pd.Series, 
+                                 user_donations: pd.DataFrame) -> float:
+        """Calculate final score combining AI similarity with other factors"""
+        
+        final_score = similarity_score * 0.7  # Base AI similarity (70% weight)
+        
+        # Add popularity boost (20% weight)
+        popularity_score = min(campaign_row['donation_count'] / 100, 1.0)  # Normalize to max 100 donations
+        final_score += popularity_score * 0.2
+        
+        # Add progress boost (10% weight) - campaigns with some progress but not complete
+        progress = campaign_row['progress_percentage']
+        if 10 <= progress <= 80:  # Sweet spot for engagement
+            progress_boost = 0.1
+        else:
+            progress_boost = 0.05
+        final_score += progress_boost
+        
+        # Category preference boost
+        user_categories = user_donations['campaign_category'].dropna().unique()
+        if campaign_row['category'] in user_categories:
+            final_score += 0.1
+        
+        # Organization trust boost
+        if campaign_row.get('organization_verified', False):
+            final_score += 0.05
+        
+        # Featured campaign boost
+        if campaign_row.get('is_featured', False):
+            final_score += 0.03
+        
+        return min(final_score, 1.0)  # Cap at 1.0
+
     def _get_collaborative_recommendations(self, user_donations: pd.DataFrame, top_n: int) -> List[Dict]:
         """Generate recommendations based on similar users' donation patterns"""
         
@@ -339,7 +574,7 @@ class RecommendationEngine:
     
     def get_similar_campaigns(self, campaign_id: int, top_n: int = 5) -> List[Dict]:
         """
-        Get campaigns similar to the given campaign (content-based filtering)
+        Get campaigns similar to the given campaign using AI embeddings
         
         Args:
             campaign_id: ID of the campaign to find similar ones for
@@ -350,6 +585,66 @@ class RecommendationEngine:
         """
         self._refresh_data_if_needed()
         
+        # Try AI-based similarity first
+        if self.campaign_embeddings is not None:
+            return self._get_ai_similar_campaigns(campaign_id, top_n)
+        else:
+            # Fallback to rule-based similarity
+            return self._get_rule_based_similar_campaigns(campaign_id, top_n)
+    
+    def _get_ai_similar_campaigns(self, campaign_id: int, top_n: int) -> List[Dict]:
+        """Get similar campaigns using AI embeddings"""
+        try:
+            # Find the target campaign
+            target_campaign_idx = self._campaigns_df[
+                self._campaigns_df['id'] == campaign_id
+            ].index
+            
+            if len(target_campaign_idx) == 0:
+                logger.warning(f"Campaign {campaign_id} not found")
+                return []
+            
+            # Get the embedding index
+            target_idx = self._campaigns_df.index.get_loc(target_campaign_idx[0])
+            
+            if target_idx >= len(self.campaign_embeddings):
+                logger.warning(f"Embedding not found for campaign {campaign_id}")
+                return []
+            
+            # Get target campaign embedding
+            target_embedding = self.campaign_embeddings[target_idx]
+            
+            # Calculate similarities with all other campaigns
+            similarities = cosine_similarity([target_embedding], self.campaign_embeddings)[0]
+            
+            # Get top similar campaigns (excluding the target campaign)
+            similar_campaigns = []
+            sorted_indices = np.argsort(similarities)[::-1]
+            
+            for idx in sorted_indices:
+                if idx == target_idx:  # Skip the target campaign itself
+                    continue
+                
+                campaign_row = self._campaigns_df.iloc[idx]
+                similarity_score = similarities[idx]
+                
+                similar_campaigns.append({
+                    'campaign_id': int(campaign_row['id']),
+                    'score': float(similarity_score),
+                    'reason': f'AI semantic similarity ({similarity_score:.3f})'
+                })
+                
+                if len(similar_campaigns) >= top_n:
+                    break
+            
+            return similar_campaigns
+            
+        except Exception as e:
+            logger.error(f"Error in AI similar campaigns for {campaign_id}: {str(e)}")
+            return self._get_rule_based_similar_campaigns(campaign_id, top_n)
+    
+    def _get_rule_based_similar_campaigns(self, campaign_id: int, top_n: int) -> List[Dict]:
+        """Fallback rule-based similar campaigns"""
         try:
             # Get the target campaign
             target_campaign = self._campaigns_df[

@@ -31,3 +31,6 @@ tzdata==2025.2; python_version >= '2'
 uvicorn[standard]==0.24.0; python_version >= '3.8'
 watchfiles==1.1.0
 websockets==15.0.1
+sentence-transformers>=2.2.2
+torch>=2.2.0
+transformers>=4.33.2
