@@ -8,7 +8,8 @@ const CombinedProgressDonors = ({
   currentAmount, 
   targetAmount, 
   donorsCount,
-  isRTL 
+  isRTL,
+  refreshTrigger // Add this prop to trigger refresh
 }) => {
   const { t } = useTranslation();
   const [donations, setDonations] = useState([]);
@@ -25,6 +26,7 @@ const CombinedProgressDonors = ({
   useEffect(() => {
     const fetchDonations = async () => {
       try {
+        setLoading(true);
         const res = await campaignDonations(campaignId);
         setDonations(res.donations || []);
       } catch (error) {
@@ -37,7 +39,7 @@ const CombinedProgressDonors = ({
     if (campaignId) {
       fetchDonations();
     }
-  }, [campaignId]);
+  }, [campaignId, refreshTrigger]); // Add refreshTrigger as dependency
 
   // Rotate donors every 3 seconds
   useEffect(() => {
