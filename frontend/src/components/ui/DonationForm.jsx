@@ -60,6 +60,11 @@ export default function DonationForm({
     console.log('is funded or not : ', isFunded);
   }, [user]);
 
+  // Debug celebration state changes
+  useEffect(() => {
+    console.log('showCelebration state changed:', showCelebration);
+  }, [showCelebration]);
+
   // Helper function to check if form is valid
   const isFormValid = () => {
     const valid = campaignId &&
@@ -461,12 +466,13 @@ export default function DonationForm({
     setPollingMessage('');
 
     // Show celebration only once
+    console.log('Setting showCelebration to true');
     setShowCelebration(true);
 
-    // Auto-hide celebration after duration
-    setTimeout(() => {
-      setShowCelebration(false);
-    }, 4000);
+    // Auto-hide celebration after duration (removed since onComplete handles it now)
+    // setTimeout(() => {
+    //   setShowCelebration(false);
+    // }, 4000);
 
     if (refreshCampaign) {
       refreshCampaign();
@@ -575,8 +581,12 @@ export default function DonationForm({
           <CelebrationAnimation
             isVisible={showCelebration}
             duration={4000}
-            type="confetti"
+            type="donation"
             intensity="medium"
+            onComplete={() => {
+              console.log('Celebration animation completed');
+              setShowCelebration(false);
+            }}
           />
 
           <div className="mb-4">
@@ -734,6 +744,17 @@ export default function DonationForm({
               </div>
             </div>
           </div>
+
+          {/* Test Celebration Button - Remove this after testing */}
+          {/* <button
+            onClick={() => {
+              console.log('Test celebration button clicked');
+              setShowCelebration(true);
+            }}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg mb-2"
+          >
+            Test Celebration
+          </button> */}
 
           {/* Donation Button */}
           <button

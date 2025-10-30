@@ -126,27 +126,33 @@ const CelebrationAnimation = ({
   };
 
   useEffect(() => {
+    console.log('CelebrationAnimation isVisible changed:', isVisible);
     if (isVisible) {
+      console.log('Starting celebration animation...');
       generateRipples();
       generateParticles();
       
       // Show message after initial animation
       setTimeout(() => {
+        console.log('Showing celebration message');
         setShowMessage(true);
       }, 800);
       
       // Hide message before completion
       setTimeout(() => {
+        console.log('Hiding celebration message');
         setShowMessage(false);
       }, duration - 500);
       
       // Auto-complete
       const timer = setTimeout(() => {
+        console.log('Celebration animation completed');
         onComplete?.();
       }, duration);
 
       return () => clearTimeout(timer);
     } else {
+      console.log('Hiding celebration animation');
       setParticles([]);
       setRipples([]);
       setShowMessage(false);
@@ -229,7 +235,7 @@ const CelebrationAnimation = ({
   if (!isVisible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none overflow-hidden">
+    <div className="fixed inset-0 z-[9999] pointer-events-none overflow-hidden" style={{ zIndex: 9999, backgroundColor: 'rgba(0,0,0,0.1)' }}>
       {/* Elegant particles */}
       {particles.map(particle => {
         const IconComponent = particle.symbol;
