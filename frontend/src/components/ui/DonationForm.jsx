@@ -805,7 +805,7 @@ export default function DonationForm({
                   </div>
                 </div>
 
-                {/* Test Celebration Button - Remove this after testing */}
+                {/* Test Celebration Button - Remove this after testing
                 <button
                   onClick={() => {
                     console.log('Test celebration button clicked');
@@ -815,7 +815,7 @@ export default function DonationForm({
                   className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg mb-2"
                 >
                   🎉 Test Celebration
-                </button>
+                </button> */}
 
                 {/* Donation Button */}
                 <button
