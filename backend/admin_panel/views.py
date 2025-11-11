@@ -1352,3 +1352,187 @@ class AdminFinancialViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_404_NOT_FOUND
             )
     
+
+
+class AdminActionViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet for viewing admin actions.
+    Read-only to preserve audit trail integrity.
+    
+    Provides:
+    - list: Get all actions with filtering
+    - retrieve: Get specific action details
+    - statistics: Get dashboard statistics
+    - export: Export actions to CSV
+    """
+    queryset = AdminAction.objects.select_related('admin_user').all()
+    serializer_class = AdminActionSerializer
+    permission_classes = [IsAdminUser]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    
+    # Filtering
+    filterset_fields = {
+        'action_type': ['exact'],
+        'target_model': ['exact'],
+        'target_id': ['exact'],
+        'admin_user': ['exact'],
+        'timestamp': ['gte', 'lte', 'date'],
+    }
+    
+    # Search
+    search_fields = ['description', 'action_type', 'admin_user__username']
+    
+    # Ordering
+    ordering_fields = ['timestamp', 'action_type', 'target_model']
+    ordering = ['-timestamp']
+    
+    @action(detail=False, methods=['get'])
+    def statistics(self, request):
+        """
+        Get statistics for dashboard
+        
+        Returns:
+        - total_actions: Total count
+        - today_actions: Actions today
+        - week_actions: Actions this week
+        - month_actions: Actions this month
+        - actions_by_type: Count per action type
+        - actions_by_model: Count per target model
+        - active_admins: Most active admin users
+        """
+        now = timezone.now()
+        today = now.date()
+        week_ago = now - timedelta(days=7)
+        month_ago = now - timedelta(days=30)
+        
+        # Basic counts
+        total_actions = AdminAction.objects.count()
+        today_actions = AdminAction.objects.filter(timestamp__date=today).count()
+        week_actions = AdminAction.objects.filter(timestamp__gte=week_ago).count()
+        month_actions = AdminAction.objects.filter(timestamp__gte=month_ago).count()
+        
+        # Actions by type
+        actions_by_type = list(
+            AdminAction.objects.values('action_type')
+            .annotate(count=Count('id'))
+            .order_by('-count')[:10]
+        )
+        
+        # Actions by target model
+        actions_by_model = list(
+            AdminAction.objects.values('target_model')
+            .annotate(count=Count('id'))
+            .order_by('-count')[:10]
+        )
+        
+        # Most active admins
+        active_admins = list(
+            AdminAction.objects.values('admin_user__id', 'admin_user__username')
+            .annotate(count=Count('id'))
+            .order_by('-count')[:10]
+        )
+        
+        return Response({
+            'statistics': {
+                'total': total_actions,
+                'today': today_actions,
+                'week': week_actions,
+                'month': month_actions,
+            },
+            'actions_by_type': actions_by_type,
+            'actions_by_model': actions_by_model,
+            'active_admins': active_admins,
+        })
+    
+    @action(detail=False, methods=['get'])
+    def export(self, request):
+        """
+        Export admin actions to CSV
+        
+        Query params (same as list filtering):
+        - action_type: Filter by action type
+        - target_model: Filter by target model
+        - admin_user: Filter by admin user ID
+        - timestamp__gte: Filter by timestamp greater than or equal
+        - timestamp__lte: Filter by timestamp less than or equal
+        - search: Search in description, action_type, username
+        """
+        # Get filtered queryset using the same filters as list
+        queryset = self.filter_queryset(self.get_queryset())
+        
+        # Create CSV response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="admin_actions.csv"'
+        
+        writer = csv.writer(response)
+        
+        # Write header
+        writer.writerow([
+            'ID',
+            'Admin User',
+            'Admin Email',
+            'Action Type',
+            'Target Model',
+            'Target ID',
+            'Description',
+            'Timestamp',
+        ])
+        
+        # Write data
+        for action in queryset:
+            writer.writerow([
+                action.id,
+                action.admin_user.username,
+                action.admin_user.email,
+                action.action_type,
+                action.target_model,
+                action.target_id or '',
+                action.description,
+                action.timestamp.strftime('%Y-%m-%d %H:%M:%S'),
+            ])
+        
+        return response
+    
+    @action(detail=False, methods=['get'])
+    def recent(self, request):
+        """
+        Get recent actions (last 20)
+        """
+        recent_actions = self.queryset[:20]
+        serializer = self.get_serializer(recent_actions, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def filter_options(self, request):
+        """
+        Get available filter options for dropdowns
+        
+        Returns:
+        - action_types: List of unique action types
+        - target_models: List of unique target models
+        - admin_users: List of admin users with id and username
+        """
+        action_types = list(
+            AdminAction.objects.values_list('action_type', flat=True)
+            .distinct()
+            .order_by('action_type')
+        )
+        
+        target_models = list(
+            AdminAction.objects.values_list('target_model', flat=True)
+            .distinct()
+            .order_by('target_model')
+        )
+        
+        admin_users = list(
+            AdminAction.objects.select_related('admin_user')
+            .values('admin_user__id', 'admin_user__username')
+            .distinct()
+            .order_by('admin_user__username')
+        )
+        
+        return Response({
+            'action_types': action_types,
+            'target_models': target_models,
+            'admin_users': admin_users,
+        })

@@ -8,6 +8,7 @@ from django.db import models
 from django.db.models import Count, Q, Sum, Avg
 from django.utils import timezone
 from datetime import timedelta
+from .models import AdminAction
 
 class AdminUserSerializer(serializers.ModelSerializer):
     """Base serializer for user management in admin panel"""
@@ -700,3 +701,23 @@ class RevenueAnalyticsSerializer(serializers.Serializer):
     net_revenue = serializers.DecimalField(max_digits=10, decimal_places=2)
 
 
+class AdminActionSerializer(serializers.ModelSerializer):
+    """Serializer for AdminAction model"""
+    admin_user_username = serializers.CharField(source='admin_user.username', read_only=True)
+    admin_user_email = serializers.EmailField(source='admin_user.email', read_only=True)
+    
+    class Meta:
+        model = AdminAction
+        fields = [
+            'id',
+            'admin_user',
+            'admin_user_username',
+            'admin_user_email',
+            'action_type',
+            'target_model',
+            'target_id',
+            'description',
+            'timestamp',
+            'metadata',
+        ]
+        read_only_fields = fields
