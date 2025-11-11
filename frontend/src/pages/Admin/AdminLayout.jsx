@@ -76,6 +76,13 @@ const AdminLayout = () => {
       icon: Folder,
       description: 'Manage campaign types',
       path: '/admin/categories'
+    },
+    {
+      id: 'actions',
+      name: 'Activity Logs',
+      icon: Activity,
+      description: 'User activities log',
+      path: '/admin/actions'
     }
   ];
 

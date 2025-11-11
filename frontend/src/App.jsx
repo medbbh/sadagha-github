@@ -54,6 +54,7 @@ import AdminProfilePage from './pages/Admin/AdminProfilePage';
 import AboutUs from './pages/User/AboutUs';
 import FAQ from './pages/User/FAQ';
 import Contact from './pages/User/Contact';
+import AdminActionManagement from './pages/Admin/AdminActionManagement';
 // RoleBasedRedirect component to handle redirection based on user role
 const RoleBasedRedirect = () => {
   const { user, loading, getUserRole, isFullyAuthenticated, needsRegistration } = useAuth();
@@ -163,6 +164,7 @@ function App() {
         <Route path="/admin/campaigns" element={<CampaignManagement />} />
         <Route path="/admin/financial" element={<FinancialManagement />} />
         <Route path="/admin/categories" element={<CategoryManagement />} />
+        <Route path="/admin/actions" element={<AdminActionManagement />} />
         <Route path="/admin/profile" element={<AdminProfilePage />} />
       </Route>
 
