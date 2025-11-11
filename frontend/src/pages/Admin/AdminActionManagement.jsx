@@ -4,7 +4,7 @@ import {
   AlertTriangle, CheckCircle, XCircle, FileText, Activity,
   Calendar, Loader2, RefreshCw, Database, TrendingUp
 } from 'lucide-react';
-import { adminActionApi } from '../../api/endpoints/adminActionApi';
+import { adminActionApi } from '../../api/endpoints/AdminActionApi';
 
 const AdminActionManagement = () => {
   const [actions, setActions] = useState([]);
