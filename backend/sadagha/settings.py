@@ -68,7 +68,8 @@ MIDDLEWARE = [
 ]
 
 
-NEXTREMITLY_BASE_URL = os.getenv('NEXTREMITLY_BASE_URL')
+# NEXTREMITLY_BASE_URL = os.getenv('NEXTREMITLY_BASE_URL')
+NEXTREMITLY_BASE_URL = "https://nextremitly-backend-fe52128f2003.herokuapp.com"
 NEXTREMITLY_FRONTEND_URL = "https://next-remitly-frontend.vercel.app"
 
 # Your frontend URLs
@@ -334,3 +335,4 @@ if os.environ.get('ENVIRONMENT') == 'production':
     # Static files
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATIC_URL = '/static/'
+
