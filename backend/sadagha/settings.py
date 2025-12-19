@@ -69,7 +69,7 @@ MIDDLEWARE = [
 
 
 NEXTREMITLY_BASE_URL = os.getenv('NEXTREMITLY_BASE_URL')
-NEXTREMITLY_FRONTEND_URL = os.getenv('NEXTREMITLY_FRONTEND_URL')
+NEXTREMITLY_FRONTEND_URL = "https://next-remitly-frontend.vercel.app"
 
 # Your frontend URLs
 FRONTEND_URL = 'http://localhost:5174'  # Sada9a frontend URL
