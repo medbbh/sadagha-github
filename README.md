@@ -69,7 +69,9 @@ cd sadagha-github
 
 Create `.env` files for each service (see [Environment Variables](#-environment-variables) section below).
 
-3. **Build and start services:**
+3. **Create `docker-compose.yml` in the project root** using the configuration in the [Docker Compose Configuration](#docker-compose-configuration) section below.
+
+4. **Build and start services:**
 ```bash
 # Build images
 docker-compose build
@@ -85,18 +87,18 @@ docker-compose logs -f backend
 docker-compose logs -f ai-service
 ```
 
-4. **Run database migrations (first time only):**
+5. **Run database migrations (first time only):**
 ```bash
 docker-compose exec backend python manage.py migrate
 docker-compose exec backend python manage.py createsuperuser
 ```
 
-5. **Access the services:**
+6. **Access the services:**
 - Backend API: `http://localhost:8000`
 - AI Service: `http://localhost:8001`
 - Frontend: `http://localhost:5173` (run separately, see below)
 
-6. **Stop services:**
+7. **Stop services:**
 ```bash
 docker-compose down
 
@@ -197,7 +199,7 @@ pipenv shell
 3. **Configure environment:**
 ```bash
 cp .env.example .env
-# Edit .env with your database configuration
+# Edit .env — update DATABASE_URL with your Supabase credentials
 ```
 
 4. **Start FastAPI server:**
@@ -228,7 +230,7 @@ npm install
 3. **Configure environment:**
 ```bash
 cp .env.example .env.local
-# Edit .env.local (see Environment Variables section)
+# Edit .env.local with your configuration (see Environment Variables section)
 ```
 
 4. **Start development server:**
@@ -327,7 +329,7 @@ CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port $PORT"]
 
 ### Docker Compose Configuration
 
-Create a `docker-compose.yml` in the project root:
+Create a `docker-compose.yml` file in the project root with the following content:
 ```yaml
 version: '3.8'
 
@@ -382,13 +384,6 @@ volumes:
 - Redis is included for local development
 - In production, use Upstash Redis instead
 - Frontend is typically run separately or deployed to Vercel
-
-## 📚 Documentation
-
-- [API Documentation](docs/API.md)
-- [User Guide](docs/USER_GUIDE.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
-- [Architecture Overview](docs/ARCHITECTURE.md)
 
 ## 🌐 Production
 
@@ -548,7 +543,7 @@ REDIS_URL=rediss://default:your-redis-password@your-redis-host.upstash.io:6379
 # REDIS_URL=redis://redis:6379/1  # If using Docker Compose
 # REDIS_URL=redis://127.0.0.1:6379/1  # If running locally
 
-# AI Microservice
+# AI Microservice (recommendation service URL — variable name is legacy)
 PAYMENT_MICROSERVICE_URL=http://localhost:8001
 # Or if using Docker Compose:
 # PAYMENT_MICROSERVICE_URL=http://ai-service:8080
